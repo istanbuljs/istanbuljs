@@ -1,0 +1,58 @@
+{
+  "name": "istanbul-lib-instrument",
+  "version": "1.0.0-alpha.0",
+  "description": "Core istanbul API for JS code coverage",
+  "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+  "main": "index.js",
+  "scripts": {
+    "fast": "mocha --harmony -r ./support/yaml-loader --recursive test/",
+    "pretest": "jshint index.js lib/ test/",
+    "test": "node --harmony ./node_modules/istanbul/lib/cli.js cover --include-all-sources --print=both -x karma.conf.js -x 'support/**/*js' -x 'lib/vargen-browser.js' _mocha -- -r ./support/yaml-loader --recursive test/",
+    "xposttest": "node ./node_modules/istanbul/lib/cli.js check-coverage --statements 95 --branches 80"
+  },
+  "dependencies": {
+    "escodegen": "^1.7.0",
+    "esprima": "^2.5.1",
+    "istanbul-lib-coverage": "^1.0.0-alpha"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "clone": "^1.0.2",
+    "coveralls": "^2.11.4",
+    "istanbul": "^0.3.17",
+    "js-yaml": "^3.3.1",
+    "jshint": "^2.8.0",
+    "mocha": "^2.2.5"
+  },
+  "karmaDeps": {
+    "aliasify": "^1.7.2",
+    "browserify-istanbul": "^0.2.1",
+    "karma": "^0.13.10",
+    "karma-browserify": "^4.2.1",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-coverage": "^0.4.2",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "phantomjs": "^1.9.17"
+  },
+  "aliasify": {
+    "aliases": {
+      "./vargen": "./lib/vargen-browser.js"
+    }
+  },
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbul-lib-instrument/issues"
+  },
+  "homepage": "https://github.com/istanbuljs/istanbul-lib-instrument",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:istanbuljs/istanbul-lib-instrument.git"
+  },
+  "keywords": [
+    "coverage",
+    "istanbul",
+    "js",
+    "instrumentation"
+  ]
+}

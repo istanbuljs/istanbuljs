@@ -1,0 +1,38 @@
+---
+name: es6 arrow function expression
+guard: isArrowFnAvailable
+code: |
+  var input = args
+  output = input.map(x => x * x)
+tests:
+  - name: function called
+    args: [1, 2, 3, 4]
+    out: [1, 4, 9, 16]
+    lines: {'1': 1, '2': 4}
+    statements: {'1': 1, '2': 1, '3': 4}
+
+  - name: function not called
+    args: []
+    out: []
+    lines: {'1': 1, '2': 1}
+    statements: {'1': 1, '2': 1, '3': 0}
+
+---
+name:  es6 arrow function block
+guard: isArrowFnAvailable
+code: |
+  var input = args
+  output = input.map(x => { return x * x; })
+tests:
+  - name: function called
+    args: [1, 2, 3, 4]
+    out: [1, 4, 9, 16]
+    lines: {'1': 1, '2': 4}
+    statements: {'1': 1, '2': 1, '3': 4}
+
+  - name: function not called
+    args: []
+    out: []
+    lines: {'1': 1, '2': 1}
+    statements: {'1': 1, '2': 1, '3': 0}
+
