@@ -1,6 +1,8 @@
 istanbul-lib-coverage
 ---------------------
 
+[![Build Status](https://travis-ci.org/istanbuljs/istanbul-lib-coverage.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbul-lib-coverage)
+
 An API that provides a read-only view of coverage information with the ability
 to merge and summarize coverage info.
 
