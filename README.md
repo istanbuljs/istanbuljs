@@ -1,5 +1,7 @@
-istanbul-instrument-lib
+istanbul-lib-instrument
 -----------------------
+
+[![Build Status](https://travis-ci.org/istanbuljs/istanbul-lib-instrument.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbul-lib-instrument)
 
 Istanbul instrumenter and source maps processing library.
 
