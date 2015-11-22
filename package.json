@@ -1,0 +1,47 @@
+{
+  "name": "istanbul-api",
+  "version": "1.0.0-aplha.1",
+  "description": "High level API for istanbul features",
+  "main": "index.js",
+  "scripts": {
+    "fast": "mocha test/",
+    "pretest": "jshint index.js lib/ test/",
+    "test": "istanbul cover --include-all-sources --print=both _mocha --  test/",
+    "xposttest": "istanbul check-coverage --statements 95 --branches 80"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/istanbuljs/istanbul-api.git"
+  },
+  "keywords": [
+    "istanbul",
+    "api"
+  ],
+  "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbul-api/issues"
+  },
+  "homepage": "https://github.com/istanbuljs/istanbul-api#readme",
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "coveralls": "^2.11.4",
+    "istanbul": "^0.4.0",
+    "jshint": "^2.8.0",
+    "memory-streams": "^0.1.0",
+    "mocha": "^2.3.3",
+    "rimraf": "^2.4.3"
+  },
+  "dependencies": {
+    "istanbul-lib-coverage": "^1.0.0-alpha",
+    "istanbul-lib-instrument": "^1.0.0-alpha",
+    "istanbul-lib-report": "^1.0.0-alpha",
+    "istanbul-lib-hook": "^1.0.0-alpha",
+    "istanbul-reports": "^1.0.0-alpha",
+    "async": "1.x",
+    "fileset": "0.2.x",
+    "js-yaml": "3.x",
+    "mkdirp": "0.5.x",
+    "once": "1.x"
+  }
+}
