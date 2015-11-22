@@ -1,6 +1,7 @@
 .npmignore
 .gitignore
 .jshintrc
+.jshintignore
 .travis.yml
 .idea/
 coverage/
