@@ -1,6 +1,8 @@
 istanbul-reports
 ================
 
+[![Build Status](https://travis-ci.org/istanbuljs/istanbul-reports.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbul-reports)
+
 * node.getRelativeName
 
 * context.getSource(filePath)
