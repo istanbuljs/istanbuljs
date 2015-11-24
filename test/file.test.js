@@ -149,13 +149,6 @@ describe('base coverage', function () {
         });
     });
 
-    it('allows setting source map url', function () {
-        var c = new FileCoverage('/path/to/file');
-        assert.ok(!c.sourceMappingUrl);
-        c.setSourceMappingUrl('foo');
-        assert.equal(c.sourceMappingUrl, 'foo');
-    });
-
     it('merges another file coverage correctly', function () {
         var loc = function (sl, sc, el, ec) {
                 return {
