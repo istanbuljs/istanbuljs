@@ -87,6 +87,24 @@ describe('varia', function () {
         assert.ok(instrumenter.lastSourceMap());
     });
 
+    it('registers source map URLs seen in the original source', function () {
+        var f = '',
+            u = '',
+            fn = function (file, sourceMapUrl) {
+                f = file;
+                u = sourceMapUrl;
+            },
+            opts = {
+                sourceMapUrlCallback: fn
+            },
+            instrumenter = new Instrumenter(opts),
+            generated = instrumenter.instrumentSync('output = args[0]\n// @sourceMappingURL=foo.map', __filename);
+
+        assert.ok(generated);
+        assert.equal(f, __filename);
+        assert.equal(u, 'foo.map');
+    });
+
     describe('node type property', function () {
         it('requires a type property for general nodes', function () {
             var ast = esprima.parse('var foo = 1;', { loc: true }),
