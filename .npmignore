@@ -1,6 +1,5 @@
 test/
 coverage/
-README.md
 .travis.yml
 .jshintrc
 .npmignore
