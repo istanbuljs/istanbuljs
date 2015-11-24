@@ -12,14 +12,14 @@
   },
   "dependencies": {
     "escodegen": "^1.7.0",
-    "esprima": "^2.5.1",
+    "esprima": "^2.7",
     "istanbul-lib-coverage": "^1.0.0-alpha"
   },
   "devDependencies": {
     "chai": "^3.0.0",
     "clone": "^1.0.2",
     "coveralls": "^2.11.4",
-    "istanbul": "^0.3.17",
+    "istanbul": "^0.4",
     "js-yaml": "^3.3.1",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5"
