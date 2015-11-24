@@ -1,6 +1,6 @@
 {
   "name": "istanbul-api",
-  "version": "1.0.0-aplha.1",
+  "version": "1.0.0-aplha.2",
   "description": "High level API for istanbul features",
   "main": "index.js",
   "scripts": {
