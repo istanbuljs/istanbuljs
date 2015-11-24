@@ -25,7 +25,6 @@ describe('run instrument', function () {
                 dir: outputDir
             }
         }, overrides);
-        cfg['self-test'] = true;
         return cfg;
     }
 
@@ -40,6 +39,7 @@ describe('run instrument', function () {
             hookFn();
             require('./sample-code/test/foo.test.js');
             exitFn();
+            data.unhookFn();
             cb();
         });
     });

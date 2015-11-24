@@ -33,13 +33,15 @@
     "rimraf": "^2.4.3"
   },
   "dependencies": {
+    "async": "1.x",
+    "clone": "^1.0.2",
+    "fileset": "0.2.x",
     "istanbul-lib-coverage": "^1.0.0-alpha",
+    "istanbul-lib-hook": "^1.0.0-alpha",
     "istanbul-lib-instrument": "^1.0.0-alpha",
     "istanbul-lib-report": "^1.0.0-alpha",
-    "istanbul-lib-hook": "^1.0.0-alpha",
+    "istanbul-lib-source-maps": "^1.0.0-alpha",
     "istanbul-reports": "^1.0.0-alpha",
-    "async": "1.x",
-    "fileset": "0.2.x",
     "js-yaml": "3.x",
     "mkdirp": "0.5.x",
     "once": "1.x"

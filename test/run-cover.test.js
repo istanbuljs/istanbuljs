@@ -8,14 +8,20 @@ var assert = require('chai').assert,
     codeRoot = path.resolve(__dirname, 'sample-code'),
     outputDir = path.resolve(__dirname, 'coverage'),
     configuration = require('../lib/config'),
-    cover = require('../lib/run-cover');
+    cover = require('../lib/run-cover'),
+    unhookFn;
 
 describe('run cover', function () {
+
     beforeEach(function () {
+        unhookFn = null;
         mkdirp.sync(outputDir);
     });
     afterEach(function () {
         rimraf.sync(outputDir);
+        if (unhookFn) {
+            unhookFn();
+        }
     });
 
     function getConfig(overrides) {
@@ -28,7 +34,6 @@ describe('run cover', function () {
                 dir: outputDir
             }
         }, overrides);
-        cfg['self-test'] = true;
         return cfg;
     }
 
@@ -36,18 +41,20 @@ describe('run cover', function () {
         var config = getConfig({ verbose: true, instrumentation: { 'include-all-sources': false }});
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
-            var v = data.coverageVar,
+            var fn = data.coverageFn,
                 hookFn = data.hookFn,
                 exitFn = data.exitFn,
                 coverageMap,
                 coverage,
                 otherMap;
-            assert.ok(v);
+            unhookFn = data.unhookFn;
+            assert.isFunction(fn);
+            assert.isFunction(unhookFn);
             assert.isFunction(hookFn);
             assert.isFunction(exitFn);
             hookFn();
             require('./sample-code/foo');
-            coverageMap = global[v];
+            coverageMap = fn();
             assert.ok(coverageMap);
             coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
             assert.ok(coverage);
@@ -71,12 +78,13 @@ describe('run cover', function () {
         });
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
-            var v = data.coverageVar,
+            var fn = data.coverageFn,
                 hookFn = data.hookFn,
                 coverageMap;
+            unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/context');
-            coverageMap = global[v];
+            coverageMap = fn();
             assert.ok(coverageMap);
             assert.ok(coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
@@ -94,14 +102,15 @@ describe('run cover', function () {
         });
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
-            var v = data.coverageVar,
+            var fn = data.coverageFn,
                 hookFn = data.hookFn,
                 exitFn = data.exitFn,
                 coverageMap;
+            unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/foo');
             exitFn();
-            coverageMap = global[v];
+            coverageMap = fn();
             assert.ok(coverageMap);
             assert.ok(coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
@@ -116,6 +125,7 @@ describe('run cover', function () {
             assert.ok(!err);
             var hookFn = data.hookFn,
                 exitFn = data.exitFn;
+            unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/foo');
             exitFn();
@@ -131,14 +141,15 @@ describe('run cover', function () {
         });
         cover.getCoverFunctions(config, [ '**/foo.js' ], function (err, data) {
             assert.ok(!err);
-            var v = data.coverageVar,
+            var fn = data.coverageFn,
                 hookFn = data.hookFn,
                 exitFn = data.exitFn,
                 coverageMap;
+            unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/context');
             exitFn();
-            coverageMap = global[v];
+            coverageMap = fn();
             assert.ok(coverageMap);
             assert.ok(!coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
@@ -151,6 +162,7 @@ describe('run cover', function () {
         var config = getConfig();
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
+            unhookFn = data.unhookFn;
             assert.doesNotThrow(data.exitFn);
             cb();
         });
@@ -174,6 +186,7 @@ describe('run cover', function () {
                 assert.ok(!err);
                 var hookFn = data.hookFn,
                     exitFn = data.exitFn;
+                unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
                 exitFn();
@@ -188,6 +201,7 @@ describe('run cover', function () {
                 assert.ok(!err);
                 var hookFn = data.hookFn,
                     exitFn = data.exitFn;
+                unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
                 exitFn();
@@ -202,6 +216,7 @@ describe('run cover', function () {
                 assert.ok(!err);
                 var hookFn = data.hookFn,
                     exitFn = data.exitFn;
+                unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
                 exitFn();
@@ -216,6 +231,7 @@ describe('run cover', function () {
                 assert.ok(!err);
                 var hookFn = data.hookFn,
                     exitFn = data.exitFn;
+                unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
                 exitFn();
