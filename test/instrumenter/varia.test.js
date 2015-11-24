@@ -98,7 +98,7 @@ describe('varia', function () {
                 sourceMapUrlCallback: fn
             },
             instrumenter = new Instrumenter(opts),
-            generated = instrumenter.instrumentSync('output = args[0]\n// @sourceMappingURL=foo.map', __filename);
+            generated = instrumenter.instrumentSync('/* foobar */ output = args[0]\n// @sourceMappingURL=foo.map', __filename);
 
         assert.ok(generated);
         assert.equal(f, __filename);
