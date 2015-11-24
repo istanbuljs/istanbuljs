@@ -36,6 +36,18 @@ module.exports = {
             return obj;
         }
         return new CoverageMap(obj);
+    },
+    /**
+     * creates a FileCoverage object
+     * @param {Object} obj optional - an argument with the same semantics
+     *  as the one passed to the FileCoverage constructor.
+     * @returns {FileCoverage}
+     */
+    createFileCoverage: function (obj) {
+        if (obj && obj instanceof FileCoverage) {
+            return obj;
+        }
+        return new FileCoverage(obj);
     }
 };
 

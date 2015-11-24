@@ -231,6 +231,54 @@ describe('base coverage', function () {
         assert.equal(c1.b[1][1], 2);
     });
 
+    it('resets hits when requested', function () {
+        var loc = function (sl, sc, el, ec) {
+                return {
+                    start: {line: sl, column: sc},
+                    end: {line: el, column: ec}
+                };
+            },
+            fc = new FileCoverage({
+                path: '/path/to/file',
+                statementMap: {
+                    1: loc(1, 1, 1, 100),
+                    2: loc(2, 1, 2, 50),
+                    3: loc(2, 51, 2, 100),
+                    4: loc(2, 101, 3, 100)
+                },
+                fnMap: {
+                    1: {
+                        name: 'foobar',
+                        line: 1,
+                        loc: loc(1, 1, 1, 50)
+                    }
+                },
+                branchMap: {
+                    1: {
+                        type: 'if',
+                        line: 2,
+                        locations: [ loc(2,1,2,20), loc(2,50, 2, 100) ]
+                    }
+                },
+                s: {
+                    1: 2,
+                    2: 3,
+                    3: 1,
+                    4: 0
+                },
+                f: {
+                    1: 54
+                },
+                b: {
+                    1: [ 1, 50 ]
+                }
+            });
+        fc.resetHits();
+        assert.deepEqual({1:0, 2:0, 3:0, 4:0}, fc.s);
+        assert.deepEqual({1:0}, fc.f);
+        assert.deepEqual({1: [0,0]}, fc.b);
+    });
+
     it('returns uncovered lines', function () {
         var c = new FileCoverage({
             path: '/path/to/file',
