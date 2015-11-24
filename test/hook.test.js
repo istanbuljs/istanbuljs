@@ -24,13 +24,12 @@ var hook = require('../lib/hook'),
 describe('hooks', function () {
     describe('require', function () {
         beforeEach(function () {
-            currentHook = require('module')._extensions['.js'];
             hook.hookRequire(matcher, transformer, {verbose: true});
         });
 
         afterEach(function () {
             hook.unloadRequireCache(matcher);
-            require('module')._extensions['.js'] = currentHook;
+            hook.unhookRequire();
         });
 
         it('transforms foo', function () {
