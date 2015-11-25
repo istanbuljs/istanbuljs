@@ -11,7 +11,6 @@
     "xposttest": "istanbul check-coverage --statements 95 --branches 80"
   },
   "dependencies": {
-    "convert-source-map": "^1.1.2",
     "istanbul-lib-coverage": "^1.0.0-alpha.0",
     "source-map": "^0.5.3"
   },
