@@ -4,13 +4,13 @@
  */
 "use strict";
 
-var store = require('./lib/map-store');
+var MapStore = require('./lib/map-store').MapStore;
 /**
  * @module AllExports
  */
 module.exports = {
     createSourceMapStore: function (opts) {
-        return store.create(opts);
+        return new MapStore(opts);
     }
 };
 

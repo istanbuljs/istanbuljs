@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "istanbul-lib-coverage": "^1.0.0-alpha.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.4.4",
     "source-map": "^0.5.3"
   },
   "devDependencies": {
