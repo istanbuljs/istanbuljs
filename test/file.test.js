@@ -127,7 +127,7 @@ describe('base coverage', function () {
         assert.ok(bc.s);
         assert.ok(bc.f);
         assert.ok(bc.b);
-        assert.ok(bc.l);
+        assert.ok(bc.getLineCoverage());
         assert.equal(bc.path, "/path/to/file");
     });
 

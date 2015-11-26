@@ -5,9 +5,13 @@
 "use strict";
 
 /**
- * @module AllExports
+ * istanbul-lib-coverage exports an API that allows you to create and manipulate
+ * file coverage, coverage maps (a set of file coverage objects) and summary
+ * coverage objects. File coverage for the same file can be merged as can
+ * entire coverage maps.
+ *
+ * @module Exports
  */
-
 var CoverageSummary = require('./lib/file').CoverageSummary,
     FileCoverage = require('./lib/file').FileCoverage,
     CoverageMap = require('./lib/coverage-map').CoverageMap;
