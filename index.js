@@ -5,14 +5,14 @@
 "use strict";
 
 /**
- * @module AllExports
+ * @module Exports
  */
 var Instrumenter = require('./lib/instrumenter');
 
 module.exports = {
     /**
      * returns an instrumenter instance with the specified options
-     * @param {Object} opts [opts=undefined] instrumenter options, see {@link #Instrumenter}
+     * @param {Object} opts [opts={}] instrumenter options, see {@link #Instrumenter}
      * @returns {Instrumenter}
      */
     createInstrumenter: function (opts) {

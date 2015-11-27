@@ -12,7 +12,7 @@ describe('file coverage', function () {
         assert.ok(fc.s);
         assert.ok(fc.f);
         assert.ok(fc.b);
-        assert.ok(fc.l);
+        assert.ok(fc.getLineCoverage());
     });
 
     it('allows another object as constructor', function () {
@@ -118,6 +118,6 @@ describe('file coverage', function () {
         c.newStatement(loc(1,1,41,80));
         c.s[1] = 200;
         c.s[2] = 100;
-        assert.equal(200, c.l[1]);
+        assert.equal(200, c.getLineCoverage()[1]);
     });
 });

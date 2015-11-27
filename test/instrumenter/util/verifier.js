@@ -70,7 +70,7 @@ Verifier.prototype = {
 
         assert.ok(cov && typeof cov === 'object', 'No coverage found for [' + this.file + ']');
         assert.deepEqual(actualOutput, expectedOutput, 'Output mismatch');
-        assert.deepEqual(cov.l, expectedCoverage.lines || {}, 'Line coverage mismatch');
+        assert.deepEqual(cov.getLineCoverage(), expectedCoverage.lines || {}, 'Line coverage mismatch');
         assert.deepEqual(cov.f, expectedCoverage.functions || {}, 'Function coverage mismatch');
         assert.deepEqual(cov.b, expectedCoverage.branches || {}, 'Branch coverage mismatch');
         assert.deepEqual(cov.s, expectedCoverage.statements || {}, 'Statement coverage mismatch');
