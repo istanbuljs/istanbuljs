@@ -2,6 +2,9 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
+/**
+ * @module Exports
+ */
 module.exports = {
     config: require('./lib/config'),
     cover: require('./lib/run-cover'),
