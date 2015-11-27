@@ -6,7 +6,7 @@
 
 var MapStore = require('./lib/map-store').MapStore;
 /**
- * @module AllExports
+ * @module Exports
  */
 module.exports = {
     createSourceMapStore: function (opts) {
