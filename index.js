@@ -5,7 +5,7 @@
 "use strict";
 
 /**
- * @module AllExports
+ * @module Exports
  */
 
 var summarizer = require('./lib/summarizer'),
