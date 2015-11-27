@@ -11,7 +11,7 @@ describe('mapped coverage', function () {
         assert.ok(fc.s);
         assert.ok(fc.f);
         assert.ok(fc.b);
-        assert.ok(fc.l);
+        assert.ok(fc.getLineCoverage());
     });
 
     it('allows building object incrementally, resolving dups', function () {
