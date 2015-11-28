@@ -7,7 +7,7 @@
   "scripts": {
     "fast": "mocha --harmony -r ./support/yaml-loader --recursive test/",
     "pretest": "jshint index.js lib/ test/",
-    "test": "node --harmony ./node_modules/istanbul/lib/cli.js cover --include-all-sources --print=both -x karma.conf.js -x 'support/**/*js' -x 'lib/vargen-browser.js' _mocha -- -r ./support/yaml-loader --recursive test/",
+    "test": "node --harmony ./node_modules/istanbul/lib/cli.js cover --include-all-sources --print=both -x karma.conf.js -x 'support/**' -x 'lib/vargen-browser.js' -x 'docs/**' _mocha -- -r ./support/yaml-loader --recursive test/",
     "xposttest": "node ./node_modules/istanbul/lib/cli.js check-coverage --statements 95 --branches 80"
   },
   "dependencies": {

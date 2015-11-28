@@ -56,8 +56,8 @@ describe('file coverage', function () {
 
         index = fc.newFunction('foo', loc(1, 0, 1, 20), loc(1, 0, 1, 100));
         assert.ok(index);
-        assert.deepEqual(fc.fnMap[index].loc, loc(1, 0, 1, 20));
-        assert.deepEqual(fc.fnMap[index].span, loc(1, 0, 1, 100));
+        assert.deepEqual(fc.fnMap[index].decl, loc(1, 0, 1, 20));
+        assert.deepEqual(fc.fnMap[index].loc, loc(1, 0, 1, 100));
 
         index = fc.newFunction(undefined, loc(1, 0, 1, 60), loc(1, 0, 1, 80));
         assert.ok(index);
@@ -65,7 +65,7 @@ describe('file coverage', function () {
 
         index = fc.newBranch('if', loc(1, 15, 1, 20));
         assert.ok(index);
-        assert.equal(fc.branchMap[index].line, 1);
+        assert.deepEqual(fc.branchMap[index].loc, loc(1, 15, 1, 20));
         fc.addBranchPath(index, loc(1, 15, 1, 20));
         fc.addBranchPath(index, loc(1, 21, 1, 40));
         assert.deepEqual(fc.branchMap[index].locations[0], loc(1, 15, 1, 20));
