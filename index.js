@@ -2,6 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
+var Reporter = require('./lib/reporter');
 /**
  * @module Exports
  */
@@ -11,6 +12,9 @@ module.exports = {
     reports: require('./lib/run-reports'),
     instrument: require('./lib/run-instrument'),
     checkCoverage: require('./lib/run-check-coverage'),
+    createReporter: function (cfg, opts) {
+        return new Reporter(cfg, opts);
+    },
     /**
      * asynchronously returns a function that can match filesystem paths.
      * The function returned in the callback may be passed directly as a `matcher`

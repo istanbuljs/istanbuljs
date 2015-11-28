@@ -8,6 +8,7 @@ describe('index', function () {
         assert.isObject(index.config);
         assert.isFunction(index.matcherFor);
         assert.isFunction(index.filesFor);
+        assert.isFunction(index.createReporter);
         assert.isObject(index.cover);
         assert.isObject(index.instrument);
         assert.isObject(index.checkCoverage);

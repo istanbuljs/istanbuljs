@@ -9,7 +9,7 @@ var assert = require('chai').assert,
     cover = require('../lib/run-cover'),
     checker = require('../lib/run-check-coverage');
 
-describe('run instrument', function () {
+describe('run check-coverage', function () {
 
     function getConfig(overrides) {
         var cfg = configuration.loadObject({
