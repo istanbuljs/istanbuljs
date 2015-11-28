@@ -1,13 +1,11 @@
 /* globals describe, it */
 
 var assert = require('chai').assert,
-    libCoverage = require('istanbul-lib-coverage'),
     index = require('../index');
 
 describe('report interface', function() {
     it('exports the desired interface', function () {
         assert.isFunction(index.createContext);
-        assert.isFunction(index.createReportSource);
         assert.isFunction(index.getDefaultWatermarks);
         assert.isObject(index.summarizers);
         assert.isFunction(index.summarizers.flat);
@@ -25,8 +23,5 @@ describe('report interface', function() {
     });
     it('creates a context without options', function () {
         assert.ok(index.createContext());
-    });
-    it('creates a report source with a coverage map', function () {
-        assert.ok(index.createReportSource(libCoverage.createCoverageMap()));
     });
 });

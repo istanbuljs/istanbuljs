@@ -9,20 +9,10 @@
  */
 
 var summarizer = require('./lib/summarizer'),
-    reportSource = require('./lib/report-source'),
     context = require('./lib/context'),
     watermarks = require('./lib/watermarks');
 
 module.exports = {
-    /**
-     * returns a report source for the supplied coverage map and options
-     * @param {CoverageMap} a coverage map
-     * @param  {Object} [opts=null] report source options
-     * @returns {ReportSource}
-     */
-    createReportSource: function (coverageMap, opts) {
-        return reportSource.create(coverageMap, opts);
-    },
     /**
      * returns a reporting context for the supplied options
      * @param {Object} [opts=null] opts
@@ -60,7 +50,7 @@ module.exports.summarizers = {
      * a summarizer that creates a tree in which directories are not nested.
      * Every subdirectory is a child of the root node and only reflects the
      * coverage numbers for the files in it (i.e. excludes subdirectories).
-     * This is the default summarizer used by the report source.
+     * This is the default summarizer.
      */
     pkg: summarizer.createPackageSummary
 };
