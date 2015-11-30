@@ -51,6 +51,8 @@ tests:
     statements: {'1': 1, '2': 1}
 ---
 name: mainline return
+opts:
+  autoWrap: true
 code: |
   return 10;
 tests:

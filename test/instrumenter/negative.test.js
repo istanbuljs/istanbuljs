@@ -17,7 +17,7 @@ describe('negative tests', function () {
     });
 
     it('should barf on mainline returns with no auto-wrap', function () {
-        var v = verifier.create('return 10;', { noAutoWrap: true });
+        var v = verifier.create('return 10;');
         assert.ok(v.err);
         assert.ok(v.err.message.match(/Illegal return/));
     });

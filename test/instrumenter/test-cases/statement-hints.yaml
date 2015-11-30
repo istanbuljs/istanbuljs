@@ -123,7 +123,7 @@ tests:
 ---
 name: ignore in logical expression with implied operator precedence
 code: >
-  if (args[0] === 1  || /* istanbul ignore next */ args[0] === 2  && args[1] === 2) {
+  if (args[0] === 1  || /* istanbul ignore next */args[0] === 2  && args[1] === 2) {
      output = args[0] + 10;
   } else {
      output = 20;
