@@ -39,8 +39,8 @@ describe('mapped coverage', function () {
 
         index = mc.addFunction('foo', loc(1, 0, 1, 20), loc(1, 0, 1, 100), 0);
         assert.ok(index);
-        assert.deepEqual(mc.fnMap[index].loc, loc(1, 0, 1, 20));
-        assert.deepEqual(mc.fnMap[index].span, loc(1, 0, 1, 100));
+        assert.deepEqual(mc.fnMap[index].decl, loc(1, 0, 1, 20));
+        assert.deepEqual(mc.fnMap[index].loc, loc(1, 0, 1, 100));
 
         index2 = mc.addFunction('bar', loc(1, 0, 1, 20), loc(1, 0, 1, 100), 1);
         assert.equal(index, index2);
@@ -52,7 +52,7 @@ describe('mapped coverage', function () {
 
         index = mc.addBranch('if', loc(1, 15, 1, 20), [loc(1, 15, 1, 20), loc(1, 21, 1, 40)], [1,0]);
         assert.ok(index);
-        assert.equal(mc.branchMap[index].line, 1);
+        assert.deepEqual(mc.branchMap[index].loc, loc(1, 15, 1, 20));
         assert.deepEqual(mc.branchMap[index].locations[0], loc(1, 15, 1, 20));
         assert.deepEqual(mc.branchMap[index].locations[1], loc(1, 21, 1, 40));
 
