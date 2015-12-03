@@ -97,6 +97,7 @@ describe('run cover', function () {
             verbose: true,
             instrumentation: {
                 'default-excludes': false,
+                'include-all-sources': true,
                 extensions: [ '.js', '.xjs' ]
             }
         });

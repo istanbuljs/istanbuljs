@@ -24,7 +24,7 @@ describe('config', function () {
             assert.equal(iOpts.preserveComments(), false);
             assert.equal(iOpts.completeCopy(), false);
             assert.equal(iOpts.saveBaseline(), false);
-            assert.equal(iOpts.includeAllSources(), true);
+            assert.equal(iOpts.includeAllSources(), false);
             assert.equal(iOpts.baselineFile(), './coverage/coverage-baseline.raw.json');
             assert.deepEqual(iOpts.excludes(), ['**/node_modules/**']);
             assert.deepEqual(iOpts.excludes(true), ['**/node_modules/**', '**/test/**', '**/tests/**']);
