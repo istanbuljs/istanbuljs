@@ -16,6 +16,24 @@ function toCaps(extensions) {
 	};
 }
 
+function header(extensions) {
+	var originalExtension = extensions['.js'];
+
+	extensions['.js'] = function (module, filename) {
+		var originalCompile = module._compile;
+
+		module._compile = (code, filename) => {
+			originalCompile('// header\n' + code, filename);
+		};
+
+		originalExtension(module, filename);
+	};
+}
+
+function fooToBar(entry) {
+	entry.compile.call(entry.module, entry.code.replace(/foo/i, 'bar'), entry.filename);
+}
+
 test.beforeEach(t => {
 	const logs = [];
 	function logger() {
@@ -47,20 +65,51 @@ test.beforeEach(t => {
 });
 
 test('toCaps', t => {
-	t.plan(2);
 	const c = t.context;
 
-	function listener (entry, stack) {
-		t.true(/CONSOLE\.LOG/.test(entry.code));
-
-		entry.compile.call(entry.module, entry.code.replace(/FOO/, 'bar'), entry.filename);
-	}
-
-	wrapExtension(listener, '.js', c.extensions);
+	wrapExtension(fooToBar, '.js', c.extensions);
 
 	toCaps(c.extensions);
 
 	c.extensions['.js'](c.module, '/foo.js');
 
 	t.is(c.module.code, 'CONSOLE.LOG("bar");');
+});
+
+test('header', t => {
+	const c = t.context;
+
+	wrapExtension(fooToBar, '.js', c.extensions);
+
+	header(c.extensions);
+
+	c.extensions['.js'](c.module, '/foo.js');
+
+	t.is(c.module.code, '// header\nconsole.log("bar");');
+});
+
+test('header + toCaps', t => {
+	const c = t.context;
+
+	wrapExtension(fooToBar, '.js', c.extensions);
+
+	header(c.extensions);
+	toCaps(c.extensions);
+
+	c.extensions['.js'](c.module, '/foo.js');
+
+	t.is(c.module.code, '// HEADER\nCONSOLE.LOG("bar");');
+});
+
+test('toCaps + header', t => {
+	const c = t.context;
+
+	wrapExtension(fooToBar, '.js', c.extensions);
+
+	toCaps(c.extensions);
+	header(c.extensions);
+
+	c.extensions['.js'](c.module, '/foo.js');
+
+	t.is(c.module.code, '// header\nCONSOLE.LOG("bar");');
 });
