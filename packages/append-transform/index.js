@@ -31,13 +31,14 @@ function wrapExtension(ext, log, extensions) {
 			return descriptor.value;
 		};
 		forwardSet = function (val) {
-			return descriptor.value = val;
+			descriptor.value = val;
+			return val;
 		};
 	}
 
 	var nextId = 1;
 
-	function wrapCustomHook (hook, id) {
+	function wrapCustomHook(hook, id) {
 		if (!id) {
 			id = nextId;
 			nextId++;
@@ -59,7 +60,6 @@ function wrapExtension(ext, log, extensions) {
 		};
 	}
 
-
 	// wrap the original
 	forwardSet(wrapCustomHook(forwardGet(), 'default'));
 
@@ -67,12 +67,12 @@ function wrapExtension(ext, log, extensions) {
 
 	function setCurrentHook(hook) {
 		var restoreIndex = hooks.indexOf(hook);
-		if (restoreIndex !== -1) {
-			log('rolled back');
-			hooks.splice(restoreIndex + 1, hooks.length);
-		} else {
+		if (restoreIndex === -1) {
 			hooks.push(forwardSet(wrapCustomHook(hook)));
-			log('installed new hook ' + id);
+			log('installed new hook');
+		} else {
+			hooks.splice(restoreIndex + 1, hooks.length);
+			log('rolled back');
 		}
 	}
 
