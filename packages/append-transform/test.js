@@ -8,7 +8,6 @@ function toCaps(extensions) {
 		var originalCompile = module._compile;
 
 		module._compile = (code, filename) => {
-			console.log('UPPERCASING');
 			code = code.toUpperCase();
 			originalCompile(code, filename);
 		};
@@ -48,15 +47,13 @@ test.beforeEach(t => {
 });
 
 test('toCaps', t => {
-	t.plan(1);
+	t.plan(2);
 	const c = t.context;
 
-	function listener (module, code, filename) {
-		// TODO: This needs to only fire once with the final transpiled code.
-		if (/CONSOLE\.LOG/.test(code)) {
-			t.pass();
-		}
-		module._compile(code, filename);
+	function listener (entry, stack) {
+		t.true(/CONSOLE\.LOG/.test(entry.code));
+
+		entry.compile.call(entry.module, entry.code.replace(/FOO/, 'bar'), entry.filename);
 	}
 
 	wrapExtension(listener, '.js', c.extensions);
@@ -64,4 +61,6 @@ test('toCaps', t => {
 	toCaps(c.extensions);
 
 	c.extensions['.js'](c.module, '/foo.js');
+
+	t.is(c.module.code, 'CONSOLE.LOG("bar");');
 });

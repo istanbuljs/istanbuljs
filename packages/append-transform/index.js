@@ -36,16 +36,44 @@ function wrapExtension(listener, ext, extensions) {
 		};
 	}
 
+	var stack = null;
+
 	function wrapCustomHook(hook) {
 		return function (module, originalFilename) {
+			var hasStack = stack;
+
+			if (!hasStack) {
+				stack = [];
+			}
+
 			var originalCompile = module._compile;
 
-			module._compile = function (transpiled, filename) {
-				module._compile = originalCompile;
-				return listener(module, transpiled, filename, originalFilename);
+			var entry = {
+				module: module,
+				compile: originalCompile,
+				originalFilename: originalFilename
+			};
+
+			module._compile = function replacementCompile(code, filename) {
+				entry.code = code;
+				entry.filename = filename;
+				if (hasStack) {
+					originalCompile.call(module, code, filename);
+				}
 			};
 
 			hook(module, originalFilename);
+
+			stack.push(entry);
+
+			if (!hasStack) {
+				var finalEntry = stack[stack.length - 1];
+				var tempStack = stack;
+
+				stack = null;
+
+				listener(finalEntry, tempStack);
+			}
 		};
 	}
 
