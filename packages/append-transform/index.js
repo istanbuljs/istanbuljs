@@ -2,8 +2,8 @@
 
 module.exports = wrapExtension;
 
-function wrapExtension(ext, log, extensions) {
-	log = log || function () {};
+function wrapExtension(listener, ext, extensions) {
+	ext = ext || '.js';
 	extensions = extensions || require.extensions;
 
 	var forwardGet;
@@ -36,32 +36,21 @@ function wrapExtension(ext, log, extensions) {
 		};
 	}
 
-	var nextId = 1;
-
-	function wrapCustomHook(hook, id) {
-		if (!id) {
-			id = nextId;
-			nextId++;
-		}
+	function wrapCustomHook(hook) {
 		return function (module, originalFilename) {
 			var originalCompile = module._compile;
 
 			module._compile = function (transpiled, filename) {
-				log(id + ' _compile called');
 				module._compile = originalCompile;
-				var ret = module._compile(transpiled, filename);
-				log(id + ' _compile done');
-				return ret;
+				return listener(module, transpiled, filename, originalFilename);
 			};
 
-			log('entering ' + id);
 			hook(module, originalFilename);
-			log('exiting ' + id);
 		};
 	}
 
 	// wrap the original
-	forwardSet(wrapCustomHook(forwardGet(), 'default'));
+	forwardSet(wrapCustomHook(forwardGet()));
 
 	var hooks = [forwardGet()];
 
@@ -69,10 +58,8 @@ function wrapExtension(ext, log, extensions) {
 		var restoreIndex = hooks.indexOf(hook);
 		if (restoreIndex === -1) {
 			hooks.push(forwardSet(wrapCustomHook(hook)));
-			log('installed new hook');
 		} else {
 			hooks.splice(restoreIndex + 1, hooks.length);
-			log('rolled back');
 		}
 	}
 

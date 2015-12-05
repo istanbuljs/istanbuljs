@@ -1,20 +1,15 @@
 import test from 'ava';
 import wrapExtension from './';
 
-function deadEnd(extensions, id) {
-	extensions['.js'] = function (module, filename) {
-		module._compile('deadEnd-' + id + '-' + filename, filename);
-	};
-}
-
-function preprocessor(extensions, id) {
+function toCaps(extensions) {
 	var originalExtension = extensions['.js'];
 
 	extensions['.js'] = function (module, filename) {
 		var originalCompile = module._compile;
 
 		module._compile = (code, filename) => {
-			code = code + ':preprocessor-' + id + '-' + filename;
+			console.log('UPPERCASING');
+			code = code.toUpperCase();
 			originalCompile(code, filename);
 		};
 
@@ -24,53 +19,48 @@ function preprocessor(extensions, id) {
 
 test.beforeEach(t => {
 	const logs = [];
-
 	function logger() {
 		logs.push(Array.prototype.slice.call(arguments));
 	}
+
+	const content = {
+		'/foo.js': 'console.log("foo");'
+	};
 
 	const module = {
 		_compile (code, file) {
 			module.code = code;
 			module.file = file;
-			logger('raw _compile')
 		}
 	};
 
 	t.context.module = module;
 	t.context.logs = logs;
 	t.context.logger = logger;
+	t.context.content = content;
 
+	// Default Extension, loads content from object hash instead of disk.
 	t.context.extensions = {
 		'.js'(module, filename) {
-			module._compile('raw:' + filename, filename);
+			module._compile(content[filename], filename);
 		}
 	};
 });
 
-test.serial('deadEnd\n\n', t => {
-	const {logs, logger, module, extensions} = t.context;
+test('toCaps', t => {
+	t.plan(1);
+	const c = t.context;
 
-	wrapExtension('.js', logger, extensions);
+	function listener (module, code, filename) {
+		if (/CONSOLE\.LOG/.test(code)) {
+			t.pass();
+		}
+		module._compile(code, filename);
+	}
 
-	deadEnd(extensions, 'a');
+	wrapExtension(listener, '.js', c.extensions);
 
-	extensions['.js'](module, 'foo.js');
+	toCaps(c.extensions);
 
-	console.log(module);
-	console.log(logs);
-});
-
-
-test.serial('preprocessor\n\n', t => {
-	const {logs, logger, module, extensions} = t.context;
-
-	wrapExtension('.js', logger, extensions);
-
-	preprocessor(extensions, 'a');
-
-	extensions['.js'](module, 'foo.js');
-
-	console.log(module);
-	console.log(logs);
+	c.extensions['.js'](c.module, '/foo.js');
 });
