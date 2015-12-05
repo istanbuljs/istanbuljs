@@ -2,6 +2,7 @@ import test from 'ava';
 import wrapExtension from './';
 import path from 'path';
 
+// install a TO CAPS transform using the conventional means
 function toCaps(c) {
 	var originalExtension = c.extensions['.js'];
 
@@ -17,6 +18,7 @@ function toCaps(c) {
 	};
 }
 
+// install a HEADER transform using the conventional means
 function header(c) {
 	var originalExtension = c.extensions['.js'];
 
@@ -31,6 +33,10 @@ function header(c) {
 	};
 }
 
+// Alternate is a conventionally installed extension.
+// If predicate(filename) === true, it loads from a different directory (and does not call the original extension).
+// It does fall back to the original if predicate is false.
+// This emulates a "shouldTranspile" like conditional loader.
 function alternate(c, predicate) {
 	var originalExtension = c.extensions['.js'];
 
@@ -44,14 +50,19 @@ function alternate(c, predicate) {
 	};
 }
 
+// replaces all instances of "foo" with "bar" (case insensitive).
+// It is a "listener" installed using this too.
 function fooToBar(entry) {
 	entry.compile.call(entry.module, entry.code.replace(/foo/i, 'bar'), entry.filename);
 }
 
+// adds a footer to the bottom of the file.
+// It is a "listener" installed using this tool.
 function footer(entry) {
 	entry.compile.call(entry.module, entry.code + '\n// footer', entry.filename);
 }
 
+// shortcut for installing a listener
 function installListener(fn, c) {
 	wrapExtension(function (entry) {
 		c.logger(fn.name, entry.code, entry.filename);
@@ -411,8 +422,11 @@ test('footer: alternate(true) -> fooToBar:  header', t => {
 
 // This test shows that the `header` extension (which installs itself conventionally),
 // has no affect on the final output. This is because `alternate(true)` does not defer to it.
-// It simply demonstrates the problem this tool solves
-// (intercepting extensions that do not explicitly defer to the one they replace).
+// Despite being installed earlier, both `fooToBar`, and `footer` are able to impact the output.
+// That is because they are listeners installed with this tool
+//
+// This simply demonstrates the problem this tool solves
+// That is, intercepting extensions that do not explicitly defer to the one they replace.
 test('footer: alternate(true) -> fooToBar:  header', t => {
 	const c = t.context;
 
