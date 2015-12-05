@@ -51,8 +51,9 @@ function wrapExtension(listener, ext, extensions) {
 			module._compile = function replacementCompile(_code, _filename) {
 				code = _code;
 				filename = _filename;
+				module._compile = originalCompile;
 				if (!wasEntry) {
-					originalCompile.call(module, code, filename);
+					module._compile(code, filename);
 				}
 			};
 
@@ -60,13 +61,7 @@ function wrapExtension(listener, ext, extensions) {
 
 			if (wasEntry) {
 				isEntry = true;
-				listener({
-					module: module,
-					compile: originalCompile,
-					code: code,
-					filename: filename,
-					originalFilename: originalFilename
-				});
+				listener(module, code, filename);
 			}
 		};
 	}
@@ -82,6 +77,7 @@ function wrapExtension(listener, ext, extensions) {
 			hooks.push(forwardSet(wrapCustomHook(hook)));
 		} else {
 			hooks.splice(restoreIndex + 1, hooks.length);
+			forwardSet(hook);
 		}
 	}
 
