@@ -431,8 +431,8 @@ test('footer: alternate(true) -> fooToBar:  header', t => {
 	const c = t.context;
 
 	installListener(footer, c);
-	installListener(fooToBar, c);
 	header(c);
+	installListener(fooToBar, c);
 	alternate(c, () => true);
 
 	const module = c.load('/baz.js');
