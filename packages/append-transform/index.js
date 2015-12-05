@@ -36,43 +36,37 @@ function wrapExtension(listener, ext, extensions) {
 		};
 	}
 
-	var stack = null;
+	var isEntry = true;
 
 	function wrapCustomHook(hook) {
 		return function (module, originalFilename) {
-			var hasStack = stack;
-
-			if (!hasStack) {
-				stack = [];
-			}
+			var wasEntry = isEntry;
+			isEntry = false;
 
 			var originalCompile = module._compile;
 
-			var entry = {
-				module: module,
-				compile: originalCompile,
-				originalFilename: originalFilename
-			};
+			var code;
+			var filename;
 
-			module._compile = function replacementCompile(code, filename) {
-				entry.code = code;
-				entry.filename = filename;
-				if (hasStack) {
+			module._compile = function replacementCompile(_code, _filename) {
+				code = _code;
+				filename = _filename;
+				if (!wasEntry) {
 					originalCompile.call(module, code, filename);
 				}
 			};
 
 			hook(module, originalFilename);
 
-			stack.push(entry);
-
-			if (!hasStack) {
-				var finalEntry = stack[stack.length - 1];
-				var tempStack = stack;
-
-				stack = null;
-
-				listener(finalEntry, tempStack);
+			if (wasEntry) {
+				isEntry = true;
+				listener({
+					module: module,
+					compile: originalCompile,
+					code: code,
+					filename: filename,
+					originalFilename: originalFilename
+				});
 			}
 		};
 	}
