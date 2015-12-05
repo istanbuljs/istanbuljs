@@ -52,6 +52,7 @@ test('toCaps', t => {
 	const c = t.context;
 
 	function listener (module, code, filename) {
+		// TODO: This needs to only fire once with the final transpiled code.
 		if (/CONSOLE\.LOG/.test(code)) {
 			t.pass();
 		}
