@@ -6,33 +6,43 @@ function wrapExtension(ext, log, extensions) {
 	log = log || function () {};
 	extensions = extensions || require.extensions;
 
+	var forwardGet;
+	var forwardSet;
+
 	var descriptor = Object.getOwnPropertyDescriptor(extensions, ext);
 
-	var __requireHook;
-	if (!descriptor.get) {
-		__requireHook = descriptor.value;
+	if (
+		((descriptor.get || descriptor.set) && !(descriptor.get && descriptor.set)) ||
+		!descriptor.configurable
+	) {
+		throw new Error('Somebody did bad things to require.extensions["' + ext + '"]');
 	}
 
-	function forwardGet() {
-		return descriptor.get ? descriptor.get() : __requireHook;
-	}
-
-	function forwardSet(val) {
-		if (descriptor.set) {
+	if (descriptor.get) {
+		forwardGet = function () {
+			return descriptor.get();
+		};
+		forwardSet = function (val) {
 			descriptor.set(val);
-		} else {
-			__requireHook = val;
-		}
-		return forwardGet();
+			return forwardGet();
+		};
+	} else {
+		forwardGet = function () {
+			return descriptor.value;
+		};
+		forwardSet = function (val) {
+			return descriptor.value = val;
+		};
 	}
 
 	var nextId = 1;
 
-	// the original
-	forwardSet(wrapCustomHook(forwardGet(), 'default'));
-
 	function wrapCustomHook (hook, id) {
-		var wrapped = function (module, originalFilename) {
+		if (!id) {
+			id = nextId;
+			nextId++;
+		}
+		return function (module, originalFilename) {
 			var originalCompile = module._compile;
 
 			module._compile = function (transpiled, filename) {
@@ -47,23 +57,21 @@ function wrapExtension(ext, log, extensions) {
 			hook(module, originalFilename);
 			log('exiting ' + id);
 		};
-
-		wrapped.hookId = id;
-
-		return wrapped;
 	}
+
+
+	// wrap the original
+	forwardSet(wrapCustomHook(forwardGet(), 'default'));
 
 	var hooks = [forwardGet()];
 
 	function setCurrentHook(hook) {
 		var restoreIndex = hooks.indexOf(hook);
 		if (restoreIndex !== -1) {
-			log('rolled back to ' + forwardSet(hook).hookId);
+			log('rolled back');
 			hooks.splice(restoreIndex + 1, hooks.length);
 		} else {
-			var id = nextId;
-			nextId ++;
-			hooks.push(forwardSet(wrapCustomHook(hook, id)));
+			hooks.push(forwardSet(wrapCustomHook(hook)));
 			log('installed new hook ' + id);
 		}
 	}
