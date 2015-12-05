@@ -6,12 +6,30 @@ function wrapExtension(ext, log, extensions) {
 	log = log || function () {};
 	extensions = extensions || require.extensions;
 
-	var forwardSet = Object.getOwnPropertyDescriptor(extensions, ext).set;
+	var descriptor = Object.getOwnPropertyDescriptor(extensions, ext);
+
+	var __requireHook;
+	if (!descriptor.get) {
+		__requireHook = descriptor.value;
+	}
+
+	function forwardGet() {
+		return descriptor.get ? descriptor.get() : __requireHook;
+	}
+
+	function forwardSet(val) {
+		if (descriptor.set) {
+			descriptor.set(val);
+		} else {
+			__requireHook = val;
+		}
+		return forwardGet();
+	}
 
 	var nextId = 1;
 
 	// the original
-	var requireHook = wrapCustomHook(extensions[ext], 'default');
+	forwardSet(wrapCustomHook(forwardGet(), 'default'));
 
 	function wrapCustomHook (hook, id) {
 		var wrapped = function (module, originalFilename) {
@@ -35,34 +53,25 @@ function wrapExtension(ext, log, extensions) {
 		return wrapped;
 	}
 
-	var hooks = [requireHook];
-
-	function getCurrentHook() {
-		return requireHook;
-	}
+	var hooks = [forwardGet()];
 
 	function setCurrentHook(hook) {
 		var restoreIndex = hooks.indexOf(hook);
 		if (restoreIndex !== -1) {
-			requireHook = hook;
+			log('rolled back to ' + forwardSet(hook).hookId);
 			hooks.splice(restoreIndex + 1, hooks.length);
-			log('rolled back to ' + requireHook.hookId);
 		} else {
 			var id = nextId;
 			nextId ++;
-			requireHook = wrapCustomHook(hook, id);
-			hooks.push(requireHook);
+			hooks.push(forwardSet(wrapCustomHook(hook, id)));
 			log('installed new hook ' + id);
-		}
-		if (forwardSet) {
-			forwardSet(requireHook);
 		}
 	}
 
 	Object.defineProperty(extensions, ext, {
 		configurable: true,
 		enumerable: true,
-		get: getCurrentHook,
+		get: forwardGet,
 		set: setCurrentHook
 	});
 }
