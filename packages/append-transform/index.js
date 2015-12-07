@@ -39,25 +39,23 @@ function wrapExtension(listener, ext, extensions) {
 	var isEntry = true;
 
 	function wrapCustomHook(hook) {
-		return function (module, originalFilename) {
+		return function (module, filename) {
 			var wasEntry = isEntry;
 			isEntry = false;
 
 			var originalCompile = module._compile;
 
 			var code;
-			var filename;
 
-			module._compile = function replacementCompile(_code, _filename) {
+			module._compile = function replacementCompile(_code) {
 				code = _code;
-				filename = _filename;
 				module._compile = originalCompile;
 				if (!wasEntry) {
 					module._compile(code, filename);
 				}
 			};
 
-			hook(module, originalFilename);
+			hook(module, filename);
 
 			if (wasEntry) {
 				isEntry = true;
