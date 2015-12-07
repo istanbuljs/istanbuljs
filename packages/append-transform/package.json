@@ -1,5 +1,5 @@
 {
-  "name": "require-extension-listener",
+  "name": "capture-require",
   "version": "0.0.0",
   "description": "My exquisite module",
   "license": "MIT",
