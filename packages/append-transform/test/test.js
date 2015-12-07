@@ -1,23 +1,23 @@
 import test from 'ava';
 import MockSystem from './_mock-module-system';
 import wrapExtension from '../';
+import fs from 'fs';
 
-// Simple Test Transforms
-const toUpperCase = code => code.toUpperCase();
-const fooToBar = code => code.replace(/foo/i, 'bar');
-const addHeader = code => '// header\n' + code;
-const addFooter = code => code + '\n// footer';
+// Transform that just appends some text
+function append(message) {
+	return code => code + ' ' + message;
+}
+
+test.beforeEach(t => t.context = new MockSystem({
+	'/foo.js': 'foo'
+}));
 
 test('installs a transform', t => {
-	const system = new MockSystem({
-		'/foo.js': 'console.log("foo");'
-	});
-
-	system.installWrappedTransform(fooToBar);
-
+	const system = t.context;
+	system.installWrappedTransform(append('a'));
 	const module = system.load('/foo.js');
 
-	t.is(module.code, 'console.log("bar");');
+	t.is(module.code, 'foo a');
 });
 
 test('can install other than `.js` extensions', t => {
@@ -25,88 +25,47 @@ test('can install other than `.js` extensions', t => {
 		'/foo.coffee': 'foo'
 	});
 
+	// No default extension exists for coffee - we need to add the first one manually.
 	system.extensions['.coffee'] = function (module, filename) {
 		let content = system.content[filename];
-		content = 'coffee(' + content + ')';
+		content = filename + '(' + content + ')';
 		module._compile(content, filename);
 	};
 
-	system.installWrappedTransform(toUpperCase, '.coffee');
+	system.installConventionalTransform(append('a'), '.coffee');
+	system.installWrappedTransform(append('b'), '.coffee');
+	system.installConventionalTransform(append('c'), '.coffee');
 
 	const module = system.load('/foo.coffee');
 
-	t.is(module.code, 'COFFEE(FOO)');
+	t.is(module.code, '/foo.coffee(foo) a c b');
 });
 
 test('test actual require', t => {
 	require.extensions['.foo'] = function (module, filename) {
-		module._compile('module.exports = "foo";', filename);
+		module._compile(fs.readFileSync(filename, 'utf8'), filename);
 	};
 
 	wrapExtension((module, code, filename) => {
-		module._compile(fooToBar(code), filename);
+		module._compile(code + ' + " bar"', filename);
 	}, '.foo');
 
-	t.is(require('./fixture/foo.foo'), 'bar');
+	t.is(require('./fixture/foo.foo'), 'foo bar');
 });
 
-test('handles uninstall cleanly', t => {
-	const system = new MockSystem({
-		'/foo.js': 'console.log("foo");'
-	});
+test('accommodates reverting extension', t => {
+	const system = t.context;
 
-	system.installWrappedTransform(fooToBar);
-	system.installConventionalTransform(addHeader);
-	const headerOnly = system.extensions['.js'];
-	system.installConventionalTransform(addFooter);
-
+	system.installWrappedTransform(append('always-last'));
+	system.installConventionalTransform(append('b'));
+	const rollback = system.extensions['.js'];
+	system.installConventionalTransform(append('c'));
 	let module = system.load('/foo.js');
 
-	t.is(module.code, '// header\nconsole.log("bar");\n// footer');
+	t.is(module.code, 'foo b c always-last');
 
-	system.extensions['.js'] = headerOnly;
-
+	system.extensions['.js'] = rollback;
 	let module2 = system.load('/foo.js');
 
-	t.is(module2.code, '// header\nconsole.log("bar");');
-});
-
-test('throws if getter but no setter', t => {
-	var extensions = {
-		get '.js'() {
-			return () => t.fail();
-		}
-	};
-
-	t.throws(
-		() => wrapExtension(() => t.fail(), '.js', extensions),
-		'Somebody did bad things to require.extensions[".js"]'
-	);
-});
-
-test('throws if setter but no getter', t => {
-	var extensions = { // eslint-disable-line accessor-pairs
-		set '.js'(foo) {
-			t.fail();
-		}
-	};
-
-	t.throws(
-		() => wrapExtension(() => t.fail(), '.js', extensions),
-		'Somebody did bad things to require.extensions[".js"]'
-	);
-});
-
-test('throws if not configurable', t => {
-	var extensions = {};
-
-	Object.defineProperty(extensions, '.js', {
-		value: () => t.fail(),
-		configurable: false
-	});
-
-	t.throws(
-		() => wrapExtension(() => t.fail(), '.js', extensions),
-		'Somebody did bad things to require.extensions[".js"]'
-	);
+	t.is(module2.code, 'foo b always-last');
 });
