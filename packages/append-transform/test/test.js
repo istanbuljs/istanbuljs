@@ -20,6 +20,58 @@ test('installs a transform', t => {
 	t.is(module.code, 'foo a');
 });
 
+test('replacing an extension that just forwards through to `old` without calling compile', t => {
+	const system = t.context;
+
+	const old = system.extensions['.js'];
+	system.extensions['.js'] = function (module, filename) {
+		old(module, filename);
+	};
+
+	system.installWrappedTransform(append('a'));
+	system.installConventionalTransform(append('b'));
+	system.installConventionalTransform(append('c'));
+
+	const module = system.load('/foo.js');
+
+	t.is(module.code, 'foo b c a');
+});
+
+test('immediately replaced by an extension that just forwards through to `old` without calling compile', t => {
+	const system = t.context;
+
+	system.installWrappedTransform(append('a'));
+
+	const old = system.extensions['.js'];
+	system.extensions['.js'] = function (module, filename) {
+		old(module, filename);
+	};
+
+	system.installConventionalTransform(append('b'));
+	system.installConventionalTransform(append('c'));
+
+	const module = system.load('/foo.js');
+
+	t.is(module.code, 'foo b c a');
+});
+
+test('extension that just forwards through to `old` without calling compile the middle of a chain', t => {
+	const system = t.context;
+	system.installWrappedTransform(append('a'));
+	system.installConventionalTransform(append('b'));
+
+	const old = system.extensions['.js'];
+	system.extensions['.js'] = function (module, filename) {
+		old(module, filename);
+	};
+
+	system.installConventionalTransform(append('c'));
+
+	const module = system.load('/foo.js');
+
+	t.is(module.code, 'foo b c a');
+});
+
 test('can install other than `.js` extensions', t => {
 	const system = new MockSystem({
 		'/foo.coffee': 'foo'
