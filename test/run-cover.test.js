@@ -9,6 +9,8 @@ var assert = require('chai').assert,
     outputDir = path.resolve(__dirname, 'coverage'),
     configuration = require('../lib/config'),
     cover = require('../lib/run-cover'),
+    hijack = require('./hijack-streams'),
+    wrap = hijack.wrap,
     unhookFn;
 
 describe('run cover', function () {
@@ -16,8 +18,10 @@ describe('run cover', function () {
     beforeEach(function () {
         unhookFn = null;
         mkdirp.sync(outputDir);
+        hijack.silent();
     });
     afterEach(function () {
+        hijack.reset();
         rimraf.sync(outputDir);
         if (unhookFn) {
             unhookFn();
@@ -38,6 +42,7 @@ describe('run cover', function () {
     }
 
     it('hooks require and provides coverage', function (cb) {
+        cb = wrap(cb);
         var config = getConfig({ verbose: true, instrumentation: { 'include-all-sources': false }});
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
@@ -72,6 +77,7 @@ describe('run cover', function () {
     });
 
     it('hooks runInThisContext and provides coverage', function (cb) {
+        cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-context': true },
             instrumentation: { 'include-all-sources': false }
@@ -93,6 +99,7 @@ describe('run cover', function () {
     });
 
     it('includes all sources by default (ignoring bad code)', function (cb) {
+        cb = wrap(cb);
         var config = getConfig({
             verbose: true,
             instrumentation: {
@@ -121,6 +128,7 @@ describe('run cover', function () {
     });
 
     it('includes pid in coverage JSON when requested', function (cb) {
+        cb = wrap(cb);
         var config = getConfig({ instrumentation: { 'include-pid': true }});
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
@@ -136,6 +144,7 @@ describe('run cover', function () {
     });
 
     it('accepts specific includes', function (cb) {
+        cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-context': true },
             instrumentation: { 'include-all-sources': false }
@@ -160,6 +169,7 @@ describe('run cover', function () {
     });
 
     it('complains but does not throw when no coverage', function (cb) {
+        cb = wrap(cb);
         var config = getConfig();
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
@@ -182,6 +192,7 @@ describe('run cover', function () {
             });
         };
         it('prints text summary by default', function (cb) {
+            cb = wrap(cb);
             var config = getTextReportConfig();
             cover.getCoverFunctions(config, function(err, data) {
                 assert.ok(!err);
@@ -197,6 +208,7 @@ describe('run cover', function () {
             });
         });
         it('prints detail only', function (cb) {
+            cb = wrap(cb);
             var config = getTextReportConfig('detail');
             cover.getCoverFunctions(config, function(err, data) {
                 assert.ok(!err);
@@ -212,6 +224,7 @@ describe('run cover', function () {
             });
         });
         it('prints both', function (cb) {
+            cb = wrap(cb);
             var config = getTextReportConfig('both');
             cover.getCoverFunctions(config, function(err, data) {
                 assert.ok(!err);
@@ -227,6 +240,7 @@ describe('run cover', function () {
             });
         });
         it('prints nothing', function (cb) {
+            cb = wrap(cb);
             var config = getTextReportConfig('none');
             cover.getCoverFunctions(config, function(err, data) {
                 assert.ok(!err);

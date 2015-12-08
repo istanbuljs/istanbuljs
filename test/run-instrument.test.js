@@ -10,7 +10,9 @@ var assert = require('chai').assert,
     configuration = require('../lib/config'),
     instrument = require('../lib/run-instrument'),
     ms = require('memory-streams'),
-    vm = require('vm');
+    vm = require('vm'),
+    hijack = require('./hijack-streams'),
+    wrap = hijack.wrap;
 
 describe('run instrument', function () {
 
@@ -113,8 +115,13 @@ describe('run instrument', function () {
                 });
         });
     });
+
     describe('multiple files', function () {
+        beforeEach(hijack.silent);
+        afterEach(hijack.reset);
+
         it('instruments multiple files', function (cb) {
+            cb = wrap(cb);
             instrument.run(getConfig({ verbose: true }), {input: codeRoot, output: outputDir },
                 function (err) {
                     assert.ok(!err);
@@ -125,6 +132,7 @@ describe('run instrument', function () {
                 });
         });
         it('saves baseline coverage when requested', function (cb) {
+            cb = wrap(cb);
             instrument.run(getConfig({
                 instrumentation: {
                     'save-baseline': true,
@@ -143,7 +151,11 @@ describe('run instrument', function () {
         });
     });
     describe('negative tests', function () {
+        beforeEach(hijack.silent);
+        afterEach(hijack.reset);
+
         it('barfs on no inputs', function (cb) {
+            cb = wrap(cb);
             instrument.run(getConfig(), null,
                 function (err) {
                     assert.ok(err);
@@ -152,6 +164,7 @@ describe('run instrument', function () {
                 });
         });
         it('barfs on directory coverage when output option not provided', function (cb) {
+            cb = wrap(cb);
             instrument.run(getConfig(), {input: codeRoot },
                 function (err) {
                     assert.ok(err);
@@ -160,6 +173,7 @@ describe('run instrument', function () {
                 });
         });
         it('barfs on directory coverage when output == input', function (cb) {
+            cb = wrap(cb);
             instrument.run(getConfig(), {input: codeRoot, output: codeRoot },
                 function (err) {
                     assert.ok(err);
@@ -169,7 +183,11 @@ describe('run instrument', function () {
         });
     });
     describe('complete copy', function () {
+        beforeEach(hijack.silent);
+        afterEach(hijack.reset);
+
         it('does not copy non-JS files by default', function (cb) {
+            cb = wrap(cb);
             instrument.run(getConfig(), {input: codeRoot, output: outputDir },
                 function (err) {
                     assert.ok(!err);
@@ -178,6 +196,7 @@ describe('run instrument', function () {
                 });
         });
         it('copies non-JS files when requested', function (cb) {
+            cb = wrap(cb);
             instrument.run(getConfig({ instrumentation: { 'complete-copy': true }}),
                 {input: codeRoot, output: outputDir },
                 function (err) {

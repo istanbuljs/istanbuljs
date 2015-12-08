@@ -13,5 +13,8 @@ describe('index', function () {
         assert.isObject(index.instrument);
         assert.isObject(index.checkCoverage);
         assert.isObject(index.reports);
+        assert.doesNotThrow(function () {
+            index.createReporter(index.config.loadObject({}));
+        });
     });
 });

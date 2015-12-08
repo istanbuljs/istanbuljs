@@ -9,7 +9,9 @@ var assert = require('chai').assert,
     cover = require('../lib/run-cover'),
     fs = require('fs'),
     existsSync = fs.existsSync,
-    runReports = require('../lib/run-reports');
+    runReports = require('../lib/run-reports'),
+    hijack = require('./hijack-streams'),
+    wrap = hijack.wrap;
 
 describe('run reports', function () {
 
@@ -31,6 +33,7 @@ describe('run reports', function () {
     }
 
     beforeEach(function (cb) {
+        hijack.silent();
         var config = getConfig({
             reporting: {
                 print: 'none',
@@ -52,10 +55,12 @@ describe('run reports', function () {
     });
 
     afterEach(function () {
+        hijack.reset();
         rimraf.sync(outputDir);
     });
 
     it('runs default reports consuming coverage file', function (cb) {
+        cb = wrap(cb);
         assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
         runReports.run(null, getConfig(), function (err) {
             assert.ok(!err);
@@ -67,6 +72,7 @@ describe('run reports', function () {
     });
 
     it('respects input pattern', function (cb) {
+        cb = wrap(cb);
         assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
         runReports.run(null, getConfig(), {include: '**/foobar.json'}, function (err) {
             assert.ok(!err);
@@ -77,6 +83,7 @@ describe('run reports', function () {
     });
 
     it('returns error on junk format', function (cb) {
+        cb = wrap(cb);
         assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
         runReports.run(['foo'], getConfig({
             reporting: {
@@ -91,6 +98,7 @@ describe('run reports', function () {
     });
 
     it('runs specific reports', function (cb) {
+        cb = wrap(cb);
         assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
         runReports.run(['clover', 'text'], getConfig(), function (err) {
             assert.ok(!err);

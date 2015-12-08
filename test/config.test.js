@@ -5,15 +5,22 @@ var assert = require('chai').assert,
     configuration = require('../lib/config'),
     oldCwd = process.cwd(),
     newCwd = path.resolve(__dirname, 'config-data'),
-    config;
+    config,
+    hijack = require('./hijack-streams'),
+    reset = hijack.reset;
 
 describe('config', function () {
+    beforeEach(hijack.silent);
+    afterEach(reset);
+
     describe('no explicit config', function () {
         beforeEach(function () {
             config = configuration.loadObject(null);
         });
+
         it('sets verbose option', function () {
             assert.equal(config.verbose, false);
+            reset();
         });
         it('sets sane instrument options', function () {
             var iOpts = config.instrumentation;
@@ -28,17 +35,20 @@ describe('config', function () {
             assert.equal(iOpts.baselineFile(), './coverage/coverage-baseline.raw.json');
             assert.deepEqual(iOpts.excludes(), ['**/node_modules/**']);
             assert.deepEqual(iOpts.excludes(true), ['**/node_modules/**', '**/test/**', '**/tests/**']);
+            reset();
         });
         it('sets correct reporting options', function () {
             var rOpts = config.reporting;
             assert.equal(rOpts.print(), 'summary');
             assert.deepEqual(rOpts.reports(), ['lcov']);
             assert.equal(rOpts.dir(), './coverage');
+            reset();
         });
         it('sets correct hook options', function () {
             var hOpts = config.hooks;
             assert.equal(hOpts.hookRunInContext(), false);
             assert.equal(hOpts.postRequireHook(), null);
+            reset();
         });
     });
     describe('when overrides passed in', function () {
@@ -52,6 +62,7 @@ describe('config', function () {
                 });
                 assert.equal(config.instrumentation.compact(), false);
                 assert.equal(config.instrumentation.saveBaseline(), true);
+                reset();
             });
         });
         describe('as override object', function () {
@@ -65,6 +76,7 @@ describe('config', function () {
                 assert.equal(config.verbose, true);
                 assert.equal(config.instrumentation.compact(), false);
                 assert.equal(config.instrumentation.saveBaseline(), true);
+                reset();
             });
         });
         describe('at both levels', function () {
@@ -82,6 +94,7 @@ describe('config', function () {
                 assert.equal(config.verbose, false);
                 assert.equal(config.instrumentation.compact(), true);
                 assert.equal(config.instrumentation.saveBaseline(), false);
+                reset();
             });
         });
         describe('deeper in the tree', function () {
@@ -93,6 +106,7 @@ describe('config', function () {
                 }
             });
             assert.equal(config.check.global.statements, 80);
+            reset();
         });
     });
     describe('excludes array', function () {
@@ -105,6 +119,7 @@ describe('config', function () {
             var iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), ['**/node_modules/**', '**/vendor/**']);
             assert.deepEqual(iOpts.excludes(true), ['**/node_modules/**', '**/test/**', '**/tests/**', '**/vendor/**']);
+            reset();
         });
         it('honors default excludes when not set', function () {
             config = configuration.loadObject({
@@ -116,6 +131,7 @@ describe('config', function () {
             var iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), ['**/vendor/**']);
             assert.deepEqual(iOpts.excludes(true), ['**/vendor/**']);
+            reset();
         });
         it('returns nothing when defaults off and no excludes', function () {
             config = configuration.loadObject({
@@ -126,6 +142,7 @@ describe('config', function () {
             var iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), []);
             assert.deepEqual(iOpts.excludes(true), []);
+            reset();
         });
     });
     describe("file loading", function () {
@@ -133,11 +150,13 @@ describe('config', function () {
             assert.throws(function () {
                 return configuration.loadFile('/a/non/existent/path.js');
             });
+            reset();
         });
         it('uses default config when no default file found', function () {
             config = configuration.loadFile();
             var defaultConfig = configuration.loadObject();
             assert.deepEqual(defaultConfig, config);
+            reset();
         });
         describe('when files present', function () {
             beforeEach(function () {
@@ -150,6 +169,7 @@ describe('config', function () {
                 config = configuration.loadFile(undefined, {verbose: true});
                 assert.equal(config.instrumentation.compact(), false);
                 assert.deepEqual(config.reporting.reports(), ['lcov', 'cobertura']);
+                reset();
             });
             it('uses explicit file when provided', function () {
                 config = configuration.loadFile('cfg.json', {verbose: true});
@@ -157,6 +177,7 @@ describe('config', function () {
                 assert.deepEqual(config.reporting.reports(), ['lcov']);
                 assert.equal(config.instrumentation.saveBaseline(), true);
                 assert.equal(config.hooks.postRequireHook(), 'yui-istanbul');
+                reset();
             });
         });
     });
@@ -168,6 +189,7 @@ describe('config', function () {
             assert.deepEqual(w.branches, [50, 80]);
             assert.deepEqual(w.functions, [50, 80]);
             assert.deepEqual(w.lines, [50, 80]);
+            reset();
         });
         it('does not load any junk config', function () {
             config = configuration.loadObject({
@@ -185,6 +207,7 @@ describe('config', function () {
             assert.deepEqual(w.branches, [50, 80]);
             assert.deepEqual(w.functions, [50, 80]);
             assert.deepEqual(w.lines, [50, 80]);
+            reset();
         });
     });
 });
