@@ -1,4 +1,4 @@
-# append-transform [![Build Status](https://travis-ci.org/jamestalmage/append-transform.svg?branch=master)](https://travis-ci.org/jamestalmage/append-transform)
+# append-transform [![Build Status](https://travis-ci.org/jamestalmage/append-transform.svg?branch=master)](https://travis-ci.org/jamestalmage/append-transform) [![Coverage Status](https://coveralls.io/repos/jamestalmage/append-transform/badge.svg?branch=master&service=github)](https://coveralls.io/github/jamestalmage/append-transform?branch=master)
 
 > Install a transform to `require.extensions` that always runs last, even if additional extensions are added later.
 
