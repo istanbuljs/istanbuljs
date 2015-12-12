@@ -1,9 +1,9 @@
 {
-  "name": "capture-require",
+  "name": "append-transform",
   "version": "0.1.0",
   "description": "My exquisite module",
   "license": "MIT",
-  "repository": "jamestalmage/require-extension-listener",
+  "repository": "jamestalmage/append-transform",
   "author": {
     "name": "James Talmage",
     "email": "james@talmage.io",
