@@ -2,7 +2,7 @@
 
 > Install a transform to `require.extensions` that always runs last, even if additional extensions are added later.
 
-The [typical require extension](https://gist.github.com/jamestalmage/df922691475cff66c7e6)looks something like this:
+The [typical require extension](https://gist.github.com/jamestalmage/df922691475cff66c7e6) looks something like this:
 
 ```js
   var myTransform = require('my-transform');
@@ -19,11 +19,13 @@ The [typical require extension](https://gist.github.com/jamestalmage/df922691475
   };
 ```
 
-In **almost** all cases, that is sufficient and is the method that should be used (check out [`pirates`](https://www.npmjs.com/package/pirates) for an easy way to do it correctly). In **rare** cases you must ensure your transform remains the last one, even if other transforms are added later. For example `nyc` uses this module to ensure its transform is applied last. This allows it to capture the final source-map information from the entire chain of transforms, and ensures any language extension transforms (`babel` for instance) are already applied before it attempts to instrument for coverage.
+In **almost** all cases, that is sufficient and is the method that should be used (check out [`pirates`](https://www.npmjs.com/package/pirates) for an easy way to do it correctly). In **rare** cases you must ensure your transform remains the last one, even if other transforms are added later. For example, `nyc` uses this module to ensure its transform is applied last so it can capture the final source-map information, and ensure any language extensions it can't understand are already transpiled (ES2015 via `babel` for instance).
 
-*WARNING:* You should be sure you  *actually* need this, as it takes control away from the user. Your transform remains the last one applied, even as they continue to add more transforms. This is potentially confusing. Coverage libraries like `nyc` (and `istanbul` on which it relies) have valid reasons for doing this, but you should prefer conventional transform installation via [`pirates`](https://www.npmjs.com/package/pirates).
+*WARNING:* You should be sure you  *actually* need this, as it takes control away from the user. Your transform remains the last one applied, even as users continue to add more transforms. This is potentially confusing. Coverage libraries like `nyc` (and `istanbul` on which it relies) have valid reasons for doing this, but you should prefer conventional transform installation via [`pirates`](https://www.npmjs.com/package/pirates).
 
-Reference: [Detailed Breakdown of How Require Extensions Work](https://gist.github.com/jamestalmage/df922691475cff66c7e6)
+References: 
+ - [Detailed Breakdown of How Require Extensions Work](https://gist.github.com/jamestalmage/df922691475cff66c7e6)
+ - The [test suite](https://github.com/jamestalmage/append-transform/blob/master/test/execution-order.js) provides a good overview of how this library manipulates the order in which transforms are applied.
 
 ## Install
 
