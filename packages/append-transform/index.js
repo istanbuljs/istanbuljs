@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = wrapExtension;
+module.exports = appendTransform;
 
-function wrapExtension(listener, ext, extensions) {
+function appendTransform(transform, ext, extensions) {
 	ext = ext || '.js';
 	extensions = extensions || require.extensions;
 
@@ -45,21 +45,18 @@ function wrapExtension(listener, ext, extensions) {
 
 			var originalCompile = module._compile;
 
-			var code;
-
-			module._compile = function replacementCompile(_code) {
-				code = _code;
+			module._compile = function replacementCompile(code) {
 				module._compile = originalCompile;
-				if (!wasEntry) {
-					module._compile(code, filename);
+				if (wasEntry) {
+					code = transform(code, filename);
 				}
+				module._compile(code, filename);
 			};
 
 			hook(module, filename);
 
 			if (wasEntry) {
 				isEntry = true;
-				listener(module, code, filename);
 			}
 		};
 	}

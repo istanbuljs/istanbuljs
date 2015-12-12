@@ -1,5 +1,5 @@
 import test from 'ava';
-import wrapExtension from '../';
+import appendTransform from '../';
 
 test('throws if getter but no setter', t => {
 	var extensions = {
@@ -9,7 +9,7 @@ test('throws if getter but no setter', t => {
 	};
 
 	t.throws(
-		() => wrapExtension(() => t.fail(), '.js', extensions),
+		() => appendTransform(() => t.fail(), '.js', extensions),
 		'Somebody did bad things to require.extensions[".js"]'
 	);
 });
@@ -22,7 +22,7 @@ test('throws if setter but no getter', t => {
 	};
 
 	t.throws(
-		() => wrapExtension(() => t.fail(), '.js', extensions),
+		() => appendTransform(() => t.fail(), '.js', extensions),
 		'Somebody did bad things to require.extensions[".js"]'
 	);
 });
@@ -36,7 +36,7 @@ test('throws if not configurable', t => {
 	});
 
 	t.throws(
-		() => wrapExtension(() => t.fail(), '.js', extensions),
+		() => appendTransform(() => t.fail(), '.js', extensions),
 		'Somebody did bad things to require.extensions[".js"]'
 	);
 });

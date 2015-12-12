@@ -1,6 +1,6 @@
 import test from 'ava';
 import MockSystem from './_mock-module-system';
-import wrapExtension from '../';
+import appendTransform from '../';
 import fs from 'fs';
 
 // Transform that just appends some text
@@ -14,7 +14,7 @@ test.beforeEach(t => t.context = new MockSystem({
 
 test('installs a transform', t => {
 	const system = t.context;
-	system.installWrappedTransform(append('a'));
+	system.appendTransform(append('a'));
 	const module = system.load('/foo.js');
 
 	t.is(module.code, 'foo a');
@@ -28,7 +28,7 @@ test('replacing an extension that just forwards through to `old` without calling
 		old(module, filename);
 	};
 
-	system.installWrappedTransform(append('a'));
+	system.appendTransform(append('a'));
 	system.installConventionalTransform(append('b'));
 	system.installConventionalTransform(append('c'));
 
@@ -40,7 +40,7 @@ test('replacing an extension that just forwards through to `old` without calling
 test('immediately replaced by an extension that just forwards through to `old` without calling compile', t => {
 	const system = t.context;
 
-	system.installWrappedTransform(append('a'));
+	system.appendTransform(append('a'));
 
 	const old = system.extensions['.js'];
 	system.extensions['.js'] = function (module, filename) {
@@ -57,7 +57,7 @@ test('immediately replaced by an extension that just forwards through to `old` w
 
 test('extension that just forwards through to `old` without calling compile the middle of a chain', t => {
 	const system = t.context;
-	system.installWrappedTransform(append('a'));
+	system.appendTransform(append('a'));
 	system.installConventionalTransform(append('b'));
 
 	const old = system.extensions['.js'];
@@ -85,7 +85,7 @@ test('can install other than `.js` extensions', t => {
 	};
 
 	system.installConventionalTransform(append('a'), '.coffee');
-	system.installWrappedTransform(append('b'), '.coffee');
+	system.appendTransform(append('b'), '.coffee');
 	system.installConventionalTransform(append('c'), '.coffee');
 
 	const module = system.load('/foo.coffee');
@@ -98,17 +98,15 @@ test('test actual require', t => {
 		module._compile(fs.readFileSync(filename, 'utf8'), filename);
 	};
 
-	wrapExtension((module, code, filename) => {
-		module._compile(code + ' + " bar"', filename);
-	}, '.foo');
+	appendTransform(code => code + ' + " bar"', '.foo');
 
 	t.is(require('./fixture/foo.foo'), 'foo bar');
 });
 
-test('accommodates reverting extension', t => {
+test('accommodates a future extension that adds, then reverts itself', t => {
 	const system = t.context;
 
-	system.installWrappedTransform(append('always-last'));
+	system.appendTransform(append('always-last'));
 	system.installConventionalTransform(append('b'));
 	const rollback = system.extensions['.js'];
 	system.installConventionalTransform(append('c'));

@@ -1,6 +1,6 @@
 'use strict';
 
-var wrapExtension = require('../');
+var appendTransform = require('../');
 var ModuleSystem = require('fake-module-system');
 
 ModuleSystem.prototype.installConventionalTransform = function (transformFn, ext) {
@@ -18,11 +18,8 @@ ModuleSystem.prototype.installConventionalTransform = function (transformFn, ext
 	};
 };
 
-ModuleSystem.prototype.installWrappedTransform = function (transformFn, ext) {
-	function wrapped(module, code, filename) {
-		module._compile(transformFn(code, filename), filename);
-	}
-	return wrapExtension(wrapped, ext, this.extensions);
+ModuleSystem.prototype.appendTransform = function (transform, ext) {
+	return appendTransform(transform, ext, this.extensions);
 };
 
 module.exports = ModuleSystem;
