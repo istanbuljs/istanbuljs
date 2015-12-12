@@ -16,7 +16,7 @@ The typical require extension looks something like this:
       module._compile(code, filename);
     };  
     oldExtension(module, filename);
-  }
+  };
 ```
 
 In *almost* all cases, that is sufficient and is the method that should be used ([`pirates`](https://www.npmjs.com/package/pirates) makes it much easier to do this correctly).

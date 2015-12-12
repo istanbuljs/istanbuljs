@@ -30,6 +30,7 @@
   ],
   "devDependencies": {
     "ava": "^0.7.0",
+    "coveralls": "^2.11.6",
     "fake-module-system": "^0.1.0",
     "nyc": "^4.0.1",
     "xo": "^0.11.2"
