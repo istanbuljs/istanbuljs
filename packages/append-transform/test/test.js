@@ -115,6 +115,7 @@ test('accommodates a future extension that adds, then reverts itself', t => {
 	t.is(module.code, 'foo b c always-last');
 
 	system.extensions['.js'] = rollback;
+	delete system.cache['/foo.js'];
 	let module2 = system.load('/foo.js');
 
 	t.is(module2.code, 'foo b always-last');
