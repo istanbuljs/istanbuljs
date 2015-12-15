@@ -120,3 +120,21 @@ test('accommodates a future extension that adds, then reverts itself', t => {
 
 	t.is(module2.code, 'foo b always-last');
 });
+
+test('handles nested requires', t => {
+	const system = new MockSystem({
+		'/foo.js': 'require("/bar.js");',
+		'/bar.js': 'require("/baz.js");',
+		'/baz.js': 'require("/foo.js");'
+	});
+
+	system.appendTransform(append('z'));
+	system.installConventionalTransform(append('a'));
+	system.appendTransform(append('x'));
+	system.installConventionalTransform(append('b'));
+
+	const foo = system.load('/foo.js');
+
+	t.is(foo.code, 'require("/bar.js"); a b x z');
+	t.is(foo.required['/bar.js'].code, 'require("/baz.js"); a b x z');
+});
