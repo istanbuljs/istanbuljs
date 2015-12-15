@@ -3,6 +3,7 @@
 module.exports = appendTransform;
 
 function appendTransform(transform, ext, extensions) {
+	var key = __filename + ':' + Math.random(); // eslint-disable-line
 	ext = ext || '.js';
 	extensions = extensions || require.extensions;
 
@@ -36,28 +37,24 @@ function appendTransform(transform, ext, extensions) {
 		};
 	}
 
-	var isEntry = true;
-
 	function wrapCustomHook(hook) {
 		return function (module, filename) {
-			var wasEntry = isEntry;
-			isEntry = false;
+			var isEntry = !module[key];
+			if (isEntry) {
+				module[key] = true;
+			}
 
 			var originalCompile = module._compile;
 
 			module._compile = function replacementCompile(code) {
 				module._compile = originalCompile;
-				if (wasEntry) {
+				if (isEntry) {
 					code = transform(code, filename);
 				}
 				module._compile(code, filename);
 			};
 
 			hook(module, filename);
-
-			if (wasEntry) {
-				isEntry = true;
-			}
 		};
 	}
 
