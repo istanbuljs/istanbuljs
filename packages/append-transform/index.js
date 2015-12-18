@@ -5,7 +5,7 @@ module.exports = appendTransform;
 var count = 0;
 
 function appendTransform(transform, ext, extensions) {
-	var key = __dirname + count;
+	var key = __dirname + count; // eslint-disable-line
 	count++;
 	ext = ext || '.js';
 	extensions = extensions || require.extensions;
