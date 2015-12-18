@@ -2,8 +2,11 @@
 
 module.exports = appendTransform;
 
+var count = 0;
+
 function appendTransform(transform, ext, extensions) {
-	var key = __filename + ':' + Math.random(); // eslint-disable-line
+	var key = __dirname + count;
+	count++;
 	ext = ext || '.js';
 	extensions = extensions || require.extensions;
 
@@ -39,20 +42,17 @@ function appendTransform(transform, ext, extensions) {
 
 	function wrapCustomHook(hook) {
 		return function (module, filename) {
-			var isEntry = !module[key];
-			if (isEntry) {
+			if (!module[key]) {
 				module[key] = true;
-			}
 
-			var originalCompile = module._compile;
+				var originalCompile = module._compile;
 
-			module._compile = function replacementCompile(code) {
-				module._compile = originalCompile;
-				if (isEntry) {
+				module._compile = function replacementCompile(code, filename) {
+					module._compile = originalCompile;
 					code = transform(code, filename);
-				}
-				module._compile(code, filename);
-			};
+					module._compile(code, filename);
+				};
+			}
 
 			hook(module, filename);
 		};
