@@ -5,6 +5,7 @@ module.exports = appendTransform;
 var count = 0;
 
 function appendTransform(transform, ext, extensions) {
+	// Generate a unique key for this transform
 	var key = __dirname + count; // eslint-disable-line
 	count++;
 	ext = ext || '.js';
@@ -23,6 +24,7 @@ function appendTransform(transform, ext, extensions) {
 	}
 
 	if (descriptor.get) {
+		// wrap a previous append-transform install and pass through to the getter/setter pair it created
 		forwardGet = function () {
 			return descriptor.get();
 		};
@@ -42,6 +44,7 @@ function appendTransform(transform, ext, extensions) {
 
 	function wrapCustomHook(hook) {
 		return function (module, filename) {
+			// We wrap every added extension, but we only apply the transform to the one on top of the stack
 			if (!module[key]) {
 				module[key] = true;
 
@@ -68,6 +71,7 @@ function appendTransform(transform, ext, extensions) {
 		if (restoreIndex === -1) {
 			hooks.push(forwardSet(wrapCustomHook(hook)));
 		} else {
+			// we have already scene this hook, and it is being reverted (proxyquire, etc) - don't wrap again.
 			hooks.splice(restoreIndex + 1, hooks.length);
 			forwardSet(hook);
 		}
