@@ -61,7 +61,7 @@ describe('run check-coverage', function () {
             var cfg = getConfig({ check: { global: { statements: 60 } } });
             checker.run(cfg, function (err) {
                 assert.ok(err);
-                assert.match(err.message, /ERROR: Coverage for statements \(.+?%\) does not meet global threshold \(60%\)/);
+                assert.match(err, /ERROR: Coverage for statements \(.+?%\) does not meet global threshold \(60%\)/);
                 cb();
             });
         });
@@ -70,7 +70,7 @@ describe('run check-coverage', function () {
             var cfg = getConfig({ check: { global: { branches: 80 } } });
             checker.run(cfg, function (err) {
                 assert.ok(err);
-                assert.match(err.message, /ERROR: Coverage for branches \(.+?%\) does not meet global threshold \(80%\)/);
+                assert.match(err, /ERROR: Coverage for branches \(.+?%\) does not meet global threshold \(80%\)/);
                 cb();
             });
         });
@@ -79,7 +79,7 @@ describe('run check-coverage', function () {
             var cfg = getConfig({ check: { global: { functions: 80 } } });
             checker.run(cfg, function (err) {
                 assert.ok(err);
-                assert.match(err.message, /ERROR: Coverage for functions \(.+?%\) does not meet global threshold \(80%\)/);
+                assert.match(err, /ERROR: Coverage for functions \(.+?%\) does not meet global threshold \(80%\)/);
                 cb();
             });
         });
@@ -88,7 +88,7 @@ describe('run check-coverage', function () {
             var cfg = getConfig({ check: { global: { lines: 80 } } });
             checker.run(cfg, function (err) {
                 assert.ok(err);
-                assert.match(err.message, /ERROR: Coverage for lines \(.+?%\) does not meet global threshold \(80%\)/);
+                assert.match(err, /ERROR: Coverage for lines \(.+?%\) does not meet global threshold \(80%\)/);
                 cb();
             });
         });
@@ -97,10 +97,10 @@ describe('run check-coverage', function () {
             var cfg = getConfig({ check: { global: { lines: 80, statements: 80, functions:80, branches: 80 } } });
             checker.run(cfg, function (err) {
                 assert.ok(err);
-                assert.match(err.message, /ERROR: Coverage for lines \(.+?%\) does not meet global threshold \(80%\)/);
-                assert.match(err.message, /ERROR: Coverage for functions \(.+?%\) does not meet global threshold \(80%\)/);
-                assert.match(err.message, /ERROR: Coverage for branches \(.+?%\) does not meet global threshold \(80%\)/);
-                assert.match(err.message, /ERROR: Coverage for statements \(.+?%\) does not meet global threshold \(80%\)/);
+                assert.match(err, /ERROR: Coverage for lines \(.+?%\) does not meet global threshold \(80%\)/);
+                assert.match(err, /ERROR: Coverage for functions \(.+?%\) does not meet global threshold \(80%\)/);
+                assert.match(err, /ERROR: Coverage for branches \(.+?%\) does not meet global threshold \(80%\)/);
+                assert.match(err, /ERROR: Coverage for statements \(.+?%\) does not meet global threshold \(80%\)/);
                 cb();
             });
         });
