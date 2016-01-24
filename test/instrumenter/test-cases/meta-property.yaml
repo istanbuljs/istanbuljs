@@ -1,0 +1,16 @@
+---
+name: meta properties
+code: |
+  "use strict";
+  class FooClass {
+     constructor() {
+         if (new.target === FooClass) {
+             throw new Error('Cannot instantiate directly.');
+         }
+     }
+  }
+opts:
+  generateOnly: true
+tests:
+  - name: does not throw
+    args: __notest__

@@ -11,7 +11,7 @@
     "xposttest": "node ./node_modules/istanbul/lib/cli.js check-coverage --statements 95 --branches 80"
   },
   "dependencies": {
-    "escodegen": "^1.7.0",
+    "escodegen": "^1.8.0",
     "esprima": "^2.7",
     "istanbul-lib-coverage": "^1.0.0-alpha"
   },

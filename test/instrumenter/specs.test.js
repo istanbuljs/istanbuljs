@@ -33,7 +33,9 @@ docs.forEach(function (doc) {
                         out = test.out;
                     delete test.args;
                     delete test.out;
-                    v.verify(args, out, test);
+                    if (args !== '__notest__') {
+                        v.verify(args, out, test);
+                    }
                 };
                 if (skip) {
                     it.skip(t.name || 'test', fn);

@@ -105,6 +105,7 @@ function create(code, opts) {
 
     var debug = extractTestOption(opts, 'debug', process.env.DEBUG),
         file = extractTestOption(opts, 'file', __filename),
+        generateOnly = extractTestOption(opts, 'generateOnly', false),
         coverageVariable = extractTestOption(opts, 'coverageVariable', '$$coverage$$'),
         instrumenter,
         instrumenterOutput,
@@ -126,15 +127,17 @@ function create(code, opts) {
             console.log('========================================================================');
         }
     } catch (ex) {
+        console.error(ex.stack);
         verror = new Error('Error instrumenting:\n' + annotatedCode(String(code)) + "\n" + ex.message);
     }
-    if (!verror) {
+    if (!(verror || generateOnly)) {
         wrapped = '{ var output;\n' + instrumenterOutput + '\nreturn output;\n}';
         g[coverageVariable] = undefined;
         try {
             /*jshint evil: true */
             fn = new Function('args',wrapped);
         } catch (ex) {
+            console.error(ex.stack);
             verror = new Error('Error compiling\n' + annotatedCode(code) + '\n' + ex.message);
         }
     }
