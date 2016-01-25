@@ -111,16 +111,9 @@ test('installs a transform for a completely new file extension (handler added af
 });
 
 test('installs a transform for a completely new file extension (handler never added)', t => {
-	const system = new MockSystem({
-		'/foo.es6': 'foo'
-	});
+	appendTransform(append(' + " baz"'), '.bar');
 
-	system.appendTransform(append('bar'), '.es6');
-
-	t.throws(
-		() => system.load('/foo.es6'),
-		/No require extension has been installed for \.es6 files/
-	);
+	t.is(require('./fixture/foo.bar'), 'foo bar baz');
 });
 
 test('test actual require', t => {
