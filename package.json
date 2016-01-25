@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "async": "1.x",
-    "clone": "^1.0.2",
     "fileset": "0.2.x",
     "istanbul-lib-coverage": "^1.0.0-alpha",
     "istanbul-lib-hook": "^1.0.0-alpha",
