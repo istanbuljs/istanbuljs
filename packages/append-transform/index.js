@@ -14,7 +14,7 @@ function appendTransform(transform, ext, extensions) {
 	var forwardGet;
 	var forwardSet;
 
-	var descriptor = Object.getOwnPropertyDescriptor(extensions, ext);
+	var descriptor = Object.getOwnPropertyDescriptor(extensions, ext) || {value: undefined, configurable: true};
 
 	if (
 		((descriptor.get || descriptor.set) && !(descriptor.get && descriptor.set)) ||
@@ -42,7 +42,14 @@ function appendTransform(transform, ext, extensions) {
 		};
 	}
 
+	function hookWasUndefined(module, filename) {
+		throw new Error('Can not load ' + filename + '. No require extension has been installed for ' + ext + ' files');
+	}
+
 	function wrapCustomHook(hook) {
+		if (hook === undefined) {
+			return hookWasUndefined;
+		}
 		return function (module, filename) {
 			// We wrap every added extension, but we only apply the transform to the one on top of the stack
 			if (!module[key]) {

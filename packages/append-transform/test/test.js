@@ -93,6 +93,36 @@ test('can install other than `.js` extensions', t => {
 	t.is(module.code, '/foo.coffee(foo) a c b');
 });
 
+test('installs a transform for a completely new file extension (handler added after)', t => {
+	const system = new MockSystem({
+		'/foo.es6': 'foo'
+	});
+
+	system.appendTransform(append('bar'), '.es6');
+
+	system.extensions['.es6'] = function (module, filename) {
+		let content = system.content[filename];
+		module._compile(content + ' es6', filename);
+	};
+
+	const module = system.load('/foo.es6');
+
+	t.is(module.code, 'foo es6 bar');
+});
+
+test('installs a transform for a completely new file extension (handler never added)', t => {
+	const system = new MockSystem({
+		'/foo.es6': 'foo'
+	});
+
+	system.appendTransform(append('bar'), '.es6');
+
+	t.throws(
+		() => system.load('/foo.es6'),
+		/No require extension has been installed for \.es6 files/
+	);
+});
+
 test('test actual require', t => {
 	require.extensions['.foo'] = function (module, filename) {
 		module._compile(fs.readFileSync(filename, 'utf8'), filename);
