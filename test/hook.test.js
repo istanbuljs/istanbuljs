@@ -19,17 +19,23 @@ var hook = require('../lib/hook'),
     },
     scriptTransformer = function () {
         return '(function () { return 42; }());';
+    },
+    disabler,
+    hookIt = function (m, t, o) {
+        if (disabler) {
+            disabler();
+        }
+        disabler = hook.hookRequire(m, t, o);
     };
 
 describe('hooks', function () {
     describe('require', function () {
         beforeEach(function () {
-            hook.hookRequire(matcher, transformer, {verbose: true});
+            hookIt(matcher, transformer, {verbose: true});
         });
 
         afterEach(function () {
             hook.unloadRequireCache(matcher);
-            hook.unhookRequire();
         });
 
         it('transforms foo', function () {
@@ -45,8 +51,8 @@ describe('hooks', function () {
         });
 
         it('should require original code when unhooked', function () {
-            hook.hookRequire(matcher, transformer, {verbose: true});
-            hook.unhookRequire();
+            hookIt(matcher, transformer, {verbose: true});
+            disabler();
             var foo = require('./data/foo');
             assert.ok(foo.foo);
             assert.equal(foo.foo(), 'foo');
@@ -60,23 +66,20 @@ describe('hooks', function () {
                     }
                 };
 
-            hook.unhookRequire();
-            hook.hookRequire(matcher, transformer, opts);
+            hookIt(matcher, transformer, opts);
             require('./data/foo');
             assert.ok(called.match(/foo\.js/));
         });
 
         it('unloads and reloads cache', function () {
-            hook.unhookRequire();
-            hook.hookRequire(matcher, transformer2);
+            hookIt(matcher, transformer2);
             var foo = require('./data/foo');
             assert.ok(foo.blah);
             assert.equal(foo.blah(), 'blah');
         });
 
         it('returns original code on bad transform', function () {
-            hook.unhookRequire();
-            hook.hookRequire(matcher, badTransformer);
+            hookIt(matcher, badTransformer);
             var foo = require('./data/foo');
             assert.ok(foo.foo);
             assert.equal(foo.foo(), 'foo');
@@ -84,14 +87,15 @@ describe('hooks', function () {
     });
     describe('passing extensions to require', function () {
         beforeEach(function () {
-            hook.hookRequire(matcher2, transformer2, {
+            require.extensions['.es6'] = require.extensions['.js'];
+            hookIt(matcher2, transformer2, {
                 verbose: true,
                 extensions: ['.es6']
             });
         });
         afterEach(function () {
             hook.unloadRequireCache(matcher2);
-            delete require('module')._extensions['.es6'];
+            delete require.extensions['.es6'];
         });
         it('transforms bar', function () {
             var bar = require('./data/bar');
@@ -104,8 +108,7 @@ describe('hooks', function () {
             assert.equal(foo.foo(), 'foo');
         });
         it('returns original code on bad transform', function () {
-            hook.unhookRequire();
-            hook.hookRequire(matcher2, badTransformer, {
+            hookIt(matcher2, badTransformer, {
                 verbose: true,
                 extensions: ['.es6']
             });

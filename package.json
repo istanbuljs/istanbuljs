@@ -10,6 +10,9 @@
     "test": "istanbul cover -x 'docs/**' --include-all-sources --print=both _mocha --  test/",
     "posttest": "istanbul check-coverage --statements 95 --branches 80"
   },
+  "dependencies": {
+    "append-transform": "^0.3.0"
+  },
   "devDependencies": {
     "chai": "^3.0.0",
     "coveralls": "^2.11.4",

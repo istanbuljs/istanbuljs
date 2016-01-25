@@ -6,7 +6,6 @@ var index = require('../index'),
 describe('external interface', function () {
     it('exports the correct interface', function () {
         assert.ok(index.hookRequire);
-        assert.ok(index.unhookRequire);
         assert.ok(index.hookRunInThisContext);
     });
 });
