@@ -1,6 +1,6 @@
 {
   "name": "append-transform",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Install a transform to `require.extensions` that always runs last, even if additional extensions are added later.",
   "license": "MIT",
   "repository": "jamestalmage/append-transform",
