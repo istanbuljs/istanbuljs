@@ -47,3 +47,21 @@ module.exports = {
     filesFor: require('./lib/file-matcher').filesFor
 };
 
+// export all the istanbul libraries as is so users don't have to take 5 deps
+// that are potentially inconsistent
+
+var DASH_PATTERN = /-([a-z])/g;
+
+function camelize(word) {
+    return word.replace(DASH_PATTERN, function (match, lch) {
+        return lch.toUpperCase();
+    });
+}
+
+[ 'coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(function (k) {
+        var mod = 'lib-' + k,
+            prop = camelize(mod);
+        module.exports[prop] = require('istanbul-' + mod);
+});
+
+module.exports.reportsImpl = require('istanbul-reports');

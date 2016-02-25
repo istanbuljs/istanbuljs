@@ -13,6 +13,12 @@ describe('index', function () {
         assert.isObject(index.instrument);
         assert.isObject(index.checkCoverage);
         assert.isObject(index.reports);
+        assert.isObject(index.libCoverage);
+        assert.isObject(index.libInstrument);
+        assert.isObject(index.libHook);
+        assert.isObject(index.libReport);
+        assert.isObject(index.libSourceMaps);
+        assert.isObject(index.reportsImpl);
         assert.doesNotThrow(function () {
             index.createReporter(index.config.loadObject({}));
         });
