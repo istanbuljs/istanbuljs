@@ -29,11 +29,11 @@
     "module"
   ],
   "devDependencies": {
-    "ava": "^0.7.0",
+    "ava": "^0.14.0",
     "coveralls": "^2.11.6",
     "fake-module-system": "^0.3.0",
-    "nyc": "^4.0.1",
-    "xo": "^0.11.2"
+    "nyc": "^6.2.1",
+    "xo": "^0.13.0"
   },
   "xo": {
     "ignores": [

@@ -8,9 +8,11 @@ function append(message) {
 	return code => code + ' ' + message;
 }
 
-test.beforeEach(t => t.context = new MockSystem({
-	'/foo.js': 'foo'
-}));
+test.beforeEach(t => {
+	t.context = new MockSystem({
+		'/foo.js': 'foo'
+	});
+});
 
 test('installs a transform', t => {
 	const system = t.context;

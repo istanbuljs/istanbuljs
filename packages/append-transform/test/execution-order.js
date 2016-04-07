@@ -6,9 +6,11 @@ function append(message) {
 	return code => code + ' ' + message;
 }
 
-test.beforeEach(t => t.context = new MockSystem({
-	'/foo.js': 'foo'
-}));
+test.beforeEach(t => {
+	t.context = new MockSystem({
+		'/foo.js': 'foo'
+	});
+});
 
 test('conventional transforms are applied in the order installed', t => {
 	const system = t.context;
