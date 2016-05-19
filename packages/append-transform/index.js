@@ -1,5 +1,4 @@
 'use strict';
-
 var js = require('default-require-extensions/js');
 
 module.exports = appendTransform;
@@ -70,6 +69,7 @@ function appendTransform(transform, ext, extensions) {
 
 	function setCurrentHook(hook) {
 		var restoreIndex = hooks.indexOf(hook);
+
 		if (restoreIndex === -1) {
 			hooks.push(forwardSet(wrapCustomHook(hook)));
 		} else {

@@ -27,7 +27,7 @@ require.extensions[ext] = function (m, filename) {
 }
 ```
 
-## Coffee Script
+## CoffeeScript
 
 .coffee / .litcoffee / .coffee.md
 
@@ -53,8 +53,9 @@ js = function (module, filename) {
 .json:
 
 ```js
-json =function (module, filename) {
+json = function (module, filename) {
   var content = fs.readFileSync(filename, 'utf8');
+
   try {
     module.exports = JSON.parse(internalModule.stripBOM(content));
   } catch (err) {
@@ -64,7 +65,8 @@ json =function (module, filename) {
 }
 ```
 
-.node: 
+.node:
+
 ```js
 node = function (module, filename) {
   return process.dlopen(module, path._makeLong(filename));

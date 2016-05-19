@@ -1,7 +1,7 @@
-import test from 'ava';
-import MockSystem from './_mock-module-system';
-import appendTransform from '../';
 import fs from 'fs';
+import test from 'ava';
+import appendTransform from '../';
+import MockSystem from './_mock-module-system';
 
 // Transform that just appends some text
 function append(message) {
