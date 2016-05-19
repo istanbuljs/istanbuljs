@@ -1,4 +1,4 @@
-# append-transform [![Build Status](https://travis-ci.org/jamestalmage/append-transform.svg?branch=master)](https://travis-ci.org/jamestalmage/append-transform) [![Coverage Status](https://coveralls.io/repos/jamestalmage/append-transform/badge.svg?branch=master&service=github)](https://coveralls.io/github/jamestalmage/append-transform?branch=master)
+# append-transform [![Build Status](https://travis-ci.org/avajs/append-transform.svg?branch=master)](https://travis-ci.org/avajs/append-transform) [![Coverage Status](https://coveralls.io/repos/avajs/append-transform/badge.svg?branch=master&service=github)](https://coveralls.io/github/avajs/append-transform?branch=master)
 
 > Install a transform to `require.extensions` that always runs last, even if additional extensions are added later.
 
@@ -25,7 +25,7 @@ In **almost** all cases, that is sufficient and is the method that should be use
 
 References: 
  - [Detailed Breakdown of How Require Extensions Work](https://gist.github.com/jamestalmage/df922691475cff66c7e6)
- - The [test suite](https://github.com/jamestalmage/append-transform/blob/master/test/execution-order.js) provides a good overview of how this library manipulates the order in which transforms are applied.
+ - The [test suite](https://github.com/avajs/append-transform/blob/master/test/execution-order.js) provides a good overview of how this library manipulates the order in which transforms are applied.
 
 ## Install
 
