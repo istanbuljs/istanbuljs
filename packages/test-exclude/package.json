@@ -1,0 +1,43 @@
+{
+  "name": "test-exclude",
+  "version": "1.0.0",
+  "description": "test for inclusion or exclusion of paths using pkg-conf and globs",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "standard",
+    "test": "nyc mocha test.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcoe/test-exclude.git"
+  },
+  "keywords": [
+    "exclude",
+    "include",
+    "glob",
+    "package",
+    "config"
+  ],
+  "author": "Ben Coe <ben@npmjs.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcoe/test-exclude/issues"
+  },
+  "homepage": "https://github.com/bcoe/test-exclude#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.9",
+    "mocha": "^2.5.3",
+    "nyc": "^6.4.4",
+    "standard": "^7.1.2",
+    "standard-version": "^2.3.0"
+  },
+  "dependencies": {
+    "arrify": "^1.0.1",
+    "lodash.assign": "^4.0.9",
+    "micromatch": "^2.3.8",
+    "pkg-conf": "^1.1.3"
+  }
+}
