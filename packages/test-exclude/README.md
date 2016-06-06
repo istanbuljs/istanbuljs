@@ -15,6 +15,28 @@ if (exclude().shouldInstrument('./foo.js')) {
 }
 ```
 
+_you can load configuration from a key in package.json:_
+
+_package.json_
+
+```json
+{
+  "name": "awesome-module",
+  "test": {
+    "include": ["**/index.js"]
+  }
+}
+```
+
+_app.js_
+
+```js
+const exclude = require('test-exclude')
+if (exclude({configKey: 'test'}).shouldInstrument('./index.js')) {
+  // let's instrument this file for test coverage!
+}
+```
+
 ## License
 
 ISC
