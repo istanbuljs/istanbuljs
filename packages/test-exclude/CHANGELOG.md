@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/bcoe/test-exclude/compare/v1.0.0...v1.1.0) (2016-06-08)
+
+
+### Features
+
+* set configFound if we find a configuration key in package.json ([#2](https://github.com/bcoe/test-exclude/issues/2)) ([64da7b9](https://github.com/bcoe/test-exclude/commit/64da7b9))
+
+
+
 <a name="1.0.0"></a>
 # 1.0.0 (2016-06-06)
 
