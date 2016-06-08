@@ -10,11 +10,12 @@ function TestExclude (opts) {
     cwd: process.cwd(),
     include: false,
     configKey: null, // the key to load config from in package.json.
-    configPath: null // optionally override requireMainFilename.
+    configPath: null, // optionally override requireMainFilename.
+    configFound: false
   }, opts)
 
   if (!this.include && !this.exclude && this.configKey) {
-    assign(this, pkgConf(this.configKey, this.configPath))
+    assign(this, this.pkgConf(this.configKey, this.configPath))
   }
 
   if (!this.exclude || (Array.isArray(this.exclude) && !this.exclude.length)) {
@@ -47,12 +48,13 @@ TestExclude.prototype.shouldInstrument = function (filename, relFile) {
   return (!this.include || micromatch.any(relFile, this.include)) && !micromatch.any(relFile, this.exclude)
 }
 
-function pkgConf (key, path) {
+TestExclude.prototype.pkgConf = function (key, path) {
   const obj = readPkgUp.sync({
     cwd: path || requireMainFilename(require)
   })
 
   if (obj.pkg && obj.pkg[key] && typeof obj.pkg[key] === 'object') {
+    this.configFound = true
     return obj.pkg[key]
   } else {
     return {}

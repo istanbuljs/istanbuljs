@@ -36,6 +36,7 @@ describe('testExclude', function () {
 
       e.shouldInstrument('foo.js').should.equal(true)
       e.shouldInstrument('batman.js').should.equal(false)
+      e.configFound.should.equal(true)
     })
 
     it('should load include rules from config key', function () {
@@ -46,13 +47,15 @@ describe('testExclude', function () {
 
       e.shouldInstrument('foo.js').should.equal(false)
       e.shouldInstrument('batman.js').should.equal(true)
+      e.configFound.should.equal(true)
     })
 
     it('should not throw if a key is missing', function () {
-      exclude({
+      var e = exclude({
         configPath: './test/fixtures/include',
         configKey: 'c'
       })
+      e.configFound.should.equal(false)
     })
   })
 })
