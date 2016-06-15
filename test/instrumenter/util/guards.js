@@ -1,18 +1,24 @@
 var esprima = require('esprima');
 
-function tryThis(str /*, feature */) {
-    try {
-        /*jshint evil: true */
-        eval(str);
-    } catch (ex) {
-        //console.error('ES6 feature [' + feature + '] is not available in this environment');
-        return false;
+function tryThis(str, feature, generateOnly) {
+    if (!generateOnly) {
+        try {
+            /*jshint evil: true */
+            eval(str);
+        } catch (ex) {
+            console.error('ES6 feature [' + feature + '] is not available in this environment');
+            return false;
+        }
     }
 
     try {
-        esprima.parse(str);
+        try {
+            esprima.parse(str);
+        } catch (ex) {
+            esprima.parse(str, { sourceType: 'module' });
+        }
     } catch (ex) {
-        //console.error('ES6 feature [' + feature + '] is not yet supported by esprima mainline');
+        console.error('ES6 feature [' + feature + '] is not yet supported by esprima mainline');
         return false;
     }
 
@@ -46,9 +52,9 @@ module.exports = {
         }
     },
     isImportAvailable: function () {
-        return tryThis('import fs from "fs"', 'import');
+        return tryThis('import fs from "fs"', 'import', true);
     },
     isExportAvailable: function () {
-        return tryThis('export default function foo() {}', 'export');
+        return tryThis('export default function foo() {}', 'export', true);
     }
 };

@@ -102,7 +102,6 @@ function extractTestOption(opts, name, defaultValue) {
 function create(code, opts) {
 
     opts = opts || {};
-
     var debug = extractTestOption(opts, 'debug', process.env.DEBUG),
         file = extractTestOption(opts, 'file', __filename),
         generateOnly = extractTestOption(opts, 'generateOnly', false),

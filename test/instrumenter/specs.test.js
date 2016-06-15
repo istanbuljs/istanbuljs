@@ -27,13 +27,14 @@ docs.forEach(function (doc) {
         else {
             (doc.tests || []).forEach(function (t) {
                 var fn =  function () {
-                    var v = verifier.create(doc.code, doc.opts || {}),
+                    var genOnly = (doc.opts || {}).generateOnly,
+                        v = verifier.create(doc.code, doc.opts || {}),
                         test = clone(t),
                         args = test.args,
                         out = test.out;
                     delete test.args;
                     delete test.out;
-                    if (args !== '__notest__') {
+                    if (!genOnly) {
                         v.verify(args, out, test);
                     }
                 };

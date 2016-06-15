@@ -2,17 +2,14 @@
 name: covers export statements
 guard: isExportAvailable
 code: |
-  export function bar() { return 2; }
-  output = 10
+  export var a =2, b=3;
+  output = a + b;
 opts:
   esModules: true
+  noAutoWrap: true
+  generateOnly: true
 tests:
   - name: export
-    args: []
-    out: 10
-    lines: {'1': 1, '2': 1}
-    functions: {'1': 1 }
-    statements: {'1': 1, '2': 1, '3': 1 }
 
 ---
 name: covers import statements
@@ -23,12 +20,7 @@ code: |
 opts:
   esModules: true
   noAutoWrap: true
+  generateOnly: true
 tests:
   - name: import
-    args: [ "foo:%s", "bar"]
-    out: foo:bar
-    lines: {'1': 1, '2': 1}
-    functions: {'1': 1 }
-    statements: {'1': 1, '2': 1, '3': 1 }
-
 
