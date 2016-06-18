@@ -1,24 +1,24 @@
 /* globals describe, it */
 
-var verifier = require('./util/verifier'),
-    assert = require('chai').assert;
+import * as verifier from './util/verifier';
+import {assert} from 'chai';
 
 describe('negative tests', function () {
     it('should barf on junk code', function () {
-        var v = verifier.create('output = args[0] : 1 : 2;');
+        var v = verifier.create('output = args[0] : 1 : 2;', {quiet: true});
         assert.ok(v.err);
         assert.ok(v.err.message.match(/Unexpected token/));
     });
 
     it('should barf on non-string code', function () {
-        var v = verifier.create({});
+        var v = verifier.create({}, {quiet: true});
         assert.ok(v.err);
-        assert.ok(v.err.message.match(/must be string/));
+        assert.ok(v.err.message.match(/must be a string/));
     });
 
     it('should barf on mainline returns with no auto-wrap', function () {
-        var v = verifier.create('return 10;');
+        var v = verifier.create('return 10;', {quiet: true});
         assert.ok(v.err);
-        assert.ok(v.err.message.match(/Illegal return/));
+        assert.ok(v.err.message.match(/'return' outside/));
     });
 });

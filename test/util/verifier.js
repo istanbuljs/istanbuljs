@@ -1,8 +1,9 @@
-/*jslint nomen: true */
-var Instrumenter = require('../../../lib/instrumenter'),
-    FileCoverage = require('istanbul-lib-coverage').classes.FileCoverage,
-    assert = require('chai').assert,
-    clone = require('clone');
+import Instrumenter from '../../src/instrumenter';
+import {classes} from 'istanbul-lib-coverage';
+import {assert} from 'chai';
+import clone from 'clone';
+
+var FileCoverage = classes.FileCoverage;
 
 function pad(str, len) {
     var blanks = '                                             ';
@@ -15,15 +16,11 @@ function pad(str, len) {
 function annotatedCode(code) {
     var codeArray = code.split('\n'),
         line = 0,
-        annotated = codeArray.map(function (str) { line += 1; return pad(line, 6) + ': ' + str; });
+        annotated = codeArray.map(function (str) {
+            line += 1;
+            return pad(line, 6) + ': ' + str;
+        });
     return annotated.join('\n');
-}
-
-function Verifier(opts) {
-    var that = this;
-    Object.keys(opts).forEach(function (k) {
-       that[k] = opts[k];
-    });
 }
 
 function getGlobalObject() {
@@ -31,36 +28,16 @@ function getGlobalObject() {
     return (new Function('return this'))();
 }
 
-Verifier.prototype = {
 
-    extractSimpleSkips: function (mapObj) {
-        var ret = {};
-        Object.keys(mapObj).forEach(function (k) {
-            var val = mapObj[k];
-            if (val.skip) {
-                ret[k] = true;
-            }
+class Verifier {
+    constructor(opts) {
+        var that = this;
+        Object.keys(opts || {}).forEach(function (k) {
+            that[k] = opts[k];
         });
-        return ret;
-    },
+    }
 
-    extractBranchSkips: function (branchMap) {
-        var ret = {};
-        Object.keys(branchMap).forEach(function (k) {
-            var locs = branchMap[k].locations,
-                anySkip = false,
-                skips = locs.map(function (l) {
-                    anySkip = anySkip || l.skip;
-                    return l.skip || false;
-                });
-            if (anySkip) {
-                ret[k] = skips;
-            }
-        });
-        return ret;
-    },
-
-    verify: function (args, expectedOutput, expectedCoverage) {
+    verify(args, expectedOutput, expectedCoverage) {
 
         assert.ok(!this.err, (this.err || {}).message);
 
@@ -74,21 +51,21 @@ Verifier.prototype = {
         assert.deepEqual(cov.f, expectedCoverage.functions || {}, 'Function coverage mismatch');
         assert.deepEqual(cov.b, expectedCoverage.branches || {}, 'Branch coverage mismatch');
         assert.deepEqual(cov.s, expectedCoverage.statements || {}, 'Statement coverage mismatch');
-    },
+    }
 
-    getCoverage: function () {
+    getCoverage() {
         return getGlobalObject()[this.coverageVariable];
-    },
+    }
 
-    getFileCoverage: function () {
+    getFileCoverage() {
         var cov = this.getCoverage();
         return new FileCoverage(cov[Object.keys(cov)[0]]);
-    },
+    }
 
-    getGeneratedCode: function () {
+    getGeneratedCode() {
         return this.generatedCode;
     }
-};
+}
 
 function extractTestOption(opts, name, defaultValue) {
     var v = defaultValue;
@@ -105,7 +82,8 @@ function create(code, opts) {
     var debug = extractTestOption(opts, 'debug', process.env.DEBUG),
         file = extractTestOption(opts, 'file', __filename),
         generateOnly = extractTestOption(opts, 'generateOnly', false),
-        coverageVariable = extractTestOption(opts, 'coverageVariable', '$$coverage$$'),
+        coverageVariable = extractTestOption(opts, 'coverageVariable', '__coverage__'),
+        quiet = extractTestOption(opts, 'quiet', false),
         instrumenter,
         instrumenterOutput,
         wrapped,
@@ -126,7 +104,9 @@ function create(code, opts) {
             console.log('========================================================================');
         }
     } catch (ex) {
-        console.error(ex.stack);
+        if (!quiet) {
+            console.error(ex.stack);
+        }
         verror = new Error('Error instrumenting:\n' + annotatedCode(String(code)) + "\n" + ex.message);
     }
     if (!(verror || generateOnly)) {
@@ -134,7 +114,7 @@ function create(code, opts) {
         g[coverageVariable] = undefined;
         try {
             /*jshint evil: true */
-            fn = new Function('args',wrapped);
+            fn = new Function('args', wrapped);
         } catch (ex) {
             console.error(ex.stack);
             verror = new Error('Error compiling\n' + annotatedCode(code) + '\n' + ex.message);
@@ -152,9 +132,4 @@ function create(code, opts) {
     });
 }
 
-module.exports = {
-    create: create
-};
-
-
-
+export {create};
