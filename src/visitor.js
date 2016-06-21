@@ -2,6 +2,8 @@ import {SourceCoverage} from './source-coverage';
 import {createHash} from 'crypto';
 import template from 'babel-template';
 
+// function to use for creating hashes
+const SHA = 'sha1';
 // istanbul ignore comment pattern
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
 // source map URL pattern
@@ -9,7 +11,7 @@ const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
 
 // generate a variable name from hashing the supplied file path
 function genVar(filename) {
-    var hash = createHash('sha1'),
+    var hash = createHash(SHA),
         suffix;
     hash.update(filename);
     suffix = hash.digest('base64');
@@ -392,7 +394,7 @@ const codeVisitor = {
     ConditionalExpression: entries(coverTernary),
     LogicalExpression: entries(coverLogicalExpression)
 };
-
+// the template to insert at the top of the program.
 const coverageTemplate = template(`
     COVERAGE_VAR = (function () {
         var path = PATH, 
@@ -408,10 +410,11 @@ const coverageTemplate = template(`
         return coverage[path] = coverageData;
     })();
 `);
-
 /**
- * programVisitor returns an object with two methods `enter` and `exit` both of
- * which can be assigned to or called from `Program` entry and exit functions.
+ * programVisitor is a `babel` adaptor for instrumentation.
+ * It returns an object with two methods `enter` and `exit`.
+ * These should be assigned to or called from `Program` entry and exit functions
+ * in a babel visitor.
  * These functions do not make assumptions about the state set by Babel and thus
  * can be used in a context other than a Babel plugin.
  *
@@ -420,9 +423,10 @@ const coverageTemplate = template(`
  * `fileCoverage` - the file coverage object created for the source file.
  * `sourceMappingURL` - any source mapping URL found when processing the file.
  *
- * @param types - an instance of babel-types
- * @param sourceFilePath - the path to source file
- * @param opts - additional options
+ * @param {Object} types - an instance of babel-types
+ * @param {string} sourceFilePath - the path to source file
+ * @param {Object} opts - additional options
+ * @param {string} [opts.coverageVariable=__coverage__] the global coverage variable name.
  */
 function programVisitor(types, sourceFilePath = 'unknown.js', opts = { coverageVariable: '__coverage__'}) {
     const T = types;
@@ -434,7 +438,7 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = { coverageV
         exit(path) {
             visitState.cov.freeze();
             const coverageData = visitState.cov.toJSON();
-            const hash = createHash('md5').update(JSON.stringify(coverageData)).digest('hex');
+            const hash = createHash(SHA).update(JSON.stringify(coverageData)).digest('hex');
             const coverageNode = T.valueToNode(coverageData);
             const cv = coverageTemplate({
                 GLOBAL_COVERAGE_VAR: T.stringLiteral(opts.coverageVariable),

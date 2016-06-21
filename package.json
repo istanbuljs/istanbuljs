@@ -5,7 +5,7 @@
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "dist/index.js",
   "scripts": {
-    "release": "babel src --out-dir dist",
+    "release": "babel src --out-dir dist && documentation build -f md -o api.md src/*js",
     "v10-test": "mocha --compilers js:babel-core/register --recursive test/",
     "fast": "mocha --harmony --compilers js:babel-core/register --recursive test/",
     "pretest": "jshint src/ test/",
@@ -27,6 +27,7 @@
     "chai": "^3.0.0",
     "clone": "^1.0.2",
     "coveralls": "^2.11.4",
+    "documentation": "^4.0.0-beta5",
     "istanbul": "^0.4",
     "js-yaml": "^3.3.1",
     "jshint": "^2.8.0",

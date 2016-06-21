@@ -17,6 +17,7 @@ function cloneLocation(loc) {
  * a file coverage object. Used by the instrumenter to create a full coverage
  * object for a file incrementally.
  *
+ * @private
  * @param pathOrObj {String|Object} - see the argument for {@link FileCoverage}
  * @extends FileCoverage
  * @constructor
