@@ -6,7 +6,7 @@ import {assert} from 'chai';
 
 describe('varia', function () {
     it('debug/ walkDebug should not cause errors', function () {
-        var v = verifier.create('output = args[0];', { debug: true, walkDebug: true});
+        var v = verifier.create('output = args[0];', {}, { debug: true});
         assert.ok(!v.err);
         v.verify(['X'], 'X',{
             lines: { 1: 1 },
@@ -33,15 +33,6 @@ describe('varia', function () {
         });
         cov = v.getCoverage();
         assert.equal(Object.keys(cov)[0],'c:\\x\\y.js');
-    });
-
-    it('works with noAutoWrap for legal code', function () {
-        var v = verifier.create('output = args[0];', { noAutoWrap: true });
-        assert.ok(!v.err);
-        v.verify(['X'], 'X',{
-            lines: { 1: 1 },
-            statements: { 1: 1}
-        });
     });
 
     it('preserves comments when requested', function () {

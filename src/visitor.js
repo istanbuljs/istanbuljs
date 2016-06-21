@@ -33,11 +33,13 @@ class VisitState {
         this.types = types;
         this.sourceMappingURL = null;
     }
+
     // should we ignore the node? Yes, if specifically ignoring
     // or if the node is generated.
     shouldIgnore(path) {
         return this.nextIgnore || !path.node.loc;
     }
+
     // extract the ignore comment hint (next|if|else) or null
     hintFor(node) {
         let hint = null;
@@ -52,6 +54,7 @@ class VisitState {
         }
         return hint;
     }
+
     // extract a source map URL from comments and keep track of it
     maybeAssignSourceMapURL(node) {
         const that = this;
@@ -70,6 +73,7 @@ class VisitState {
         extractURL(node.leadingComments);
         extractURL(node.trailingComments);
     }
+
     // all the generic stuff that needs to be done on enter for every node
     onEnter(path) {
         const n = path.node;
@@ -91,6 +95,7 @@ class VisitState {
             this.nextIgnore = n;
         }
     }
+
     // all the generic stuff on exit of a node,
     // including reseting ignores and custom node attrs
     onExit(path) {
@@ -101,11 +106,13 @@ class VisitState {
         // nuke all attributes for the node
         delete(path.node.__cov__);
     }
+
     // set a node attribute for the supplied node
     setAttr(node, name, value) {
         node.__cov__ = node.__cov__ || {};
         node.__cov__[name] = value;
     }
+
     // retrieve a node attribute for the supplied node or null
     getAttr(node, name) {
         const c = node.__cov__;
@@ -114,6 +121,7 @@ class VisitState {
         }
         return c[name];
     }
+
     //
     increase(type, id, index) {
         const T = this.types;
@@ -241,7 +249,9 @@ function coverStatement(path) {
 }
 
 function coverAssignmentPattern(path) {
-    this.insertStatementCounter(path.get('right'));
+    const n = path.node;
+    const b = this.cov.newBranch('default-arg', n);
+    this.insertBranchCounter(path.get('right'), b);
 }
 
 function coverFunction(path) {
@@ -428,7 +438,7 @@ const coverageTemplate = template(`
  * @param {Object} opts - additional options
  * @param {string} [opts.coverageVariable=__coverage__] the global coverage variable name.
  */
-function programVisitor(types, sourceFilePath = 'unknown.js', opts = { coverageVariable: '__coverage__'}) {
+function programVisitor(types, sourceFilePath = 'unknown.js', opts = {coverageVariable: '__coverage__'}) {
     const T = types;
     const visitState = new VisitState(types, sourceFilePath);
     return {

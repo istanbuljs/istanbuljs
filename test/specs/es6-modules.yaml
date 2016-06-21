@@ -4,9 +4,9 @@ guard: isExportAvailable
 code: |
   export var a =2, b=3;
   output = a + b;
-opts:
+instrumentOpts:
   esModules: true
-  noAutoWrap: true
+opts:
   generateOnly: true
 tests:
   - name: export
@@ -17,9 +17,9 @@ guard: isImportAvailable
 code: |
   import util from "util";
   output = util.format(args[0], args[1]);
-opts:
+instrumentOpts:
   esModules: true
-  noAutoWrap: true
+opts:
   generateOnly: true
 tests:
   - name: import

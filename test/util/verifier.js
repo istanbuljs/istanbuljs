@@ -30,22 +30,18 @@ function getGlobalObject() {
 
 
 class Verifier {
-    constructor(opts) {
-        var that = this;
-        Object.keys(opts || {}).forEach(function (k) {
-            that[k] = opts[k];
-        });
+    constructor(result) {
+        this.result = result;
     }
 
     verify(args, expectedOutput, expectedCoverage) {
 
-        assert.ok(!this.err, (this.err || {}).message);
-
-        getGlobalObject()[this.coverageVariable] = clone(this.baseline);
-        var actualOutput = this.fn(args),
+        assert.ok(!this.result.err, (this.result.err || {}).message);
+        getGlobalObject()[this.result.coverageVariable] = clone(this.result.baseline);
+        var actualOutput = this.result.fn(args),
             cov = this.getFileCoverage();
 
-        assert.ok(cov && typeof cov === 'object', 'No coverage found for [' + this.file + ']');
+        assert.ok(cov && typeof cov === 'object', 'No coverage found for [' + this.result.file + ']');
         assert.deepEqual(actualOutput, expectedOutput, 'Output mismatch');
         assert.deepEqual(cov.getLineCoverage(), expectedCoverage.lines || {}, 'Line coverage mismatch');
         assert.deepEqual(cov.f, expectedCoverage.functions || {}, 'Function coverage mismatch');
@@ -54,7 +50,7 @@ class Verifier {
     }
 
     getCoverage() {
-        return getGlobalObject()[this.coverageVariable];
+        return getGlobalObject()[this.result.coverageVariable];
     }
 
     getFileCoverage() {
@@ -63,7 +59,11 @@ class Verifier {
     }
 
     getGeneratedCode() {
-        return this.generatedCode;
+        return this.result.generatedCode;
+    }
+
+    compileError() {
+        return this.result.err;
     }
 }
 
@@ -71,29 +71,31 @@ function extractTestOption(opts, name, defaultValue) {
     var v = defaultValue;
     if (opts.hasOwnProperty(name)) {
         v = opts[name];
-        delete opts[name];
     }
     return v;
 }
 
-function create(code, opts) {
+function create(code, opts, instrumenterOpts) {
 
     opts = opts || {};
-    var debug = extractTestOption(opts, 'debug', process.env.DEBUG),
+    instrumenterOpts = instrumenterOpts || {};
+
+    var debug = extractTestOption(opts, 'debug', process.env.DEBUG==="1"),
         file = extractTestOption(opts, 'file', __filename),
         generateOnly = extractTestOption(opts, 'generateOnly', false),
-        coverageVariable = extractTestOption(opts, 'coverageVariable', '__coverage__'),
         quiet = extractTestOption(opts, 'quiet', false),
+        coverageVariable = instrumenterOpts.coverageVariable || '__coverage__',
+        g = getGlobalObject(),
         instrumenter,
         instrumenterOutput,
         wrapped,
         fn,
-        g = getGlobalObject(),
         verror;
 
-    opts.debug = debug;
-    opts.coverageVariable = coverageVariable;
-    instrumenter = new Instrumenter(opts);
+    if (debug) {
+        instrumenterOpts.compact = false;
+    }
+    instrumenter = new Instrumenter(instrumenterOpts);
     try {
         instrumenterOutput = instrumenter.instrumentSync(code, file);
         if (debug) {
@@ -119,6 +121,9 @@ function create(code, opts) {
             console.error(ex.stack);
             verror = new Error('Error compiling\n' + annotatedCode(code) + '\n' + ex.message);
         }
+    }
+    if (generateOnly) {
+        assert.ok(!verror);
     }
     return new Verifier({
         err: verror,

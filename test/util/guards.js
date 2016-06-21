@@ -45,3 +45,7 @@ export function isImportAvailable() {
 export function isExportAvailable() {
     return tryThis('export default function foo() {}', 'export', true);
 }
+
+export function isDefaultArgsAvailable() {
+    return tryThis('function (a=1) { return a + 1; }', 'default args');
+}
