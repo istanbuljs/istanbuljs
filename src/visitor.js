@@ -208,7 +208,7 @@ class VisitState {
 // such that:
 //
 // * standard entry processing is done
-// * the supplied visitors will only be called when ignore is not in effect
+// * the supplied visitors are called only when ignore is not in effect
 //   This relieves them from worrying about ignore states and generated nodes.
 // * standard exit processing is done
 //

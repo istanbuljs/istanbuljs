@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "release": "babel src --out-dir dist",
+    "v10-test": "mocha --compilers js:babel-core/register --recursive test/",
     "fast": "mocha --harmony --compilers js:babel-core/register --recursive test/",
     "pretest": "jshint src/ test/",
     "test": "mocha --harmony --compilers js:babel-core/register --recursive test/",
@@ -13,10 +14,10 @@
   },
   "dependencies": {
     "babel-generator": "^6.10.2",
+    "babel-template": "^6.9.0",
     "babel-traverse": "^6.9.0",
     "babel-types": "^6.10.2",
     "babylon": "^6.8.1",
-    "babel-template": "^6.9.0",
     "istanbul-lib-coverage": "^1.0.0-alpha.4"
   },
   "devDependencies": {
@@ -27,7 +28,6 @@
     "clone": "^1.0.2",
     "coveralls": "^2.11.4",
     "istanbul": "^0.4",
-    "istanbul-lib-coverage": "^1.0.0-alpha",
     "js-yaml": "^3.3.1",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5",
