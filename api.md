@@ -84,5 +84,5 @@ The exit function returns an object that currently has the following keys:
 
 -   `types` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** an instance of babel-types
 -   `sourceFilePath` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)](default 'unknown.js')** the path to source file
--   `opts` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default { coverageVariable: '\_\_coverage\_\_'})** additional options
+-   `opts` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {coverageVariable: '\_\_coverage\_\_'})** additional options
     -   `opts.coverageVariable` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** the global coverage variable name. (optional, default `__coverage__`)

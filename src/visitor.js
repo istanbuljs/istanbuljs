@@ -406,7 +406,7 @@ const codeVisitor = {
 };
 // the template to insert at the top of the program.
 const coverageTemplate = template(`
-    COVERAGE_VAR = (function () {
+    var COVERAGE_VAR = (function () {
         var path = PATH, 
             hash = HASH,
             global = (new Function('return this'))(),
