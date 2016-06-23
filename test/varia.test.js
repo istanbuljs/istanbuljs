@@ -63,7 +63,7 @@ describe('varia', function () {
         });
     });
 
-    it.skip('creates a source-map when requested', function () {
+    it('creates a source-map when requested', function () {
         var opts = {
                 produceSourceMap: true
             },

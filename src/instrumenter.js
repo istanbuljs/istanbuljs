@@ -92,9 +92,11 @@ class Instrumenter {
             }
         };
         traverse(ast, visitor);
+
         const generateOptions = {
             compact: opts.compact,
-            sourceMaps: opts.produceSourceMap
+            sourceMaps: opts.produceSourceMap,
+            sourceFileName: filename
         };
         const codeMap = generate(ast, generateOptions, code);
         this.fileCoverage = output.fileCoverage;
