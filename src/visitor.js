@@ -170,9 +170,27 @@ class VisitState {
         if (!(path.node && path.node.loc)) {
             return;
         }
-        // XXX: declaration location, fix!
+        const n = path.node;
+        let dloc = null;
+        // get location for declaration
+        switch (n.type) {
+            case "FunctionDeclaration":
+                dloc = n.id.loc;
+                break;
+            case "FunctionExpression":
+                if (n.id) {
+                    dloc = n.id.loc;
+                }
+                break;
+        }
+        if (!dloc) {
+            dloc = {
+                start: n.loc.start,
+                end: n.loc.start
+            };
+        }
         const name = path.node.id ? path.node.id.name : path.node.name;
-        const index = this.cov.newFunction(name, path.node.loc, path.node.body.loc);
+        const index = this.cov.newFunction(name, dloc, path.node.body.loc);
         const increment = this.increase('f', index, null);
         const body = path.get('body');
         /* istanbul ignore else: not expected */
