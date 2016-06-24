@@ -17,7 +17,8 @@
   statements/ functions/ branches were ignored.
 * Internally uses `babel` rather than `esprima` and exports a new visitor
   that can be used by a babel plugin to instrument the ES6 code without
-  having to instrument the transpiled code.
+  having to instrument transpiled code and deal with source maps. This provides
+  a "native" instrumentation option for Babel users.
 
 ## API changes
 
@@ -25,4 +26,19 @@
   expose this in the first place. The AST is different (a Babel AST) now and this
   fact is now correctly hidden in the implementation of the API so that future
   changes to the AST is possible without affecting consumers.
-* TODO: document instrumenter option changes
+* Instrumenter options:
+  * `embedSource` no longer available. The original source is never packed in
+     with the coverage object. This was causing all manner of special casing
+     in the reporting code.
+  * `noAutoWrap` becomes `autoWrap` (default `false`). Mainline `return` statements
+    are no longer considered correct by default.
+  * `codeGenerationOptions` is gone. This was specific to `escodegen` that is no
+    longer used.
+  * `walkDebug` option is gone now that babel does the AST walking
+  * `produceSourceMap` boolean option added to produce a source map for the
+    instrumented code. This is available using the `lastSourceMap` method
+    on the instrumenter (as before, except that the mechanism to turn it on is
+    direct and not a property passed down to `escodegen`)
+  * `sourceMapUrlCallback` may be set to a function that accepts 2 arguments,
+    the source file name and the source map URL found in it.
+
