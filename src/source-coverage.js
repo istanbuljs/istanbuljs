@@ -71,6 +71,7 @@ class SourceCoverage extends classes.FileCoverage {
         var bMeta = this.data.branchMap[name],
             counts = this.data.b[name];
 
+        /* istanbul ignore if: paranoid check */
         if (!bMeta) {
             throw new Error("Invalid branch " + name);
         }

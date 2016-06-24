@@ -45,7 +45,7 @@ class VisitState {
         let hint = null;
         if (node.leadingComments) {
             node.leadingComments.forEach(function (c) {
-                const v = (c.value || "").trim();
+                const v = (c.value || /* istanbul ignore next: paranoid check */ "").trim();
                 const groups = v.match(COMMENT_RE);
                 if (groups) {
                     hint = groups[1];
@@ -63,7 +63,7 @@ class VisitState {
                 return;
             }
             comments.forEach(function (c) {
-                const v = (c.value || "").trim();
+                const v = (c.value || /* istanbul ignore next: paranoid check */ "").trim();
                 const groups = v.match(SOURCE_MAP_RE);
                 if (groups) {
                     that.sourceMappingURL = groups[1];
@@ -147,7 +147,7 @@ class VisitState {
             path.node.body.unshift(T.expressionStatement(increment));
         } else if (path.isStatement()) {
             path.insertBefore(T.expressionStatement(increment));
-        } else if (path.isExpression()) {
+        } else /* istanbul ignore else: not expected */ if (path.isExpression()) {
             path.replaceWith(T.sequenceExpression([increment, path.node]));
         } else {
             console.error('Unable to insert counter for node type:', path.node.type);
@@ -155,6 +155,7 @@ class VisitState {
     }
 
     insertStatementCounter(path) {
+        /* istanbul ignore if: paranoid check */
         if (!(path.node && path.node.loc)) {
             return;
         }
@@ -165,6 +166,7 @@ class VisitState {
 
     insertFunctionCounter(path) {
         const T = this.types;
+        /* istanbul ignore if: paranoid check */
         if (!(path.node && path.node.loc)) {
             return;
         }
@@ -173,6 +175,7 @@ class VisitState {
         const index = this.cov.newFunction(name, path.node.loc, path.node.body.loc);
         const increment = this.increase('f', index, null);
         const body = path.get('body');
+        /* istanbul ignore else: not expected */
         if (body.isBlockStatement()) {
             body.node.body.unshift(T.expressionStatement(increment));
         } else {
@@ -248,6 +251,7 @@ function coverStatement(path) {
     this.insertStatementCounter(path);
 }
 
+/* istanbul ignore next: no node.js support */
 function coverAssignmentPattern(path) {
     const n = path.node;
     const b = this.cov.newBranch('default-arg', n);
@@ -331,6 +335,7 @@ function createSwitchBranch(path) {
 function coverSwitchCase(path) {
     const T = this.types;
     const b = this.getAttr(path.parentPath.node, 'branchName');
+    /* istanbul ignore if: paranoid check */
     if (!b) {
         throw new Error('Unable to get switch branch name');
     }
