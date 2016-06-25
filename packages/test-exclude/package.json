@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcoe/test-exclude.git"
+    "url": "git+https://github.com/istanbuljs/test-exclude.git"
   },
   "keywords": [
     "exclude",
@@ -23,9 +23,9 @@
   "author": "Ben Coe <ben@npmjs.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bcoe/test-exclude/issues"
+    "url": "https://github.com/istanbuljs/test-exclude/issues"
   },
-  "homepage": "https://github.com/bcoe/test-exclude#readme",
+  "homepage": "https://github.com/istanbuljs/test-exclude#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",

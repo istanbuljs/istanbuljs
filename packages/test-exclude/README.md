@@ -1,9 +1,9 @@
 # test-exclude
 
-The file include/exclude logic used by [nyc](https://github.com/bcoe/nyc).
+The file include/exclude logic used by [nyc](https://github.com/istanbuljs/nyc).
 
-[![Build Status](https://travis-ci.org/bcoe/test-exclude.svg)](https://travis-ci.org/bcoe/test-exclude)
-[![Coverage Status](https://coveralls.io/repos/github/bcoe/test-exclude/badge.svg?branch=master)](https://coveralls.io/github/bcoe/test-exclude?branch=master)
+[![Build Status](https://travis-ci.org/istanbuljs/test-exclude.svg)](https://travis-ci.org/istanbuljs/test-exclude)
+[![Coverage Status](https://coveralls.io/repos/github/istanbuljs/test-exclude/badge.svg?branch=master)](https://coveralls.io/github/istanbuljs/test-exclude?branch=master)
 [![Standard Version](https://img.shields.io/badge/release-standard%20version-brightgreen.svg)](https://github.com/conventional-changelog/standard-version)
 
 ## Usage
