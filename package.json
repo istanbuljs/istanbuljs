@@ -9,8 +9,9 @@
     "v10-test": "mocha --compilers js:babel-core/register --recursive test/",
     "fast": "mocha --harmony --compilers js:babel-core/register --recursive test/",
     "pretest": "jshint src/ test/",
-    "test": "node --harmony ./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha -- --compilers js:babel-core/register --recursive test/",
-    "posttest": "node ./node_modules/istanbul/lib/cli.js check-coverage --statements 95 --branches 80"
+    "test": "./test.sh",
+    "posttest": "node ./node_modules/istanbul/lib/cli.js check-coverage --statements 90 --branches 80",
+    "prepublish": "npm test && npm run release"
   },
   "dependencies": {
     "babel-generator": "^6.10.2",
