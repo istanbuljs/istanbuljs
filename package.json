@@ -1,6 +1,6 @@
 {
   "name": "istanbul-api",
-  "version": "1.0.0-alpha.14",
+  "version": "1.1.0-alpha.0",
   "description": "High level API for istanbul features",
   "main": "index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "fileset": "0.2.x",
     "istanbul-lib-coverage": "^1.0.0-alpha",
     "istanbul-lib-hook": "^1.0.0-alpha",
-    "istanbul-lib-instrument": "^1.0.0-alpha",
+    "istanbul-lib-instrument": "^1.1.0-alpha",
     "istanbul-lib-report": "^1.0.0-alpha",
     "istanbul-lib-source-maps": "^1.0.0-alpha",
     "istanbul-reports": "^1.0.0-alpha",
