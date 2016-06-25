@@ -50,7 +50,7 @@ name: anonymous function newline
 code: |
   var x = args[0];
   output = x < 5 ?
-     (function() {
+     (function meaningOfLife() {
      return 42;
   }())
    : 15;

@@ -3,18 +3,22 @@ istanbul-lib-instrument
 
 [![Build Status](https://travis-ci.org/istanbuljs/istanbul-lib-instrument.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbul-lib-instrument)
 
-Istanbul instrumenter and source maps processing library.
+Istanbul instrumenter library.
 
-Backwards incompatibilities
-----------------------------
+Version 1.1.x now implements instrumentation using `Babel`. The implementation is inspired
+by prior art by @dtinth as demonstrated in the `__coverage__` babel plugin.
 
-* Function declarations and no-init variable declarations
-* Ignores do not inject code
-* No support for embedding code into coverage objects
+It provides 2 "modes" of instrumentation.
 
-TODO
-----
+* The old API that is mostly unchanged (except for incompatibilities noted) and
+  performs the instrumentation using babel as a library.
 
-* Change the interface signature to always return an object?
-* Figure out skip counting and implement
+* A `programVisitor` function for the Babel AST that can be used by a Babel plugin
+  to emit instrumentation for ES6 code directly without any source map
+  processing. This is the preferred path for babel users. The Babel plugin is
+  called `babel-plugin-istanbul`.
+
+Incompatibilities and changes to instrumentation behavior can be found in
+[v0-changes.md](v0-changes.md).
+
 

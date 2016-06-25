@@ -2,8 +2,10 @@
 .gitignore
 .jshintrc
 .travis.yml
+.babelrc
 .idea/
 coverage/
 test/
-support/
-karma.conf.js
+src/
+api.md
+
