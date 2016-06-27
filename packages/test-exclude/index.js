@@ -62,26 +62,13 @@ TestExclude.prototype.pkgConf = function (key, path) {
 }
 
 function prepGlobPatterns (patterns) {
-  if (!patterns) return patterns
-
-  const result = []
-
-  function add (pattern) {
-    if (result.indexOf(pattern) === -1) {
-      result.push(pattern)
-    }
-  }
-
-  patterns.forEach(function (pattern) {
+  return patterns.reduce(function (result, pattern) {
     // Allow gitignore style of directory exclusion
     if (!/\/\*\*$/.test(pattern)) {
-      add(pattern.replace(/\/$/, '') + '/**')
+      result = result.concat(pattern.replace(/\/$/, '') + '/**')
     }
-
-    add(pattern)
-  })
-
-  return result
+    return result.concat(pattern)
+  }, [])
 }
 
 module.exports = function (opts) {

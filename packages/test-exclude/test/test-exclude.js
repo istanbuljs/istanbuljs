@@ -50,6 +50,19 @@ describe('testExclude', function () {
       e.configFound.should.equal(true)
     })
 
+    it('should only instrument files that are included in subdirs', function () {
+      const e = exclude({
+        configPath: './test/fixtures/include-src-only',
+        configKey: 'c'
+      })
+      e.shouldInstrument('bar/baz.js').should.equal(false)
+      e.shouldInstrument('bad/file.js').should.equal(false)
+      e.shouldInstrument('foo.js').should.equal(false)
+
+      e.shouldInstrument('src/app.test.js').should.equal(false)
+      e.shouldInstrument('src/app.js').should.equal(true)
+    })
+
     it('should not throw if a key is missing', function () {
       var e = exclude({
         configPath: './test/fixtures/include',
