@@ -175,7 +175,10 @@ class VisitState {
         // get location for declaration
         switch (n.type) {
             case "FunctionDeclaration":
-                dloc = n.id.loc;
+                /* istanbul ignore else: paranoid check */
+                if (n.id) {
+                    dloc = n.id.loc;
+                }
                 break;
             case "FunctionExpression":
                 if (n.id) {
@@ -186,7 +189,7 @@ class VisitState {
         if (!dloc) {
             dloc = {
                 start: n.loc.start,
-                end: n.loc.start
+                end: { line: n.loc.start.line, column: n.loc.start.column + 1 }
             };
         }
         const name = path.node.id ? path.node.id.name : path.node.name;
@@ -272,7 +275,7 @@ function coverStatement(path) {
 /* istanbul ignore next: no node.js support */
 function coverAssignmentPattern(path) {
     const n = path.node;
-    const b = this.cov.newBranch('default-arg', n);
+    const b = this.cov.newBranch('default-arg', n.loc);
     this.insertBranchCounter(path.get('right'), b);
 }
 
