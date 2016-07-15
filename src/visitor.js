@@ -204,16 +204,13 @@ class VisitState {
         }
     }
 
-    getBranchIncrement(node, branchName) {
-        const index = this.cov.addBranchPath(branchName, node.loc || {
-                start: {line: 1, column: 0},
-                end: {line: 1, column: 0}
-            });
+    getBranchIncrement(branchName, loc) {
+        const index = this.cov.addBranchPath(branchName, loc);
         return this.increase('b', branchName, index);
     }
 
-    insertBranchCounter(path, branchName) {
-        const increment = this.getBranchIncrement(path.node, branchName);
+    insertBranchCounter(path, branchName, loc) {
+        const increment = this.getBranchIncrement(branchName, loc || path.node.loc);
         this.insertCounter(path, increment);
     }
 
@@ -339,12 +336,12 @@ function coverIfBranches(path) {
     if (ignoreIf) {
         this.setAttr(n.consequent, 'skip-all', true);
     } else {
-        this.insertBranchCounter(path.get('consequent'), branch);
+        this.insertBranchCounter(path.get('consequent'), branch, n.loc);
     }
     if (ignoreElse) {
         this.setAttr(n.alternate, 'skip-all', true);
     } else {
-        this.insertBranchCounter(path.get('alternate'), branch);
+        this.insertBranchCounter(path.get('alternate'), branch, n.loc);
     }
 }
 
@@ -360,7 +357,7 @@ function coverSwitchCase(path) {
     if (!b) {
         throw new Error('Unable to get switch branch name');
     }
-    const increment = this.getBranchIncrement(path.node, b);
+    const increment = this.getBranchIncrement(b, path.node.loc);
     path.node.consequent.unshift(T.expressionStatement(increment));
 }
 
@@ -393,7 +390,7 @@ function coverLogicalExpression(path) {
         if (hint === 'next') {
             continue;
         }
-        const increment = this.getBranchIncrement(leaf.node, b);
+        const increment = this.getBranchIncrement(b, leaf.node.loc);
         if (!increment) {
             continue;
         }
