@@ -11,7 +11,8 @@
     "pretest": "jshint src/ test/",
     "test": "./test.sh",
     "posttest": "node ./node_modules/istanbul/lib/cli.js check-coverage --statements 90 --branches 80",
-    "prepublish": "npm test && npm run release"
+    "prepublish": "npm test && npm run release",
+    "version": "standard-version"
   },
   "dependencies": {
     "babel-generator": "^6.11.3",
@@ -33,7 +34,8 @@
     "js-yaml": "^3.3.1",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5",
-    "nopt": "^3.0.6"
+    "nopt": "^3.0.6",
+    "standard-version": "^2.4.0"
   },
   "license": "BSD-3-Clause",
   "bugs": {
