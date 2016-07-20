@@ -14,7 +14,7 @@
     "prepublish": "npm test && npm run release"
   },
   "dependencies": {
-    "babel-generator": "^6.10.2",
+    "babel-generator": "^6.11.3",
     "babel-template": "^6.9.0",
     "babel-traverse": "^6.9.0",
     "babel-types": "^6.10.2",
