@@ -27,6 +27,26 @@ describe('testExclude', function () {
     e.shouldInstrument('banana.js').should.equal(false)
   })
 
+  it('should handle gitignore-style excludes', function () {
+    const e = exclude({
+      exclude: ['dist']
+    })
+
+    e.shouldInstrument('dist/foo.js').should.equal(false)
+    e.shouldInstrument('dist/foo/bar.js').should.equal(false)
+    e.shouldInstrument('src/foo.js').should.equal(true)
+  })
+
+  it('should handle gitignore-style includes', function () {
+    const e = exclude({
+      include: ['src']
+    })
+
+    e.shouldInstrument('src/foo.test.js').should.equal(false)
+    e.shouldInstrument('src/foo.js').should.equal(true)
+    e.shouldInstrument('src/foo/bar.js').should.equal(true)
+  })
+
   describe('pkgConf', function () {
     it('should load exclude rules from config key', function () {
       const e = exclude({
