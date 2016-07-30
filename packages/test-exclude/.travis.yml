@@ -1,11 +1,12 @@
+sudo: false
 language: node_js
 
 os:
   - linux
 
-after_success: npm run coverage
-
 node_js:
-  - "0.10"
+  - "0.12"
   - "4"
-  - "node"
+  - "stable"
+
+after_success: "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
