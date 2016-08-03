@@ -47,6 +47,16 @@ describe('testExclude', function () {
     e.shouldInstrument('src/foo/bar.js').should.equal(true)
   })
 
+  it('does not exclude anything if an empty array passed', function () {
+    const e = exclude({
+      exclude: []
+    })
+
+    e.shouldInstrument('__tests__/a-test.js').should.equal(true)
+    e.shouldInstrument('src/a.test.js').should.equal(true)
+    e.shouldInstrument('src/foo.js').should.equal(true)
+  })
+
   describe('pkgConf', function () {
     it('should load exclude rules from config key', function () {
       const e = exclude({
