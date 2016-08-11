@@ -3,12 +3,12 @@ import {classes} from 'istanbul-lib-coverage';
 function cloneLocation(loc) {
     return {
         start: {
-            line: loc.start.line,
-            column: loc.start.column
+            line: loc && loc.start.line,
+            column: loc && loc.start.column
         },
         end: {
-            line: loc.end.line,
-            column: loc.end.column
+            line: loc && loc.end.line,
+            column: loc && loc.end.column
         }
     };
 }
@@ -94,5 +94,3 @@ class SourceCoverage extends classes.FileCoverage {
 }
 
 export { SourceCoverage };
-
-
