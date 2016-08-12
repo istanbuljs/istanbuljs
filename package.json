@@ -8,7 +8,8 @@
     "fast": "mocha test/",
     "pretest": "jshint index.js lib/ test/",
     "test": "istanbul cover -x 'docs/**' --include-all-sources --print=both _mocha --  test/",
-    "posttest": "istanbul check-coverage --statements 95 --branches 80"
+    "posttest": "istanbul check-coverage --statements 95 --branches 80",
+    "release": "standard-version"
   },
   "devDependencies": {
     "chai": "^3.0.0",
