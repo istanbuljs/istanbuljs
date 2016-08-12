@@ -3,18 +3,12 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 <a name="2.2.0"></a>
-# [2.2.0](https://github.com/istanbuljs/test-exclude/compare/v2.0.0...v2.2.0) (2016-08-12)
+# [2.2.0](https://github.com/istanbuljs/test-exclude/compare/v2.1.0...v2.1.1) (2016-08-12)
 
 
 ### Bug Fixes
 
 * it should be possible to cover the node_modules folder ([#13](https://github.com/istanbuljs/test-exclude/issues/13)) ([09f2788](https://github.com/istanbuljs/test-exclude/commit/09f2788))
-
-
-### Features
-
-* export defaultExclude, so that it can be used in yargs' default settings ([#12](https://github.com/istanbuljs/test-exclude/issues/12)) ([5b3743b](https://github.com/istanbuljs/test-exclude/commit/5b3743b))
-
 
 
 <a name="2.1.0"></a>
