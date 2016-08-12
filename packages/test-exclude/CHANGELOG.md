@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/istanbuljs/test-exclude/compare/v1.1.0...v2.0.0) (2016-08-12)
+
+
+### Bug Fixes
+
+* use Array#reduce and remove unneeded branch in prepGlobPatterns ([#5](https://github.com/istanbuljs/test-exclude/issues/5)) ([c0f0f59](https://github.com/istanbuljs/test-exclude/commit/c0f0f59))
+
+
+### Features
+
+* don't exclude anything when empty array passed ([#11](https://github.com/istanbuljs/test-exclude/issues/11)) ([200ec07](https://github.com/istanbuljs/test-exclude/commit/200ec07))
+
+
+### BREAKING CHANGES
+
+* we now allow an empty array to be passed in, making it possible to disable the default exclude rules -- we will need to be mindful when pulling this logic into nyc.
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/bcoe/test-exclude/compare/v1.0.0...v1.1.0) (2016-06-08)
 
