@@ -19,12 +19,7 @@ function TestExclude (opts) {
   }
 
   if (!this.exclude) {
-    this.exclude = [
-      'test/**',
-      'test{,-*}.js',
-      '**/*.test.js',
-      '**/__tests__/**'
-    ]
+    this.exclude = exportFunc.defaultExclude
   }
 
   if (this.include && this.include.length > 0) {
@@ -71,6 +66,15 @@ function prepGlobPatterns (patterns) {
   }, [])
 }
 
-module.exports = function (opts) {
+var exportFunc = function (opts) {
   return new TestExclude(opts)
 }
+
+exportFunc.defaultExclude = [
+  'test/**',
+  'test{,-*}.js',
+  '**/*.test.js',
+  '**/__tests__/**'
+]
+
+module.exports = exportFunc

@@ -4,6 +4,8 @@ const exclude = require('../')
 
 require('chai').should()
 
+console.log(exclude)
+
 describe('testExclude', function () {
   it('should always exclude node_modules folder', function () {
     exclude().shouldInstrument('./banana/node_modules/cat.js').should.equal(false)
@@ -100,5 +102,14 @@ describe('testExclude', function () {
       })
       e.configFound.should.equal(false)
     })
+  })
+
+  it('exports defaultExclude', function () {
+    exclude.defaultExclude.should.deep.equal([
+      'test/**',
+      'test{,-*}.js',
+      '**/*.test.js',
+      '**/__tests__/**'
+    ])
   })
 })
