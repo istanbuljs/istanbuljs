@@ -109,7 +109,8 @@ describe('testExclude', function () {
       'test/**',
       'test{,-*}.js',
       '**/*.test.js',
-      '**/__tests__/**'
+      '**/__tests__/**',
+      '**/node_modules/**'
     ])
   })
 })
