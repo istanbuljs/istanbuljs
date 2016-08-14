@@ -5,7 +5,7 @@ const exclude = require('../')
 require('chai').should()
 
 describe('testExclude', function () {
-  it('should always exclude node_modules folder', function () {
+  it('should exclude the node_modules folder by default', function () {
     exclude().shouldInstrument('./banana/node_modules/cat.js').should.equal(false)
   })
 
@@ -52,6 +52,7 @@ describe('testExclude', function () {
       exclude: []
     })
 
+    e.shouldInstrument('node_modules/some/module/to/cover.js').should.equal(true)
     e.shouldInstrument('__tests__/a-test.js').should.equal(true)
     e.shouldInstrument('src/a.test.js').should.equal(true)
     e.shouldInstrument('src/foo.js').should.equal(true)
@@ -91,6 +92,21 @@ describe('testExclude', function () {
 
       e.shouldInstrument('src/app.test.js').should.equal(false)
       e.shouldInstrument('src/app.js').should.equal(true)
+    })
+
+    it('should respect defaultExcludes if no config is given', function () {
+      const e = exclude({
+        configPath: './test/fixtures/defaults',
+        configKey: 'd'
+      })
+
+      e.shouldInstrument('test.js').should.equal(false)
+      e.shouldInstrument('src/app.test.js').should.equal(false)
+
+      e.shouldInstrument('bar/baz.js').should.equal(true)
+      e.shouldInstrument('bad/file.js').should.equal(true)
+      e.shouldInstrument('foo.js').should.equal(true)
+      e.shouldInstrument('index.js').should.equal(true)
     })
 
     it('should not throw if a key is missing', function () {
