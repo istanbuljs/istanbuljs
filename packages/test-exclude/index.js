@@ -18,7 +18,7 @@ function TestExclude (opts) {
     assign(this, this.pkgConf(this.configKey, this.configPath))
   }
 
-  if (!this.exclude) {
+  if (!this.exclude || !Array.isArray(this.exclude)) {
     this.exclude = exportFunc.defaultExclude
   }
 

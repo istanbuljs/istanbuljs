@@ -1,4 +1,4 @@
-/* global describe, it */
+/* global describe, it, context */
 
 const exclude = require('../')
 
@@ -56,6 +56,16 @@ describe('testExclude', function () {
     e.shouldInstrument('__tests__/a-test.js').should.equal(true)
     e.shouldInstrument('src/a.test.js').should.equal(true)
     e.shouldInstrument('src/foo.js').should.equal(true)
+  })
+
+  it('exports defaultExclude', function () {
+    exclude.defaultExclude.should.deep.equal([
+      'test/**',
+      'test{,-*}.js',
+      '**/*.test.js',
+      '**/__tests__/**',
+      '**/node_modules/**'
+    ])
   })
 
   describe('pkgConf', function () {
@@ -116,15 +126,37 @@ describe('testExclude', function () {
       })
       e.configFound.should.equal(false)
     })
-  })
 
-  it('exports defaultExclude', function () {
-    exclude.defaultExclude.should.deep.equal([
-      'test/**',
-      'test{,-*}.js',
-      '**/*.test.js',
-      '**/__tests__/**',
-      '**/node_modules/**'
-    ])
+    context('when given an object', function () {
+      it('should use the defaultExcludes if the object is empty', function () {
+        const e = exclude({
+          configPath: './test/fixtures/exclude-empty-object',
+          configKey: 'e'
+        })
+
+        e.shouldInstrument('test.js').should.equal(false)
+        e.shouldInstrument('src/app.test.js').should.equal(false)
+
+        e.shouldInstrument('bar/baz.js').should.equal(true)
+        e.shouldInstrument('bad/file.js').should.equal(true)
+        e.shouldInstrument('foo.js').should.equal(true)
+        e.shouldInstrument('index.js').should.equal(true)
+      })
+
+      it('should use the defaultExcludes if the object is not empty', function () {
+        const e = exclude({
+          configPath: './test/fixtures/exclude-object',
+          configKey: 'e'
+        })
+
+        e.shouldInstrument('test.js').should.equal(false)
+        e.shouldInstrument('src/app.test.js').should.equal(false)
+
+        e.shouldInstrument('bar/baz.js').should.equal(true)
+        e.shouldInstrument('bad/file.js').should.equal(true)
+        e.shouldInstrument('foo.js').should.equal(true)
+        e.shouldInstrument('index.js').should.equal(true)
+      })
+    })
   })
 })
