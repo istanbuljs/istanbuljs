@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/istanbuljs/test-exclude/compare/v2.1.1...v2.1.2) (2016-08-31)
+
+
+### Bug Fixes
+
+* **exclude-config:** Use the defaultExcludes for anything passed in that is not an array ([#15](https://github.com/istanbuljs/test-exclude/issues/15)) ([227042f](https://github.com/istanbuljs/test-exclude/commit/227042f))
+
+
+
 <a name="2.1.1"></a>
 # [2.1.1](https://github.com/istanbuljs/test-exclude/compare/v2.1.0...v2.1.1) (2016-08-12)
 
