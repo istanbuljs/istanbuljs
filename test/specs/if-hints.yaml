@@ -9,8 +9,8 @@ tests:
   - args: [20, 10]
     out: 20
     lines: {'1': 1, '3': 1, '4': 1}
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1, '2': 1}
 
 ---
 name: ignore if
@@ -23,8 +23,8 @@ tests:
   - args: [10, 20]
     out: -1
     lines: {'1': 1, '3': 1 }
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1 }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1 }
 
 ---
 name: ignore else with if block
@@ -38,8 +38,8 @@ tests:
   - args: [20, 10]
     out: 20
     lines: {'1': 1, '3': 1, '4': 1}
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1, '2': 1}
 
 ---
 name: ignore if with if block
@@ -53,8 +53,8 @@ tests:
   - args: [10, 20]
     out: -1
     lines: {'1': 1, '3': 1 }
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1 }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1 }
 
 ---
 name: ignore else single line
@@ -66,8 +66,8 @@ tests:
   - args: [20, 10]
     out: 20
     lines: {'1': 1, '3': 1}
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1, '2': 1}
 
 ---
 name: ignore if single line
@@ -79,8 +79,8 @@ tests:
   - args: [10, 20]
     out: -1
     lines: {'1': 1, '3': 1}
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1 }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1 }
 
 ---
 name: ignore else if-block
@@ -92,8 +92,8 @@ tests:
   - args: [20, 10]
     out: 20
     lines: {'1': 1, '3': 1}
-    branches: {'1': [1] }
-    statements: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1] }
+    statements: {'0': 1, '1': 1, '2': 1}
 
 ---
 name: ignore if block
@@ -105,10 +105,10 @@ tests:
   - args: [10, 20]
     out: -1
     lines: {'1': 1, '3': 1}
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1}
-    branchSkips: { '1': [ true, false ]}
-    statementSkips: { '3': true }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1}
+    branchSkips: { '0': [ true, false ]}
+    statementSkips: { '2': true }
 
 ---
 name: ignore using next
@@ -121,7 +121,7 @@ tests:
     out: -1
     lines: {'1': 1}
     branches: {}
-    statements: {'1': 1 }
+    statements: {'0': 1 }
 
 ---
 name: ignore else using single line comment
@@ -135,8 +135,8 @@ tests:
   - args: [20, 10]
     out: 20
     lines: {'2': 1, '3': 1 }
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1 }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1 }
 
 ---
 name: ignore if using single line comment
@@ -150,5 +150,5 @@ tests:
   - args: [10, 20]
     out: 20
     lines: {'2': 1, '5': 1}
-    branches: {'1': [1]}
-    statements: {'1': 1, '2': 1, }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1, }

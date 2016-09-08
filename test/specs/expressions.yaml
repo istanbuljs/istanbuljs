@@ -8,22 +8,22 @@ tests:
     args: [-1]
     out: false
     lines: {'1': 1, '2': 1}
-    branches: {'1': [1, 0]}
-    statements: {'1': 1, '2': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1}
 
   - name: covers line, both branches, returns false
     args: [10]
     out: false
     lines: {'1': 1, '2': 1}
-    branches: {'1': [1, 1]}
-    statements: {'1': 1, '2': 1}
+    branches: {'0': [1, 1]}
+    statements: {'0': 1, '1': 1}
 
   - name: covers line, both branches, returns true
     args: [3]
     out: true
     lines: {'1': 1, '2': 1}
-    branches: {'1': [1, 1]}
-    statements: {'1': 1, '2': 1}
+    branches: {'0': [1, 1]}
+    statements: {'0': 1, '1': 1}
 
 ---
 name: complex expression
@@ -35,22 +35,22 @@ tests:
     args: [-1]
     out: false
     lines: {'1': 1, '2': 1}
-    branches: {'1': [1, 0, 0]}
-    statements: {'1': 1, '2': 1}
+    branches: {'0': [1, 0, 0]}
+    statements: {'0': 1, '1': 1}
 
   - name: covers line, both branches, returns false
     args: [9]
     out: false
     lines: {'1': 1, '2': 1}
-    branches: {'1': [1, 1, 1]}
-    statements: {'1': 1, '2': 1}
+    branches: {'0': [1, 1, 1]}
+    statements: {'0': 1, '1': 1}
 
   - name: covers line, both branches, returns true
     args: [3]
     out: true
     lines: {'1': 1, '2': 1}
-    branches: {'1': [1, 1, 0]}
-    statements: {'1': 1, '2': 1}
+    branches: {'0': [1, 1, 0]}
+    statements: {'0': 1, '1': 1}
 
 ---
 name: array expression with empty positions
@@ -62,8 +62,8 @@ tests:
     args: [1,5]
     out: true
     lines: {'1': 1, '2': 1}
-    branches: { 1: [1, 1] }
-    statements: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    statements: {'0': 1, '1': 1}
 
 ---
 name: or with object expression (bug track)
@@ -75,8 +75,8 @@ tests:
     args: [ false ]
     out: 2
     lines: {'1': 1, '2': 1}
-    branches: { 1: [0, 1] }
-    statements: {'1': 1, '2': 1}
+    branches: { '0': [0, 1] }
+    statements: {'0': 1, '1': 1}
 
 ---
 name: or with object expression (part 2)
@@ -88,5 +88,5 @@ tests:
     args: [ false ]
     out: 2
     lines: {'1': 1, '2': 1}
-    branches: { 1: [1, 1] }
-    statements: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    statements: {'0': 1, '1': 1}

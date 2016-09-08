@@ -91,7 +91,7 @@ class VisitState {
             return;
         }
         // else check custom node attribute set by a prior visitor
-        if (this.getAttr(path.node, 'skip-all')) {
+        if (this.getAttr(path.node, 'skip-all') !== null) {
             this.nextIgnore = n;
         }
     }
@@ -134,7 +134,7 @@ class VisitState {
             wrap(
                 T.memberExpression(
                     T.memberExpression(T.identifier(this.varName), T.identifier(type)),
-                    T.stringLiteral(String(id)),
+                    T.numericLiteral(id),
                     true
                 )
             )
@@ -354,7 +354,7 @@ function coverSwitchCase(path) {
     const T = this.types;
     const b = this.getAttr(path.parentPath.node, 'branchName');
     /* istanbul ignore if: paranoid check */
-    if (!b) {
+    if (b === null) {
         throw new Error('Unable to get switch branch name');
     }
     const increment = this.getBranchIncrement(b, path.node.loc);
@@ -430,7 +430,7 @@ const codeVisitor = {
 // the template to insert at the top of the program.
 const coverageTemplate = template(`
     var COVERAGE_VAR = (function () {
-        var path = PATH, 
+        var path = PATH,
             hash = HASH,
             global = (new Function('return this'))(),
             gcv = GLOBAL_COVERAGE_VAR,

@@ -35,15 +35,14 @@ class SourceCoverage extends classes.FileCoverage {
     }
 
     newStatement(loc) {
-        this.meta.last.s += 1;
         var s = this.meta.last.s;
         this.data.statementMap[s] = cloneLocation(loc);
         this.data.s[s] = 0;
+        this.meta.last.s += 1;
         return s;
     }
 
     newFunction(name, decl, loc) {
-        this.meta.last.f += 1;
         var f = this.meta.last.f;
         name = name || '(anonymous_' + f + ')';
         this.data.fnMap[f] = {
@@ -52,11 +51,11 @@ class SourceCoverage extends classes.FileCoverage {
             loc: cloneLocation(loc)
         };
         this.data.f[f] = 0;
+        this.meta.last.f += 1;
         return f;
     }
 
     newBranch(type, loc) {
-        this.meta.last.b += 1;
         var b = this.meta.last.b;
         this.data.b[b] = [];
         this.data.branchMap[b] = {
@@ -64,6 +63,7 @@ class SourceCoverage extends classes.FileCoverage {
             type: type,
             locations: []
         };
+        this.meta.last.b += 1;
         return b;
     }
 

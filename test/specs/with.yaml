@@ -6,7 +6,7 @@ tests:
   - args: [-1]
     out: 1
     lines: {'1': 1}
-    statements: {'1': 1, '2': 1}
+    statements: {'0': 1, '1': 1}
 
 ---
 name: with statement with block
@@ -16,4 +16,4 @@ tests:
   - args: [-1]
     out: 1
     lines: {'1': 1}
-    statements: {'1': 1, '2': 1}
+    statements: {'0': 1, '1': 1}

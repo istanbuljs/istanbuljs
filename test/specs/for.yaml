@@ -9,7 +9,7 @@ tests:
     args: [10]
     out: 9
     lines: {'1': 1, '2': 10, '3': 1}
-    statements: {'1': 1, '2':1, '3': 1, '4': 10, '5': 1}
+    statements: {'0': 1, '1':1, '2': 1, '3': 10, '4': 1}
 ---
 
 name: for with loop initializer
@@ -22,7 +22,7 @@ tests:
     args: [10]
     out: 9
     lines: {'1': 1, '2': 10, '3': 1}
-    statements: {'1': 1, '2':1, '3': 1, '4': 10, '5': 1}
+    statements: {'0': 1, '1':1, '2': 1, '3': 10, '4': 1}
 ---
 
 name: simple for, no initializer
@@ -34,7 +34,7 @@ tests:
   - args: [10]
     out: 9
     lines: {'1': 1, '2': 10, '3': 1}
-    statements: {'1': 1, '2': 1, '3': 1, '4': 1, '5': 10, '6': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 10, '5': 1}
 ---
 
 name: simple for, statement on different line
@@ -48,13 +48,13 @@ tests:
     args: [10]
     out: 9
     lines: {'1': 1, '2': 1, '3': 10, '4': 1}
-    statements: {'1': 1, '2': 1, '3':1, '4': 10, '5': 1}
+    statements: {'0': 1, '2': 1, '1':1, '3': 10, '4': 1}
 
   - name: does not cover loop
     args: [-1]
     out: -10
     lines: {'1': 1, '2': 1, '3': 0, '4': 1}
-    statements: {'1': 1, '2': 1, '3': 1, '4':0, '5': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3':0, '4': 1}
 
 ---
 name: for with block body
@@ -67,13 +67,13 @@ tests:
     args: [10]
     out: 9
     lines: {'1': 1, '2': 10, '3': 1}
-    statements: {'1': 1, '2': 1, '3':1, '4': 10, '5': 1}
+    statements: {'0': 1, '1': 1, '2':1, '3': 10, '4': 1}
 
   - name: does not cover loop
     args: [-1]
     out: -10
     lines: {'1': 1, '2': 1, '3': 1}
-    statements: {'1': 1, '2': 1, '3':1, '4': 0, '5': 1}
+    statements: {'0': 1, '1': 1, '2':1, '3': 0, '4': 1}
 
 ---
 name: labeled for
@@ -85,7 +85,7 @@ tests:
   - args: [10]
     out: 9
     lines: {'1': 1, '2': 10, '3': 1}
-    statements: {'1': 1, '2':1, '3': 1, '4': 1, '5': 10, '6': 1}
+    statements: {'0': 1, '1':1, '2': 1, '3': 1, '4': 10, '5': 1}
 
 ---
 name: nested labeled for
@@ -101,8 +101,8 @@ tests:
   - args: [10]
     out: 17
     lines: {'1': 1, '2': 1, '3': 10, '4': 24, '5': 17, '7': 1}
-    branches: {'1': [7, 17]}
-    statements: {'1': 1, '2': 1, '3': 1, '4': 1, '5': 10, '6': 24, '7': 7, '8': 17, '9': 1}
+    branches: {'0': [7, 17]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 10, '5': 24, '6': 7, '7': 17, '8': 1}
 
 ---
 name: nested labeled for (label on different line)
@@ -119,5 +119,5 @@ tests:
   - args: [10]
     out: 17
     lines: {'1': 1, '2': 1, '3': 1, '4': 10, '5': 24, '6': 17, '8': 1}
-    branches: {'1': [7, 17]}
-    statements: {'1': 1, '2': 1, '3': 1, '4': 1, '5': 10, '6': 24, '7': 7, '8': 17, '9': 1}
+    branches: {'0': [7, 17]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 10, '5': 24, '6': 7, '7': 17, '8': 1}

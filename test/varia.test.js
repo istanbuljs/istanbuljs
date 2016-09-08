@@ -10,7 +10,7 @@ describe('varia', function () {
         assert.ok(!v.err);
         v.verify(['X'], 'X',{
             lines: { 1: 1 },
-            statements: { 1: 1}
+            statements: { 0: 1}
         });
     });
 
@@ -19,7 +19,7 @@ describe('varia', function () {
         assert.ok(!v.err);
         v.verify(['X'], 'X',{
             lines: { 1: 1 },
-            statements: { 1: 1}
+            statements: { 0: 1}
         });
     });
 
@@ -29,7 +29,7 @@ describe('varia', function () {
         assert.ok(!v.err);
         v.verify(['X'], 'X',{
             lines: { 1: 1 },
-            statements: { 1: 1}
+            statements: { 0: 1}
         });
         cov = v.getCoverage();
         assert.equal(Object.keys(cov)[0],'c:\\x\\y.js');
@@ -41,7 +41,7 @@ describe('varia', function () {
         assert.ok(!v.err);
         v.verify(['X'], 'X',{
             lines: { 2: 1 },
-            statements: { 1: 1}
+            statements: { 0: 1}
         });
         code = v.getGeneratedCode();
         assert.ok(code.match(/\/* hello */));
