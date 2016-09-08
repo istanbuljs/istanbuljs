@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.1.1...v1.1.2) (2016-09-08)
+
+
+### Performance Improvements
+
+* use zero-based numeric indices for much faster instrumented code ([#22](https://github.com/istanbuljs/istanbul-lib-instrument/issues/22)) ([5b401f5](https://github.com/istanbuljs/istanbul-lib-instrument/commit/5b401f5))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.1.0...v1.1.1) (2016-08-30)
 
