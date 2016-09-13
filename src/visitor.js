@@ -11,15 +11,9 @@ const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
 
 // generate a variable name from hashing the supplied file path
 function genVar(filename) {
-    var hash = createHash(SHA),
-        suffix;
+    var hash = createHash(SHA);
     hash.update(filename);
-    suffix = hash.digest('base64');
-    //trim trailing equal signs, turn identifier unsafe chars to safe ones + => _ and / => $
-    suffix = suffix.replace(new RegExp('=', 'g'), '')
-        .replace(new RegExp('\\+', 'g'), '_')
-        .replace(new RegExp('/', 'g'), '$');
-    return '__cov_' + suffix;
+    return 'cov_' + parseInt(hash.digest('hex').substr(0, 12), 16).toString(36);
 }
 
 // VisitState holds the state of the visitor, provides helper functions
