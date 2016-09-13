@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.1.2...v1.1.3) (2016-09-13)
+
+
+### Performance Improvements
+
+* simplify coverage variable naming https://github.com/istanbuljs/istanbul-lib-instrument/pull/24 ([7252aae](https://github.com/istanbuljs/istanbul-lib-instrument/commit/7252aae))
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.1.1...v1.1.2) (2016-09-08)
 
