@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "arrify": "^1.0.1",
-    "lodash.assign": "^4.1.0",
     "micromatch": "^2.3.11",
+    "object-assign": "^4.1.0",
     "read-pkg-up": "^1.0.1",
     "require-main-filename": "^1.0.1"
   },

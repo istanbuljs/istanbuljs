@@ -1,4 +1,4 @@
-const assign = require('lodash.assign')
+const assign = require('object-assign')
 const arrify = require('arrify')
 const micromatch = require('micromatch')
 const path = require('path')
