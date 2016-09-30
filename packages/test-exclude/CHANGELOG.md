@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.3"></a>
+## [2.1.3](https://github.com/istanbuljs/test-exclude/compare/v2.1.2...v2.1.3) (2016-09-30)
+
+
+### Bug Fixes
+
+* switch lodash.assign to object-assign ([#16](https://github.com/istanbuljs/test-exclude/issues/16)) ([45a5488](https://github.com/istanbuljs/test-exclude/commit/45a5488))
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/istanbuljs/test-exclude/compare/v2.1.1...v2.1.2) (2016-08-31)
 
