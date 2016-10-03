@@ -16,7 +16,7 @@ function createData() {
     var coverageData = {
         "path": "/path/to/file.js",
         "statementMap": {
-            "1": {
+            "0": {
                 "start": {
                     "line": 2,
                     "column": 0
@@ -26,7 +26,7 @@ function createData() {
                     "column": 29
                 }
             },
-            "2": {
+            "1": {
                 "start": {
                     "line": 3,
                     "column": 0
@@ -40,9 +40,9 @@ function createData() {
         "fnMap": {},
         "branchMap": {},
         "s": {
+            "0": 0,
             "1": 0,
-            "2": 0,
-            "3": 0
+            "2": 0
         },
         "f": {},
         "b": {}
@@ -67,8 +67,8 @@ describe('transformer', function () {
         }).transform(coverageMap);
 
         assert.deepEqual(mapped.data[coverageData.path].statementMap, {
-            '1': { start: { line: 1, column: 13 }, end: { line: 1, column: 34 } },
-            '2': { start: { line: 2, column: 13 }, end: { line: 2, column: 52 } }
+            '0': { start: { line: 1, column: 13 }, end: { line: 1, column: 34 } },
+            '1': { start: { line: 2, column: 13 }, end: { line: 2, column: 52 } }
         });
     });
 });
