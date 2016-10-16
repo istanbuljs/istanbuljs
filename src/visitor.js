@@ -474,6 +474,7 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {coverageVa
                 INITIAL: coverageNode,
                 HASH: T.stringLiteral(hash)
             });
+            cv._blockHoist = 3;
             path.node.body.unshift(cv);
             return {
                 fileCoverage: coverageData,
