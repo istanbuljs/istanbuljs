@@ -48,7 +48,7 @@ describe('varia', function () {
     });
 
     it('returns last coverage object', function (cb) {
-        var instrumenter = new Instrumenter(),
+        var instrumenter = new Instrumenter({coverageVariable: '__testing_coverage__'}),
             generated,
             err,
             cov;
@@ -65,7 +65,8 @@ describe('varia', function () {
 
     it('creates a source-map when requested', function () {
         var opts = {
-                produceSourceMap: true
+                produceSourceMap: true,
+                coverageVariable: '__testing_coverage__'
             },
             instrumenter = new Instrumenter(opts),
             generated = instrumenter.instrumentSync('output = args[0]', __filename);
@@ -83,7 +84,8 @@ describe('varia', function () {
                 u = sourceMapUrl;
             },
             opts = {
-                sourceMapUrlCallback: fn
+                sourceMapUrlCallback: fn,
+                coverageVariable: '__testing_coverage__'
             },
             instrumenter = new Instrumenter(opts),
             generated = instrumenter.instrumentSync('/* foobar */ output = args[0]\n// @sourceMappingURL=foo.map', __filename);
@@ -95,7 +97,7 @@ describe('varia', function () {
 
     describe('callback style instrumentation', function () {
         it('allows filename to be optional', function (cb) {
-            var instrumenter = new Instrumenter(),
+            var instrumenter = new Instrumenter({coverageVariable: '__testing_coverage__'}),
                 generated,
                 err;
 
@@ -108,7 +110,7 @@ describe('varia', function () {
             });
         });
         it('returns instead of throwing errors', function () {
-            var instrumenter = new Instrumenter(),
+            var instrumenter = new Instrumenter({coverageVariable: '__testing_coverage__'}),
                 generated = null,
                 err = null;
 

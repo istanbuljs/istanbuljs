@@ -79,12 +79,13 @@ function create(code, opts, instrumenterOpts) {
 
     opts = opts || {};
     instrumenterOpts = instrumenterOpts || {};
+    instrumenterOpts.coverageVariable = instrumenterOpts.coverageVariable || '__testing_coverage__';
 
     var debug = extractTestOption(opts, 'debug', process.env.DEBUG==="1"),
         file = extractTestOption(opts, 'file', __filename),
         generateOnly = extractTestOption(opts, 'generateOnly', false),
         quiet = extractTestOption(opts, 'quiet', false),
-        coverageVariable = instrumenterOpts.coverageVariable || '__coverage__',
+        coverageVariable = instrumenterOpts.coverageVariable,
         g = getGlobalObject(),
         instrumenter,
         instrumenterOutput,

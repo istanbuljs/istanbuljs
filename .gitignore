@@ -4,5 +4,4 @@ coverage
 test/instrumenter/generated-cases.js
 docs/
 dist/
-
-
+.nyc_output
