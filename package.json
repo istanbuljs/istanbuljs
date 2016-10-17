@@ -5,20 +5,22 @@
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
   "scripts": {
-    "fast": "mocha --recursive test/",
     "pretest": "jshint --exclude=**/prettify.js index.js lib/ test/",
-    "test": "istanbul cover -x 'docs/**' -x '**/assets/**' --include-all-sources --print=both _mocha --  --recursive test/",
-    "xposttest": "istanbul check-coverage --statements 95 --branches 80"
+    "test": "nyc --all mocha --recursive test/",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "release": "standard-version"
   },
   "dependencies": {
     "handlebars": "^4.0.3"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
+    "chai": "^3.5.0",
     "coveralls": "^2.11.4",
-    "istanbul": "^0.4.0",
+    "istanbul-lib-coverage": "^1.0.0",
     "jshint": "^2.8.0",
-    "mocha": "^2.3.3"
+    "mocha": "^3.1.2",
+    "nyc": "^8.3.1",
+    "standard-version": "^3.0.0"
   },
   "license": "BSD-3-Clause",
   "repository": {
