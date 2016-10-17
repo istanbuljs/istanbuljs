@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.4"></a>
+## [1.1.4](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.1.3...v1.1.4) (2016-10-17)
+
+
+### Bug Fixes
+
+* hoist coverage variable to very top of file ([#26](https://github.com/istanbuljs/istanbul-lib-instrument/issues/26)) ([0225e8c](https://github.com/istanbuljs/istanbul-lib-instrument/commit/0225e8c))
+
+
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.1.2...v1.1.3) (2016-09-13)
 
