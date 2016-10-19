@@ -5,8 +5,8 @@
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "dist/index.js",
   "scripts": {
-    "release": "babel src --out-dir dist && documentation build -f md -o api.md src/*js",
-    "test": "NODE_ENV=test nyc --check-coverage --statements 90 --branches 80 mocha --recursive test/",
+    "release": "babel src --out-dir dist && documentation build -f md -o api.md src",
+    "test": "cross-env NODE_ENV=test nyc --check-coverage --statements 90 --branches 80 mocha --recursive test/",
     "pretest": "jshint src/ test/",
     "prepublish": "npm test && npm run release",
     "version": "standard-version",
@@ -28,6 +28,7 @@
     "chai": "^3.0.0",
     "clone": "^2.0.0",
     "coveralls": "^2.11.4",
+    "cross-env": "^2.0.1",
     "documentation": "^4.0.0-beta9",
     "js-yaml": "^3.3.1",
     "jshint": "^2.8.0",
