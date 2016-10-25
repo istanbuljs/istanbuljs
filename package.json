@@ -18,7 +18,8 @@
     "babel-traverse": "^6.9.0",
     "babel-types": "^6.10.2",
     "babylon": "^6.8.1",
-    "istanbul-lib-coverage": "^1.0.0"
+    "istanbul-lib-coverage": "^1.0.0",
+    "semver": "^5.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",

@@ -1,5 +1,6 @@
 import Instrumenter from './instrumenter';
 import programVisitor from './visitor';
+import readInitialCoverage from './read-coverage';
 
 /**
  * createInstrumenter creates a new instrumenter with the
@@ -13,4 +14,4 @@ function createInstrumenter(opts) {
 
 export {createInstrumenter};
 export {programVisitor};
-
+export {readInitialCoverage};

@@ -1,9 +1,8 @@
 import {SourceCoverage} from './source-coverage';
+import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 import {createHash} from 'crypto';
 import template from 'babel-template';
 
-// function to use for creating hashes
-const SHA = 'sha1';
 // istanbul ignore comment pattern
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
 // source map URL pattern
@@ -465,8 +464,10 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {coverageVa
         exit(path) {
             visitState.cov.freeze();
             const coverageData = visitState.cov.toJSON();
+            coverageData[MAGIC_KEY] = MAGIC_VALUE;
             const hash = createHash(SHA).update(JSON.stringify(coverageData)).digest('hex');
             const coverageNode = T.valueToNode(coverageData);
+            delete coverageData[MAGIC_KEY];
             const cv = coverageTemplate({
                 GLOBAL_COVERAGE_VAR: T.stringLiteral(opts.coverageVariable),
                 COVERAGE_VAR: T.identifier(visitState.varName),
