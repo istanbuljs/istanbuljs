@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.2.0...v1.3.0) (2016-11-10)
+
+
+### Features
+
+* allow an input source-map to be passed to instrumentSync()  ([#23](https://github.com/istanbuljs/istanbul-lib-instrument/issues/23)) ([b08e4f5](https://github.com/istanbuljs/istanbul-lib-instrument/commit/b08e4f5))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.1.4...v1.2.0) (2016-10-25)
 
