@@ -49,7 +49,7 @@ class Verifier {
         assert.deepEqual(cov.b, expectedCoverage.branches || {}, 'Branch coverage mismatch');
         assert.deepEqual(cov.s, expectedCoverage.statements || {}, 'Statement coverage mismatch');
         assert.deepEqual(cov.data.inputSourceMap, expectedCoverage.inputSourceMap || undefined, "Input source map mismatch");
-		const initial = readInitialCoverage(this.getGeneratedCode());
+        const initial = readInitialCoverage(this.getGeneratedCode());
         assert.ok(initial);
         assert.deepEqual(initial.coverageData, this.result.emptyCoverage);
         assert.ok(initial.path);
