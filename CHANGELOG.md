@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/istanbuljs/istanbul-lib-source-maps/compare/v1.0.2...v1.1.0) (2016-11-10)
+
+
+### Features
+
+* read and apply any input source maps stored with coverage data  ([#4](https://github.com/istanbuljs/istanbul-lib-source-maps/issues/4)) ([aea405b](https://github.com/istanbuljs/istanbul-lib-source-maps/commit/aea405b))
+
+
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/istanbuljs/istanbul-lib-source-maps/compare/v1.0.1...v1.0.2) (2016-10-03)
 
