@@ -48,7 +48,8 @@ class Verifier {
         assert.deepEqual(cov.f, expectedCoverage.functions || {}, 'Function coverage mismatch');
         assert.deepEqual(cov.b, expectedCoverage.branches || {}, 'Branch coverage mismatch');
         assert.deepEqual(cov.s, expectedCoverage.statements || {}, 'Statement coverage mismatch');
-        const initial = readInitialCoverage(this.getGeneratedCode());
+        assert.deepEqual(cov.data.inputSourceMap, expectedCoverage.inputSourceMap || undefined, "Input source map mismatch");
+		const initial = readInitialCoverage(this.getGeneratedCode());
         assert.ok(initial);
         assert.deepEqual(initial.coverageData, this.result.emptyCoverage);
         assert.ok(initial.path);
@@ -57,6 +58,7 @@ class Verifier {
         }
         assert.equal(initial.gcv, this.result.coverageVariable);
         assert.ok(initial.hash);
+
     }
 
     getCoverage() {
@@ -85,7 +87,7 @@ function extractTestOption(opts, name, defaultValue) {
     return v;
 }
 
-function create(code, opts, instrumenterOpts) {
+function create(code, opts, instrumenterOpts, inputSourceMap) {
 
     opts = opts || {};
     instrumenterOpts = instrumenterOpts || {};
@@ -108,7 +110,7 @@ function create(code, opts, instrumenterOpts) {
     }
     instrumenter = new Instrumenter(instrumenterOpts);
     try {
-        instrumenterOutput = instrumenter.instrumentSync(code, file);
+        instrumenterOutput = instrumenter.instrumentSync(code, file, inputSourceMap);
         if (debug) {
             console.log('================== Original ============================================');
             console.log(annotatedCode(code));

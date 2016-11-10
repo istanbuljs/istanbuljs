@@ -39,6 +39,9 @@ is supported. To instrument ES6 modules, make sure that you set the
 
 -   `code` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the code to instrument
 -   `filename` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the filename against which to track coverage.
+-   `inputSourceMap` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** the source map that maps the not instrumented code back to it's original form.
+    Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
+    coverage to the untranspiled source.
 
 Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the instrumented code.
 
@@ -53,6 +56,9 @@ the callback will be called in the same process tick and is not asynchronous.
 -   `code` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the code to instrument
 -   `filename` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the filename against which to track coverage.
 -   `callback` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** the callback
+-   `inputSourceMap` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the source map that maps the not instrumented code back to it's original form.
+    Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
+    coverage to the untranspiled source.
 
 ## lastFileCoverage
 
@@ -84,5 +90,7 @@ The exit function returns an object that currently has the following keys:
 
 -   `types` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** an instance of babel-types
 -   `sourceFilePath` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)](default 'unknown.js')** the path to source file
--   `opts` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {coverageVariable: '\_\_coverage\_\_'})** additional options
+-   `opts` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {coverageVariable: '\_\_coverage\_\_', inputSourceMap: undefined })** additional options
     -   `opts.coverageVariable` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** the global coverage variable name. (optional, default `__coverage__`)
+    -   `opts.inputSourceMap` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** the input source map, that maps the uninstrumented code back to the
+        original code. (optional, default `undefined`)

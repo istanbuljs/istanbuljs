@@ -67,9 +67,12 @@ class Instrumenter {
      *
      * @param {string} code - the code to instrument
      * @param {string} filename - the filename against which to track coverage.
+     * @param {object} [inputSourceMap] - the source map that maps the not instrumented code back to it's original form.
+     * Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
+     * coverage to the untranspiled source.
      * @returns {string} the instrumented code.
      */
-    instrumentSync(code, filename) {
+    instrumentSync(code, filename, inputSourceMap) {
         if (typeof code !== 'string') {
             throw new Error('Code must be a string');
         }
@@ -80,7 +83,8 @@ class Instrumenter {
             sourceType: opts.esModules ? "module" : "script"
         });
         const ee = programVisitor(t, filename, {
-            coverageVariable: opts.coverageVariable
+            coverageVariable: opts.coverageVariable,
+            inputSourceMap: inputSourceMap
         });
         let output = {};
         const visitor = {
@@ -115,14 +119,17 @@ class Instrumenter {
      * @param {string} code - the code to instrument
      * @param {string} filename - the filename against which to track coverage.
      * @param {Function} callback - the callback
+     * @param {Object} inputSourceMap - the source map that maps the not instrumented code back to it's original form.
+     * Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
+     * coverage to the untranspiled source.
      */
-    instrument(code, filename, callback) {
+    instrument(code, filename, callback, inputSourceMap) {
         if (!callback && typeof filename === 'function') {
             callback = filename;
             filename = null;
         }
         try {
-            var out = this.instrumentSync(code, filename);
+            var out = this.instrumentSync(code, filename, inputSourceMap);
             callback(null, out);
         } catch (ex) {
             callback(ex);

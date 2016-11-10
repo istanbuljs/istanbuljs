@@ -58,7 +58,7 @@ function generateTests(docs) {
                 (doc.tests || []).forEach(function (t) {
                     var fn =  function () {
                         var genOnly = (doc.opts || {}).generateOnly,
-                            v = verifier.create(doc.code, doc.opts || {}, doc.instrumentOpts),
+                            v = verifier.create(doc.code, doc.opts || {}, doc.instrumentOpts, doc.inputSourceMap),
                             test = clone(t),
                             args = test.args,
                             out = test.out;

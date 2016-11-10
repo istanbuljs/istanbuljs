@@ -1,0 +1,24 @@
+---
+name: defined input source map
+code: |
+  output = "test"
+inputSourceMap: { file: "test.js", mappings: "", names: [], sourceRoot: undefined, sources: [ "test.js" ], sourcesContent: [ 'output = "test"' ], version: 3 }
+tests:
+  - name: sets the input source map
+    args: []
+    out: "test"
+    lines: { '1': 1 }
+    statements: { '0': 1 }
+    inputSourceMap: { file: "test.js", mappings: "", names: [], sourceRoot: undefined, sources: [ "test.js" ], sourcesContent: [ 'output = "test"' ], version: 3 }
+---
+name: without input source map
+code: |
+  output = "test"
+inputSourceMap: undefined
+tests:
+  - name: is not set on the coverage object
+    args: []
+    out: "test"
+    lines: { '1': 1 }
+    statements: { '0': 1 }
+    inputSourceMap: undefined

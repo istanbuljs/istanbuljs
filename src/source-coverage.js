@@ -80,6 +80,15 @@ class SourceCoverage extends classes.FileCoverage {
         return counts.length - 1;
     }
 
+    /**
+     * Assigns an input source map to the coverage that can be used
+     * to remap the coverage output to the original source
+     * @param sourceMap {object} the source map
+     */
+    inputSourceMap(sourceMap) {
+        this.data.inputSourceMap = sourceMap;
+    }
+
     freeze() {
         // prune empty branches
         var map = this.data.branchMap,
