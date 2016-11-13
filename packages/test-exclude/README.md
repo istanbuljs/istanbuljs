@@ -37,6 +37,19 @@ if (exclude({configKey: 'test'}).shouldInstrument('./index.js')) {
 }
 ```
 
+## Including node_modules folder
+
+by default the `node_modules` folder is added to all groups of
+exclude rules. In the rare case that you wish to instrument files
+stored in `node_modules`, a negative glob can be used:
+
+```js
+const exclude = require('test-exclude')
+const e = exclude({
+  exclude: ['!**/node_modules/**']
+})
+```
+
 ## License
 
 ISC

@@ -47,9 +47,20 @@ describe('testExclude', function () {
     e.shouldInstrument('src/foo/bar.js').should.equal(true)
   })
 
-  it('does not exclude anything if an empty array passed', function () {
+  it('excludes node_modules folder, even when empty exclude group is provided', function () {
     const e = exclude({
       exclude: []
+    })
+
+    e.shouldInstrument('node_modules/some/module/to/cover.js').should.equal(false)
+    e.shouldInstrument('__tests__/a-test.js').should.equal(true)
+    e.shouldInstrument('src/a.test.js').should.equal(true)
+    e.shouldInstrument('src/foo.js').should.equal(true)
+  })
+
+  it('allows node_modules folder to be included, if !node_modules is explicitly provided', function () {
+    const e = exclude({
+      exclude: ['!**/node_modules/**']
     })
 
     e.shouldInstrument('node_modules/some/module/to/cover.js').should.equal(true)
