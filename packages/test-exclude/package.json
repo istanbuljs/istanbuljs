@@ -28,10 +28,10 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.12",
-    "mocha": "^2.5.3",
-    "nyc": "^7.1.0",
-    "standard": "^7.1.2",
-    "standard-version": "^2.4.0"
+    "mocha": "^3.1.2",
+    "nyc": "^8.4.0",
+    "standard": "^8.5.0",
+    "standard-version": "^3.0.0"
   },
   "dependencies": {
     "arrify": "^1.0.1",
