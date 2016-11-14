@@ -15,6 +15,10 @@ describe('testExclude', function () {
     exclude().shouldInstrument('./foo.test.js').should.equal(false)
   })
 
+  it('matches files in root with **/', function () {
+    exclude().shouldInstrument('__tests__/**').should.equal(false)
+  })
+
   it('does not instrument files outside cwd', function () {
     exclude().shouldInstrument('../foo.js').should.equal(false)
   })
@@ -82,11 +86,9 @@ describe('testExclude', function () {
     exclude.defaultExclude.should.deep.equal([
       'test/**',
       'test{,-*}.js',
-      '*.test.js',
       '**/*.test.js',
       '**/__tests__/**',
-      '**/node_modules/**',
-      'node_modules/**'
+      '**/node_modules/**'
     ])
   })
 

@@ -81,6 +81,12 @@ function prepGlobPatterns (patterns) {
     if (!/\/\*\*$/.test(pattern)) {
       result = result.concat(pattern.replace(/\/$/, '') + '/**')
     }
+
+    // Any rules of the form **/foo.js, should also match foo.js.
+    if (/^\*\*\//.test(pattern)) {
+      result = result.concat(pattern.replace(/^\*\*\//, ''))
+    }
+
     return result.concat(pattern)
   }, [])
 }
@@ -92,11 +98,9 @@ var exportFunc = function (opts) {
 exportFunc.defaultExclude = [
   'test/**',
   'test{,-*}.js',
-  '*.test.js',
   '**/*.test.js',
   '**/__tests__/**',
-  '**/node_modules/**',
-  'node_modules/**'
+  '**/node_modules/**'
 ]
 
 module.exports = exportFunc
