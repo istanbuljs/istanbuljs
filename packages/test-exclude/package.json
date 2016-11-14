@@ -1,6 +1,6 @@
 {
   "name": "test-exclude",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "test for inclusion or exclusion of paths using pkg-conf and globs",
   "main": "index.js",
   "scripts": {
