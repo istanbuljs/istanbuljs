@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.2.2"></a>
+## [3.2.2](https://github.com/istanbuljs/test-exclude/compare/v3.2.1...v3.2.2) (2016-11-14)
+
+
+### Bug Fixes
+
+* we no longer need to add node_modules/** rule ([d0cfbc3](https://github.com/istanbuljs/test-exclude/commit/d0cfbc3))
+
+
+
 <a name="3.2.1"></a>
 ## [3.2.1](https://github.com/istanbuljs/test-exclude/compare/v3.2.0...v3.2.1) (2016-11-14)
 
