@@ -30,7 +30,6 @@ function TestExclude (opts) {
 
   if (!this.removeNegatedModuleExclude() && this.exclude.indexOf('**/node_modules/**') === -1) {
     this.exclude.push('**/node_modules/**')
-    this.exclude.push('node_modules/**')
   }
 
   this.exclude = prepGlobPatterns(
