@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/istanbuljs/test-exclude/compare/v3.0.0...v3.1.0) (2016-11-14)
+
+
+### Features
+
+* we now support dot folders ([f2c1598](https://github.com/istanbuljs/test-exclude/commit/f2c1598))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/istanbuljs/test-exclude/compare/v2.1.3...v3.0.0) (2016-11-13)
 
