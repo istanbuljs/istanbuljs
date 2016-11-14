@@ -92,6 +92,7 @@ var exportFunc = function (opts) {
 exportFunc.defaultExclude = [
   'test/**',
   'test{,-*}.js',
+  '*.test.js',
   '**/*.test.js',
   '**/__tests__/**',
   '**/node_modules/**',
