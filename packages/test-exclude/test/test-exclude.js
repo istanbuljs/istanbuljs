@@ -7,6 +7,7 @@ require('chai').should()
 describe('testExclude', function () {
   it('should exclude the node_modules folder by default', function () {
     exclude().shouldInstrument('./banana/node_modules/cat.js').should.equal(false)
+    exclude().shouldInstrument('node_modules/cat.js').should.equal(false)
   })
 
   it('ignores ./', function () {
@@ -47,11 +48,17 @@ describe('testExclude', function () {
     e.shouldInstrument('src/foo/bar.js').should.equal(true)
   })
 
+  it("handles folder '.' in path", function () {
+    const e = exclude()
+    e.shouldInstrument('test/fixtures/basic/.next/dist/pages/async-props.js').should.equal(false)
+  })
+
   it('excludes node_modules folder, even when empty exclude group is provided', function () {
     const e = exclude({
       exclude: []
     })
 
+    e.shouldInstrument('./banana/node_modules/cat.js').should.equal(false)
     e.shouldInstrument('node_modules/some/module/to/cover.js').should.equal(false)
     e.shouldInstrument('__tests__/a-test.js').should.equal(true)
     e.shouldInstrument('src/a.test.js').should.equal(true)
@@ -63,6 +70,7 @@ describe('testExclude', function () {
       exclude: ['!**/node_modules/**']
     })
 
+    e.shouldInstrument('./banana/node_modules/cat.js').should.equal(true)
     e.shouldInstrument('node_modules/some/module/to/cover.js').should.equal(true)
     e.shouldInstrument('__tests__/a-test.js').should.equal(true)
     e.shouldInstrument('src/a.test.js').should.equal(true)
@@ -75,7 +83,8 @@ describe('testExclude', function () {
       'test{,-*}.js',
       '**/*.test.js',
       '**/__tests__/**',
-      '**/node_modules/**'
+      '**/node_modules/**',
+      'node_modules/**'
     ])
   })
 

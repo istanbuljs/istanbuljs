@@ -30,6 +30,7 @@ function TestExclude (opts) {
 
   if (!this.removeNegatedModuleExclude() && this.exclude.indexOf('**/node_modules/**') === -1) {
     this.exclude.push('**/node_modules/**')
+    this.exclude.push('node_modules/**')
   }
 
   this.exclude = prepGlobPatterns(
@@ -58,7 +59,7 @@ TestExclude.prototype.shouldInstrument = function (filename, relFile) {
   if (/^\.\./.test(path.relative(this.cwd, filename))) return false
 
   relFile = relFile.replace(/^\.[\\\/]/, '') // remove leading './' or '.\'.
-  return (!this.include || micromatch.any(relFile, this.include)) && !micromatch.any(relFile, this.exclude)
+  return (!this.include || micromatch.any(relFile, this.include, {dotfiles: true})) && !micromatch.any(relFile, this.exclude, {dotfiles: true})
 }
 
 TestExclude.prototype.pkgConf = function (key, path) {
@@ -93,7 +94,8 @@ exportFunc.defaultExclude = [
   'test{,-*}.js',
   '**/*.test.js',
   '**/__tests__/**',
-  '**/node_modules/**'
+  '**/node_modules/**',
+  'node_modules/**'
 ]
 
 module.exports = exportFunc
