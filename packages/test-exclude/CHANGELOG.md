@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.3.0"></a>
+# [3.3.0](https://github.com/istanbuljs/test-exclude/compare/v3.2.2...v3.3.0) (2016-11-22)
+
+
+### Features
+
+* allow include/exclude rules to be a string rather than array ([#22](https://github.com/istanbuljs/test-exclude/issues/22)) ([f8f99c6](https://github.com/istanbuljs/test-exclude/commit/f8f99c6))
+
+
+
 <a name="3.2.2"></a>
 ## [3.2.2](https://github.com/istanbuljs/test-exclude/compare/v3.2.1...v3.2.2) (2016-11-14)
 
