@@ -14,6 +14,9 @@ function TestExclude (opts) {
     configFound: false
   }, opts)
 
+  if (typeof this.include === 'string') this.include = [this.include]
+  if (typeof this.exclude === 'string') this.exclude = [this.exclude]
+
   if (!this.include && !this.exclude && this.configKey) {
     assign(this, this.pkgConf(this.configKey, this.configPath))
   }

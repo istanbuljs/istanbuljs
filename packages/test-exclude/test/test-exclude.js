@@ -183,4 +183,14 @@ describe('testExclude', function () {
       })
     })
   })
+
+  // see: https://github.com/istanbuljs/babel-plugin-istanbul/issues/71
+  it('allows exclude/include rule to be a string', function () {
+    const e = exclude({
+      exclude: 'src/**/*.spec.js',
+      include: 'src/**'
+    })
+    e.shouldInstrument('src/batman/robin/foo.spec.js').should.equal(false)
+    e.shouldInstrument('src/batman/robin/foo.js').should.equal(true)
+  })
 })
