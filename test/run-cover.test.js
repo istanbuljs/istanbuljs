@@ -63,9 +63,9 @@ describe('run cover', function () {
             assert.ok(coverageMap);
             coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
             assert.ok(coverage);
-            assert.deepEqual(coverage.s, { 1:1, 2:0, 3:1, 4:1, 5:1 });
-            assert.deepEqual(coverage.f, { 1:1, 2: 0 });
-            assert.deepEqual(coverage.b, { 1: [1 ,0], 2: [1,0] });
+            assert.deepEqual(coverage.s, { 0:1, 1:0, 2:1, 3:1, 4:1 });
+            assert.deepEqual(coverage.f, { 0:1, 1:0 });
+            assert.deepEqual(coverage.b, { 0: [1 ,0], 1: [1,0] });
             exitFn();
             assert.ok(fs.existsSync(path.resolve(outputDir, 'coverage.raw.json')));
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov.info')));
