@@ -6,7 +6,7 @@
   "scripts": {
     "fast": "mocha --slow 1000 test/",
     "pretest": "jshint index.js lib/ test/",
-    "test": "istanbul cover -x 'docs/**' --include-all-sources --print=both _mocha -- --slow 2000 -t 5000 test/",
+    "test": "istanbul cover -x 'docs/**' --include-all-sources --print=both node_modules/mocha/bin/_mocha -- --slow 2000 -t 5000 test/",
     "xposttest": "istanbul check-coverage --statements 95 --branches 80"
   },
   "repository": {
