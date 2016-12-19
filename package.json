@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "async": "1.x",
-    "fileset": "0.2.x",
+    "fileset": "^2.0.2",
     "istanbul-lib-coverage": "^1.0.0-alpha",
     "istanbul-lib-hook": "^1.0.0-alpha",
     "istanbul-lib-instrument": "^1.1.0-alpha",

@@ -144,7 +144,7 @@ describe('run instrument', function () {
                 function (err) {
                     assert.ok(!err);
                     assert.ok(fs.existsSync(outFile('foo.js')));
-                    assert.ok(fs.existsSync(outFile('node_modules/adder.js')));
+                    assert.ok(!fs.existsSync(outFile('node_modules/adder.js')));
                     assert.ok(fs.existsSync(outFile('baseline.raw.json')));
                     cb();
                 });

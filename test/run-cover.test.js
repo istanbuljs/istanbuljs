@@ -122,7 +122,7 @@ describe('run cover', function () {
             assert.ok(coverageMap);
             assert.ok(coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
-            assert.ok(coverageMap[path.resolve(codeRoot, 'node_modules', 'adder.js')]);
+            assert.ifError(coverageMap[path.resolve(codeRoot, 'node_modules', 'adder.js')]);
             cb();
         });
     });
