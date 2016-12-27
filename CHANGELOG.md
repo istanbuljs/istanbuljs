@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.3.0...v1.3.1) (2016-12-27)
+
+
+### Bug Fixes
+
+* function declaration assignment now retains function name ([#33](https://github.com/istanbuljs/istanbul-lib-instrument/issues/33)) ([2d781da](https://github.com/istanbuljs/istanbul-lib-instrument/commit/2d781da))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.2.0...v1.3.0) (2016-11-10)
 
