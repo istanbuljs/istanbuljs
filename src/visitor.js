@@ -189,6 +189,12 @@ class VisitState {
                 end: { line: n.loc.start.line, column: n.loc.start.column + 1 }
             };
         }
+        if (!n.id) {
+            const decl = path.find(node => node.isVariableDeclarator());
+            if (decl) {
+                n.id = decl.get('id').node;
+            }
+        }
         const name = path.node.id ? path.node.id.name : path.node.name;
         const index = this.cov.newFunction(name, dloc, path.node.body.loc);
         const increment = this.increase('f', index, null);

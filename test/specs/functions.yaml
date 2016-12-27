@@ -95,3 +95,15 @@ tests:
     branches: {'0': [0, 1]}
     functions: {'0': 1, '1': 1}
     statements: {'0': 1, '1': 1, '2': 1 }
+
+---
+name: function declaration assignment name
+code: |
+  const foo = function() {}
+  output = foo.name;
+tests:
+  - name: properly sets function name
+    out: 'foo'
+    lines: {'1': 1, '2': 1}
+    functions: {'0': 0}
+    statements: {'0': 1, '1': 1}
