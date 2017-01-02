@@ -36,7 +36,6 @@ class Verifier {
     }
 
     verify(args, expectedOutput, expectedCoverage) {
-
         assert.ok(!this.result.err, (this.result.err || {}).message);
         getGlobalObject()[this.result.coverageVariable] = clone(this.result.baseline);
         var actualOutput = this.result.fn(args),
@@ -58,7 +57,6 @@ class Verifier {
         }
         assert.equal(initial.gcv, this.result.coverageVariable);
         assert.ok(initial.hash);
-
     }
 
     getCoverage() {
