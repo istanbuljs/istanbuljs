@@ -145,9 +145,12 @@ class VisitState {
         } else if (path.isStatement()) {
             path.insertBefore(T.expressionStatement(increment));
         } else if ((path.isFunctionExpression() || path.isArrowFunctionExpression()) && T.isVariableDeclarator(path.parentPath)) {
-            path.parentPath.parentPath.insertBefore(T.expressionStatement(
-                increment
-            ));
+            const parent = path.findParent((path) => path.parentPath.isProgram());
+            if (parent) {
+                parent.insertBefore(T.expressionStatement(
+                    increment
+                ));
+            }
         } else /* istanbul ignore else: not expected */ if (path.isExpression()) {
             path.replaceWith(T.sequenceExpression([increment, path.node]));
         } else {
