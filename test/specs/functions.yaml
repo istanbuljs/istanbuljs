@@ -110,3 +110,39 @@ tests:
     functions: {'0': 0, '1': 0}
     statements: {'0': 1, '1': 1, '2': 1}
     guard: isInferredFunctionNameAvailable
+
+
+---
+name: function declaration assignment name (top-level)
+guard: isInferredFunctionNameAvailable
+code: |
+  const foo = function() {}
+  var bar = function() {}
+  output = foo.name + ' ' + bar.name;
+tests:
+  - name: properly sets function name
+    out: 'foo bar'
+    lines: {'1': 1, '2': 1, '3': 1}
+    functions: {'0': 0, '1': 0}
+    statements: {'0': 1, '1': 1, '2': 1}
+    guard: isInferredFunctionNameAvailable
+
+---
+name: function declaration assignment name (in function)
+guard: isInferredFunctionNameAvailable
+code: |
+  function a () {
+    const foo = function () {}
+  }
+  function b () {
+    const bar = function () {}
+    return bar.name
+  }
+  output = b()
+tests:
+  - name: properly sets function name
+    out: 'bar'
+    lines: {'2': 0, '5': 1, '6': 1, '8': 1}
+    functions: {'0': 0, '1': 0, '2': 1, '3': 0}
+    statements: {'0': 0, '1': 1, '2': 1, '3': 1}
+    guard: isInferredFunctionNameAvailable

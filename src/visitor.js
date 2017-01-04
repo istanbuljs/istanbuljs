@@ -145,11 +145,15 @@ class VisitState {
         } else if (path.isStatement()) {
             path.insertBefore(T.expressionStatement(increment));
         } else if ((path.isFunctionExpression() || path.isArrowFunctionExpression()) && T.isVariableDeclarator(path.parentPath)) {
-            const parent = path.findParent((path) => path.parentPath.isProgram());
-            if (parent) {
+            // make an attempt to hoist the statement counter, so that
+            // function names are maintained.
+            const parent = path.parentPath.parentPath;
+            if (parent && (T.isProgram(parent.parentPath) || T.isBlockStatement(parent.parentPath))) {
                 parent.insertBefore(T.expressionStatement(
                     increment
                 ));
+            } else {
+                path.replaceWith(T.sequenceExpression([increment, path.node]));
             }
         } else /* istanbul ignore else: not expected */ if (path.isExpression()) {
             path.replaceWith(T.sequenceExpression([increment, path.node]));
