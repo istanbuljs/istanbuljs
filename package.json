@@ -11,7 +11,7 @@
     "posttest": "istanbul check-coverage --statements 95 --branches 80"
   },
   "dependencies": {
-    "append-transform": "^0.3.0"
+    "append-transform": "^0.4.0"
   },
   "devDependencies": {
     "chai": "^3.0.0",
