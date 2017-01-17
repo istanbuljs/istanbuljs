@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/istanbuljs/istanbul-api/compare/v1.1.0...v1.1.1) (2017-01-17)
+
+
+### Bug Fixes
+
+* explicit upgrade to version of istanbul-lib-hook with fix for ts-node ([a4af720](https://github.com/istanbuljs/istanbul-api/commit/a4af720))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/istanbuljs/istanbul-api/compare/v1.1.0-alpha.1...v1.1.0) (2016-12-27)
 
