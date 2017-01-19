@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/istanbuljs/test-exclude/compare/v3.3.0...v4.0.0) (2017-01-19)
+
+
+### Features
+
+* add coverage to default excludes ([#23](https://github.com/istanbuljs/test-exclude/issues/23)) ([59e8bbf](https://github.com/istanbuljs/test-exclude/commit/59e8bbf))
+
+
+### BREAKING CHANGES
+
+* additional coverage folder is now excluded
+
+
+
 <a name="3.3.0"></a>
 # [3.3.0](https://github.com/istanbuljs/test-exclude/compare/v3.2.2...v3.3.0) (2016-11-22)
 
