@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "standard",
-    "test": "nyc mocha ./test/*.js",
+    "test": "nyc mocha",
     "release": "standard-version"
   },
   "repository": {
@@ -43,7 +43,7 @@
   "nyc": {
     "check-coverage": true,
     "statements": 100,
-    "branches": 96,
+    "branches": 97,
     "lines": 100,
     "functions": 100,
     "reporter": [

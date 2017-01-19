@@ -23,6 +23,10 @@ describe('testExclude', function () {
     exclude().shouldInstrument('../foo.js').should.equal(false)
   })
 
+  it('does not instrument files in the coverage folder by default', function () {
+    exclude().shouldInstrument('coverage/foo.js').should.equal(false)
+  })
+
   it('applies exclude rule ahead of include rule', function () {
     const e = exclude({
       include: ['test.js', 'foo.js'],
@@ -84,6 +88,7 @@ describe('testExclude', function () {
 
   it('exports defaultExclude', function () {
     exclude.defaultExclude.should.deep.equal([
+      'coverage/**',
       'test/**',
       'test{,-*}.js',
       '**/*.test.js',

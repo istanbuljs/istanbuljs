@@ -60,7 +60,7 @@ TestExclude.prototype.shouldInstrument = function (filename, relFile) {
   // Don't instrument files that are outside of the current working directory.
   if (/^\.\./.test(path.relative(this.cwd, filename))) return false
 
-  relFile = relFile.replace(/^\.[\\\/]/, '') // remove leading './' or '.\'.
+  relFile = relFile.replace(/^\.[\\/]/, '') // remove leading './' or '.\'.
   return (!this.include || micromatch.any(relFile, this.include, {dotfiles: true})) && !micromatch.any(relFile, this.exclude, {dotfiles: true})
 }
 
@@ -98,6 +98,7 @@ var exportFunc = function (opts) {
 }
 
 exportFunc.defaultExclude = [
+  'coverage/**',
   'test/**',
   'test{,-*}.js',
   '**/*.test.js',
