@@ -4,6 +4,10 @@
   "description": "istanbul reports",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "scripts": {
     "pretest": "jshint --exclude=**/prettify.js index.js lib/ test/",
     "test": "nyc --all mocha --recursive test/",
