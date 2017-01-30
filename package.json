@@ -19,7 +19,7 @@
     "coveralls": "^2.11.4",
     "istanbul": "^0.4.0",
     "jshint": "^2.8.0",
-    "mocha": "^2.3.3",
+    "mocha": "^3.2.0",
     "standard-version": "^4.0.0"
   },
   "repository": {
