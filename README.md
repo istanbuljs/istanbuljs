@@ -1,6 +1,7 @@
 istanbul-lib-coverage
 ---------------------
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/istanbuljs/istanbul-lib-coverage.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/istanbuljs/istanbul-lib-coverage.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbul-lib-coverage)
 
 An API that provides a read-only view of coverage information with the ability
