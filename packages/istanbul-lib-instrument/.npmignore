@@ -1,0 +1,14 @@
+.npmignore
+.gitignore
+.jshintrc
+.travis.yml
+.babelrc
+.idea/
+coverage/
+test/
+src/
+bin/
+api.md
+v0-changes.md
+test.sh
+*.tgz

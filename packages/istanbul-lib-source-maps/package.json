@@ -1,0 +1,45 @@
+{
+  "name": "istanbul-lib-source-maps",
+  "version": "1.1.0",
+  "description": "Source maps support for istanbul",
+  "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+  "main": "index.js",
+  "scripts": {
+    "fast": "mocha test/",
+    "pretest": "jshint index.js lib/ test/",
+    "test": "istanbul cover --include-all-sources --print=both _mocha --  test/",
+    "xposttest": "istanbul check-coverage --statements 95 --branches 80",
+    "release": "standard-version"
+  },
+  "dependencies": {
+    "istanbul-lib-coverage": "^1.0.0-alpha.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.4.4",
+    "source-map": "^0.5.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.2.1",
+    "chai": "^3.4.1",
+    "istanbul": "^0.4.0",
+    "jshint": "^2.8.0",
+    "mocha": "^3.2.0",
+    "standard-version": "^4.0.0",
+    "ts-node": "^2.0.0"
+  },
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbul-lib-source-maps/issues"
+  },
+  "homepage": "https://github.com/istanbuljs/istanbul-lib-source-maps#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/istanbuljs/istanbul-lib-source-maps.git"
+  },
+  "keywords": [
+    "istanbul",
+    "sourcemaps",
+    "sourcemap",
+    "source",
+    "maps"
+  ]
+}

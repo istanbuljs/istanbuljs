@@ -1,0 +1,53 @@
+---
+name: simple do-while
+code: |
+  var x = args[0], i=0;
+  do { i++; } while (i < x);
+  output = i;
+tests:
+  - name: correct line coverage
+    args: [10]
+    out: 10
+    lines: {'1': 1, '2': 10, '3': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 10, '4': 1}
+
+  - name: single entry into while
+    args: [-1]
+    out: 1
+    lines: {'1': 1, '2': 1, '3': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 1}
+
+---
+name: block do-while on separate line
+code: |
+  var x = args[0], i=0;
+  do {
+     i++;
+  } while (i < x);
+  output = i;
+tests:
+  - name: correct line coverage
+    args: [10]
+    out: 10
+    lines: {'1': 1, '2': 1, '3': 10, '5': 1}
+    statements: {'0': 1, '1':1, '2': 1, '3': 10, '4': 1}
+
+  - name: single entry into while
+    args: [-1]
+    out: 1
+    lines: {'1': 1, '2': 1, '3': 1, '5': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 1}
+
+---
+name: ignore inside do-while
+code: |
+  do {
+     /* istanbul ignore next */
+     output = 20;
+  } while (false);
+  output = 10
+tests:
+  - args: []
+    out: 10
+    lines: {'1': 1, '5': 1}
+    statements: {'0': 1, '1': 1 }

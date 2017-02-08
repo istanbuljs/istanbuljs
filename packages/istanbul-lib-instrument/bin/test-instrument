@@ -1,0 +1,29 @@
+#!/usr/bin/env babel-node
+
+import {createInstrumenter} from '../src/index';
+import {readFileSync} from 'fs';
+
+const nopt = require('nopt');
+const opts = {
+    "compact": Boolean,
+    "module": Boolean,
+    "sourcemaps": Boolean
+};
+const parsed = nopt(opts, null, process.argv, 2);
+
+const args = parsed.argv.remain;
+const inst = createInstrumenter({compact: parsed.compact, esModules: parsed.module, produceSourceMap: parsed.sourcemaps});
+
+args.forEach(function (file) {
+    const content = readFileSync(file, 'utf8');
+    const out = inst.instrumentSync(content, file);
+    console.log('=====================');
+    console.log(file);
+    console.log('=====================');
+    console.log(out);
+    if (parsed.sourcemaps) {
+        console.log('=====================');
+        console.log(inst.lastSourceMap());
+    }
+});
+

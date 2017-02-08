@@ -1,0 +1,32 @@
+---
+name: simple for-of
+guard: isForOfAvailable
+code: |
+  function *x() { yield 1; yield 2; };
+  var k;
+  output = 0;
+  for (k of x()) {
+     output += k;
+  }
+tests:
+  - args: []
+    out: 3
+    lines: {'1': 1, '3': 1, '4': 1, '5': 2}
+    functions: {'0': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 2}
+---
+
+name: for-of with loop initializer
+guard: isForOfAvailable
+code: |
+  function *x() { yield 1; yield 2; };
+  output = 0;
+  for (var k of x()) {
+     output += k;
+  }
+tests:
+  - args: []
+    out: 3
+    lines: {'1': 1, '2': 1, '3': 1, '4': 2}
+    functions: {'0': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 2}

@@ -1,0 +1,42 @@
+{
+  "name": "istanbul-reports",
+  "version": "1.0.1",
+  "description": "istanbul reports",
+  "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "scripts": {
+    "pretest": "jshint --exclude=**/prettify.js index.js lib/ test/",
+    "test": "nyc --all mocha --recursive test/",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "release": "standard-version"
+  },
+  "dependencies": {
+    "handlebars": "^4.0.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.4",
+    "istanbul-lib-coverage": "^1.0.0",
+    "jshint": "^2.8.0",
+    "mocha": "^3.1.2",
+    "nyc": "^10.1.2",
+    "standard-version": "^4.0.0"
+  },
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:istanbuljs/istanbul-reports"
+  },
+  "keywords": [
+    "istanbul",
+    "reports"
+  ],
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbul-reports/issues"
+  },
+  "homepage": "https://github.com/istanbuljs/istanbul-reports"
+}

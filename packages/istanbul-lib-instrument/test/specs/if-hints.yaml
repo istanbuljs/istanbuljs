@@ -1,0 +1,154 @@
+---
+name: ignore else
+code: |
+  output = -1;
+  /* istanbul ignore else */
+  if (args[0] > args [1])
+     output = args[0];
+tests:
+  - args: [20, 10]
+    out: 20
+    lines: {'1': 1, '3': 1, '4': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: ignore if
+code: |
+  output = -1;
+  /* istanbul ignore if */
+  if (args[0] > args [1])
+     output = args[0];
+tests:
+  - args: [10, 20]
+    out: -1
+    lines: {'1': 1, '3': 1 }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1 }
+
+---
+name: ignore else with if block
+code: |
+  output = -1;
+  /* istanbul ignore else */
+  if (args[0] > args [1]) {
+     output = args[0];
+  }
+tests:
+  - args: [20, 10]
+    out: 20
+    lines: {'1': 1, '3': 1, '4': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: ignore if with if block
+code: |
+  output = -1;
+  /* istanbul ignore if */
+  if (args[0] > args [1]) {
+     output = args[0];
+  }
+tests:
+  - args: [10, 20]
+    out: -1
+    lines: {'1': 1, '3': 1 }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1 }
+
+---
+name: ignore else single line
+code: |
+  output = -1;
+  /* istanbul ignore else */
+  if (args[0] > args [1]) output = args[0];
+tests:
+  - args: [20, 10]
+    out: 20
+    lines: {'1': 1, '3': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: ignore if single line
+code: |
+  output = -1;
+  /* istanbul ignore if */
+  if (args[0] > args [1]) output = args[0];
+tests:
+  - args: [10, 20]
+    out: -1
+    lines: {'1': 1, '3': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1 }
+
+---
+name: ignore else if-block
+code: |
+  output = -1;
+  /* istanbul ignore else */
+  if (args[0] > args [1]) { output = args[0]; }
+tests:
+  - args: [20, 10]
+    out: 20
+    lines: {'1': 1, '3': 1}
+    branches: {'0': [1] }
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: ignore if block
+code: |
+  output = -1;
+  /* istanbul ignore if */
+  if (args[0] > args [1]) { output = args[0]; }
+tests:
+  - args: [10, 20]
+    out: -1
+    lines: {'1': 1, '3': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1}
+    branchSkips: { '0': [ true, false ]}
+    statementSkips: { '2': true }
+
+---
+name: ignore using next
+code: |
+  output = -1;
+  /* istanbul ignore next */
+  if (args[0] > args [1]) { output = args[0]; }
+tests:
+  - args: [10, 20]
+    out: -1
+    lines: {'1': 1}
+    branches: {}
+    statements: {'0': 1 }
+
+---
+name: ignore else using single line comment
+code: |
+  // istanbul ignore else
+  if (args[0] > args [1])
+     output = args[0];
+  else
+     output = args[1];
+tests:
+  - args: [20, 10]
+    out: 20
+    lines: {'2': 1, '3': 1 }
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1 }
+
+---
+name: ignore if using single line comment
+code: |
+  // istanbul ignore if
+  if (args[0] > args [1])
+     output = args[0];
+  else
+     output = args[1];
+tests:
+  - args: [10, 20]
+    out: 20
+    lines: {'2': 1, '5': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1, }

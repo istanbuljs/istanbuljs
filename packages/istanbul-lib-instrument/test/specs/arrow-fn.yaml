@@ -1,0 +1,74 @@
+---
+name: es6 arrow function expression
+guard: isArrowFnAvailable
+code: |
+  var input = args
+  output = input.map(x => x * x)
+tests:
+  - name: function called
+    args: [1, 2, 3, 4]
+    out: [1, 4, 9, 16]
+    lines: {'1': 1, '2': 4}
+    statements: {'0': 1, '1': 1, '2': 4}
+    functions: {'0': 4}
+
+  - name: function not called
+    args: []
+    out: []
+    lines: {'1': 1, '2': 1}
+    statements: {'0': 1, '1': 1, '2': 0}
+    functions: {'0': 0}
+
+---
+name:  es6 arrow function block
+guard: isArrowFnAvailable
+code: |
+  var input = args
+  output = input.map(x => { return x * x; })
+tests:
+  - name: function called
+    args: [1, 2, 3, 4]
+    out: [1, 4, 9, 16]
+    lines: {'1': 1, '2': 4}
+    statements: {'0': 1, '1': 1, '2': 4}
+    functions: {'0': 4}
+
+  - name: function not called
+    args: []
+    out: []
+    lines: {'1': 1, '2': 1}
+    statements: {'0': 1, '1': 1, '2': 0}
+    functions: {'0': 0}
+
+---
+name: complex arrow fn
+guard: isArrowFnAvailable
+code: |
+  const arrow = a => (
+    b => (
+      c => (
+        d => a + b + c + d
+      )
+    )
+  )
+  output = arrow(args[0])(args[1])(args[2])(args[3])
+tests:
+  - name: call nested arrow fn
+    args: [1, 2, 3, 4]
+    out: 10
+    lines: { '1': 1, '2': 1, '3': 1, '4': 1, '8': 1}
+    functions: { '0': 1, '1': 1, '2': 1, '3': 1 }
+    statements: { '0': 1, '1': 1, '2': 1, '3': 1, '4': 1, '5':1 }
+
+---
+name: arrow function name assignment
+guard: isInferredFunctionNameAvailable
+code: |
+  const foo = (bar) => {}
+  output = foo.name;
+tests:
+  - name: properly sets function name
+    out: 'foo'
+    lines: {'1': 1, '2': 1}
+    functions: {'0': 0}
+    statements: {'0': 1, '1': 1}

@@ -1,0 +1,157 @@
+name: empty switch
+code: |
+  output = "unknown";
+  switch (args[0]) {
+  }
+tests:
+  - name: is benign
+    args: ['1']
+    out: unknown
+    lines: {'1': 1, '2': 1}
+    statements: {'0': 1, '1': 1}
+
+---
+name: 2 cases no default
+code: |
+  output = "unknown";
+  switch (args[0]) {
+     case "1": output = "one"; break;
+     case "2": output = "two"; break;
+  }
+tests:
+  - name: first case
+    args: ['1']
+    out: one
+    lines: {'1': 1, '2': 1, '3': 1, '4': 0}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 0, '5': 0}
+
+  - name: second case
+    args: ['2']
+    out: two
+    lines: {'1': 1, '2': 1, '3': 0, '4': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 1, '5': 1}
+
+  - name: no match
+    args: ['3']
+    out: unknown
+    lines: {'1': 1, '2': 1, '3': 0, '4': 0}
+    branches: {'0': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 0, '5': 0}
+
+---
+name: 2 cases with default
+code: |
+  output = "unknown";
+  switch (args[0]) {
+     case "1": output = "one"; break;
+     case "2": output = "two"; break;
+     default: output = "three";
+  }
+tests:
+  - name: first case
+    args: ['1']
+    out: one
+    lines: {'1': 1, '2': 1, '3': 1, '4': 0, '5': 0}
+    branches: {'0': [1, 0, 0]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 0, '5': 0, '6': 0}
+
+  - name: second case
+    args: ['2']
+    out: two
+    lines: {'1': 1, '2': 1, '3': 0, '4': 1, '5': 0}
+    branches: {'0': [0, 1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 1, '5': 1, '6': 0}
+
+  - name: default case
+    args: ['4']
+    out: three
+    lines: {'1': 1, '2': 1, '3': 0, '4': 0, '5': 1}
+    branches: {'0': [0, 0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 0, '5': 0, '6': 1}
+
+---
+name: one line layout
+code: |
+  output = "unknown";
+  switch (args[0]) { case "1": output = "one"; break; case "2": output = "two"; break; default: output = "three";}
+tests:
+  - name: first case
+    args: ['1']
+    out: one
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0, 0]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 0, '5': 0, '6': 0}
+
+  - name: second case
+    args: ['2']
+    out: two
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 1, '5': 1, '6': 0}
+
+  - name: default case
+    args: ['4']
+    out: three
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 0, '5': 0, '6': 1}
+
+---
+name: 2 cases with default and fallthru
+code: |
+  output = "";
+  switch (args[0]) {
+     case "1": output += "one";
+     case "2": output += "two";
+     default: output += "three";
+  }
+tests:
+  - name: first case
+    args: ['1']
+    out: onetwothree
+    lines: {'1': 1, '2': 1, '3': 1, '4': 1, '5': 1}
+    branches: {'0': [1, 1, 1]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 1}
+
+  - name: second case
+    args: ['2']
+    out: twothree
+    lines: {'1': 1, '2': 1, '3': 0, '4': 1, '5': 1}
+    branches: {'0': [0, 1, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 1, '4': 1}
+
+  - name: default case
+    args: ['4']
+    out: three
+    lines: {'1': 1, '2': 1, '3': 0, '4': 0, '5': 1}
+    branches: {'0': [0, 0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 1}
+
+---
+name: one-line layout with fallthru
+code: |
+  output = "";
+  switch (args[0]) { case "1": output += "one"; case "2": output += "two"; default: output += "three";}
+tests:
+  - name: first case
+    args: ['1']
+    out: onetwothree
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 1, 1]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 1}
+
+  - name: second case
+    args: ['2']
+    out: twothree
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 1, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 1, '4': 1}
+
+  - name: default case
+    args: ['4']
+    out: three
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 1}

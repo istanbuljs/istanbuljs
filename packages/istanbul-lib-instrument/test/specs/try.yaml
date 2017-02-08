@@ -1,0 +1,25 @@
+---
+name: simple try/catch
+code: |
+  try {
+     if (args[0] === "X") { throw "foo"; }
+     output = args[0];
+  } catch (ex) {
+     output="Y";
+  } finally {
+     output += 1;
+  }
+tests:
+  - name: happy path
+    args: [1]
+    out: 2
+    lines: {'1': 1, '2': 1, '3': 1, '5': 0, '7': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 1, '4': 0, '5': 1}
+
+  - name: sad path
+    args: [X]
+    out: Y1
+    lines: {'1': 1, '2': 1, '3': 0, '5': 1, '7': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 0, '4': 1, '5': 1}

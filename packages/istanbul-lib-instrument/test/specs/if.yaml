@@ -1,0 +1,438 @@
+---
+name: simple if statment
+code: |
+  output = -1;
+  if (args[0] > args [1])
+     output = args[0];
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+  - name: covers else path
+    args: [10, 20]
+    out: -1
+    lines: {'1': 1, '2': 1, '3': 0}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+---
+name: simple if block
+code: |
+  output = -1;
+  if (args[0] > args [1]) {
+     output = args[0];
+  }
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+  - name: covers else path
+    args: [10, 20]
+    out: -1
+    lines: {'1': 1, '2': 1, '3': 0}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+---
+name: simple if single line statement
+code: |
+  output = -1;
+  if (args[0] > args [1]) output = args[0];
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+  - name: covers else path
+    args: [10, 20]
+    out: -1
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+---
+name: simple if single line block
+code: |
+  output = -1;
+  if (args[0] > args [1]) { output = args[0]; }
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+  - name: covers else path
+    args: [10, 20]
+    out: -1
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+---
+name: simple if-else statement
+code: |
+  if (args[0] > args [1])
+     output = args[0];
+  else
+     output = args[1];
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1, '2': 1, '4': 0}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+  - name: covers else path
+    args: [10, 20]
+    out: 20
+    lines: {'1': 1, '2': 0, '4': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1}
+
+---
+name: simple if-else block
+code: |
+  if (args[0] > args [1]) {
+     output = args[0];
+  } else {
+     output = args[1];
+  }
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1, '2': 1, '4': 0}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+  - name: covers else path
+    args: [10, 20]
+    out: 20
+    lines: {'1': 1, '2': 0, '4': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1}
+
+---
+name: if/else statement on one line
+code: |
+  if (args[0] > args [1]) output = args[0]; else output = args[1];
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+  - name: covers else path
+    args: [10, 20]
+    out: 20
+    lines: {'1': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1}
+
+---
+name: if/else statement block on one line
+code: |
+  if (args[0] > args [1]) { output = args[0]; } else { output = args[1]; }
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+  - name: covers else path
+    args: [10, 20]
+    out: 20
+    lines: {'1': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1}
+
+---
+name: if/else mixed then block
+code: |
+  if (args[0] > args [1]) { output = args[0]; } else output = args[1];
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+  - name: covers else path
+    args: [10, 20]
+    out: 20
+    lines: {'1': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1}
+
+---
+name: if/else mixed else block
+code: |
+  if (args[0] > args [1]) output = args[0]; else { output = args[1]; }
+tests:
+  - name: covers then path
+    args: [20, 10]
+    out: 20
+    lines: {'1': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+  - name: covers else path
+    args: [10, 20]
+    out: 20
+    lines: {'1': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1}
+
+---
+name: nested if statement/ no block
+code: |
+  output = -1;
+  if (args[0] > args[1]) if (args[1] > args[2]) output = args[2];
+tests:
+  - name: covers first else and nothing below
+    args: [10, 20, 15]
+    out: -1
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 1], '1': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0}
+
+  - name: covers first then
+    args: [20, 10, 15]
+    out: -1
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0], '1': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 0}
+
+  - name: covers first and second then
+    args: [20, 10, 5]
+    out: 5
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0], '1': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1}
+
+---
+name: nested if statement/ blocks
+code: |
+  output = -1;
+  if (args[0] > args[1]) { if (args[1] > args[2]) { output = args[2]; } }
+tests:
+  - name: covers first else and nothing below
+    args: [10, 20, 15]
+    out: -1
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 1], '1': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0}
+
+  - name: covers first then
+    args: [20, 10, 15]
+    out: -1
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0], '1': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 0}
+
+  - name: covers first and second then
+    args: [20, 10, 5]
+    out: 5
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0], '1': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1}
+
+---
+name: nested if w/ else no blocks
+code: |
+  output = -1;
+  if (args[0] > args[1]) if (args[1] > args[2]) output = args[2]; else output = args[1];
+tests:
+  - name: covers first else and nothing below
+    args: [10, 20, 15]
+    out: -1
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 1], '1': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 0}
+
+  - name: covers first then
+    args: [20, 10, 15]
+    out: 10
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0], '1': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 0, '4': 1}
+
+  - name: covers first and second then
+    args: [20, 10, 5]
+    out: 5
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0], '1': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 0}
+
+---
+name: else-ifs with blocks
+code: |
+  if (args[0] < args[1]) {
+      output = args[0];
+  } else if (args[1] < args[2]) {
+      output = args[1];
+  } else if (args[2] < args[3]) {
+      output = args[2];
+  } else {
+      output = args[3];
+  }
+tests:
+  - name: covers all else paths
+    args: [4, 3, 2, 1]
+    out: 1
+    lines: {'1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 0, '8': 1}
+    branches: {'0': [0, 1], '1': [0, 1], '2': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 0, '4': 1, '5': 0, '6': 1}
+
+  - name: covers one then path
+    args: [4, 3, 1, 2]
+    out: 1
+    lines: {'1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 1, '8': 0}
+    branches: {'0': [0, 1], '1': [0, 1], '2': [1, 0]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 0, '4': 1, '5': 1, '6': 0}
+
+  - name: covers upper then paths
+    args: [4, 2, 3, 1]
+    out: 2
+    lines: {'1': 1, '2': 0, '3': 1, '4': 1, '5': 0, '6': 0, '8': 0}
+    branches: {'0': [0, 1], '1': [1, 0], '2': [0, 0]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 1, '4': 0, '5': 0, '6': 0}
+
+  - name: covers uppermost then paths
+    args: [1, 2, 3, 1]
+    out: 1
+    lines: {'1': 1, '2': 1, '3': 0, '4': 0, '5': 0, '6': 0, '8': 0}
+    branches: {'0': [1, 0], '1': [0, 0], '2': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
+
+---
+name: else/ifs without blocks
+code: |
+  if (args[0] < args[1])
+      output = args[0];
+  else if (args[1] < args[2])
+      output = args[1];
+  else if (args[2] < args[3])
+      output = args[2];
+  else
+      output = args[3];
+tests:
+  - name: covers all else paths
+    args: [4, 3, 2, 1]
+    out: 1
+    lines: {'1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 0, '8': 1}
+    branches: {'0': [0, 1], '1': [0, 1], '2': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 0, '4': 1, '5': 0, '6': 1}
+
+  - name: covers one then path
+    args: [4, 3, 1, 2]
+    out: 1
+    lines: {'1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 1, '8': 0}
+    branches: {'0': [0, 1], '1': [0, 1], '2': [1, 0]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 0, '4': 1, '5': 1, '6': 0}
+
+  - name: covers upper then paths
+    args: [4, 2, 3, 1]
+    out: 2
+    lines: {'1': 1, '2': 0, '3': 1, '4': 1, '5': 0, '6': 0, '8': 0}
+    branches: {'0': [0, 1], '1': [1, 0], '2': [0, 0]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 1, '4': 0, '5': 0, '6': 0}
+
+  - name: covers uppermost then paths
+    args: [1, 2, 3, 1]
+    out: 1
+    lines: {'1': 1, '2': 1, '3': 0, '4': 0, '5': 0, '6': 0, '8': 0}
+    branches: {'0': [1, 0], '1': [0, 0], '2': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
+
+---
+name: stream of consciousness if/elses
+code: >
+  if (args[0] < args[1]) output = args[0]; else if (args[1] < args[2]) output
+  = args[1]; else if (args[2] < args[3]) output = args[2]; else output
+  = args[3];
+tests:
+  - name: covers all else paths
+    args: [4, 3, 2, 1]
+    out: 1
+    lines: {'1': 1}
+    branches: {'0': [0, 1], '1': [0, 1], '2': [0, 1]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 0, '4': 1, '5': 0, '6': 1}
+
+  - name: covers one then path
+    args: [4, 3, 1, 2]
+    out: 1
+    lines: {'1': 1}
+    branches: {'0': [0, 1], '1': [0, 1], '2': [1, 0]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 0, '4': 1, '5': 1, '6': 0}
+
+  - name: covers upper then paths
+    args: [4, 2, 3, 1]
+    out: 2
+    lines: {'1': 1}
+    branches: {'0': [0, 1], '1': [1, 0], '2': [0, 0]}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 1, '4': 0, '5': 0, '6': 0}
+
+  - name: covers uppermost then paths
+    args: [1, 2, 3, 1]
+    out: 1
+    lines: {'1': 1}
+    branches: {'0': [1, 0], '1': [0, 0], '2': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
+
+---
+name: else/ifs normal layout
+code: |
+  output = args[3]; if (args[0] < args[1])
+      output = args[0];
+  else if (args[1] < args[2])
+      output = args[1];
+  else if (args[2] < args[3])
+      output = args[2];
+tests:
+  - name: covers else paths
+    args: [4, 3, 2, 1]
+    out: 1
+    lines: {'1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 0}
+    branches: {'0': [0, 1], '1': [0, 1], '2': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 0}
+
+  - name: covers one then paths
+    args: [4, 3, 1, 2]
+    out: 1
+    lines: {'1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 1}
+    branches: {'0': [0, 1], '1': [0, 1], '2': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 1}
+
+  - name: covers upper then paths
+    args: [4, 2, 3, 1]
+    out: 2
+    lines: {'1': 1, '2': 0, '3': 1, '4': 1, '5': 0, '6': 0}
+    branches: {'0': [0, 1], '1': [1, 0], '2': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 1, '4': 1, '5': 0, '6': 0}
+
+  - name: covers uppermost then paths
+    args: [1, 2, 3, 1]
+    out: 1
+    lines: {'1': 1, '2': 1, '3': 0, '4': 0, '5': 0, '6': 0}
+    branches: {'0': [1, 0], '1': [0, 0], '2': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 0, '4': 0, '5': 0, '6': 0}

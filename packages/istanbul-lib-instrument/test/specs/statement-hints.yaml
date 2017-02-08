@@ -1,0 +1,151 @@
+---
+name: ignore before simple statement with branches
+code: |
+  /* istanbul ignore next */
+  var x = args[0] > 5 ? args[0] : "undef";
+  output = x;
+tests:
+  - name: coverage correct with skip meta
+    args: [10]
+    out: 10
+    lines: {'3': 1}
+    branches: {}
+    statements: {'0': 1}
+
+---
+name: ignore before function declaration
+code: |
+  /* istanbul ignore next */
+  function foo(x) { return x; }
+  output = args[0];
+tests:
+  - args: [10]
+    out: 10
+    lines: { '3': 1 }
+    functions: {}
+    statements: { '0': 1 }
+
+---
+name: ignore before func expressions
+code: |
+  /* istanbul ignore next */
+  (function () { output = args[0]; })();
+tests:
+  - args: [10]
+    out: 10
+    lines: {}
+    functions: {}
+    statements: {}
+
+---
+name: ignore before switch
+code: |
+  /* istanbul ignore next */
+  switch (args[0]) {
+  case "1": output = 2; break;
+  default: output = 1;
+  }
+tests:
+  - args: ['1']
+    out: 2
+    lines: {}
+    branches: {}
+    statements: {}
+
+---
+name: ignore before case
+code: |
+  switch (args[0]) {
+  /* istanbul ignore next */
+  case "1": output = 2; break;
+  default: output = 1;
+  }
+tests:
+  - args: ['2']
+    out: 1
+    lines: {'1': 1, '4': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1, '1': 1}
+
+---
+name: ignore before ternary statement
+code: |
+  /* istanbul ignore next */
+  output = args[0] === 1 ? 1: 0;
+tests:
+  - args: [2]
+    out: 0
+    lines: {}
+    branches: {}
+    statements: {}
+
+---
+name: ignore before ternary condition
+code: |
+  output = args[0] === 1 ? /* istanbul ignore next */ 1 : 0;
+tests:
+  - args: [2]
+    out: 0
+    lines: {'1': 1}
+    branches: {'0': [1]}
+    statements: {'0': 1}
+
+---
+name: ignore in logical expression
+code: |
+  if (args[0] === 1  || /* istanbul ignore next */ args[0] === 2 ) {
+     output = args[0] + 10;
+  } else {
+     output = 20;
+  }
+tests:
+  - args: [1]
+    out: 11
+    lines: {'1': 1, '2': 1, '4': 0}
+    branches: {'0': [1, 0], '1': [1]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+---
+name: ignore in complex logical expression
+code: >
+  if (args[0] === 1  || /* istanbul ignore next */ (args[0] === 2  || args[0] === 3)) {
+     output = args[0] + 10;
+  } else {
+     output = 20;
+  }
+tests:
+  - args: [1]
+    out: 11
+    lines: {'1': 1, '2': 1, '4': 0}
+    branches: {'0': [1, 0], '1': [1]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+---
+name: ignore in logical expression with implied operator precedence
+code: >
+  if (args[0] === 1  || /* istanbul ignore next */args[0] === 2  && args[1] === 2) {
+     output = args[0] + 10;
+  } else {
+     output = 20;
+  }
+tests:
+  - args: [1, 1]
+    out: 11
+    lines: {'1': 1, '2': 1, '4': 0}
+    branches: {'0': [1, 0], '1': [1]}
+    statements: {'0': 1, '1': 1, '2': 0}
+
+---
+name: ignore before logical expression
+code: >
+  if (/* istanbul ignore next */ args[0] === 1  || args[0] === 2  && args[1] === 2) {
+     output = args[0] + 10;
+  } else {
+     output = 20;
+  }
+tests:
+  - args: [1, 1]
+    out: 11
+    lines: {'1': 1, '2': 1, '4': 0}
+    branches: {'0': [1, 0] }
+    statements: {'0': 1, '1': 1, '2': 0}

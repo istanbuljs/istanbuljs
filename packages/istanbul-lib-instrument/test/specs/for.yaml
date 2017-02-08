@@ -1,0 +1,123 @@
+---
+name: simple for
+code: |
+  var x = args[0], i, j = -10;
+  for (i =0; i < x; i++) j = i;
+  output = j;
+tests:
+  - name: covers loop exactly once
+    args: [10]
+    out: 9
+    lines: {'1': 1, '2': 10, '3': 1}
+    statements: {'0': 1, '1':1, '2': 1, '3': 10, '4': 1}
+---
+
+name: for with loop initializer
+code: |
+  var x = args[0], j = -10;
+  for (var i =0; i < x; i++) j = i;
+  output = j;
+tests:
+  - name: covers loop exactly once
+    args: [10]
+    out: 9
+    lines: {'1': 1, '2': 10, '3': 1}
+    statements: {'0': 1, '1':1, '2': 1, '3': 10, '4': 1}
+---
+
+name: simple for, no initializer
+code: |
+  var x = args[0], j = -10, i=0;
+  for (; i < x; i++) j = i;
+  output = j;
+tests:
+  - args: [10]
+    out: 9
+    lines: {'1': 1, '2': 10, '3': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 10, '5': 1}
+---
+
+name: simple for, statement on different line
+code: |
+  var x = args[0], i, j = -10;
+  for (i =0; i < x; i++)
+     j = i;
+  output = j;
+tests:
+  - name: covers loop once
+    args: [10]
+    out: 9
+    lines: {'1': 1, '2': 1, '3': 10, '4': 1}
+    statements: {'0': 1, '2': 1, '1':1, '3': 10, '4': 1}
+
+  - name: does not cover loop
+    args: [-1]
+    out: -10
+    lines: {'1': 1, '2': 1, '3': 0, '4': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3':0, '4': 1}
+
+---
+name: for with block body
+code: |
+  var x = args[0], i, j = -10;
+  for (i =0; i < x; i++) { j = i; }
+  output = j;
+tests:
+  - name: covers loop exactly once
+    args: [10]
+    out: 9
+    lines: {'1': 1, '2': 10, '3': 1}
+    statements: {'0': 1, '1': 1, '2':1, '3': 10, '4': 1}
+
+  - name: does not cover loop
+    args: [-1]
+    out: -10
+    lines: {'1': 1, '2': 1, '3': 1}
+    statements: {'0': 1, '1': 1, '2':1, '3': 0, '4': 1}
+
+---
+name: labeled for
+code: |
+  var x = args[0], i, j = -10;
+  outer:for (i =0; i < x; i++) { j = i; }
+  output = j;
+tests:
+  - args: [10]
+    out: 9
+    lines: {'1': 1, '2': 10, '3': 1}
+    statements: {'0': 1, '1':1, '2': 1, '3': 1, '4': 10, '5': 1}
+
+---
+name: nested labeled for
+code: |
+  var x = args[0], i, j, k = 0;
+  outer:for (i = 0; i < x; i++)
+     for (j=0; j < i ; j++) {
+         if (j === 2) continue outer;
+         k++;
+     }
+  output = k;
+tests:
+  - args: [10]
+    out: 17
+    lines: {'1': 1, '2': 1, '3': 10, '4': 24, '5': 17, '7': 1}
+    branches: {'0': [7, 17]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 10, '5': 24, '6': 7, '7': 17, '8': 1}
+
+---
+name: nested labeled for (label on different line)
+code: |
+  var x = args[0], i, j, k = 0;
+  outer:
+  for (i = 0; i < x; i++)
+     for (j=0; j < i ; j++) {
+         if (j === 2) continue outer;
+         k++;
+     }
+  output = k;
+tests:
+  - args: [10]
+    out: 17
+    lines: {'1': 1, '2': 1, '3': 1, '4': 10, '5': 24, '6': 17, '8': 1}
+    branches: {'0': [7, 17]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 10, '5': 24, '6': 7, '7': 17, '8': 1}

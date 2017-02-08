@@ -1,0 +1,63 @@
+---
+name: var decl no initializer
+code: |
+  var x;
+  output = 10
+tests:
+  - name: ignores variable decl
+    args: []
+    out: 10
+    lines: {'2': 1}
+    branches: {}
+    statements: {'0': 1}
+---
+name: simple statement
+code: |
+  var x = args[0] > 5 ? args[0] : "undef";
+  output = x;
+tests:
+  - name: covers line and one branch
+    args: [10]
+    out: 10
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1}
+
+  - name: covers line and other branch
+    args: [1]
+    out: undef
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1}
+---
+name: shebang code
+code: |
+  #!/usr/bin/env node
+  var x = args[0] > 5 ? args[0] : "undef";
+  output = x;
+tests:
+  - name: covers line and one branch
+    args: [10]
+    out: 10
+    lines: {'2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1}
+
+  - name: covers line and other branch
+    args: [1]
+    out: undef
+    lines: {'2': 1, '3': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1}
+---
+name: mainline return
+instrumentOpts:
+  autoWrap: true
+code: |
+  return 10;
+tests:
+  - name: coverage for mainline return
+    args: []
+    out: 10
+    lines: {'1': 1 }
+    statements: { '0': 1 }

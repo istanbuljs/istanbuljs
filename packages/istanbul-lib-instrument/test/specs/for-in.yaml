@@ -1,0 +1,33 @@
+---
+name: simple for-in
+code: |
+  var x = { a: args[0], b: args[1] }, k;
+  output = 0;
+  for (k in x) {
+     if (x.hasOwnProperty(k) && x[k]) {
+         output += x[k];
+     }
+  }
+tests:
+  - args: [10, 0]
+    out: 10
+    lines: {'1': 1, '2': 1, '3': 1, '4': 2, '5': 1}
+    branches: {'0': [1, 1], '1': [2, 2]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 2, '4': 1}
+
+---
+name: for-in with loop initializer
+code: |
+  var x = { a: args[0], b: args[1] };
+  output = 0;
+  for (var k in x) {
+     if (x.hasOwnProperty(k) && x[k]) {
+         output += x[k];
+     }
+  }
+tests:
+  - args: [10, 0]
+    out: 10
+    lines: {'1': 1, '2': 1, '3': 1, '4': 2, '5': 1}
+    branches: {'0': [1, 1], '1': [2, 2]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 2, '4': 1}
