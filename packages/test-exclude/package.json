@@ -30,7 +30,7 @@
     "coveralls": "^2.11.12",
     "mocha": "^3.1.2",
     "nyc": "^10.1.2",
-    "standard": "^8.5.0",
+    "standard": "^9.0.0",
     "standard-version": "^4.0.0"
   },
   "dependencies": {
