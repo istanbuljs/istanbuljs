@@ -15,7 +15,7 @@ This [monorepo](https://github.com/babel/babel/blob/master/doc/design/monorepo.m
 
 ## Getting Started
 
-_You're probably _actually_ looking for one of the following repos:_
+_You're probably actually looking for one of the following repos:_
 
 * [nyc](https://github.com/istanbuljs/nyc): the IstanbulJS 2.0 command line interface. It supports
   require hooks, subprocesses, and is really quite awesome.
