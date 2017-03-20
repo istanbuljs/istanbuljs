@@ -1,6 +1,10 @@
 # Change Log
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file.
+See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="4.0.1"></a>
+## 4.0.1 (2017-03-20)
 
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/istanbuljs/test-exclude/compare/v3.3.0...v4.0.0) (2017-01-19)
