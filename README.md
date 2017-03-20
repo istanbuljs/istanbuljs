@@ -1,5 +1,7 @@
 # IstanbulJS
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/istanbuljs/istanbuljs.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/istanbuljs/istanbuljs.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbuljs)
 [![Coverage Status](https://coveralls.io/repos/istanbuljs/istanbuljs/badge.svg?branch=master)](https://coveralls.io/r/istanbuljs/istanbuljs?branch=master)
 
