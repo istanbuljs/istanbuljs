@@ -6,8 +6,7 @@
   "scripts": {
     "fast": "mocha --slow 1000 test/",
     "pretest": "jshint index.js lib/ test/",
-    "test": "cross-env NYC_NO_INSTRUMENT=1 mocha --require=test/short-circuit -- --slow 2000 -t 10000 test/",
-    "//test": "echo TODO: debug append transform bug causing these tests to fail"
+    "test": "mocha --require=test/short-circuit -- --slow 2000 -t 10000 test/"
   },
   "repository": {
     "type": "git",
