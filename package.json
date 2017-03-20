@@ -1,5 +1,32 @@
 {
+  "name": "istanbuljs",
+  "version": "2.0.0",
+  "private": true,
+  "description": "monorepo containing the various nuts and bolts that facilitate istanbul.js test instrumentation",
+  "scripts": {
+    "test": "cross-env LERNA_TEST_RUN=1 nyc lerna exec npm test",
+    "postinstall": "lerna bootstrap",
+    "release": "lerna publish --conventional-commits"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:istanbuljs/istanbuljs.git"
+  },
+  "keywords": [
+    "istanbuljs",
+    "coverage",
+    "nyc"
+  ],
+  "author": "Ben Coe <ben@npmjs.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
+  },
+  "homepage": "https://istanbul.js.org/",
   "devDependencies": {
-    "lerna": "2.0.0-beta.36"
+    "coveralls": "^2.11.16",
+    "cross-env": "^3.2.3",
+    "lerna": "^2.0.0-beta.38-31-g0749ea6",
+    "nyc": "^10.2.0-candidate.0"
   }
 }

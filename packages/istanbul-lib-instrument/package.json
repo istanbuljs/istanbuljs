@@ -6,11 +6,9 @@
   "main": "dist/index.js",
   "scripts": {
     "release": "babel src --out-dir dist && documentation build -f md -o api.md src",
-    "test": "cross-env NODE_ENV=test nyc --check-coverage --statements 90 --branches 80 mocha --recursive test/",
+    "test": "mocha --require=babel-register --recursive test/",
     "pretest": "jshint src/ test/",
-    "prepublish": "npm test && npm run release",
-    "version": "standard-version",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "prepublish": "npm run release"
   },
   "dependencies": {
     "babel-generator": "^6.18.0",
@@ -34,19 +32,7 @@
     "js-yaml": "^3.3.1",
     "jshint": "^2.8.0",
     "mocha": "^3.1.2",
-    "nopt": "^3.0.6",
-    "nyc": "^8.3.1",
-    "standard-version": "^3.0.0"
-  },
-  "nyc": {
-    "include": [
-      "src/**/*.js"
-    ],
-    "require": [
-      "babel-register"
-    ],
-    "sourceMap": false,
-    "instrument": false
+    "nopt": "^3.0.6"
   },
   "license": "BSD-3-Clause",
   "bugs": {
