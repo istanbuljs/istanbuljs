@@ -7,7 +7,7 @@
   "scripts": {
     "fast": "mocha test/",
     "pretest": "jshint index.js lib/ test/",
-    "test": "_mocha --  test/"
+    "test": "mocha -- test/"
   },
   "dependencies": {
     "append-transform": "^0.4.0"

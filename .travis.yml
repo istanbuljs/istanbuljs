@@ -3,5 +3,5 @@ language: node_js
 node_js:
   - '4'
   - '6'
-  - '7'
+  - 'stable'
 after_script: nyc report --reporter=text-lcov | coveralls
