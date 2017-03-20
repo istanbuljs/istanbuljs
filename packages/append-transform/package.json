@@ -13,7 +13,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "xo && nyc --reporter=lcov --reporter=text ava"
+    "test": "xo && ava"
   },
   "files": [
     "index.js"
@@ -35,7 +35,6 @@
     "ava": "^0.14.0",
     "coveralls": "^2.11.6",
     "fake-module-system": "^0.3.0",
-    "nyc": "^6.2.1",
     "xo": "^0.15.1"
   },
   "xo": {
