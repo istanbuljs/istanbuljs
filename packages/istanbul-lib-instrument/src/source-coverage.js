@@ -48,7 +48,8 @@ class SourceCoverage extends classes.FileCoverage {
         this.data.fnMap[f] = {
             name: name,
             decl: cloneLocation(decl),
-            loc: cloneLocation(loc)
+            loc: cloneLocation(loc),
+            line: loc.start.line
         };
         this.data.f[f] = 0;
         this.meta.last.f += 1;
@@ -61,7 +62,8 @@ class SourceCoverage extends classes.FileCoverage {
         this.data.branchMap[b] = {
             loc: cloneLocation(loc),
             type: type,
-            locations: []
+            locations: [],
+            line: loc.start.line
         };
         this.meta.last.b += 1;
         return b;
