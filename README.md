@@ -29,5 +29,5 @@ Contributing to the packages contained in this repo is easy:
 
 1. after checking out, run  `npm install` (this will run the lerna build).
 2. to run all tests, simply run `npm test` in the root directory.
-3. to run tests for a single package  `cd package/:name`, and run
+3. to run tests for a single package  `cd package/:name` and run
    `npm test` within the package's folder.
