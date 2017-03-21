@@ -4,6 +4,7 @@
   "description": "Install a transform to `require.extensions` that always runs last, even if additional extensions are added later.",
   "license": "MIT",
   "repository": "avajs/append-transform",
+  "private": true,
   "author": {
     "name": "James Talmage",
     "email": "james@talmage.io",
