@@ -4,9 +4,9 @@
   "description": "High level API for istanbul features",
   "main": "index.js",
   "scripts": {
-    "fast": "mocha --slow 1000 test/",
+    "fast": "mocha --slow 1000",
     "pretest": "jshint index.js lib/ test/",
-    "test": "mocha --require=test/short-circuit -- --slow 2000 -t 10000 test/"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

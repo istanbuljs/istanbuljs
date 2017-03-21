@@ -6,3 +6,4 @@ docs/
 .nyc_output
 dist
 lerna-debug.log
+packages/*/yarn.lock
