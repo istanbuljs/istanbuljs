@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.5"></a>
+## [1.1.5](https://github.com/istanbuljs/istanbul-api/compare/istanbul-api@1.1.4...istanbul-api@1.1.5) (2017-03-21)
+
 <a name="1.1.4"></a>
 ## [1.1.4](https://github.com/istanbuljs/istanbul-api/compare/istanbul-api@1.1.3...istanbul-api@1.1.4) (2017-03-21)
 
