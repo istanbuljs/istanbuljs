@@ -70,7 +70,6 @@ Default: `'.js'`
 
 The extension for the types of files this transform is capable of handling.
 
-
 ## License
 
 MIT © [James Talmage](https://github.com/jamestalmage)
