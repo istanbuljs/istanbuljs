@@ -5,9 +5,8 @@
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
   "scripts": {
-    "fast": "mocha test/",
     "pretest": "jshint index.js lib/ test/",
-    "test": "mocha -- test/"
+    "test": "mocha"
   },
   "devDependencies": {
     "chai": "^3.0.0",

@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "pretest": "jshint --exclude=**/prettify.js index.js lib/ test/",
-    "test": "mocha --recursive test/"
+    "test": "mocha --recursive"
   },
   "dependencies": {
     "handlebars": "^4.0.3"
