@@ -1,6 +1,17 @@
 # Change Log
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file.
+See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/istanbuljs/istanbul-lib-instrument/compare/istanbul-lib-instrument@1.4.2...istanbul-lib-instrument@1.5.0) (2017-03-21)
+
+
+### Features
+
+* add line back to lcov.json ([e31d2cb](https://github.com/istanbuljs/istanbul-lib-instrument/commit/e31d2cb))
+* add line back to lcov.json ([3a38ff2](https://github.com/istanbuljs/istanbul-lib-instrument/commit/3a38ff2))
+* adds line number property back to coverage.json ([b03b927](https://github.com/istanbuljs/istanbul-lib-instrument/commit/b03b927))
 
 <a name="1.4.2"></a>
 ## [1.4.2](https://github.com/istanbuljs/istanbul-lib-instrument/compare/v1.4.1...v1.4.2) (2017-01-04)
