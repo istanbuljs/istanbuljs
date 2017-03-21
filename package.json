@@ -31,13 +31,16 @@
   },
   "nyc": {
     "exclude": [
-      "**/test/**",
+      "**/bin/**",
+      "**/coverage/**",
       "**/dist/**",
-      "**/bin/**"
+      "**/html/assets/**",
+      "**/test/**"
     ],
     "reporter": [
       "text",
       "lcov"
-    ]
+    ],
+    "all": true
   }
 }
