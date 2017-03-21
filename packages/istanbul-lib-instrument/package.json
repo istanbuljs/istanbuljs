@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "release": "babel src --out-dir dist && documentation build -f md -o api.md src",
-    "test": "mocha --require=babel-register --recursive test/",
+    "test": "mocha --require=babel-register",
     "pretest": "jshint src/ test/",
     "prepublish": "npm run release"
   },
