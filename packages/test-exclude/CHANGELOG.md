@@ -6,9 +6,6 @@ See [standard-version](https://github.com/conventional-changelog/standard-versio
 <a name="4.0.2"></a>
 ## [4.0.2](https://github.com/istanbuljs/test-exclude/compare/test-exclude@4.0.0...test-exclude@4.0.2) (2017-03-21)
 
-<a name="4.0.1"></a>
-## [4.0.1](https://github.com/istanbuljs/test-exclude/compare/test-exclude@4.0.0...test-exclude@4.0.1) (2017-03-21)
-
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/istanbuljs/test-exclude/compare/v3.3.0...v4.0.0) (2017-01-19)
 
