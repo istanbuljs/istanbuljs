@@ -22,9 +22,8 @@ JsonSummaryReport.prototype.writeSummary = function (filePath, sc) {
     } else {
         cw.write(",");
     }
-    cw.write('"');
-    cw.write(filePath);
-    cw.write('": ');
+    cw.write(JSON.stringify(filePath));
+    cw.write(': ');
     cw.write(JSON.stringify(sc));
     cw.println("");
 };
