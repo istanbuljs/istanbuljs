@@ -50,7 +50,7 @@ class SourceCoverage extends classes.FileCoverage {
             decl: cloneLocation(decl),
             loc: cloneLocation(loc),
             // DEPRECATED: some legacy reports require this info.
-            line: loc.start.line
+            line: loc && loc.start.line
         };
         this.data.f[f] = 0;
         this.meta.last.f += 1;
@@ -65,7 +65,7 @@ class SourceCoverage extends classes.FileCoverage {
             type: type,
             locations: [],
             // DEPRECATED: some legacy reports require this info.
-            line: loc.start.line
+            line: loc && loc.start.line
         };
         this.meta.last.b += 1;
         return b;
