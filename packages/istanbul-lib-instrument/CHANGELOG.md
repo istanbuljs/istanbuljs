@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.2"></a>
+## [1.6.2](https://github.com/istanbuljs/istanbul-lib-instrument/compare/istanbul-lib-instrument@1.6.1...istanbul-lib-instrument@1.6.2) (2017-03-22)
+
+
+### Bug Fixes
+
+* loc is sometimes not defined, so loc.start fails see [#99](https://github.com/istanbuljs/istanbuljs/issues/99) ([#18](https://github.com/istanbuljs/istanbuljs/issues/18)) ([df85ba6](https://github.com/istanbuljs/istanbul-lib-instrument/commit/df85ba6))
+
 <a name="1.6.1"></a>
 ## [1.6.1](https://github.com/istanbuljs/istanbul-lib-instrument/compare/istanbul-lib-instrument@1.6.0...istanbul-lib-instrument@1.6.1) (2017-03-21)
 
