@@ -1,5 +1,6 @@
 /* globals describe, it */
 var assert = require('chai').assert,
+    isWindows = require('is-windows'),
     createMap = require('istanbul-lib-coverage').createCoverageMap,
     SMC = require('source-map').SourceMapConsumer,
     createTransformer = require('../lib/transformer').create;
@@ -56,6 +57,10 @@ function createData() {
 
 describe('transformer', function () {
     it('maps statement locations', function () {
+        if (isWindows()) {
+            return this.skip();
+        }
+
         var coverageMap = createMap({}),
             testData = createData(),
             coverageData = testData.coverageData,

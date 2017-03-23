@@ -5,6 +5,7 @@ var assert = require('chai').assert,
     fs = require('fs'),
     mkdirp = require('mkdirp'),
     rimraf = require('rimraf'),
+    isWindows = require('is-windows'),
     codeRoot = path.resolve(__dirname, 'sample-code'),
     outputDir = path.resolve(__dirname, 'coverage'),
     configuration = require('../lib/config'),
@@ -15,6 +16,9 @@ var assert = require('chai').assert,
     wrap = hijack.wrap;
 
 describe('run instrument', function () {
+    if (isWindows()) {
+        this.retries(3);
+    }
 
     function getConfig(overrides) {
         var cfg = configuration.loadObject({
@@ -101,6 +105,10 @@ describe('run instrument', function () {
         });
 
         it('works with explicit output options', function (cb) {
+            if (isWindows()) {
+                return this.skip();
+            }
+
             var outFile = path.resolve(outputDir, 'foo.js');
             instrument.run(getConfig(),
                 {
