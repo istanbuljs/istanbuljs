@@ -1,6 +1,10 @@
 # Change Log
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file.
+See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/istanbuljs/istanbul-lib-source-maps/compare/istanbul-lib-source-maps@1.1.0...istanbul-lib-source-maps@1.1.1) (2017-03-27)
 
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/istanbuljs/istanbul-lib-source-maps/compare/v1.0.2...v1.1.0) (2016-11-10)

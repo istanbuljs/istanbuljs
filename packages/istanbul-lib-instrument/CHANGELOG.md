@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/istanbuljs/istanbul-lib-instrument/compare/istanbul-lib-instrument@1.6.2...istanbul-lib-instrument@1.7.0) (2017-03-27)
+
+
+### Features
+
+* use extended babylon support; adding features such as jsx ([#22](https://github.com/istanbuljs/istanbuljs/issues/22)) ([11c2438](https://github.com/istanbuljs/istanbul-lib-instrument/commit/11c2438))
+
 <a name="1.6.2"></a>
 ## [1.6.2](https://github.com/istanbuljs/istanbul-lib-instrument/compare/istanbul-lib-instrument@1.6.1...istanbul-lib-instrument@1.6.2) (2017-03-22)
 
