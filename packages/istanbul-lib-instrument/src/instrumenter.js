@@ -80,7 +80,13 @@ class Instrumenter {
         const opts = this.opts;
         const ast = babylon.parse(code, {
             allowReturnOutsideFunction: opts.autoWrap,
-            sourceType: opts.esModules ? "module" : "script"
+            sourceType: opts.esModules ? "module" : "script",
+            plugins: [
+              'asyncGenerators',
+              'dynamicImport',
+              'flow',
+              'jsx'
+            ]
         });
         const ee = programVisitor(t, filename, {
             coverageVariable: opts.coverageVariable,
