@@ -9,6 +9,7 @@ function TestExclude (opts) {
   assign(this, {
     cwd: process.cwd(),
     include: false,
+    relativePath: true,
     configKey: null, // the key to load config from in package.json.
     configPath: null, // optionally override requireMainFilename.
     configFound: false
@@ -55,13 +56,18 @@ TestExclude.prototype.removeNegatedModuleExclude = function () {
 }
 
 TestExclude.prototype.shouldInstrument = function (filename, relFile) {
-  relFile = relFile || path.relative(this.cwd, filename)
+  var pathToCheck = filename
 
-  // Don't instrument files that are outside of the current working directory.
-  if (/^\.\./.test(path.relative(this.cwd, filename))) return false
+  if (this.relativePath) {
+    relFile = relFile || path.relative(this.cwd, filename)
 
-  relFile = relFile.replace(/^\.[\\/]/, '') // remove leading './' or '.\'.
-  return (!this.include || micromatch.any(relFile, this.include, {dotfiles: true})) && !micromatch.any(relFile, this.exclude, {dotfiles: true})
+    // Don't instrument files that are outside of the current working directory.
+    if (/^\.\./.test(path.relative(this.cwd, filename))) return false
+
+    pathToCheck = relFile.replace(/^\.[\\/]/, '') // remove leading './' or '.\'.
+  }
+
+  return (!this.include || micromatch.any(pathToCheck, this.include, {dotfiles: true})) && !micromatch.any(pathToCheck, this.exclude, {dotfiles: true})
 }
 
 TestExclude.prototype.pkgConf = function (key, path) {
