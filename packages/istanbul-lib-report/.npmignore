@@ -1,9 +1,0 @@
-.npmignore
-.gitignore
-.jshintrc
-.travis.yml
-.idea/
-coverage/
-test/
-support/
-karma.conf.js
