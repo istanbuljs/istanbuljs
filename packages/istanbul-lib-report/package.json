@@ -4,6 +4,10 @@
   "description": "Base reporting library for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "scripts": {
     "pretest": "jshint index.js lib/ test/",
     "test": "mocha"

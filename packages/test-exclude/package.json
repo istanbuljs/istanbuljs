@@ -3,6 +3,9 @@
   "version": "4.0.3",
   "description": "test for inclusion or exclusion of paths using pkg-conf and globs",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "pretest": "standard",
     "test": "mocha"
