@@ -1,4 +1,4 @@
-/* globals describe, it, beforeEach */
+/* globals describe, it, before */
 
 var assert = require('chai').assert,
     path = require('path'),
@@ -9,7 +9,7 @@ var assert = require('chai').assert,
     allFiles;
 
 describe('file matcher', function () {
-    beforeEach(function (cb) {
+    before(function (cb) {
         if (!allFiles) {
             fileset('**/*.js', '', {cwd: root}, function (err, files) {
                 allFiles = files.map(function (file) {
