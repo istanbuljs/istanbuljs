@@ -4,7 +4,8 @@
  */
 "use strict";
 
-var pathutils = require('./pathutils'),
+var debug = require('debug')('istanbuljs'),
+    pathutils = require('./pathutils'),
     libCoverage = require('istanbul-lib-coverage'),
     MappedCoverage = require('./mapped').MappedCoverage;
 
@@ -19,7 +20,7 @@ function isInvalidPosition (pos) {
  * @returns {Object} the remapped location Object
  */
 function getMapping(sourceMap, location, origFile) {
- 
+
     if (!location) {
         return null;
     }
@@ -167,7 +168,7 @@ SourceMapTransformer.prototype.transform = function (coverageMap) {
 
         changed = that.processFile(fc, sourceMap, getMappedCoverage);
         if (!changed) {
-            console.warn('File [' + file + '] ignored, nothing could be mapped');
+            debug('File [' + file + '] ignored, nothing could be mapped');
         }
     });
     return libCoverage.createCoverageMap(output);
@@ -178,5 +179,3 @@ module.exports = {
         return new SourceMapTransformer(finder, opts);
     }
 };
-
-

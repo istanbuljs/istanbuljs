@@ -1,7 +1,12 @@
 istanbul-lib-source-maps
 ========================
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/istanbuljs/istanbul-lib-source-maps.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/istanbuljs/istanbul-lib-source-maps.svg)](https://travis-ci.org/istanbuljs/istanbul-lib-source-maps)
+[![Build Status](https://travis-ci.org/istanbuljs/istanbuljs.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbuljs)
 
-Source map support for istanbul. Extremely immature at this point.
+Source map support for istanbuljs.
+
+## Debugging
+
+_istanbul-lib-source-maps_ uses the [debug](https://www.npmjs.com/package/debug) module.
+Run your application with the environment variable `DEBUG=istanbuljs`, to receive debug
+output.

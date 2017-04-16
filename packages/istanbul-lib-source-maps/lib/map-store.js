@@ -4,7 +4,8 @@
  */
 "use strict";
 
-var path = require('path'),
+var debug = require('debug')('istanbuljs'),
+    path = require('path'),
     fs = require('fs'),
     pathutils = require('./pathutils'),
     sourceStore = require('./source-store'),
@@ -51,7 +52,7 @@ MapStore.prototype.registerURL = function (transformedFilePath, sourceMapUrl) {
                 data: sourceMapUrl.substring(pos + b64.length)
             };
         } else {
-            console.error('Unable to interpret source map URL: ', sourceMapUrl);
+            debug('Unable to interpret source map URL: ' + sourceMapUrl);
         }
         return;
     }
@@ -69,7 +70,7 @@ MapStore.prototype.registerMap = function (transformedFilePath, sourceMap) {
     if (sourceMap && sourceMap.version) {
         this.data[transformedFilePath] = { type: 'object', data: sourceMap };
     } else {
-        console.error('Invalid source map object', sourceMap);
+        debug('Invalid source map object:' + JSON.stringify(sourceMap, null, 2));
     }
 };
 /**
@@ -135,11 +136,8 @@ MapStore.prototype.transformCoverage = function (coverageMap) {
             });
             return smc;
         } catch (ex) {
-            console.error('Error returning source map for ' + filePath);
-            console.error(ex.message || ex);
-            if (this.verbose) {
-                console.error(ex.stack);
-            }
+            debug('Error returning source map for ' + filePath);
+            debug(ex.stack);
             return null;
         }
     }).transform(coverageMap);
@@ -160,4 +158,3 @@ MapStore.prototype.dispose = function () {
 module.exports = {
     MapStore: MapStore
 };
-
