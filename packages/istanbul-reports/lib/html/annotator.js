@@ -41,9 +41,11 @@ function annotateLines(fileCoverage, structuredText) {
 }
 
 function annotateStatements(fileCoverage, structuredText) {
-    var statementStats = fileCoverage.s,
-        statementMeta = fileCoverage.statementMap;
-    Object.keys(statementStats).forEach(function (stName) {
+    var statementStats = Object.keys(fileCoverage.s).filter(function (stName) {
+      return fileCoverage.s[stName] !== null;
+    }),
+    statementMeta = fileCoverage.statementMap;
+    statementStats.forEach(function (stName) {
         var count = statementStats[stName],
             meta = statementMeta[stName],
             type = count > 0 ? 'yes' : 'no',
@@ -227,4 +229,3 @@ function annotateSourceCode(fileCoverage, sourceStore) {
 module.exports = {
     annotateSourceCode: annotateSourceCode
 };
-
