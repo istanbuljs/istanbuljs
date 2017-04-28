@@ -319,4 +319,41 @@ describe('base coverage', function () {
             }
         }, bcby);
     });
+
+    it('returns branch coverage by line with Cobertura branchMap structure', function () {
+        var loc = function (sl, sc, el, ec) {
+                return {
+                    start: {line: sl, column: sc},
+                    end: {line: el, column: ec}
+                };
+            },
+            c = new FileCoverage({
+                path: '/path/to/file',
+                branchMap: {
+                    1: {loc: loc(1,1,1,100)},
+                    2: {loc: loc(2,50,2,100)}
+                },
+                fnMap: {},
+                statementMap: {},
+                s: {},
+                b: {
+                    1: [1, 0],
+                    2: [0, 0, 0, 1]
+                },
+                f: {}
+            }),
+            bcby = c.getBranchCoverageByLine();
+        assert.deepEqual({
+            1: {
+                covered: 1,
+                total: 2,
+                coverage: 50
+            },
+            2: {
+                covered: 1,
+                total: 4,
+                coverage: 25
+            }
+        }, bcby);
+    });
 });
