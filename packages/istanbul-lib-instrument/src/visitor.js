@@ -453,6 +453,14 @@ const coverageTemplate = template(`
         return coverage[path] = coverageData;
     })();
 `);
+// the rewire plugin (and potentially other babel middleware)
+// may cause files to be instrumented twice, see:
+// https://github.com/istanbuljs/babel-plugin-istanbul/issues/94
+// we should only instrument code for coverage the first time
+// it's run through istanbul-lib-instrument.
+function alreadyInstrumented(path, visitState) {
+    return path.scope.hasBinding(visitState.varName);
+}
 /**
  * programVisitor is a `babel` adaptor for instrumentation.
  * It returns an object with two methods `enter` and `exit`.
@@ -478,9 +486,15 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {coverageVa
     const visitState = new VisitState(types, sourceFilePath, opts.inputSourceMap);
     return {
         enter(path) {
+            if (alreadyInstrumented(path, visitState)) {
+                return;
+            }
             path.traverse(codeVisitor, visitState);
         },
         exit(path) {
+            if (alreadyInstrumented(path, visitState)) {
+                return;
+            }
             visitState.cov.freeze();
             const coverageData = visitState.cov.toJSON();
             coverageData[MAGIC_KEY] = MAGIC_VALUE;
