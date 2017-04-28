@@ -23,7 +23,7 @@
     "istanbul": "^0.4.0",
     "jshint": "^2.8.0",
     "mocha": "^3.2.0",
-    "rimraf": "^2.4.3"
+    "rimraf": "^2.6.1"
   },
   "license": "BSD-3-Clause",
   "bugs": {

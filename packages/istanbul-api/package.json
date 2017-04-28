@@ -28,10 +28,11 @@
   "homepage": "https://github.com/istanbuljs/istanbul-api#readme",
   "devDependencies": {
     "chai": "^3.0.0",
+    "is-windows": "^1.0.0",
     "jshint": "^2.8.0",
     "memory-streams": "^0.1.0",
     "mocha": "^3.1.2",
-    "rimraf": "^2.4.3"
+    "rimraf": "^2.6.1"
   },
   "dependencies": {
     "async": "^2.1.4",
