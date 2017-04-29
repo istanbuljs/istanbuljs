@@ -84,8 +84,15 @@ function ConsoleWriter() {
 }
 util.inherits(ConsoleWriter, ContentWriter);
 
+// allow stdout to be captured for tests.
+var capture = false;
+var output = '';
 ConsoleWriter.prototype.write = function (str) {
-    process.stdout.write(str);
+    if (capture) {
+        output += str;
+    } else {
+        process.stdout.write(str);
+    }
 };
 
 ConsoleWriter.prototype.colorize = function (str, clazz) {
@@ -115,6 +122,24 @@ function FileWriter(baseDir) {
     mkdirp.sync(baseDir);
     this.baseDir = baseDir;
 }
+
+/**
+* static helpers for capturing stdout report output;
+* super useful for tests!
+*/
+FileWriter.startCapture = function () {
+  capture = true;
+};
+FileWriter.stopCapture = function () {
+  capture = false;
+};
+FileWriter.getOutput = function () {
+  return output;
+};
+FileWriter.resetOutput = function () {
+  output = '';
+};
+
 /**
  * returns a FileWriter that is rooted at the supplied subdirectory
  * @param {String} subdir the subdirectory under which to root the
