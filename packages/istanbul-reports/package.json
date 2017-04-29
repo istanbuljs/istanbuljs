@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "is-windows": "^1.0.1",
     "istanbul-lib-coverage": "^1.0.2",
     "istanbul-lib-report": "^1.0.0",
     "jshint": "^2.8.0",

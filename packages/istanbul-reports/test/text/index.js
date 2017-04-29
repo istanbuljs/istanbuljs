@@ -1,5 +1,6 @@
 /* globals describe, it, beforeEach, before, after */
 var fs = require('fs'),
+    isWindows = require('is-windows'),
     path = require('path'),
     FileWriter = require('istanbul-lib-report/lib/file-writer'),
     istanbulLibReport = require('istanbul-lib-report'),
@@ -23,6 +24,9 @@ describe('TextReport', function () {
       var fixture = require(path.resolve(__dirname, '../fixtures/specs/' + file));
       fixture.map = istanbulLibReport.summarizers.pkg(istanbulLibCoverage.createCoverageMap(fixture.map));
       it(fixture.title, function () {
+          if (isWindows()) { // appveyor does not render console color.
+              return this.skip();
+          }
           var context = istanbulLibReport.createContext({
             dir: './'
           });
