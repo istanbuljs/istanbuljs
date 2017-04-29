@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/istanbuljs/istanbul-lib-source-maps/compare/istanbul-lib-source-maps@1.1.1...istanbul-lib-source-maps@1.2.0) (2017-04-29)
+
+
+### Features
+
+* pull in debug module, to make debug messages optional ([#36](https://github.com/istanbuljs/istanbuljs/issues/36)) ([189519d](https://github.com/istanbuljs/istanbul-lib-source-maps/commit/189519d))
+
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/istanbuljs/istanbul-lib-source-maps/compare/istanbul-lib-source-maps@1.1.0...istanbul-lib-source-maps@1.1.1) (2017-03-27)
 

@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-source-maps",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Source maps support for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "debug": "^2.6.3",
-    "istanbul-lib-coverage": "^1.0.2",
+    "istanbul-lib-coverage": "^1.1.0",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.1",
     "source-map": "^0.5.3"
