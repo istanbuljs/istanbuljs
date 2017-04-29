@@ -112,6 +112,21 @@ function tableHeader(maxNameCols) {
     return elements.join(' |') + ' |';
 }
 
+function missingLines (node, colorizer) {
+    var missingLines = node.isSummary() ? [] : node.getFileCoverage().getUncoveredLines();
+    return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'low');
+}
+
+function missingBranches (node, colorizer) {
+    var branches = node.isSummary() ? {} : node.getFileCoverage().getBranchCoverageByLine(),
+        missingLines = Object.keys(branches).filter(function (key) {
+            return branches[key].coverage < 100;
+        }).map(function (key) {
+            return key;
+        });
+    return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'medium');
+}
+
 function tableRow(node, context, colorizer, maxNameCols, level) {
     var name = nodeName(node),
         metrics = node.getCoverageSummary(),
@@ -124,7 +139,6 @@ function tableRow(node, context, colorizer, maxNameCols, level) {
         colorize = function (str, key) {
             return colorizer(str, context.classForPercent(key, mm[key]));
         },
-        missingLines = node.isSummary() ? [] : node.getFileCoverage().getUncoveredLines(),
         elements = [];
 
     elements.push(colorize(formatName(name, maxNameCols, level),'statements'));
@@ -132,7 +146,11 @@ function tableRow(node, context, colorizer, maxNameCols, level) {
     elements.push(colorize(formatPct(mm.branches), 'branches'));
     elements.push(colorize(formatPct(mm.functions), 'functions'));
     elements.push(colorize(formatPct(mm.lines), 'lines'));
-    elements.push(colorizer(formatPct(missingLines.join(','), MISSING_COL), 'low'));
+    if (mm.lines === 100) {
+        elements.push(missingBranches(node, colorizer));
+    } else {
+        elements.push(missingLines(node, colorizer));
+    }
     return elements.join(DELIM) + DELIM;
 }
 
