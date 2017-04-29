@@ -4,6 +4,5 @@ node_js:
   - '4'
   - '6'
   - 'stable'
-before_install:
-  npm install -g npm@2.15.11
+
 after_script: nyc report --reporter=text-lcov | coveralls
