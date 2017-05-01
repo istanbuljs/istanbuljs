@@ -27,6 +27,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "babel-plugin-istanbul": "*"
+    "babel-plugin-istanbul": "*",
+    "babel-register": "*"
   }
 }

@@ -1,4 +1,7 @@
 {
   "sourceMap": false,
-  "instrument": false
+  "instrument": false,
+  "require": [
+    "babel-register"
+  ]
 }
