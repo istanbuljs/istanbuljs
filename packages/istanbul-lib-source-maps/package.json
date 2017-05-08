@@ -29,12 +29,12 @@
   },
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/istanbuljs/istanbul-lib-source-maps/issues"
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
-  "homepage": "https://github.com/istanbuljs/istanbul-lib-source-maps#readme",
+  "homepage": "https://github.com/istanbuljs/istanbuljs#readme",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/istanbuljs/istanbul-lib-source-maps.git"
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
   },
   "keywords": [
     "istanbul",

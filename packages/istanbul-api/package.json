@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/istanbuljs/istanbul-api.git"
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
   },
   "keywords": [
     "istanbul",
@@ -23,9 +23,9 @@
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/istanbuljs/istanbul-api/issues"
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
-  "homepage": "https://github.com/istanbuljs/istanbul-api#readme",
+  "homepage": "https://github.com/istanbuljs/istanbuljs#readme",
   "devDependencies": {
     "chai": "^3.0.0",
     "is-windows": "^1.0.0",

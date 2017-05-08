@@ -26,14 +26,14 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git@github.com:istanbuljs/istanbul-reports"
+    "url": "git@github.com:istanbuljs/istanbuljs"
   },
   "keywords": [
     "istanbul",
     "reports"
   ],
   "bugs": {
-    "url": "https://github.com/istanbuljs/istanbul-reports/issues"
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
-  "homepage": "https://github.com/istanbuljs/istanbul-reports"
+  "homepage": "https://github.com/istanbuljs/istanbuljs"
 }

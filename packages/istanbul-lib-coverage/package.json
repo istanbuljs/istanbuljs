@@ -29,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:istanbuljs/istanbul-lib-coverage.git"
+    "url": "git@github.com:istanbuljs/istanbuljs.git"
   },
   "keywords": [
     "istanbul",
@@ -38,7 +38,7 @@
   ],
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/istanbuljs/istanbul-lib-coverage/issues"
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
-  "homepage": "https://github.com/istanbuljs/istanbul-lib-coverage"
+  "homepage": "https://github.com/istanbuljs/istanbuljs"
 }
