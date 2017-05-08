@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/istanbuljs/istanbul-lib-hook.git"
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
   },
   "keywords": [
     "istanbul",
@@ -30,7 +30,7 @@
   ],
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/istanbuljs/istanbul-lib-hook/issues"
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
-  "homepage": "https://github.com/istanbuljs/istanbul-lib-hook#readme"
+  "homepage": "https://github.com/istanbuljs/istanbuljs#readme"
 }
