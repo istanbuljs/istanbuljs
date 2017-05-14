@@ -32,27 +32,43 @@ function TestExclude (opts) {
     this.include = false
   }
 
-  if (!this.removeNegatedModuleExclude() && this.exclude.indexOf('**/node_modules/**') === -1) {
+  if (this.exclude.indexOf('**/node_modules/**') === -1) {
     this.exclude.push('**/node_modules/**')
   }
 
   this.exclude = prepGlobPatterns(
     [].concat(arrify(this.exclude))
   )
+
+  this.handleNegation()
 }
 
-// if a glob has been provided that explicitly negates
-// the **/node_modules/** default exclude rule, remove it from
-// excludes but don't add the default exclude rule.
-TestExclude.prototype.removeNegatedModuleExclude = function () {
-  var moduleExcludeNegated = false
-  this.exclude = this.exclude.filter(function (e) {
-    var negated = !!micromatch('./node_modules/foo.js', e, {nonegate: false}).length !==
-      !!micromatch('./node_modules/foo.js', e, {nonegate: true}).length
-    if (negated) moduleExcludeNegated = true
-    return !negated
+// handle the special case of negative globs
+// (!**foo/bar); we create a new this.excludeNegated set
+// of rules, which is applied after excludes and we
+// move excluded include rules into this.excludes.
+TestExclude.prototype.handleNegation = function () {
+  if (Array.isArray(this.include)) {
+    const includeNegated = this.include.filter(function (e) {
+      return e.charAt(0) === '!'
+    }).map(function (e) {
+      return e.slice(1)
+    })
+    this.exclude.push.apply(this.exclude, prepGlobPatterns(includeNegated))
+    this.include = this.include.filter(function (e) {
+      return e.charAt(0) !== '!'
+    })
+  }
+
+  this.excludeNegated = this.exclude.filter(function (e) {
+    return e.charAt(0) === '!'
+  }).map(function (e) {
+    return e.slice(1)
   })
-  return moduleExcludeNegated
+  this.exclude = this.exclude.filter(function (e) {
+    return e.charAt(0) !== '!'
+  })
+  this.excludeNegated = prepGlobPatterns(this.excludeNegated)
 }
 
 TestExclude.prototype.shouldInstrument = function (filename, relFile) {
@@ -67,7 +83,11 @@ TestExclude.prototype.shouldInstrument = function (filename, relFile) {
     pathToCheck = relFile.replace(/^\.[\\/]/, '') // remove leading './' or '.\'.
   }
 
-  return (!this.include || micromatch.any(pathToCheck, this.include, {dotfiles: true})) && !micromatch.any(pathToCheck, this.exclude, {dotfiles: true})
+  return (
+    !this.include ||
+    micromatch.any(pathToCheck, this.include, {dotfiles: true})) &&
+    (!micromatch.any(pathToCheck, this.exclude, {dotfiles: true}) ||
+     micromatch.any(pathToCheck, this.excludeNegated, {dotfiles: true}))
 }
 
 TestExclude.prototype.pkgConf = function (key, path) {
