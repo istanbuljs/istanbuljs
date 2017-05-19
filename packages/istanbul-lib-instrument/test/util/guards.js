@@ -53,3 +53,7 @@ export function isDefaultArgsAvailable() {
 export function isInferredFunctionNameAvailable() {
     return tryThis('const foo = function () {}; require("assert").equal(foo.name, "foo")');
 }
+
+export function isInferredClassNameAvailable() {
+  return tryThis('const foo = class {}; require("assert").equal(foo.name, "foo")');
+}
