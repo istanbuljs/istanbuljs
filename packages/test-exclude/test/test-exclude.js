@@ -86,6 +86,32 @@ describe('testExclude', function () {
     e.shouldInstrument('src/foo.js').should.equal(true)
   })
 
+  it('allows negated exclude patterns', function () {
+    const e = exclude({
+      exclude: ['foo/**', '!foo/bar.js']
+    })
+
+    e.shouldInstrument('./foo/fizz.js').should.equal(false)
+    e.shouldInstrument('./foo/bar.js').should.equal(true)
+  })
+
+  it('allows negated include patterns', function () {
+    const e = exclude({
+      include: ['batman/**', '!batman/robin.js']
+    })
+
+    e.shouldInstrument('./batman/joker.js').should.equal(true)
+    e.shouldInstrument('./batman/robin.js').should.equal(false)
+  })
+
+  it('negated exclude patterns unrelated to node_modules do not affect default node_modules exclude behavior', function () {
+    const e = exclude({
+      exclude: ['!foo/**']
+    })
+
+    e.shouldInstrument('node_modules/cat.js').should.equal(false)
+  })
+
   it('exports defaultExclude', function () {
     exclude.defaultExclude.should.deep.equal([
       'coverage/**',
