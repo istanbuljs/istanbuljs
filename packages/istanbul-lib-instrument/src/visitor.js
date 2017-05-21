@@ -71,6 +71,12 @@ class VisitState {
         extractURL(node.trailingComments);
     }
 
+    // for these expressions the statement counter needs to be hoisted, so
+    // function name inference can be preserved
+    counterNeedsHoisting(path) {
+      return path.isFunctionExpression() || path.isArrowFunctionExpression() || path.isClassExpression();
+    }
+
     // all the generic stuff that needs to be done on enter for every node
     onEnter(path) {
         const n = path.node;
@@ -144,7 +150,7 @@ class VisitState {
             path.node.body.unshift(T.expressionStatement(increment));
         } else if (path.isStatement()) {
             path.insertBefore(T.expressionStatement(increment));
-        } else if ((path.isFunctionExpression() || path.isArrowFunctionExpression()) && T.isVariableDeclarator(path.parentPath)) {
+        } else if (this.counterNeedsHoisting(path) && T.isVariableDeclarator(path.parentPath)) {
             // make an attempt to hoist the statement counter, so that
             // function names are maintained.
             const parent = path.parentPath.parentPath;
