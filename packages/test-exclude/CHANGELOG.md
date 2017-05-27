@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.1.1"></a>
+## [4.1.1](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@4.1.0...test-exclude@4.1.1) (2017-05-27)
+
+
+### Bug Fixes
+
+* add more general support for negated exclude rules ([#58](https://github.com/istanbuljs/istanbuljs/issues/58)) ([08445db](https://github.com/istanbuljs/istanbuljs/commit/08445db))
+
+
+
+
 <a name="4.1.0"></a>
 # [4.1.0](https://github.com/istanbuljs/test-exclude/compare/test-exclude@4.0.3...test-exclude@4.1.0) (2017-04-29)
 
