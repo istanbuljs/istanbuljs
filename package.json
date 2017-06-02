@@ -27,7 +27,7 @@
     "coveralls": "^2.13.0",
     "cross-env": "^5.0.0",
     "lerna": "^2.0.0-rc.4",
-    "nyc": "^10.3.0"
+    "nyc": "^11.0.1"
   },
   "nyc": {
     "exclude": [
