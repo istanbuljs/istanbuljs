@@ -32,5 +32,16 @@ describe('annotator', function () {
       });
       annotated.annotatedCode[0].should.not.match(/Cannot read property/);
     });
+
+    // see: https://github.com/istanbuljs/istanbuljs/issues/39
+    it('filters null entries in statement stats', function () {
+      var annotated = annotator.annotateSourceCode(getFixture('github-issue-39'), {
+        getSource: function () {
+          return fs.readFileSync('index.js', 'utf-8');
+        }
+      });
+
+      annotated.annotatedCode[0].should.not.match(/Cannot read property/);
+    });
   });
 });
