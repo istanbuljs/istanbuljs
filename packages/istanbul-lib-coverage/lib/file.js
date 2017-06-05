@@ -43,6 +43,7 @@ function assertValidSummary(obj) {
             Object.keys(obj).join(','));
     }
 }
+
 /**
  * CoverageSummary provides a summary of code coverage . It exposes 4 properties,
  * `lines`, `statements`, `branches`, and `functions`. Each of these properties
@@ -123,6 +124,28 @@ function assertValidObject(obj) {
             Object.keys(obj).join(','));
     }
 }
+// some coverage tools in the wild manage to output quirky data,
+// we clean this up as best we can.
+function normalizeCoverageObject(obj) {
+  // delete any keys from our counts, that don't have a corresponding
+  // map, see: https://github.com/istanbuljs/istanbuljs/issues/28
+  ['statementMap', 'fnMap', 'branchMap'].forEach(function (mapType) {
+    var counts = obj[mapType.charAt(0)];
+    var map = obj[mapType];
+    if (typeof counts === 'object' && typeof map === 'object') {
+      var ckeys = Object.keys(counts);
+      var mkeys = Object.keys(obj[mapType]);
+      if (ckeys.length !== mkeys.length) {
+        ckeys.forEach(function (k) {
+          if (!map[k]) {
+            delete counts[k];
+          }
+        });
+      }
+    }
+  });
+}
+
 /**
  * provides a read-only view of coverage for a single file.
  * The deep structure of this object is documented elsewhere. It has the following
@@ -155,6 +178,7 @@ function FileCoverage(pathOrObj) {
         throw new Error('Invalid argument to coverage constructor');
     }
     assertValidObject(this.data);
+    normalizeCoverageObject(this.data);
 }
 /**
  * returns computed line coverage from statement coverage.

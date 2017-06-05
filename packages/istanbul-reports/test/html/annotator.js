@@ -6,8 +6,9 @@ var fs = require('fs'),
 require('chai').should();
 
 function getFixture (fixtureName) {
-  var fileCoverage = istanbulLibCoverage.createFileCoverage('foo.js');
-  fileCoverage.data = require('../fixtures/' + fixtureName + '.json');
+  var fileCoverage = istanbulLibCoverage.createFileCoverage(
+    require('../fixtures/' + fixtureName + '.json')
+  );
   return fileCoverage;
 }
 
@@ -31,6 +32,18 @@ describe('annotator', function () {
         }
       });
       annotated.annotatedCode[0].should.not.match(/Cannot read property/);
+    });
+  });
+
+  describe('annotateStatements', function () {
+    // see: https://github.com/istanbuljs/istanbuljs/issues/28
+    it('handles "statementMap" containing fewer keys than "statement stats"', function () {
+      var annotated = annotator.annotateSourceCode(getFixture('extra-statement-stats'), {
+        getSource: function () {
+          return fs.readFileSync('index.js', 'utf-8');
+        }
+      });
+      annotated.annotatedCode[0].should.not.match(/Cannot read property 'start'/);
     });
   });
 });
