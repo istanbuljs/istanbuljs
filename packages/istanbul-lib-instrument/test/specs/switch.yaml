@@ -155,3 +155,32 @@ tests:
     lines: {'1': 1, '2': 1}
     branches: {'0': [0, 0, 1]}
     statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 1}
+---
+name: switch with ignore next (https://github.com/istanbuljs/istanbuljs/issues/64)
+code: |
+  'use strict'
+
+  const test = foo => {
+    switch (foo) {
+      // the bug discussed in #64, seems to only
+      // crop up when a function is invoked before
+      // a single line comment, hence Date.now().
+      case 'ok':
+        return Date.now()
+
+      /* istanbul ignore next */
+      default:
+        throw new Error('nope')
+    }
+  }
+
+  test('ok')
+  output = 'unknown'
+tests:
+  - name: 100% coverage
+    args: []
+    out: unknown
+    lines: {'3': 1, '4': 1, '9': 1, '17': 1, '18': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 1}
+    functions: {'0': 1}
+    branches: {'0': [1]}

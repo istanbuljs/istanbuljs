@@ -11,7 +11,11 @@ const clone = require('clone');
 
 const dir = path.resolve(__dirname, 'specs'),
     files = fs.readdirSync(dir).filter(function (f) {
-        return f.match(/\.yaml$/);
+        var match = true;
+        if (process.env.FILTER) {
+            match = (new RegExp(`.*${process.env.FILTER}.*`)).test(f);
+        }
+        return f.match(/\.yaml$/) && match;
     });
 
 function loadDocs() {
