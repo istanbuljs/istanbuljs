@@ -29,16 +29,16 @@ instead.
 
 **Parameters**
 
--   `opts` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** optional.
-    -   `opts.coverageVariable` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** name of global coverage variable. (optional, default `__coverage__`)
-    -   `opts.preserveComments` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** preserve comments in output (optional, default `false`)
-    -   `opts.compact` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** generate compact code. (optional, default `true`)
-    -   `opts.esModules` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** set to true to instrument ES6 modules. (optional, default `false`)
-    -   `opts.autoWrap` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** set to true to allow `return` statements outside of functions. (optional, default `false`)
-    -   `opts.produceSourceMap` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** set to true to produce a source map for the instrumented code. (optional, default `false`)
-    -   `opts.sourceMapUrlCallback` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)?** a callback function that is called when a source map URL
+-   `opts` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** optional. (optional, default `defaultOpts()`)
+    -   `opts.coverageVariable` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** name of global coverage variable. (optional, default `__coverage__`)
+    -   `opts.preserveComments` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** preserve comments in output (optional, default `false`)
+    -   `opts.compact` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** generate compact code. (optional, default `true`)
+    -   `opts.esModules` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to instrument ES6 modules. (optional, default `false`)
+    -   `opts.autoWrap` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to allow `return` statements outside of functions. (optional, default `false`)
+    -   `opts.produceSourceMap` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to produce a source map for the instrumented code. (optional, default `false`)
+    -   `opts.sourceMapUrlCallback` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** a callback function that is called when a source map URL
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
-    -   `opts.debug` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** turn debugging on (optional, default `false`)
+    -   `opts.debug` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** turn debugging on (optional, default `false`)
 
 ### instrumentSync
 
@@ -101,8 +101,8 @@ The exit function returns an object that currently has the following keys:
 **Parameters**
 
 -   `types` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** an instance of babel-types
--   `sourceFilePath` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the path to source file (optional, default `'unknown.js'`)
--   `opts` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?** additional options (optional, default `{coverageVariable:'__coverage__',inputSourceMap:undefined}`)
-    -   `opts.coverageVariable` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the global coverage variable name. (optional, default `__coverage__`)
-    -   `opts.inputSourceMap` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the input source map, that maps the uninstrumented code back to the
+-   `sourceFilePath` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to source file (optional, default `'unknown.js'`)
+-   `opts` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** additional options (optional, default `{coverageVariable:'__coverage__',inputSourceMap:undefined}`)
+    -   `opts.coverageVariable` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the global coverage variable name. (optional, default `__coverage__`)
+    -   `opts.inputSourceMap` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the input source map, that maps the uninstrumented code back to the
         original code. (optional, default `undefined`)
