@@ -133,7 +133,7 @@ class VisitState {
                 ? (x) => T.memberExpression(x, T.numericLiteral(index), true)
                 : (x) => x
         );
-        return T.unaryExpression('++',
+        return T.updateExpression('++',
             wrap(
                 T.memberExpression(
                     T.memberExpression(T.identifier(this.varName), T.identifier(type)),
