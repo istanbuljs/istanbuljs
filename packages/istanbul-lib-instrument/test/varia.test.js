@@ -47,6 +47,15 @@ describe('varia', function () {
         assert.ok(code.match(/\/* hello */));
     });
 
+    it('preserves function names for named export arrow functions', function () {
+        /* https://github.com/istanbuljs/babel-plugin-istanbul/issues/125 */
+        var v = verifier.create('export const func = () => true;', { generateOnly: true }, { esModules: true }),
+            code;
+        assert.ok(!v.err);
+        code = v.getGeneratedCode();
+        assert.ok(code.match(/cov_(.+)\.s\[\d+\]\+\+;export const func=\(\)=>/));
+    });
+
     it('returns last coverage object', function (cb) {
         var instrumenter = new Instrumenter({coverageVariable: '__testing_coverage__'}),
             generated,
