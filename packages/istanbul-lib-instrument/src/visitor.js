@@ -154,7 +154,9 @@ class VisitState {
             // make an attempt to hoist the statement counter, so that
             // function names are maintained.
             const parent = path.parentPath.parentPath;
-            if (parent && (T.isProgram(parent.parentPath) || T.isBlockStatement(parent.parentPath))) {
+            if (parent && T.isExportNamedDeclaration(parent.parentPath)) {
+                parent.parentPath.insertBefore(T.expressionStatement(increment));
+            } else if (parent && (T.isProgram(parent.parentPath) || T.isBlockStatement(parent.parentPath))) {
                 parent.insertBefore(T.expressionStatement(
                     increment
                 ));
