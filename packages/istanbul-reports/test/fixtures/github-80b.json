@@ -1,0 +1,38 @@
+{
+  "statementMap": {
+  },
+  "fnMap": {
+    "0": {
+      "name": "test",
+      "decl": {
+        "start": {
+          "line": 1,
+          "column": 2
+        },
+        "end": {
+          "line": 1,
+          "column": 0
+        }
+      },
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 21
+        }
+      }
+    }
+  },
+  "branchMap": {
+  },
+  "s": {
+  },
+  "f": {
+    "0": 0
+  },
+  "b": {
+  }
+}
