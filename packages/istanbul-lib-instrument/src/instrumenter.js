@@ -84,6 +84,7 @@ class Instrumenter {
             plugins: [
               'asyncGenerators',
               'dynamicImport',
+              'objectRestSpread',
               'flow',
               'jsx'
             ]
