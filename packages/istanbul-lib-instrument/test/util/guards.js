@@ -24,6 +24,10 @@ export function isArrowFnAvailable() {
     return tryThis('[1 ,2, 3].map(x => x * x)', 'arrow function');
 }
 
+export function isObjectSpreadAvailable() {
+    return tryThis('const a = {...{b: 33}}', 'object-spread');
+}
+
 export function isObjectFreezeAvailable() {
     "use strict";
     if (!Object.freeze) {

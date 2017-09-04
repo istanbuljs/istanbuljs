@@ -1,0 +1,15 @@
+---
+name: ES6 Object Spread
+guard: isObjectSpreadAvailable
+code: |
+  const a = {foo: args[0]}
+  const b = {...a}
+  output = b.foo
+tests:
+  - name: is instrumented
+    args: [10]
+    out: 10
+    lines: { '1': 1, '2': 1, '3': 1 }
+    statements: {'0': 1, '1': 1, '2': 1 }
+    functions: {}
+    branches: {}
