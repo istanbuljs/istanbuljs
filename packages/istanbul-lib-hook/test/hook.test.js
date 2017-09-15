@@ -165,4 +165,38 @@ describe('hooks', function () {
             hook.unhookCreateScript();
         });
     });
+    describe('runInContext', function () {
+        beforeEach(function () {
+            currentHook = require('vm').runInContext;
+        });
+        afterEach(function () {
+            require('vm').runInContext = currentHook;
+        });
+        it('transforms foo', function () {
+            var s;
+            var vm = require('vm');
+            hook.hookRunInContext(matcher, scriptTransformer);
+            s = vm.runInContext('(function () { return 10; }());', vm.createContext({}), '/bar/foo.js');
+            assert.equal(s, 42);
+            hook.unhookRunInContext();
+            s = vm.runInContext('(function () { return 10; }());', vm.createContext({}), '/bar/foo.js');
+            assert.equal(s, 10);
+        });
+        it('does not transform code with no filename', function () {
+            var s;
+            var vm = require('vm');
+            hook.hookRunInContext(matcher, scriptTransformer);
+            s = vm.runInContext('(function () { return 10; }());', vm.createContext({}));
+            assert.equal(s, 10);
+            hook.unhookRunInContext();
+        });
+        it('does not transform code with non-string filename', function () {
+            var s;
+            var vm = require('vm');
+            hook.hookRunInContext(matcher, scriptTransformer);
+            s = vm.runInContext('(function () { return 10; }());', vm.createContext({}), {});
+            assert.equal(s, 10);
+            hook.unhookRunInContext();
+        });
+    });
 });

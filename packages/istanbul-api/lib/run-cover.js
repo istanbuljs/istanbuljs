@@ -96,6 +96,9 @@ function getCoverFunctions(config, includes, callback) {
         reportInitFn();
 
         if (config.hooks.hookRunInContext()) {
+            hook.hookRunInContext(matchFn, transformer, hookOpts);
+        }
+        if (config.hooks.hookRunInThisContext()) {
             hook.hookRunInThisContext(matchFn, transformer, hookOpts);
         }
         disabler = hook.hookRequire(matchFn, requireTransformer, hookOpts);
@@ -106,6 +109,7 @@ function getCoverFunctions(config, includes, callback) {
             disabler();
         }
         hook.unhookRunInThisContext();
+        hook.unhookRunInContext();
         hook.unloadRequireCache(matchFn);
     };
 
