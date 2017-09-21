@@ -39,6 +39,7 @@ function defaultConfig() {
         },
         hooks: {
             'hook-run-in-context': false,
+            'hook-run-in-this-context': false,
             'post-require-hook': null,
             'handle-sigint': false
         },

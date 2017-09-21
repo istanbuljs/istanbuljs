@@ -79,7 +79,7 @@ describe('run cover', function () {
     it('hooks runInThisContext and provides coverage', function (cb) {
         cb = wrap(cb);
         var config = getConfig({
-            hooks: { 'hook-run-in-context': true },
+            hooks: { 'hook-run-in-this-context': true },
             instrumentation: { 'include-all-sources': false }
         });
         cover.getCoverFunctions(config, function(err, data) {
@@ -146,7 +146,7 @@ describe('run cover', function () {
     it('accepts specific includes', function (cb) {
         cb = wrap(cb);
         var config = getConfig({
-            hooks: { 'hook-run-in-context': true },
+            hooks: { 'hook-run-in-this-context': true },
             instrumentation: { 'include-all-sources': false }
         });
         cover.getCoverFunctions(config, [ '**/foo.js' ], function (err, data) {
