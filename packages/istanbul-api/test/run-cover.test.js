@@ -76,6 +76,37 @@ describe('run cover', function () {
         });
     });
 
+    it('hooks runInContext and provides coverage', function (cb) {
+        cb = wrap(cb);
+        var config = getConfig({
+            hooks: { 'hook-run-in-context': true },
+            instrumentation: { 'include-all-sources': false }
+        });
+        cover.getCoverFunctions(config, function(err, data) {
+            assert.ok(!err);
+            var fn = data.coverageFn,
+                exitFn = data.exitFn,
+                hookFn = data.hookFn,
+                coverage,
+                coverageMap,
+                otherMap;
+            unhookFn = data.unhookFn;
+            hookFn();
+            require('./sample-code/runInContext');
+            coverageMap = fn();
+            assert.ok(coverageMap);
+            coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
+            assert.ok(coverage);
+            exitFn();
+            assert.ok(fs.existsSync(path.resolve(outputDir, 'coverage.raw.json')));
+            assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov.info')));
+            assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov-report')));
+            otherMap = JSON.parse(fs.readFileSync(path.resolve(outputDir, 'coverage.raw.json')));
+            assert.deepEqual(otherMap, coverageMap);
+            cb();
+        });
+    });
+
     it('hooks runInThisContext and provides coverage', function (cb) {
         cb = wrap(cb);
         var config = getConfig({
