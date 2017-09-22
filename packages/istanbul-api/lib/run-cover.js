@@ -23,7 +23,7 @@ function getCoverFunctions(config, includes, callback) {
         reportingDir = path.resolve(config.reporting.dir()),
         reporter = new Reporter(config),
         excludes = config.instrumentation.excludes(true),
-        coverageVar = '$$cov_' + new Date().getTime() + '$$',
+        coverageVar = '__coverage__',
         instOpts = config.instrumentation.getInstrumenterOpts(),
         sourceMapStore = libSourceMaps.createSourceMapStore({}),
         instrumenter,
@@ -96,6 +96,9 @@ function getCoverFunctions(config, includes, callback) {
         reportInitFn();
 
         if (config.hooks.hookRunInContext()) {
+            hook.hookRunInContext(matchFn, transformer, hookOpts);
+        }
+        if (config.hooks.hookRunInThisContext()) {
             hook.hookRunInThisContext(matchFn, transformer, hookOpts);
         }
         disabler = hook.hookRequire(matchFn, requireTransformer, hookOpts);
@@ -106,6 +109,7 @@ function getCoverFunctions(config, includes, callback) {
             disabler();
         }
         hook.unhookRunInThisContext();
+        hook.unhookRunInContext();
         hook.unloadRequireCache(matchFn);
     };
 
