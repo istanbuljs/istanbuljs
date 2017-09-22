@@ -38,7 +38,7 @@
     "async": "^2.1.4",
     "fileset": "^2.0.2",
     "istanbul-lib-coverage": "^1.1.1",
-    "istanbul-lib-hook": "file:../istanbul-lib-hook",
+    "istanbul-lib-hook": "^1.0.7",
     "istanbul-lib-instrument": "^1.8.0",
     "istanbul-lib-report": "^1.1.1",
     "istanbul-lib-source-maps": "^1.2.1",
