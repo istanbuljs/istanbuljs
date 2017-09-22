@@ -166,13 +166,17 @@ function hookRunInContext(matcher, transformer, opts) {
     var fn = transformFn(matcher, transformer, opts.verbose);
     vm.runInContext = function (code, context, file) {
         var ret = fn(code, file);
-        Object.keys(global).forEach(function (key) {
-            if (key.indexOf('$$cov_') === 0) {
-                context[key] = global[key];
-            }
-        });
+        // Refer coverage variable in context to global coverage variable.
+        // So that coverage data will be written in global coverage variable for unit tests run in vm.runInContext.
+        // If all unit tests are run in vm.runInContext, no global.__coverage__ will be generated.
+        // Thus initialize global.__coverage__ here.
+        if (!global.__coverage__) {
+            global.__coverage__ = {};
+        }
+        context.__coverage__ = global.__coverage__;
         return originalRunInContext(ret.code, context, file);
     };
+    
 }
 /**
  * unhooks vm.runInContext, restoring it to its original state.
