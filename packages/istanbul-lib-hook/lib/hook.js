@@ -5,25 +5,29 @@
 var path = require('path'),
     vm = require('vm'),
     appendTransform = require('append-transform'),
-    originalCreateScript = vm.createScript,
     originalRunInThisContext = vm.runInThisContext;
 
 function transformFn(matcher, transformer, verbose) {
 
-    return function (code, filename) {
-        var shouldHook = typeof filename === 'string' && matcher(path.resolve(filename)),
+    return function (code, options) {
+      options = options || {};
+      if (typeof options === 'string') {
+        options = { filename: options };
+      }
+
+      var shouldHook = typeof options.filename === 'string' && matcher(path.resolve(options.filename)),
             transformed,
             changed = false;
 
         if (shouldHook) {
             if (verbose) {
-                console.error('Module load hook: transform [' + filename + ']');
+              console.log('Module load hook: transform [' + options.filename + ']');
             }
             try {
-                transformed = transformer(code, filename);
+              transformed = transformer(code, options);
                 changed = true;
             } catch (ex) {
-                console.error('Transformation error for', filename, '; return original code');
+              console.error('Transformation error for', options.filename, '; return original code');
                 console.error(ex.message || String(ex));
                 if (verbose) {
                     console.error(ex.stack);
@@ -94,51 +98,24 @@ function hookRequire(matcher, transformer, options) {
         disable = true;
     };
 }
-/**
- * hooks `vm.createScript` to return transformed code out of which a `Script` object will be created.
- * Exceptions in the transform result in the original code being used instead.
- * @method hookCreateScript
- * @static
- * @param matcher {Function(filePath)} a function that is called with the filename passed to `vm.createScript`
- *  Should return a truthy value when transformations need to be applied to the code, a falsy value otherwise
- * @param transformer {Function(code, filePath)} a function called with the original code and the filename passed to
- *  `vm.createScript`. Should return the transformed code.
- * @param options {Object} options Optional.
- * @param {Boolean} [options.verbose] write a line to standard error every time the transformer is called
- */
-function hookCreateScript(matcher, transformer, opts) {
-    opts = opts || {};
-    var fn = transformFn(matcher, transformer, opts.verbose);
-    vm.createScript = function (code, file) {
-        var ret = fn(code, file);
-        return originalCreateScript(ret.code, file);
-    };
-}
-/**
- * unhooks vm.createScript, restoring it to its original state.
- * @method unhookCreateScript
- * @static
- */
-function unhookCreateScript() {
-    vm.createScript = originalCreateScript;
-}
+
 /**
  * hooks `vm.runInThisContext` to return transformed code.
  * @method hookRunInThisContext
  * @static
- * @param matcher {Function(filePath)} a function that is called with the filename passed to `vm.createScript`
+ * @param matcher {Function(filePath)} a function that is called with the filename passed to `vm.runInThisContext`
  *  Should return a truthy value when transformations need to be applied to the code, a falsy value otherwise
- * @param transformer {Function(code, filePath)} a function called with the original code and the filename passed to
- *  `vm.createScript`. Should return the transformed code.
+ * @param transformer {Function(code, options)} a function called with the original code and the options passed to
+ *  `vm.runInThisContext`. Should return the transformed code.
  * @param opts {Object} [opts={}] options
  * @param {Boolean} [opts.verbose] write a line to standard error every time the transformer is called
  */
 function hookRunInThisContext(matcher, transformer, opts) {
     opts = opts || {};
     var fn = transformFn(matcher, transformer, opts.verbose);
-    vm.runInThisContext = function (code, file) {
-        var ret = fn(code, file);
-        return originalRunInThisContext(ret.code, file);
+    vm.runInThisContext = function (code, options) {
+      var ret = fn(code, options);
+      return originalRunInThisContext(ret.code, options);
     };
 }
 /**
@@ -151,7 +128,7 @@ function unhookRunInThisContext() {
 }
 /**
  * istanbul-lib-hook provides mechanisms to transform code in the scope of `require`,
- * `vm.createScript`, `vm.runInThisContext` etc.
+ * `vm.runInThisContext` etc.
  *
  * This mechanism is general and relies on a user-supplied `matcher` function that
  * determines when transformations should be performed and a user-supplied `transformer`
@@ -173,8 +150,6 @@ function unhookRunInThisContext() {
  */
 module.exports = {
     hookRequire: hookRequire,
-    hookCreateScript: hookCreateScript,
-    unhookCreateScript: unhookCreateScript,
     hookRunInThisContext : hookRunInThisContext,
     unhookRunInThisContext : unhookRunInThisContext,
     unloadRequireCache: unloadRequireCache
