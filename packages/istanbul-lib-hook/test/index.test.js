@@ -7,5 +7,6 @@ describe('external interface', function () {
     it('exports the correct interface', function () {
         assert.ok(index.hookRequire);
         assert.ok(index.hookRunInThisContext);
+        assert.ok(index.hookRunInContext);
     });
 });
