@@ -87,7 +87,6 @@ describe('run cover', function () {
             var fn = data.coverageFn,
                 exitFn = data.exitFn,
                 hookFn = data.hookFn,
-                coverage,
                 coverageMap,
                 otherMap;
             unhookFn = data.unhookFn;
@@ -95,8 +94,6 @@ describe('run cover', function () {
             require('./sample-code/runInContext');
             coverageMap = fn();
             assert.ok(coverageMap);
-            coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
-            assert.ok(coverage);
             exitFn();
             assert.ok(fs.existsSync(path.resolve(outputDir, 'coverage.raw.json')));
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov.info')));
