@@ -19,7 +19,7 @@ describe('run reports', function () {
         var cfg = configuration.loadObject({
             verbose: false,
             hooks: {
-                'hook-run-in-context': true
+                'hook-run-in-this-context': true
             },
             instrumentation: {
                 root: codeRoot,
