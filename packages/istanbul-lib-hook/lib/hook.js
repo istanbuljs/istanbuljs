@@ -3,42 +3,43 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 var path = require('path'),
-    vm = require('vm'),
-    appendTransform = require('append-transform'),
-    originalRunInThisContext = vm.runInThisContext;
+  vm = require('vm'),
+  appendTransform = require('append-transform'),
+  originalCreateScript = vm.createScript,
+  originalRunInThisContext = vm.runInThisContext;
 
 function transformFn(matcher, transformer, verbose) {
 
-    return function (code, options) {
-      options = options || {};
-      if (typeof options === 'string') {
-        options = { filename: options };
+  return function (code, options) {
+    options = options || {};
+    if (typeof options === 'string') {
+      options = { filename: options };
+    }
+
+    var shouldHook = typeof options.filename === 'string' && matcher(path.resolve(options.filename)),
+      transformed,
+      changed = false;
+
+    if (shouldHook) {
+      if (verbose) {
+        console.log('Module load hook: transform [' + options.filename + ']');
       }
-
-      var shouldHook = typeof options.filename === 'string' && matcher(path.resolve(options.filename)),
-            transformed,
-            changed = false;
-
-        if (shouldHook) {
-            if (verbose) {
-              console.log('Module load hook: transform [' + options.filename + ']');
-            }
-            try {
-              transformed = transformer(code, options);
-                changed = true;
-            } catch (ex) {
-              console.error('Transformation error for', options.filename, '; return original code');
-                console.error(ex.message || String(ex));
-                if (verbose) {
-                    console.error(ex.stack);
-                }
-                transformed = code;
-            }
-        } else {
-            transformed = code;
+      try {
+        transformed = transformer(code, options);
+        changed = true;
+      } catch (ex) {
+        console.error('Transformation error for', options.filename, '; return original code');
+        console.error(ex.message || String(ex));
+        if (verbose) {
+          console.error(ex.stack);
         }
-        return { code: transformed, changed: changed };
-    };
+        transformed = code;
+      }
+    } else {
+      transformed = code;
+    }
+    return { code: transformed, changed: changed };
+  };
 }
 /**
  * unloads the required caches, removing all files that would have matched
@@ -47,14 +48,14 @@ function transformFn(matcher, transformer, verbose) {
  *  returns if that file should be unloaded from the cache.
  */
 function unloadRequireCache(matcher) {
-    /* istanbul ignore else: impossible to test */
-    if (matcher && typeof require !== 'undefined' && require && require.cache) {
-        Object.keys(require.cache).forEach(function (filename) {
-            if (matcher(filename)) {
-                delete require.cache[filename];
-            }
-        });
-    }
+  /* istanbul ignore else: impossible to test */
+  if (matcher && typeof require !== 'undefined' && require && require.cache) {
+    Object.keys(require.cache).forEach(function (filename) {
+      if (matcher(filename)) {
+        delete require.cache[filename];
+      }
+    });
+  }
 }
 /**
  * hooks `require` to return transformed code to the node module loader.
@@ -72,31 +73,60 @@ function unloadRequireCache(matcher) {
  * @returns {Function} a reset function that can be called to remove the hook
  */
 function hookRequire(matcher, transformer, options) {
-    options = options || {};
-    var extensions,
-        disable = false,
-        fn = transformFn(matcher, transformer, options.verbose),
-        postLoadHook = options.postLoadHook &&
-            typeof options.postLoadHook === 'function' ? options.postLoadHook : null;
+  options = options || {};
+  var extensions,
+    disable = false,
+    fn = transformFn(matcher, transformer, options.verbose),
+    postLoadHook = options.postLoadHook &&
+    typeof options.postLoadHook === 'function' ? options.postLoadHook : null;
 
-    extensions = options.extensions || ['.js'];
+  extensions = options.extensions || ['.js'];
 
-    extensions.forEach(function(ext){
-        appendTransform(function (code, filename) {
-            if (disable) {
-                return code;
-            }
-            var ret = fn(code, filename);
-            if (postLoadHook) {
-                postLoadHook(filename);
-            }
-            return ret.code;
-        }, ext);
-    });
+  extensions.forEach(function(ext){
+    appendTransform(function (code, filename) {
+      if (disable) {
+        return code;
+      }
+      var ret = fn(code, filename);
+      if (postLoadHook) {
+        postLoadHook(filename);
+      }
+      return ret.code;
+    }, ext);
+  });
 
-    return function () {
-        disable = true;
-    };
+  return function () {
+    disable = true;
+  };
+}
+
+/**
+ * hooks `vm.createScript` to return transformed code out of which a `Script` object will be created.
+ * Exceptions in the transform result in the original code being used instead.
+ * @method hookCreateScript
+ * @static
+ * @param matcher {Function(filePath)} a function that is called with the filename passed to `vm.createScript`
+ *  Should return a truthy value when transformations need to be applied to the code, a falsy value otherwise
+ * @param transformer {Function(code, filePath)} a function called with the original code and the filename passed to
+ *  `vm.createScript`. Should return the transformed code.
+ * @param options {Object} options Optional.
+ * @param {Boolean} [options.verbose] write a line to standard error every time the transformer is called
+ */
+function hookCreateScript(matcher, transformer, opts) {
+  opts = opts || {};
+  var fn = transformFn(matcher, transformer, opts.verbose);
+  vm.createScript = function (code, file) {
+    var ret = fn(code, file);
+    return originalCreateScript(ret.code, file);
+  };
+}
+/**
+ * unhooks vm.createScript, restoring it to its original state.
+ * @method unhookCreateScript
+ * @static
+ */
+function unhookCreateScript() {
+  vm.createScript = originalCreateScript;
 }
 
 /**
@@ -111,12 +141,12 @@ function hookRequire(matcher, transformer, options) {
  * @param {Boolean} [opts.verbose] write a line to standard error every time the transformer is called
  */
 function hookRunInThisContext(matcher, transformer, opts) {
-    opts = opts || {};
-    var fn = transformFn(matcher, transformer, opts.verbose);
-    vm.runInThisContext = function (code, options) {
-      var ret = fn(code, options);
-      return originalRunInThisContext(ret.code, options);
-    };
+  opts = opts || {};
+  var fn = transformFn(matcher, transformer, opts.verbose);
+  vm.runInThisContext = function (code, options) {
+    var ret = fn(code, options);
+    return originalRunInThisContext(ret.code, options);
+  };
 }
 /**
  * unhooks vm.runInThisContext, restoring it to its original state.
@@ -124,7 +154,7 @@ function hookRunInThisContext(matcher, transformer, opts) {
  * @static
  */
 function unhookRunInThisContext() {
-    vm.runInThisContext = originalRunInThisContext;
+  vm.runInThisContext = originalRunInThisContext;
 }
 /**
  * istanbul-lib-hook provides mechanisms to transform code in the scope of `require`,
@@ -149,10 +179,10 @@ function unhookRunInThisContext() {
  * var foo = require('foo'); //will now print foo's module path to console
  */
 module.exports = {
-    hookRequire: hookRequire,
-    hookRunInThisContext : hookRunInThisContext,
-    unhookRunInThisContext : unhookRunInThisContext,
-    unloadRequireCache: unloadRequireCache
+  hookRequire: hookRequire,
+  hookCreateScript: hookCreateScript,
+  unhookCreateScript: unhookCreateScript,
+  hookRunInThisContext: hookRunInThisContext,
+  unhookRunInThisContext: unhookRunInThisContext,
+  unloadRequireCache: unloadRequireCache
 };
-
-
