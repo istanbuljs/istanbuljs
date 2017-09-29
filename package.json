@@ -24,7 +24,7 @@
   },
   "homepage": "https://istanbul.js.org/",
   "devDependencies": {
-    "coveralls": "^2.13.0",
+    "coveralls": "^3.0.0",
     "cross-env": "^5.0.0",
     "lerna": "^2.1.2",
     "nyc": "^11.0.1"
