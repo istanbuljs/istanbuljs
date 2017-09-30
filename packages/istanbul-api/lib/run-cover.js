@@ -27,7 +27,7 @@ function getCoverFunctions(config, includes, callback) {
         instOpts = config.instrumentation.getInstrumenterOpts(),
         sourceMapStore = libSourceMaps.createSourceMapStore({}),
         instrumenter,
-        transformer,
+        runInThisContextTransformer,
         fakeRequire,
         requireTransformer,
         reportInitFn,
@@ -46,15 +46,15 @@ function getCoverFunctions(config, includes, callback) {
         return global[coverageVar];
     };
     instrumenter = libInstrument.createInstrumenter(instOpts);
-    transformer = function (code, file) {
-        return instrumenter.instrumentSync(code, file);
+    runInThisContextTransformer = function (code, options) {
+        return instrumenter.instrumentSync(code, options.filename);
     };
-    requireTransformer = function (code, file) {
+    requireTransformer = function (code, options) {
         var cov,
-            ret = transformer(code, file);
+            ret = instrumenter.instrumentSync(code, options.filename);
         if (fakeRequire) {
             cov = coverageFinderFn();
-            cov[file] = instrumenter.lastFileCoverage();
+            cov[options.filename] = instrumenter.lastFileCoverage();
             return 'function x() {}';
         }
         return ret;
@@ -96,9 +96,10 @@ function getCoverFunctions(config, includes, callback) {
         reportInitFn();
 
         if (config.hooks.hookRunInContext()) {
-            hook.hookRunInThisContext(matchFn, transformer, hookOpts);
+            hook.hookRunInThisContext(matchFn, runInThisContextTransformer, hookOpts);
+        } else {
+            disabler = hook.hookRequire(matchFn, requireTransformer, hookOpts);
         }
-        disabler = hook.hookRequire(matchFn, requireTransformer, hookOpts);
     };
 
     unhookFn = function (matchFn) {
