@@ -23,7 +23,7 @@ function getCoverFunctions(config, includes, callback) {
         reportingDir = path.resolve(config.reporting.dir()),
         reporter = new Reporter(config),
         excludes = config.instrumentation.excludes(true),
-        coverageVar = '$$cov_1506891400$$',
+        coverageVar = '1q2w3e43r',
         instOpts = config.instrumentation.getInstrumenterOpts(),
         sourceMapStore = libSourceMaps.createSourceMapStore({}),
         instrumenter,
