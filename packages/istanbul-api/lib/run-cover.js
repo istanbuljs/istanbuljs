@@ -27,6 +27,7 @@ function getCoverFunctions(config, includes, callback) {
         instOpts = config.instrumentation.getInstrumenterOpts(),
         sourceMapStore = libSourceMaps.createSourceMapStore({}),
         instrumenter,
+        transformer,
         runInThisContextTransformer,
         fakeRequire,
         requireTransformer,
@@ -46,12 +47,15 @@ function getCoverFunctions(config, includes, callback) {
         return global[coverageVar];
     };
     instrumenter = libInstrument.createInstrumenter(instOpts);
+    transformer = function (code, file) {
+        return instrumenter.instrumentSync(code, file);
+    };
     runInThisContextTransformer = function (code, options) {
-        return instrumenter.instrumentSync(code, options.filename);
+      return transformer(code, options.filename);
     };
     requireTransformer = function (code, options) {
         var cov,
-            ret = instrumenter.instrumentSync(code, options.filename);
+            ret = transformer(code, options.filename);
         if (fakeRequire) {
             cov = coverageFinderFn();
             cov[options.filename] = instrumenter.lastFileCoverage();
