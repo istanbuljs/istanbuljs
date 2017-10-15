@@ -325,6 +325,19 @@ function blockProp(prop) {
     };
 }
 
+function makeParenthesizedExpression(path) {
+  var T = this.types;
+  if (path.node) {
+    path.replaceWith(T.parenthesizedExpression(path.node));
+  }
+}
+
+function parenthesizedExpressionProp(prop) {
+    return function (path) {
+        makeParenthesizedExpression.call(this, path.get(prop));
+    };
+}
+
 function convertArrowExpression(path) {
     const n = path.node;
     const T = this.types;
@@ -421,6 +434,7 @@ const codeVisitor = {
     AssignmentPattern: entries(coverAssignmentPattern),
     BlockStatement: entries(), // ignore processing only
     ClassMethod: entries(coverFunction),
+    ClassDeclaration: entries(parenthesizedExpressionProp('superClass'), coverStatement),
     ExpressionStatement: entries(coverStatement),
     BreakStatement: entries(coverStatement),
     ContinueStatement: entries(coverStatement),
