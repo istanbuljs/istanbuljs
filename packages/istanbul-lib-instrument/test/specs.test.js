@@ -62,14 +62,18 @@ function generateTests(docs) {
                 (doc.tests || []).forEach(function (t) {
                     var fn =  function () {
                         var genOnly = (doc.opts || {}).generateOnly,
+                            noCoverage = (doc.opts || {}).noCoverage,
                             v = verifier.create(doc.code, doc.opts || {}, doc.instrumentOpts, doc.inputSourceMap),
                             test = clone(t),
                             args = test.args,
                             out = test.out;
                         delete test.args;
                         delete test.out;
-                        if (!genOnly) {
+                        if (!genOnly && !noCoverage) {
                             v.verify(args, out, test);
+                        }
+                        if (noCoverage) {
+                            assert.equal(v.code, v.generatedCode);
                         }
                     };
                     if (skip) {

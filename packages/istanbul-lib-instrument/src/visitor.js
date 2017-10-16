@@ -5,6 +5,8 @@ import template from 'babel-template';
 
 // istanbul ignore comment pattern
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
+// istanbul ignore file pattern
+const COMMENT_FILE_RE = /^\s*istanbul\s+ignore\s+(file)(?=\W|$)/;
 // source map URL pattern
 const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
 
@@ -483,6 +485,9 @@ const coverageTemplate = template(`
 function alreadyInstrumented(path, visitState) {
     return path.scope.hasBinding(visitState.varName);
 }
+function shouldIgnoreFile(programNode) {
+    return programNode.parent && programNode.parent.comments.some(c => COMMENT_FILE_RE.test(c.value));
+}
 /**
  * programVisitor is a `babel` adaptor for instrumentation.
  * It returns an object with two methods `enter` and `exit`.
@@ -508,6 +513,9 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {coverageVa
     const visitState = new VisitState(types, sourceFilePath, opts.inputSourceMap);
     return {
         enter(path) {
+            if (shouldIgnoreFile(path.find(p => p.isProgram()))) {
+                return;
+            }
             if (alreadyInstrumented(path, visitState)) {
                 return;
             }
@@ -519,6 +527,9 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {coverageVa
             }
             visitState.cov.freeze();
             const coverageData = visitState.cov.toJSON();
+            if (shouldIgnoreFile(path.find(p => p.isProgram()))) {
+                return {fileCoverage: coverageData, sourceMappingURL: visitState.sourceMappingURL};
+            }
             coverageData[MAGIC_KEY] = MAGIC_VALUE;
             const hash = createHash(SHA).update(JSON.stringify(coverageData)).digest('hex');
             const coverageNode = T.valueToNode(coverageData);

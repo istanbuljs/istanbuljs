@@ -94,6 +94,7 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
     var debug = extractTestOption(opts, 'debug', process.env.DEBUG==="1"),
         file = extractTestOption(opts, 'file', __filename),
         generateOnly = extractTestOption(opts, 'generateOnly', false),
+        noCoverage = extractTestOption(opts, 'noCoverage', false),
         quiet = extractTestOption(opts, 'quiet', false),
         coverageVariable = instrumenterOpts.coverageVariable,
         g = getGlobalObject(),
@@ -133,7 +134,7 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
             verror = new Error('Error compiling\n' + annotatedCode(code) + '\n' + ex.message);
         }
     }
-    if (generateOnly) {
+    if (generateOnly || noCoverage) {
         assert.ok(!verror);
     }
     return new Verifier({
