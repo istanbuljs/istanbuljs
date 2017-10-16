@@ -63,5 +63,5 @@ export function isInferredClassNameAvailable() {
 }
 
 export function isClassAvailable() {
-  return tryThis('class MyClass {}');
+  return tryThis("new Function('args', '{class Foo extends (Bar) {}}')");
 }
