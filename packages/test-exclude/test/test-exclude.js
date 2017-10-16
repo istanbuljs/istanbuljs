@@ -12,7 +12,9 @@ describe('testExclude', function () {
 
   it('ignores ./', function () {
     exclude().shouldInstrument('./test.js').should.equal(false)
+    exclude().shouldInstrument('./test.mjs').should.equal(false)
     exclude().shouldInstrument('./foo.test.js').should.equal(false)
+    exclude().shouldInstrument('./foo.test.mjs').should.equal(false)
   })
 
   it('matches files in root with **/', function () {
@@ -116,8 +118,8 @@ describe('testExclude', function () {
     exclude.defaultExclude.should.deep.equal([
       'coverage/**',
       'test/**',
-      'test{,-*}.js',
-      '**/*.test.js',
+      'test{,-*}.{mjs,js}',
+      '**/*.test.{mjs,js}',
       '**/__tests__/**',
       '**/node_modules/**'
     ])

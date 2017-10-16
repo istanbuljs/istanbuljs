@@ -7,7 +7,7 @@
     "index.js"
   ],
   "scripts": {
-    "pretest": "standard",
+    "posttest": "standard",
     "test": "mocha"
   },
   "repository": {
