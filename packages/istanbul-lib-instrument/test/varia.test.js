@@ -131,4 +131,15 @@ describe('varia', function () {
             assert.ok(!generated);
         });
     });
+
+    // see: https://github.com/istanbuljs/istanbuljs/issues/110
+    // TODO: it feels like we should be inserting line counters
+    // for class exports and class declarations.
+    it('properly exports named classes', function () {
+        var v = verifier.create('export class App extends Component {};', { generateOnly: true }, { esModules: true }),
+            code;
+        assert.ok(!v.err);
+        code = v.getGeneratedCode();
+        assert.ok(code.match(/cov_(.+);export class App extends/));
+    });
 });
