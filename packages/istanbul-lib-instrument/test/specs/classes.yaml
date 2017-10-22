@@ -20,7 +20,7 @@ code: |
 tests:
   - name: properly instruments code
     out: 'MyClass'
-    lines: {'1': 1, '2': 1}
+    lines: {'2': 1}
     functions: {}
-    statements: {'0': 1, '1': 1}
+    statements: {'0': 1}
     branches: {'0': [1, 0]}
