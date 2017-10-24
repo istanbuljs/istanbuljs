@@ -61,3 +61,7 @@ export function isInferredFunctionNameAvailable() {
 export function isInferredClassNameAvailable() {
   return tryThis('const foo = class {}; require("assert").equal(foo.name, "foo")');
 }
+
+export function isClassAvailable() {
+  return tryThis("new Function('args', '{class Foo extends (Bar) {}}')");
+}

@@ -47,6 +47,7 @@ describe('config', function () {
         it('sets correct hook options', function () {
             var hOpts = config.hooks;
             assert.equal(hOpts.hookRunInContext(), false);
+            assert.equal(hOpts.hookRunInThisContext(), false);
             assert.equal(hOpts.postRequireHook(), null);
             reset();
         });
