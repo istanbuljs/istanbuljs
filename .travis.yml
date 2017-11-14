@@ -1,10 +1,13 @@
-sudo: true
+sudo: false
 language: node_js
 node_js:
-  - '4'
-  - '6'
-  - '8'
+  - 4
+  - 6
+  - 8
   - 'stable'
 
-before_install: npm i -g npm
-after_script: nyc report --reporter=text-lcov | coveralls
+before_install:
+  - npm cache clear
+  - npm i npm@latest -g
+
+after_success: nyc report --reporter=text-lcov | coveralls
