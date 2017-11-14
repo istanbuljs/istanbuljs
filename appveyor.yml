@@ -6,6 +6,8 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
+  - npm i -g npm
+  - npm i
 
 matrix:
   fast_finish: true
