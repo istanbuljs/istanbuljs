@@ -6,7 +6,6 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
-  - appveyor-retry yarn
 
 matrix:
   fast_finish: true
@@ -15,4 +14,4 @@ build: off
 version: '{build}'
 test_script:
   - node --version
-  - yarn test
+  - npm test
