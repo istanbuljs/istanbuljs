@@ -7,7 +7,7 @@ node_js:
   - 'stable'
 
 before_install:
-  - npm cache clear
+  - npm cache clear --force
   - npm i npm@latest -g
 
 after_success: nyc report --reporter=text-lcov | coveralls

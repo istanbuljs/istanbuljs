@@ -7,7 +7,7 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
-  - npm cache clear
+  - npm cache clear --force
   - npm i npm@latest -g
   - appveyor-retry npm install
 
