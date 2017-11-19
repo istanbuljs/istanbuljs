@@ -6,6 +6,10 @@ node_js:
   - 8
   - 'stable'
 
+env:
+  global:
+    COVERALLS_PARALLEL: true
+
 before_install:
   - npm cache clear --force
   - npm i npm@latest -g
