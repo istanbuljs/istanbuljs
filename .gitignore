@@ -7,4 +7,3 @@ docs/
 dist
 lerna-debug.log
 packages/*/yarn.lock
-package-lock.json
