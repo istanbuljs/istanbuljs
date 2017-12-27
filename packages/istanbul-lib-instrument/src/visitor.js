@@ -20,7 +20,7 @@ function genVar(filename) {
 // VisitState holds the state of the visitor, provides helper functions
 // and is the `this` for the individual coverage visitors.
 class VisitState {
-    constructor(types, sourceFilePath, inputSourceMap) {
+    constructor(types, sourceFilePath, inputSourceMap, ignoreClassMethods) {
         this.varName = genVar(sourceFilePath);
         this.attrs = {};
         this.nextIgnore = null;
@@ -29,6 +29,7 @@ class VisitState {
         if (typeof (inputSourceMap) !== "undefined") {
             this.cov.inputSourceMap(inputSourceMap);
         }
+        this.ignoreClassMethods = ignoreClassMethods;
         this.types = types;
         this.sourceMappingURL = null;
     }
@@ -82,6 +83,11 @@ class VisitState {
     // all the generic stuff that needs to be done on enter for every node
     onEnter(path) {
         const n = path.node;
+
+        if (path.type === 'ClassMethod' && this.ignoreClassMethods.some(name => name === path.node.key.name)) {
+            this.nextIgnore = n;
+            return;
+        }
 
         this.maybeAssignSourceMapURL(n);
 
@@ -491,6 +497,12 @@ function alreadyInstrumented(path, visitState) {
 function shouldIgnoreFile(programNode) {
     return programNode.parent && programNode.parent.comments.some(c => COMMENT_FILE_RE.test(c.value));
 }
+
+const defaultProgramVisitorOpts = {
+    coverageVariable: '__coverage__',
+    ignoreClassMethods: [],
+    inputSourceMap: undefined 
+};
 /**
  * programVisitor is a `babel` adaptor for instrumentation.
  * It returns an object with two methods `enter` and `exit`.
@@ -508,12 +520,13 @@ function shouldIgnoreFile(programNode) {
  * @param {string} sourceFilePath - the path to source file
  * @param {Object} opts - additional options
  * @param {string} [opts.coverageVariable=__coverage__] the global coverage variable name.
+ * @param {Array} [opts.ignoreClassMethods=[]] names of methods to ignore by default on classes.
  * @param {object} [opts.inputSourceMap=undefined] the input source map, that maps the uninstrumented code back to the
  * original code.
  */
-function programVisitor(types, sourceFilePath = 'unknown.js', opts = {coverageVariable: '__coverage__', inputSourceMap: undefined }) {
+function programVisitor(types, sourceFilePath = 'unknown.js', opts = defaultProgramVisitorOpts) {
     const T = types;
-    const visitState = new VisitState(types, sourceFilePath, opts.inputSourceMap);
+    const visitState = new VisitState(types, sourceFilePath, opts.inputSourceMap, opts.ignoreClassMethods);
     return {
         enter(path) {
             if (shouldIgnoreFile(path.find(p => p.isProgram()))) {

@@ -36,6 +36,7 @@ instead.
     -   `opts.esModules` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to instrument ES6 modules. (optional, default `false`)
     -   `opts.autoWrap` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to allow `return` statements outside of functions. (optional, default `false`)
     -   `opts.produceSourceMap` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to produce a source map for the instrumented code. (optional, default `false`)
+    -   `opts.ignoreClassMethods` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** set to array of class method names to ignore for coverage. (optional, default `[]`)
     -   `opts.sourceMapUrlCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** a callback function that is called when a source map URL
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
     -   `opts.debug` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** turn debugging on (optional, default `false`)
@@ -104,5 +105,6 @@ The exit function returns an object that currently has the following keys:
 -   `sourceFilePath` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to source file (optional, default `'unknown.js'`)
 -   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** additional options (optional, default `{coverageVariable:'__coverage__',inputSourceMap:undefined}`)
     -   `opts.coverageVariable` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the global coverage variable name. (optional, default `__coverage__`)
+    -   `opts.ignoreClassMethods` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** names of methods to ignore by default on classes. (optional, default `[]`)
     -   `opts.inputSourceMap` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the input source map, that maps the uninstrumented code back to the
         original code. (optional, default `undefined`)

@@ -149,3 +149,24 @@ tests:
     lines: {'1': 1, '2': 1, '4': 0}
     branches: {'0': [1, 0] }
     statements: {'0': 1, '1': 1, '2': 0}
+---
+name: ignore before simple statement with branches
+code: |
+    class TestClass {
+        dummy(i) {return i;}
+        nonIgnored(i) {return i;}
+    }
+    const testClass = new TestClass()
+    testClass.nonIgnored();
+    output = testClass.dummy(args[0]);
+instrumentOpts:
+  ignoreClassMethods: ['dummy']
+tests:
+  - name: ignores only specified methods 
+    args: [10]
+    out: 10
+    lines: {'3': 1, '5': 1, '6': 1, '7': 1}
+    functions: {'0': 1}
+    branches: {}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1}
+
