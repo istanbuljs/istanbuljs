@@ -156,7 +156,7 @@ code: |
         dummy(i) {return i;}
         nonIgnored(i) {return i;}
     }
-    const testClass = new TestClass();
+    var testClass = new TestClass();
     testClass.nonIgnored();
     output = testClass.dummy(args[0]);
 instrumentOpts:
@@ -177,9 +177,10 @@ code: |
         return i;
     };
     TestClass.prototype.goodMethod = function goodMethod(i) {return i;};
-    const testClass = new TestClass();
+    var testClass = new TestClass();
     testClass.goodMethod();
     output = testClass.testMethod(args[0]);
+guard: isClassAvailable
 instrumentOpts:
   ignoreClassMethods: ['testMethod']
 tests:

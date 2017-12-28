@@ -103,7 +103,7 @@ class VisitState {
         }
 
         // else check for ignored class methods
-        if (path.isFunctionExpression() && this.ignoreClassMethods.some(name => name === path.node.id.name)) {
+        if (path.isFunctionExpression() && this.ignoreClassMethods.some(name => path.node.id && name === path.node.id.name)) {
             this.nextIgnore = n;
             return;
         }
