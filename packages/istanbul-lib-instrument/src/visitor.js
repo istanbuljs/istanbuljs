@@ -73,6 +73,7 @@ class VisitState {
         extractURL(node.leadingComments);
         extractURL(node.trailingComments);
     }
+    
 
     // for these expressions the statement counter needs to be hoisted, so
     // function name inference can be preserved
@@ -83,11 +84,6 @@ class VisitState {
     // all the generic stuff that needs to be done on enter for every node
     onEnter(path) {
         const n = path.node;
-
-        if (path.type === 'ClassMethod' && this.ignoreClassMethods.some(name => name === path.node.key.name)) {
-            this.nextIgnore = n;
-            return;
-        }
 
         this.maybeAssignSourceMapURL(n);
 
@@ -104,6 +100,16 @@ class VisitState {
         // else check custom node attribute set by a prior visitor
         if (this.getAttr(path.node, 'skip-all') !== null) {
             this.nextIgnore = n;
+        }
+
+        // else check for ignored class methods
+        if (path.isFunctionExpression() && this.ignoreClassMethods.some(name => name === path.node.id.name)) {
+            this.nextIgnore = n;
+            return;
+        }
+        if (path.isClassMethod() && this.ignoreClassMethods.some(name => name === path.node.key.name)) {
+            this.nextIgnore = n;
+            return;
         }
     }
 
