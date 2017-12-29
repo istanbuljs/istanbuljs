@@ -151,6 +151,7 @@ tests:
     statements: {'0': 1, '1': 1, '2': 0}
 ---
 name: ignore class methods
+guard: isClassAvailable
 code: |
     class TestClass {
         dummy(i) {return i;}
@@ -180,7 +181,6 @@ code: |
     var testClass = new TestClass();
     testClass.goodMethod();
     output = testClass.testMethod(args[0]);
-guard: isClassAvailable
 instrumentOpts:
   ignoreClassMethods: ['testMethod']
 tests:
