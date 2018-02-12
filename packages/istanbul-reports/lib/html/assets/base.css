@@ -180,6 +180,14 @@ table.coverage td span.cline-any {
 span.cline-neutral { background: #eaeaea; }
 .medium { background: #eaeaea; }
 
+.coverage-summary td.empty {
+    opacity: .5;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    line-height: 1;
+    color: #888;
+}
+
 .cover-fill, .cover-empty {
   display:inline-block;
   height: 12px;
