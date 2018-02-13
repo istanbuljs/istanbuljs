@@ -36,7 +36,7 @@ describe('varia', function () {
     });
 
     it('preserves comments when requested', function () {
-        var v = verifier.create('/* hello */\noutput = args[0];', { preserveComments: true }),
+        var v = verifier.create('/* hello */\noutput = args[0];', {}, { preserveComments: true }),
             code;
         assert.ok(!v.err);
         v.verify(['X'], 'X',{

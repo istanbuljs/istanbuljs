@@ -343,9 +343,11 @@ function parenthesizedExpressionProp(prop) {
 function convertArrowExpression(path) {
     const n = path.node;
     const T = this.types;
-    if (n.expression) {
+    if (!T.isBlockStatement(n.body)) {
         const bloc = n.body.loc;
-        n.expression = false;
+        if (n.expression === true) {
+          n.expression = false;
+        }
         n.body = T.blockStatement([
             T.returnStatement(
                 n.body
@@ -466,6 +468,7 @@ const coverageTemplate = template(`
     var COVERAGE_VAR = (function () {
         var path = PATH,
             hash = HASH,
+            Function = (function(){}).constructor,
             global = (new Function('return this'))(),
             gcv = GLOBAL_COVERAGE_VAR,
             coverageData = INITIAL,
@@ -541,7 +544,7 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {coverageVa
                 INITIAL: coverageNode,
                 HASH: T.stringLiteral(hash)
             });
-            cv._blockHoist = 3;
+            cv._blockHoist = 5;
             path.node.body.unshift(cv);
             return {
                 fileCoverage: coverageData,

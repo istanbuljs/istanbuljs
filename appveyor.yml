@@ -1,18 +1,26 @@
+version: '{build}'
+
+clone_depth: 10
+
+init:
+  - git config --global core.autocrlf false
+
 environment:
   matrix:
-    - nodejs_version: '6'
-    - nodejs_version: '4'
+    - nodejs_version: 8
+    - nodejs_version: 6
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - set CI=true
-  - npm i
+  - npm cache clear --force
+  - npm -g install npm@latest
+  - npm install
+
+build: off
+
+test_script:
+  - node --version && npm --version
+  - npm test
 
 matrix:
   fast_finish: true
-
-build: off
-version: '{build}'
-test_script:
-  - node --version
-  - npm test

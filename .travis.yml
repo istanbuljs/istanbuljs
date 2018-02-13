@@ -1,9 +1,17 @@
-sudo: true
+sudo: false
 language: node_js
 node_js:
-  - '4'
-  - '6'
+  - 4
+  - 6
+  - 8
   - 'stable'
 
-before_install: npm i yarn -g
-after_script: nyc report --reporter=text-lcov | coveralls
+env:
+  global:
+    COVERALLS_PARALLEL: true
+
+before_install:
+  - npm cache clear --force
+  - npm i npm@latest -g
+
+after_success: nyc report --reporter=text-lcov | coveralls

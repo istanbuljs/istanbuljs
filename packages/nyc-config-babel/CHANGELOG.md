@@ -1,7 +1,15 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+<a name="1.2.3"></a>
+## [1.2.3](https://github.com/istanbuljs/istanbuljs/compare/@istanbuljs/nyc-config-babel@1.2.2...@istanbuljs/nyc-config-babel@1.2.3) (2018-02-13)
+
+
+
+
+**Note:** Version bump only for package @istanbuljs/nyc-config-babel
 
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/istanbuljs/istanbuljs/compare/@istanbuljs/nyc-config-babel@1.2.1...@istanbuljs/nyc-config-babel@1.2.2) (2017-05-27)

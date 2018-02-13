@@ -20,6 +20,27 @@ tests:
     functions: {'0': 0}
 
 ---
+name: es6 arrow function expression - multiple args
+guard: isArrowFnAvailable
+code: |
+  var input = args
+  output = input.reduce((memo, item) => memo + item, 0)
+tests:
+  - name: function called
+    args: [1, 2, 3, 4]
+    out: 10
+    lines: {'1': 1, '2': 4}
+    statements: {'0': 1, '1': 1, '2': 4}
+    functions: {'0': 4}
+
+  - name: function not called
+    args: []
+    out: 0
+    lines: {'1': 1, '2': 1}
+    statements: {'0': 1, '1': 1, '2': 0}
+    functions: {'0': 0}
+
+---
 name:  es6 arrow function block
 guard: isArrowFnAvailable
 code: |
@@ -36,6 +57,27 @@ tests:
   - name: function not called
     args: []
     out: []
+    lines: {'1': 1, '2': 1}
+    statements: {'0': 1, '1': 1, '2': 0}
+    functions: {'0': 0}
+
+---
+name: es6 arrow function block - multiple args
+guard: isArrowFnAvailable
+code: |
+  var input = args
+  output = input.reduce((memo, item) => { return memo + item }, 0)
+tests:
+  - name: function called
+    args: [1, 2, 3, 4]
+    out: 10
+    lines: {'1': 1, '2': 4}
+    statements: {'0': 1, '1': 1, '2': 4}
+    functions: {'0': 4}
+
+  - name: function not called
+    args: []
+    out: 0
     lines: {'1': 1, '2': 1}
     statements: {'0': 1, '1': 1, '2': 0}
     functions: {'0': 0}

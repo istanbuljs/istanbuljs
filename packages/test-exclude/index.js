@@ -125,9 +125,10 @@ var exportFunc = function (opts) {
 
 exportFunc.defaultExclude = [
   'coverage/**',
+  'packages/*/test/**',
   'test/**',
   'test{,-*}.js',
-  '**/*.test.js',
+  '**/*{.,-}test.js',
   '**/__tests__/**',
   '**/node_modules/**'
 ]
