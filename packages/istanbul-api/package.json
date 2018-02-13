@@ -1,6 +1,6 @@
 {
   "name": "istanbul-api",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "High level API for istanbul features",
   "main": "index.js",
   "files": [
@@ -37,12 +37,12 @@
   "dependencies": {
     "async": "^2.1.4",
     "fileset": "^2.0.2",
-    "istanbul-lib-coverage": "^1.1.1",
+    "istanbul-lib-coverage": "^1.1.2",
     "istanbul-lib-hook": "^1.1.0",
-    "istanbul-lib-instrument": "^1.9.1",
-    "istanbul-lib-report": "^1.1.2",
-    "istanbul-lib-source-maps": "^1.2.2",
-    "istanbul-reports": "^1.1.3",
+    "istanbul-lib-instrument": "^1.9.2",
+    "istanbul-lib-report": "^1.1.3",
+    "istanbul-lib-source-maps": "^1.2.3",
+    "istanbul-reports": "^1.1.4",
     "js-yaml": "^3.7.0",
     "mkdirp": "^0.5.1",
     "once": "^1.4.0"
