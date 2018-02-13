@@ -115,9 +115,10 @@ describe('testExclude', function () {
   it('exports defaultExclude', function () {
     exclude.defaultExclude.should.deep.equal([
       'coverage/**',
+      'packages/*/test/**',
       'test/**',
       'test{,-*}.js',
-      '**/*.test.js',
+      '**/*{.,-}test.js',
       '**/__tests__/**',
       '**/node_modules/**'
     ])
@@ -167,6 +168,9 @@ describe('testExclude', function () {
 
       e.shouldInstrument('test.js').should.equal(false)
       e.shouldInstrument('src/app.test.js').should.equal(false)
+      e.shouldInstrument('src/app-test.js').should.equal(false)
+
+      e.shouldInstrument('packages/package-name/test/test-utils.js').should.equal(false)
 
       e.shouldInstrument('bar/baz.js').should.equal(true)
       e.shouldInstrument('bad/file.js').should.equal(true)
@@ -206,6 +210,9 @@ describe('testExclude', function () {
 
         e.shouldInstrument('test.js').should.equal(false)
         e.shouldInstrument('src/app.test.js').should.equal(false)
+        e.shouldInstrument('src/app-test.js').should.equal(false)
+
+        e.shouldInstrument('packages/package-name/test/test-utils.js').should.equal(false)
 
         e.shouldInstrument('bar/baz.js').should.equal(true)
         e.shouldInstrument('bad/file.js').should.equal(true)
