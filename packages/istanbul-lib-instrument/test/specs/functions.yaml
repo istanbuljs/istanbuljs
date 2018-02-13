@@ -130,3 +130,17 @@ tests:
     functions: {'0': 0, '1': 0, '2': 1, '3': 0}
     statements: {'0': 0, '1': 1, '2': 1, '3': 1}
     guard: isInferredFunctionNameAvailable
+
+---
+name: function named Function
+code: |
+  function Function () {
+    this.x = 42
+  }
+  output = new Function().x
+tests:
+  - name: does not fail if a function is called Function
+    out: 42
+    lines: {'2': 1, '4': 1}
+    functions: {'0': 1}
+    statements: {'0': 1, '1': 1}

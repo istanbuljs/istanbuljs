@@ -468,6 +468,7 @@ const coverageTemplate = template(`
     var COVERAGE_VAR = (function () {
         var path = PATH,
             hash = HASH,
+            Function = (function(){}).constructor,
             global = (new Function('return this'))(),
             gcv = GLOBAL_COVERAGE_VAR,
             coverageData = INITIAL,
