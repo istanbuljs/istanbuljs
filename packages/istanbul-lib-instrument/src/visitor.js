@@ -343,9 +343,11 @@ function parenthesizedExpressionProp(prop) {
 function convertArrowExpression(path) {
     const n = path.node;
     const T = this.types;
-    if (n.expression) {
+    if (!T.isBlockStatement(n.body)) {
         const bloc = n.body.loc;
-        n.expression = false;
+        if (n.expression === true) {
+          n.expression = false;
+        }
         n.body = T.blockStatement([
             T.returnStatement(
                 n.body
