@@ -125,6 +125,9 @@ function fillTemplate(node, templateData, linkMapper, context) {
         js: linkMapper.assetPath(node, 'sorter.js'),
         image: linkMapper.assetPath(node, 'sort-arrow-sprite.png')
     };
+    templateData.blockNavigation = {
+        js: linkMapper.assetPath(node, 'block-navigation.js'),
+    };
     templateData.prettify = {
         js: linkMapper.assetPath(node, 'prettify.js'),
         css: linkMapper.assetPath(node, 'prettify.css')
