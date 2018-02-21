@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "arrify": "^1.0.1",
-    "micromatch": "^2.3.11",
+    "micromatch": "^3.1.8",
     "object-assign": "^4.1.0",
     "read-pkg-up": "^1.0.1",
     "require-main-filename": "^1.0.1"
