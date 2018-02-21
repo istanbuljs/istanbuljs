@@ -85,9 +85,9 @@ TestExclude.prototype.shouldInstrument = function (filename, relFile) {
 
   return (
     !this.include ||
-    micromatch.any(pathToCheck, this.include, {dotfiles: true})) &&
-    (!micromatch.any(pathToCheck, this.exclude, {dotfiles: true}) ||
-     micromatch.any(pathToCheck, this.excludeNegated, {dotfiles: true}))
+    micromatch.any(pathToCheck, this.include, {dot: true})) &&
+    (!micromatch.any(pathToCheck, this.exclude, {dot: true}) ||
+     micromatch.any(pathToCheck, this.excludeNegated, {dot: true}))
 }
 
 TestExclude.prototype.pkgConf = function (key, path) {
