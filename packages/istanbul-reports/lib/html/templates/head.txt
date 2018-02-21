@@ -57,7 +57,7 @@
       {{/if_has_ignores}}
     </div>
     <p class="quiet">
-      Press <em>n</em> or <em>j</em> to go to next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for previous
+      Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
   <div class='status-line {{reportClass}}'></div>
