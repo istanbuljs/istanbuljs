@@ -31,7 +31,7 @@ describe('TextReport', function () {
             dir: './'
           });
           var tree = fixture.map;
-          var report = new TextReport(context);
+          var report = new TextReport(fixture.opts);
           tree.visit(report, context);
           var output = FileWriter.getOutput();
           output.should.equal(fixture.textReportExpected);

@@ -101,6 +101,11 @@ describe('coverage summary', function () {
         });
         assert.equal(data.branches.pct, 100);
     });
+
+    it('isEmpty() by default', function () {
+      var cs = new CoverageSummary();
+      assert.equal(cs.isEmpty(), true);
+    });
 });
 
 describe('base coverage', function () {
