@@ -3,7 +3,7 @@
   "opts": {
     "skipEmpty": true
   },
-  "textReportExpected": "----------|----------|----------|----------|----------|----------------|\nFile      |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |\n----------|----------|----------|----------|----------|----------------|\n----------|----------|----------|----------|----------|----------------|\n",
+  "textReportExpected": "----------|----------|----------|----------|----------|-------------------|\nFile      |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |\n----------|----------|----------|----------|----------|-------------------|\n----------|----------|----------|----------|----------|-------------------|\n",
   "map": {
     "/dev/git/istanbuljs/packages/istanbul-reports/lib/text/empty.js": {
       "path": "/dev/git/istanbuljs/packages/istanbul-reports/lib/text/empty.js",

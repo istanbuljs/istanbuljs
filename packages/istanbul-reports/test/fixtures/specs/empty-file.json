@@ -1,6 +1,6 @@
 {
   "title": "empty file - show 0%",
-  "textReportExpected": "----------|----------|----------|----------|----------|----------------|\nFile      |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |\n----------|----------|----------|----------|----------|----------------|\nAll files |        0 |        0 |        0 |        0 |\u001b[31;1m               \u001b[0m |\n empty.js |        0 |        0 |        0 |        0 |\u001b[31;1m               \u001b[0m |\n----------|----------|----------|----------|----------|----------------|\n",
+  "textReportExpected": "----------|----------|----------|----------|----------|-------------------|\nFile      |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |\n----------|----------|----------|----------|----------|-------------------|\nAll files |        0 |        0 |        0 |        0 |\u001b[31;1m                  \u001b[0m |\n empty.js |        0 |        0 |        0 |        0 |\u001b[31;1m                  \u001b[0m |\n----------|----------|----------|----------|----------|-------------------|\n",
   "map": {
     "/dev/git/istanbuljs/packages/istanbul-reports/lib/text/empty.js": {
       "path": "/dev/git/istanbuljs/packages/istanbul-reports/lib/text/empty.js",
