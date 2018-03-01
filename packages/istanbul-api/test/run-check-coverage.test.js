@@ -16,9 +16,6 @@ describe('run check-coverage', function () {
     function getConfig(overrides) {
         var cfg = configuration.loadObject({
             verbose: false,
-            hooks: {
-                'hook-run-in-this-context': true
-            },
             instrumentation: {
                 root: codeRoot,
                 'include-all-sources': true

@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "async": "^2.1.4",
+    "compare-versions": "^3.1.0",
     "fileset": "^2.0.2",
     "istanbul-lib-coverage": "^1.1.2",
     "istanbul-lib-hook": "^1.1.0",

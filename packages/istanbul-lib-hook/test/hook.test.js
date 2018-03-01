@@ -144,10 +144,10 @@ describe('hooks', function () {
         it('transforms foo', function () {
             var s;
             hook.hookRunInThisContext(matcher, scriptTransformer);
-            s = require('vm').runInThisContext('(function () { return 10; }());', '/bar/foo.js');
+            s = require('vm').runInThisContext('(function () { return 10; }());', { filename: '/bar/foo.js' });
             assert.equal(s, 42);
             hook.unhookRunInThisContext();
-            s = require('vm').runInThisContext('(function () { return 10; }());', '/bar/foo.js');
+            s = require('vm').runInThisContext('(function () { return 10; }());', { filename: '/bar/foo.js' });
             assert.equal(s, 10);
         });
         it('does not transform code with no filename', function () {
@@ -155,14 +155,14 @@ describe('hooks', function () {
             hook.hookRunInThisContext(matcher, scriptTransformer);
             s = require('vm').runInThisContext('(function () { return 10; }());');
             assert.equal(s, 10);
-            hook.unhookCreateScript();
+            hook.unhookRunInThisContext();
         });
         it('does not transform code with non-string filename', function () {
             var s;
             hook.hookRunInThisContext(matcher, scriptTransformer);
             s = require('vm').runInThisContext('(function () { return 10; }());', {});
             assert.equal(s, 10);
-            hook.unhookCreateScript();
+            hook.unhookRunInThisContext();
         });
     });
     describe('runInContext', function () {
