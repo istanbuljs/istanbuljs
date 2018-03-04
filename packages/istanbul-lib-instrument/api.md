@@ -103,7 +103,7 @@ The exit function returns an object that currently has the following keys:
 
 -   `types` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an instance of babel-types
 -   `sourceFilePath` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to source file (optional, default `'unknown.js'`)
--   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** additional options (optional, default `{coverageVariable:'__coverage__',inputSourceMap:undefined}`)
+-   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** additional options (optional, default `defaultProgramVisitorOpts`)
     -   `opts.coverageVariable` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the global coverage variable name. (optional, default `__coverage__`)
     -   `opts.ignoreClassMethods` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** names of methods to ignore by default on classes. (optional, default `[]`)
     -   `opts.inputSourceMap` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the input source map, that maps the uninstrumented code back to the
