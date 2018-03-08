@@ -20,7 +20,7 @@ function genVar(filename) {
 // VisitState holds the state of the visitor, provides helper functions
 // and is the `this` for the individual coverage visitors.
 class VisitState {
-    constructor(types, sourceFilePath, inputSourceMap, ignoreClassMethods) {
+    constructor(types, sourceFilePath, inputSourceMap, ignoreClassMethods = []) {
         this.varName = genVar(sourceFilePath);
         this.attrs = {};
         this.nextIgnore = null;
