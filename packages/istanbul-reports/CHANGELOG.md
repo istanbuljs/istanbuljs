@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.2.0...istanbul-reports@1.3.0) (2018-03-09)
+
+
+### Features
+
+* added named anchors to code coverage line numbers. ([#149](https://github.com/istanbuljs/istanbuljs/issues/149)) ([98e1c50](https://github.com/istanbuljs/istanbuljs/commit/98e1c50))
+
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.1.4...istanbul-reports@1.2.0) (2018-03-04)
 
