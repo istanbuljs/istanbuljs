@@ -1,6 +1,7 @@
 /* globals describe, it, beforeEach, afterEach */
 var hook = require('../lib/hook'),
     assert = require('chai').assert,
+    path = require('path'),
     currentHook,
     matcher = function (file) {
         return file.indexOf('foo.js') > 0;
@@ -42,6 +43,19 @@ describe('hooks', function () {
             var foo = require('./data/foo');
             assert.ok(foo.bar);
             assert.equal(foo.bar(), 'bar');
+        });
+
+        it('calls the transformer with the correct args', function () {
+            var transformerArgs;
+            function transformerStub() {
+                transformerArgs = arguments;
+                return '';
+            }
+            hookIt(matcher, transformerStub, {verbose: true});
+            require('./data/foo');
+            assert.ok(transformerArgs);
+            assert.equal(typeof transformerArgs[0], 'string');
+            assert.equal(transformerArgs[1], path.resolve(__dirname, './data/foo.js'));
         });
 
         it('skips baz', function () {
