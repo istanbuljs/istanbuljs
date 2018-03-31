@@ -26,7 +26,7 @@ function transformFn(matcher, transformer, verbose) {
                 console.error('Module load hook: transform [' + options.filename + ']');
             }
             try {
-                transformed = transformer(code, options.filename);
+                transformed = transformer(code, options);
                 changed = true;
             } catch (ex) {
                 console.error('Transformation error for', options.filename, '; return original code');
