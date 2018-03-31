@@ -101,7 +101,10 @@ class Instrumenter {
             Program: {
                 enter: ee.enter,
                 exit: function (path) {
-                    output = ee.exit(path);
+                    const newOutput = ee.exit(path);
+                    if (newOutput) {
+                        output = newOutput;
+                    }
                 }
             }
         };
