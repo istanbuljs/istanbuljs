@@ -339,16 +339,16 @@ function blockProp(prop) {
     };
 }
 
-function makeParenthesizedExpression(path) {
-  var T = this.types;
-  if (path.node) {
-    path.replaceWith(T.parenthesizedExpression(path.node));
-  }
+function makeParenthesizedExpressionForNonIdentifier(path) {
+    var T = this.types;
+    if (path.node && !path.isIdentifier()) {
+        path.replaceWith(T.parenthesizedExpression(path.node));
+    }
 }
 
 function parenthesizedExpressionProp(prop) {
     return function (path) {
-        makeParenthesizedExpression.call(this, path.get(prop));
+        makeParenthesizedExpressionForNonIdentifier.call(this, path.get(prop));
     };
 }
 
