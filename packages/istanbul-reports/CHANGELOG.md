@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.3.0...istanbul-reports@1.4.0) (2018-04-17)
+
+
+### Features
+
+* allow custom reporters to be loaded ([#155](https://github.com/istanbuljs/istanbuljs/issues/155)) ([6d89cca](https://github.com/istanbuljs/istanbuljs/commit/6d89cca))
+
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.2.0...istanbul-reports@1.3.0) (2018-03-09)
 
