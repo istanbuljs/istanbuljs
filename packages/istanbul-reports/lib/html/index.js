@@ -171,7 +171,7 @@ HtmlReport.prototype.onStart = function (root, context) {
 
                 if (stat.isFile()) {
                     dest = resolvedDestination + '/' + f;
-                    if (this.verbose) {
+                    if (that.verbose) {
                         console.log('Write asset: ' + dest);
                     }
                     writer.copyFile(resolvedSource, dest);
