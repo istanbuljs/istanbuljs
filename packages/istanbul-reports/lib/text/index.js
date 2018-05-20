@@ -127,11 +127,20 @@ function missingBranches (node, colorizer) {
     return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'medium');
 }
 
-function tableRow(node, context, colorizer, maxNameCols, level, skipEmpty) {
+function isFull(metrics) {
+    return metrics.statements.pct === 100 &&
+        metrics.branches.pct === 100 &&
+        metrics.functions.pct === 100 &&
+        metrics.lines.pct === 100;
+}
+
+function tableRow(node, context, colorizer, maxNameCols, level, skipEmpty, skipFull) {
     var name = nodeName(node),
         metrics = node.getCoverageSummary(),
         isEmpty = metrics.isEmpty();
     if (skipEmpty && isEmpty) { return ''; }
+    if (skipFull && isFull(metrics)) { return ''; }
+
     var mm = {
             statements: isEmpty ? 0 : metrics.statements.pct,
             branches: isEmpty ? 0 : metrics.branches.pct,
@@ -162,6 +171,7 @@ function TextReport(opts) {
     this.maxCols = opts.maxCols || 0;
     this.cw = null;
     this.skipEmpty = opts.skipEmpty;
+    this.skipFull = opts.skipFull;
 }
 
 TextReport.prototype.onStart = function (root, context) {
@@ -185,7 +195,7 @@ TextReport.prototype.onStart = function (root, context) {
 
 TextReport.prototype.onSummary = function (node, context) {
     var nodeDepth = depthFor(node);
-    var row = tableRow(node, context, this.cw.colorize.bind(this.cw),this.nameWidth, nodeDepth, this.skipEmpty);
+    var row = tableRow(node, context, this.cw.colorize.bind(this.cw),this.nameWidth, nodeDepth, this.skipEmpty, this.skipFull);
     if (row) { this.cw.println(row); }
 };
 
