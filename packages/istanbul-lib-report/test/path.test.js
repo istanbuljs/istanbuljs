@@ -1,11 +1,11 @@
 /* globals describe, it, beforeEach, afterEach */
 
 var assert = require('chai').assert,
-    parser = require('path-parse'),
+    path = require('path'),
     Path = require('../lib/path');
 
 function commonBattery(windows) {
-    var p = windows ? parser.win32 : parser.posix,
+    var p = windows ? path.win32.parse : path.posix.parse,
         s = windows ? '\\' : '/';
     return function () {
         beforeEach(function () {
@@ -33,7 +33,7 @@ describe('path', function() {
 
     describe('posix specific paths', function () {
         beforeEach(function () {
-            Path.tester.setParserAndSep(parser.posix, '/');
+            Path.tester.setParserAndSep(path.posix.parse, '/');
         });
         afterEach(function () {
             Path.tester.reset();
@@ -51,7 +51,7 @@ describe('path', function() {
 
     describe('windows specific paths', function () {
         beforeEach(function () {
-            Path.tester.setParserAndSep(parser.win32, '\\');
+            Path.tester.setParserAndSep(path.win32.parse, '\\');
         });
         afterEach(function () {
             Path.tester.reset();
@@ -72,7 +72,7 @@ describe('path', function() {
 
     describe('path operations [posix only]', function () {
         beforeEach(function () {
-            Path.tester.setParserAndSep(parser.posix, '/');
+            Path.tester.setParserAndSep(path.posix.parse, '/');
         });
         afterEach(function () {
             Path.tester.reset();

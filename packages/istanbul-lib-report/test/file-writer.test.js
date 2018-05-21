@@ -4,7 +4,7 @@ var assert = require('chai').assert,
     FileWriter = require('../lib/file-writer'),
     path = require('path'),
     dataDir = path.resolve(__dirname, '.data'),
-    mkdirp = require('mkdirp'),
+    mkdirp = require('make-dir'),
     rimraf = require('rimraf'),
     fs = require('fs');
 

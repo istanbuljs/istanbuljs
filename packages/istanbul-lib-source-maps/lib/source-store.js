@@ -1,7 +1,7 @@
 var util = require('util'),
     os = require('os'),
     path = require('path'),
-    mkdirp = require('mkdirp'),
+    mkdirp = require('make-dir'),
     rimraf = require('rimraf'),
     fs = require('fs');
 

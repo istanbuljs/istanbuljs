@@ -5,7 +5,7 @@
 var util = require('util'),
     path = require('path'),
     fs = require('fs'),
-    mkdirp = require('mkdirp'),
+    mkdirp = require('make-dir'),
     supportsColor = require('supports-color'),
     isAbsolute = path.isAbsolute || /* istanbul ignore next */ function (p) {
             return path.resolve(p) === path.normalize(p);
@@ -103,7 +103,7 @@ ConsoleWriter.prototype.colorize = function (str, clazz) {
     };
 
     /* istanbul ignore next: different modes for CI and local */
-    if (supportsColor && colors[clazz]) {
+    if (supportsColor.stdout && colors[clazz]) {
         return '\u001b[' + colors[clazz] + 'm' + str + '\u001b[0m';
     }
     return str;
