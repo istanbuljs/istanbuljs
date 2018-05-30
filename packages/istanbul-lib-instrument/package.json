@@ -14,10 +14,10 @@
     "prepublish": "npm run release"
   },
   "dependencies": {
-    "@babel/generator": "^7.0.0-beta.49",
-    "@babel/template": "^7.0.0-beta.49",
-    "@babel/traverse": "^7.0.0-beta.49",
-    "babel-types": "^6.18.0",
+    "@babel/generator": "7.0.0-beta.49",
+    "@babel/template": "7.0.0-beta.49",
+    "@babel/traverse": "7.0.0-beta.49",
+    "@babel/types": "7.0.0-beta.49",
     "babylon": "^7.0.0-beta.47",
     "istanbul-lib-coverage": "^1.2.0",
     "semver": "^5.3.0"

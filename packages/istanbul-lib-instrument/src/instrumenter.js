@@ -3,7 +3,7 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 import * as babylon from 'babylon';
-import * as t from 'babel-types';
+import * as t from '@babel/types';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import programVisitor from './visitor';

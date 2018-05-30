@@ -1,7 +1,7 @@
 import { MAGIC_KEY, MAGIC_VALUE } from './constants';
 import { parse } from 'babylon';
 import traverse from '@babel/traverse';
-import * as t from 'babel-types';
+import * as t from '@babel/types';
 
 export default function readInitialCoverage (code) {
     if (typeof code !== 'string') {
