@@ -1,5 +1,5 @@
-import template from 'babel-template';
-import generate from 'babel-generator';
+import template from '@babel/template';
+import generate from '@babel/generator';
 import * as T from 'babel-types';
 
 const assignTemplate = template(`

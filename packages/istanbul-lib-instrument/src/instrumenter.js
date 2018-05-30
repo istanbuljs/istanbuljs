@@ -4,8 +4,8 @@
  */
 import * as babylon from 'babylon';
 import * as t from 'babel-types';
-import traverse from 'babel-traverse';
-import generate from 'babel-generator';
+import traverse from '@babel/traverse';
+import generate from '@babel/generator';
 import programVisitor from './visitor';
 
 function defaultOpts() {

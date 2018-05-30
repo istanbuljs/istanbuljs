@@ -24,10 +24,10 @@
   },
   "homepage": "https://istanbul.js.org/",
   "devDependencies": {
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.1",
     "cross-env": "^5.0.0",
     "lerna": "^2.9.0",
-    "nyc": "^11.0.1"
+    "nyc": "^11.8.0"
   },
   "nyc": {
     "exclude": [

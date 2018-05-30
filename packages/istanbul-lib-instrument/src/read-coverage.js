@@ -1,6 +1,6 @@
 import { MAGIC_KEY, MAGIC_VALUE } from './constants';
 import { parse } from 'babylon';
-import traverse from 'babel-traverse';
+import traverse from '@babel/traverse';
 import * as t from 'babel-types';
 
 export default function readInitialCoverage (code) {
@@ -14,7 +14,10 @@ export default function readInitialCoverage (code) {
         allowReturnOutsideFunction: true,
         allowSuperOutsideMethod: true,
         sourceType: "script", // I think ?
-        plugins: ["*"]
+        plugins: [
+          "*",
+          "objectRestSpread"
+        ]
     });
 
     let covScope;
@@ -55,6 +58,6 @@ export default function readInitialCoverage (code) {
     }
 
     delete result.coverageData[MAGIC_KEY];
-    
+
     return result;
 }
