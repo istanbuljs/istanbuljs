@@ -15,8 +15,11 @@ export default function readInitialCoverage (code) {
         allowSuperOutsideMethod: true,
         sourceType: "script", // I think ?
         plugins: [
-          "*",
-          "objectRestSpread"
+          'asyncGenerators',
+          'dynamicImport',
+          'objectRestSpread',
+          'flow',
+          'jsx'
         ]
     });
 
