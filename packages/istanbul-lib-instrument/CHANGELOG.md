@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.0.0...istanbul-lib-instrument@2.0.1) (2018-05-31)
+
+
+### Bug Fixes
+
+* should import [@babel](https://github.com/babel)/template ([85a0d1a](https://github.com/istanbuljs/istanbuljs/commit/85a0d1a))
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@1.10.1...istanbul-lib-instrument@2.0.0) (2018-05-31)
 
