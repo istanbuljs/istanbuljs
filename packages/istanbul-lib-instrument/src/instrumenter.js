@@ -2,10 +2,10 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-import * as babylon from 'babylon';
-import * as t from 'babel-types';
-import traverse from 'babel-traverse';
-import generate from 'babel-generator';
+import * as parser from '@babel/parser';
+import * as t from '@babel/types';
+import traverse from '@babel/traverse';
+import generate from '@babel/generator';
 import programVisitor from './visitor';
 
 function defaultOpts() {
@@ -80,7 +80,7 @@ class Instrumenter {
         }
         filename = filename || String(new Date().getTime()) + '.js';
         const opts = this.opts;
-        const ast = babylon.parse(code, {
+        const ast = parser.parse(code, {
             allowReturnOutsideFunction: opts.autoWrap,
             sourceType: opts.esModules ? "module" : "script",
             plugins: [

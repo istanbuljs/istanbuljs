@@ -1,6 +1,6 @@
-import template from 'babel-template';
-import generate from 'babel-generator';
-import * as T from 'babel-types';
+import template from '@babel/template';
+import generate from '@babel/generator';
+import * as T from '@babel/types';
 
 const assignTemplate = template(`
     var VAR = DATA;

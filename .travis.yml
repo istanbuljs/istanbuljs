@@ -1,7 +1,6 @@
 sudo: false
 language: node_js
 node_js:
-  - 4
   - 6
   - 8
   - 'stable'
@@ -12,6 +11,5 @@ env:
 
 before_install:
   - npm cache clear --force
-  - npm i npm@latest -g
 
 after_success: nyc report --reporter=text-lcov | coveralls
