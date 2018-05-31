@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.4.1"></a>
+## [1.4.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.4.0...istanbul-reports@1.4.1) (2018-05-31)
+
+
+### Bug Fixes
+
+* ensure using correct context ([#168](https://github.com/istanbuljs/istanbuljs/issues/168)) ([df102fd](https://github.com/istanbuljs/istanbuljs/commit/df102fd))
+
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.3.0...istanbul-reports@1.4.0) (2018-04-17)
 

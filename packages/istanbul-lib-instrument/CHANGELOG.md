@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@1.10.1...istanbul-lib-instrument@2.0.0) (2018-05-31)
+
+
+### Bug Fixes
+
+* parenthesize superClass on non-idetifier case ([#158](https://github.com/istanbuljs/istanbuljs/issues/158)) ([6202c88](https://github.com/istanbuljs/istanbuljs/commit/6202c88))
+
+
+### Chores
+
+* upgrade babel in instrumenter ([#174](https://github.com/istanbuljs/istanbuljs/issues/174)) ([ce23e91](https://github.com/istanbuljs/istanbuljs/commit/ce23e91))
+
+
+### BREAKING CHANGES
+
+* babel@7 drops Node@4 support
+
+
+
+
 <a name="1.10.1"></a>
 ## [1.10.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@1.10.0...istanbul-lib-instrument@1.10.1) (2018-03-09)
 
