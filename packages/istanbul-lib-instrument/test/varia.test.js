@@ -142,4 +142,12 @@ describe('varia', function () {
         code = v.getGeneratedCode();
         assert.ok(code.match(/cov_(.+);export class App extends/));
     });
+
+    it('does not add extra parenthesis when superclass is an identifier', function () {
+        var v = verifier.create('class App extends Component {};', { generateOnly: true }),
+            code;
+        assert.ok(!v.err);
+        code = v.getGeneratedCode();
+        assert.ok(code.match(/cov_(.+);class App extends Component/));
+    });
 });
