@@ -42,6 +42,10 @@ export function isObjectFreezeAvailable() {
     }
 }
 
+export function isOptionalCatchBindingAvailable () {
+    return tryThis('try {} catch {}');
+}
+
 export function isImportAvailable() {
     return tryThis('import fs from "fs"', 'import', true);
 }

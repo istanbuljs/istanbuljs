@@ -18,6 +18,7 @@ export default function readInitialCoverage (code) {
           'asyncGenerators',
           'dynamicImport',
           'objectRestSpread',
+          'optionalCatchBinding',
           'flow',
           'jsx'
         ]
