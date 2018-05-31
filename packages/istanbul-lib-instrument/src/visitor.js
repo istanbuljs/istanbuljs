@@ -1,7 +1,7 @@
 import {SourceCoverage} from './source-coverage';
 import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 import {createHash} from 'crypto';
-import template from 'babel-template';
+import template from '@babel/template';
 
 // istanbul ignore comment pattern
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
@@ -73,7 +73,7 @@ class VisitState {
         extractURL(node.leadingComments);
         extractURL(node.trailingComments);
     }
-    
+
 
     // for these expressions the statement counter needs to be hoisted, so
     // function name inference can be preserved
@@ -507,7 +507,7 @@ function shouldIgnoreFile(programNode) {
 const defaultProgramVisitorOpts = {
     coverageVariable: '__coverage__',
     ignoreClassMethods: [],
-    inputSourceMap: undefined 
+    inputSourceMap: undefined
 };
 /**
  * programVisitor is a `babel` adaptor for instrumentation.
