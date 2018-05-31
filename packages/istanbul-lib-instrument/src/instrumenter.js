@@ -87,6 +87,7 @@ class Instrumenter {
               'asyncGenerators',
               'dynamicImport',
               'objectRestSpread',
+              'optionalCatchBinding',
               'flow',
               'jsx'
             ]
