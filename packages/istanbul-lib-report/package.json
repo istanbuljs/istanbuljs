@@ -18,10 +18,10 @@
     "supports-color": "^5.4.0"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
+    "chai": "^4.1.2",
     "istanbul": "^0.4.0",
     "jshint": "^2.8.0",
-    "mocha": "^3.2.0",
+    "mocha": "^5.2.0",
     "rimraf": "^2.6.1"
   },
   "license": "BSD-3-Clause",

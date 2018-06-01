@@ -28,9 +28,9 @@
   },
   "homepage": "https://github.com/istanbuljs/istanbuljs#readme",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.1.2",
-    "standard": "^9.0.0"
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "standard": "^11.0.1"
   },
   "dependencies": {
     "arrify": "^1.0.1",

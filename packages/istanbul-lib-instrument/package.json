@@ -24,19 +24,19 @@
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
-    "babel-plugin-istanbul": "^2.0.3",
+    "babel-plugin-istanbul": "^4.1.6",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.16.3",
-    "chai": "^3.0.0",
+    "chai": "^4.1.2",
     "clone": "^2.0.0",
     "coveralls": "^3.0.1",
-    "cross-env": "^2.0.1",
+    "cross-env": "^5.0.0",
     "debug": "^3.1.0",
-    "documentation": "^4.0.0-beta9",
+    "documentation": "^7.1.0",
     "js-yaml": "^3.3.1",
     "jshint": "^2.9.5",
     "mocha": "^5.2.0",
-    "nopt": "^3.0.6"
+    "nopt": "^4.0.1"
   },
   "license": "BSD-3-Clause",
   "bugs": {

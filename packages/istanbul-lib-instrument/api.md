@@ -2,13 +2,13 @@
 
 ### Table of Contents
 
--   [createInstrumenter](#createinstrumenter)
--   [Instrumenter](#instrumenter)
-    -   [instrumentSync](#instrumentsync)
-    -   [instrument](#instrument)
-    -   [lastFileCoverage](#lastfilecoverage)
-    -   [lastSourceMap](#lastsourcemap)
--   [programVisitor](#programvisitor)
+-   [createInstrumenter][1]
+-   [Instrumenter][2]
+    -   [instrumentSync][3]
+    -   [instrument][4]
+    -   [lastFileCoverage][5]
+    -   [lastSourceMap][6]
+-   [programVisitor][7]
 
 ## createInstrumenter
 
@@ -17,7 +17,7 @@ supplied options.
 
 **Parameters**
 
--   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instrumenter options. See the documentation
+-   `opts` **[Object][8]** instrumenter options. See the documentation
     for the Instrumenter class.
 
 ## Instrumenter
@@ -29,17 +29,17 @@ instead.
 
 **Parameters**
 
--   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** optional. (optional, default `defaultOpts()`)
-    -   `opts.coverageVariable` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** name of global coverage variable. (optional, default `__coverage__`)
-    -   `opts.preserveComments` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** preserve comments in output (optional, default `false`)
-    -   `opts.compact` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** generate compact code. (optional, default `true`)
-    -   `opts.esModules` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to instrument ES6 modules. (optional, default `false`)
-    -   `opts.autoWrap` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to allow `return` statements outside of functions. (optional, default `false`)
-    -   `opts.produceSourceMap` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** set to true to produce a source map for the instrumented code. (optional, default `false`)
-    -   `opts.ignoreClassMethods` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** set to array of class method names to ignore for coverage. (optional, default `[]`)
-    -   `opts.sourceMapUrlCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** a callback function that is called when a source map URL
+-   `opts` **[Object][8]** optional. (optional, default `defaultOpts()`)
+    -   `opts.coverageVariable` **[string][9]** name of global coverage variable. (optional, default `__coverage__`)
+    -   `opts.preserveComments` **[boolean][10]** preserve comments in output (optional, default `false`)
+    -   `opts.compact` **[boolean][10]** generate compact code. (optional, default `true`)
+    -   `opts.esModules` **[boolean][10]** set to true to instrument ES6 modules. (optional, default `false`)
+    -   `opts.autoWrap` **[boolean][10]** set to true to allow `return` statements outside of functions. (optional, default `false`)
+    -   `opts.produceSourceMap` **[boolean][10]** set to true to produce a source map for the instrumented code. (optional, default `false`)
+    -   `opts.ignoreClassMethods` **[Array][11]** set to array of class method names to ignore for coverage. (optional, default `[]`)
+    -   `opts.sourceMapUrlCallback` **[Function][12]** a callback function that is called when a source map URL
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
-    -   `opts.debug` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** turn debugging on (optional, default `false`)
+    -   `opts.debug` **[boolean][10]** turn debugging on (optional, default `false`)
 
 ### instrumentSync
 
@@ -50,13 +50,13 @@ is supported. To instrument ES6 modules, make sure that you set the
 
 **Parameters**
 
--   `code` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the code to instrument
--   `filename` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the filename against which to track coverage.
--   `inputSourceMap` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the source map that maps the not instrumented code back to it's original form.
+-   `code` **[string][9]** the code to instrument
+-   `filename` **[string][9]** the filename against which to track coverage.
+-   `inputSourceMap` **[object][8]?** the source map that maps the not instrumented code back to it's original form.
     Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
     coverage to the untranspiled source.
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the instrumented code.
+Returns **[string][9]** the instrumented code.
 
 ### instrument
 
@@ -66,10 +66,10 @@ the callback will be called in the same process tick and is not asynchronous.
 
 **Parameters**
 
--   `code` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the code to instrument
--   `filename` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the filename against which to track coverage.
--   `callback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the callback
--   `inputSourceMap` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the source map that maps the not instrumented code back to it's original form.
+-   `code` **[string][9]** the code to instrument
+-   `filename` **[string][9]** the filename against which to track coverage.
+-   `callback` **[Function][12]** the callback
+-   `inputSourceMap` **[Object][8]** the source map that maps the not instrumented code back to it's original form.
     Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
     coverage to the untranspiled source.
 
@@ -77,13 +77,13 @@ the callback will be called in the same process tick and is not asynchronous.
 
 returns the file coverage object for the last file instrumented.
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the file coverage object.
+Returns **[Object][8]** the file coverage object.
 
 ### lastSourceMap
 
 returns the source map produced for the last file instrumented.
 
-Returns **(null | [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object))** the source map object.
+Returns **(null | [Object][8])** the source map object.
 
 ## programVisitor
 
@@ -101,10 +101,34 @@ The exit function returns an object that currently has the following keys:
 
 **Parameters**
 
--   `types` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an instance of babel-types
--   `sourceFilePath` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the path to source file (optional, default `'unknown.js'`)
--   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** additional options (optional, default `defaultProgramVisitorOpts`)
-    -   `opts.coverageVariable` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the global coverage variable name. (optional, default `__coverage__`)
-    -   `opts.ignoreClassMethods` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** names of methods to ignore by default on classes. (optional, default `[]`)
-    -   `opts.inputSourceMap` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the input source map, that maps the uninstrumented code back to the
+-   `types` **[Object][8]** an instance of babel-types
+-   `sourceFilePath` **[string][9]** the path to source file (optional, default `'unknown.js'`)
+-   `opts` **[Object][8]** additional options (optional, default `defaultProgramVisitorOpts`)
+    -   `opts.coverageVariable` **[string][9]** the global coverage variable name. (optional, default `__coverage__`)
+    -   `opts.ignoreClassMethods` **[Array][11]** names of methods to ignore by default on classes. (optional, default `[]`)
+    -   `opts.inputSourceMap` **[object][8]** the input source map, that maps the uninstrumented code back to the
         original code. (optional, default `undefined`)
+
+[1]: #createinstrumenter
+
+[2]: #instrumenter
+
+[3]: #instrumentsync
+
+[4]: #instrument
+
+[5]: #lastfilecoverage
+
+[6]: #lastsourcemap
+
+[7]: #programvisitor
+
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

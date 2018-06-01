@@ -21,11 +21,11 @@
   },
   "devDependencies": {
     "babel-core": "^6.2.1",
-    "chai": "^3.4.1",
+    "chai": "^4.1.2",
     "is-windows": "^1.0.0",
     "jshint": "^2.8.0",
-    "mocha": "^3.2.0",
-    "ts-node": "^2.0.0"
+    "mocha": "^5.2.0",
+    "ts-node": "^6.0.5"
   },
   "license": "BSD-3-Clause",
   "bugs": {

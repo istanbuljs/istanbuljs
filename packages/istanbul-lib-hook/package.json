@@ -16,9 +16,9 @@
     "append-transform": "^1.0.0"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
+    "chai": "^4.1.2",
     "jshint": "^2.8.0",
-    "mocha": "^3.2.0"
+    "mocha": "^5.2.0"
   },
   "repository": {
     "type": "git",
