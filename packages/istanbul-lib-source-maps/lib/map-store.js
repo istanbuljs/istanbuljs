@@ -29,7 +29,7 @@ function MapStore(opts) {
     this.baseDir = opts.baseDir || null;
     this.verbose = opts.verbose || false;
     this.sourceStore = sourceStore.create(opts.sourceStore, { tmpdir: opts.tmpdir});
-    this.data = {};
+    this.data = Object.create(null);
 }
 /**
  * registers a source map URL with this store. It makes some input sanity checks

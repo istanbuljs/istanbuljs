@@ -166,7 +166,7 @@ function toInitialList(coverageMap) {
 }
 
 function toDirParents(list) {
-    var nodeMap = {},
+    var nodeMap = Object.create(null),
         parentNodeList = [];
     list.forEach(function (o) {
         var node = new ReportNode(o.path, o.fileCoverage),

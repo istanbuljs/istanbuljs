@@ -58,7 +58,7 @@ function matcherFor(options, callback) {
     options.realpath = true; //force real paths (to match Node.js module paths)
 
     filesFor(options, function (err, files) {
-        var fileMap = {},
+        var fileMap = Object.create(null),
             matchFn;
         /* istanbul ignore if - untestable */
         if (err) { return callback(err); }
