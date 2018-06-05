@@ -13,12 +13,12 @@
     "test": "mocha"
   },
   "dependencies": {
-    "append-transform": "^0.4.0"
+    "append-transform": "^1.0.0"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
-    "jshint": "^2.8.0",
-    "mocha": "^3.2.0"
+    "chai": "^4.1.2",
+    "jshint": "^2.9.5",
+    "mocha": "^5.2.0"
   },
   "repository": {
     "type": "git",

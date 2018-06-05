@@ -28,20 +28,14 @@
   },
   "homepage": "https://github.com/istanbuljs/istanbuljs#readme",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.1.2",
-    "standard": "^9.0.0"
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "standard": "^11.0.1"
   },
   "dependencies": {
     "arrify": "^1.0.1",
-    "micromatch": "^3.1.8",
-    "object-assign": "^4.1.0",
-    "read-pkg-up": "^1.0.1",
+    "minimatch": "^3.0.4",
+    "read-pkg-up": "^3.0.0",
     "require-main-filename": "^1.0.1"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "read-pkg-up"
-    ]
   }
 }

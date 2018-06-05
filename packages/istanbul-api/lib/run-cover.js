@@ -4,7 +4,7 @@
  */
 var path = require('path'),
     fs = require('fs'),
-    mkdirp = require('mkdirp'),
+    mkdirp = require('make-dir'),
     compareVersions = require('compare-versions'),
     matcherFor = require('./file-matcher').matcherFor,
     libInstrument = require('istanbul-lib-instrument'),

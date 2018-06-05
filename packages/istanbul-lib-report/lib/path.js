@@ -5,7 +5,7 @@
 "use strict";
 
 var path = require('path'),
-    parsePath = require('path-parse'),
+    parsePath = path.parse,
     SEP = path.sep || /* istanbul ignore next */ '/',
     origParser = parsePath,
     origSep = SEP;

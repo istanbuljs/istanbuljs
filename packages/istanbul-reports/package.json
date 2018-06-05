@@ -13,15 +13,15 @@
     "test": "mocha --recursive"
   },
   "dependencies": {
-    "handlebars": "^4.0.3"
+    "handlebars": "^4.0.11"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "is-windows": "^1.0.1",
+    "chai": "^4.1.2",
+    "is-windows": "^1.0.2",
     "istanbul-lib-coverage": "^1.2.0",
     "istanbul-lib-report": "^1.1.4",
-    "jshint": "^2.8.0",
-    "mocha": "^3.1.2"
+    "jshint": "^2.9.5",
+    "mocha": "^5.2.0"
   },
   "license": "BSD-3-Clause",
   "repository": {

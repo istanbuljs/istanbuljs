@@ -3,7 +3,7 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 var path = require('path'),
-    mkdirp = require('mkdirp'),
+    mkdirp = require('make-dir'),
     once = require('once'),
     async = require('async'),
     fs = require('fs'),

@@ -13,9 +13,9 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
-    "jshint": "^2.8.0",
-    "mocha": "^3.2.0"
+    "chai": "^4.1.2",
+    "jshint": "^2.9.5",
+    "mocha": "^5.2.0"
   },
   "karmaDeps": {
     "browserify-istanbul": "^0.2.1",

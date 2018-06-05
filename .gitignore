@@ -1,3 +1,4 @@
+*.tgz
 .idea/
 node_modules
 coverage
@@ -7,3 +8,5 @@ docs/
 dist
 lerna-debug.log
 packages/*/yarn.lock
+packages/*/package-lock.json
+packages/nyc/

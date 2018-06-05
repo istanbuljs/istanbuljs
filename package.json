@@ -4,7 +4,7 @@
   "private": true,
   "description": "monorepo containing the various nuts and bolts that facilitate istanbul.js test instrumentation",
   "scripts": {
-    "test": "cross-env LERNA_TEST_RUN=1 NODE_ENV=test nyc lerna exec npm test",
+    "test": "cross-env LERNA_TEST_RUN=1 NODE_ENV=test nyc lerna --ignore nyc exec npm test",
     "postinstall": "lerna bootstrap --hoist",
     "release": "lerna publish --conventional-commits --npm-tag=next"
   },
@@ -25,9 +25,9 @@
   "homepage": "https://istanbul.js.org/",
   "devDependencies": {
     "coveralls": "^3.0.1",
-    "cross-env": "^5.0.0",
-    "lerna": "^2.9.0",
-    "nyc": "^11.8.0"
+    "cross-env": "^5.1.6",
+    "lerna": "^2.11.0",
+    "nyc": "^12.0.2"
   },
   "nyc": {
     "exclude": [

@@ -3,7 +3,7 @@
 var assert = require('chai').assert,
     path = require('path'),
     fs = require('fs'),
-    mkdirp = require('mkdirp'),
+    mkdirp = require('make-dir'),
     rimraf = require('rimraf'),
     codeRoot = path.resolve(__dirname, 'sample-code'),
     outputDir = path.resolve(__dirname, 'coverage'),

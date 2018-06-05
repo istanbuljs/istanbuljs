@@ -1,12 +1,11 @@
-const assign = require('object-assign')
 const arrify = require('arrify')
-const micromatch = require('micromatch')
+const minimatch = require('minimatch')
 const path = require('path')
 const readPkgUp = require('read-pkg-up')
 const requireMainFilename = require('require-main-filename')
 
 function TestExclude (opts) {
-  assign(this, {
+  Object.assign(this, {
     cwd: process.cwd(),
     include: false,
     relativePath: true,
@@ -19,7 +18,7 @@ function TestExclude (opts) {
   if (typeof this.exclude === 'string') this.exclude = [this.exclude]
 
   if (!this.include && !this.exclude && this.configKey) {
-    assign(this, this.pkgConf(this.configKey, this.configPath))
+    Object.assign(this, this.pkgConf(this.configKey, this.configPath))
   }
 
   if (!this.exclude || !Array.isArray(this.exclude)) {
@@ -85,9 +84,9 @@ TestExclude.prototype.shouldInstrument = function (filename, relFile) {
 
   return (
     !this.include ||
-    micromatch.any(pathToCheck, this.include, {dot: true})) &&
-    (!micromatch.any(pathToCheck, this.exclude, {dot: true}) ||
-     micromatch.any(pathToCheck, this.excludeNegated, {dot: true}))
+    this.include.some(include => minimatch(pathToCheck, include, {dot: true}))) &&
+    (!this.exclude.some(exclude => minimatch(pathToCheck, exclude, {dot: true})) ||
+     this.excludeNegated.some(exclude => minimatch(pathToCheck, exclude, {dot: true})))
 }
 
 TestExclude.prototype.pkgConf = function (key, path) {
