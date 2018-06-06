@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.4.1...istanbul-reports@1.5.0) (2018-06-06)
+
+
+### Features
+
+* ability to skip rows with full coverage ([#170](https://github.com/istanbuljs/istanbuljs/issues/170)) ([bbcdc07](https://github.com/istanbuljs/istanbuljs/commit/bbcdc07))
+
+
+
+
 <a name="1.4.1"></a>
 ## [1.4.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.4.0...istanbul-reports@1.4.1) (2018-05-31)
 

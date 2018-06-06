@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.0.2...istanbul-lib-instrument@2.2.0) (2018-06-06)
+
+
+### Features
+
+* add support for optional catch binding ([#175](https://github.com/istanbuljs/istanbuljs/issues/175)) ([088dd9f](https://github.com/istanbuljs/istanbuljs/commit/088dd9f))
+
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.0.2...istanbul-lib-instrument@2.1.0) (2018-05-31)
 

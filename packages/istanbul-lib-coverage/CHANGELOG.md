@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage@1.2.0...istanbul-lib-coverage@2.0.0) (2018-06-06)
+
+
+### Bug Fixes
+
+* use null prototype for map objects ([#177](https://github.com/istanbuljs/istanbuljs/issues/177)) ([9a5a30c](https://github.com/istanbuljs/istanbuljs/commit/9a5a30c))
+
+
+### BREAKING CHANGES
+
+* a null prototype is now used in several places rather than the default `{}` assignment.
+
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage@1.1.2...istanbul-lib-coverage@1.2.0) (2018-03-04)
 
