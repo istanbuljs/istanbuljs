@@ -1,6 +1,6 @@
 {
   "name": "istanbul-api",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "High level API for istanbul features",
   "main": "index.js",
   "files": [
@@ -39,7 +39,7 @@
     "compare-versions": "^3.2.1",
     "fileset": "^2.0.3",
     "istanbul-lib-coverage": "^2.0.0",
-    "istanbul-lib-hook": "^1.2.1",
+    "istanbul-lib-hook": "^2.0.0",
     "istanbul-lib-instrument": "^2.2.0",
     "istanbul-lib-report": "^2.0.0",
     "istanbul-lib-source-maps": "^2.0.0",

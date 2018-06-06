@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@1.2.1...istanbul-lib-hook@2.0.0) (2018-06-06)
+
+
+### Bug Fixes
+
+* 1.2.x should have been a breaking change ([#181](https://github.com/istanbuljs/istanbuljs/issues/181)) ([2872835](https://github.com/istanbuljs/istanbuljs/commit/2872835))
+
+
+### BREAKING CHANGES
+
+* the closure provied to hookRequire, hookRunInThisContext, etc., is now passed an object with a filename member, rather than a string representing filename.
+
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@1.2.0...istanbul-lib-hook@1.2.1) (2018-06-06)
 
