@@ -14,6 +14,8 @@ describe('map store', function () {
     var coverageMap = libCoverage.createCoverageMap(coverageData);
 
     var transformed = mapStore.transformCoverage(coverageMap);
+    assert.isUndefined(transformed.map.data.constructor);
+    
     var transformedCoverage = transformed.map.data[path.resolve("./test.ts")].data;
 
     assert.deepEqual(transformedCoverage.statementMap, {

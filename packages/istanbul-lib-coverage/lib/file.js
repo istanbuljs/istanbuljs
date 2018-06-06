@@ -170,7 +170,7 @@ function FileCoverage(pathOrObj) {
 FileCoverage.prototype.getLineCoverage = function () {
     var statementMap = this.data.statementMap,
         statements = this.data.s,
-        lineMap = {};
+        lineMap = Object.create(null);
 
     Object.keys(statements).forEach(function (st) {
         if (!statementMap[st]) {

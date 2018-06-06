@@ -8,7 +8,7 @@ var FileCoverage = require('./file').FileCoverage,
     CoverageSummary = require('./file').CoverageSummary;
 
 function loadMap(source) {
-    var data = {};
+    var data = Object.create(null);
     Object.keys(source).forEach(function (k) {
         var cov = source[k];
         if (cov instanceof FileCoverage) {
@@ -27,7 +27,7 @@ function loadMap(source) {
  */
 function CoverageMap(obj) {
     if (!obj) {
-        this.data = {};
+        this.data = Object.create(null);
     } else if (obj instanceof CoverageMap) {
         this.data = obj.data;
     } else {

@@ -30,6 +30,19 @@ function makeCoverage(filePath, numStatements, numCovered) {
     return fc;
 }
 
+function protoDirMap(dir) {
+    var files = ['constructor.js', 'toString.js'],
+        count = 0,
+        map = {};
+    files.forEach(function (f) {
+        var filePath = dir ? dir + '/' + f : f,
+            fc = makeCoverage(filePath, 4, count);
+        count += 1;
+        map[filePath] = fc;
+    });
+    return coverage.createCoverageMap(map);
+}
+
 function singleDirMap(dir) {
     var files = ['file3.js', 'file4.js', 'file2.js', 'file1.js'],
         count = 0,
@@ -105,6 +118,13 @@ describe('summarizer', function () {
                 tree = fn(map),
                 nodes = getStructure(tree);
             assert.deepEqual(nodes, ['g:', 'f:file1.js', 'f:file2.js', 'f:file3.js', 'f:file4.js']);
+        });
+
+        it('supports a list of files containing Object.prototype names', function () {
+            var map = protoDirMap(),
+                tree = fn(map),
+                nodes = getStructure(tree);
+            assert.deepEqual(nodes, ['g:', 'f:constructor.js', 'f:toString.js']);
         });
 
         it('supports a list of files at the same nesting level', function () {
