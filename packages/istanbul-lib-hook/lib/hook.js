@@ -13,6 +13,9 @@ function transformFn(matcher, transformer, verbose) {
 
     return function (code, options) {
         options = options || {};
+
+        // prior to 2.x, hookRequire returned filename
+        // rather than object.
         if (typeof options === 'string') {
             options = { filename: options };
         }
