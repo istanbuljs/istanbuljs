@@ -35,7 +35,10 @@
   "dependencies": {
     "arrify": "^1.0.1",
     "minimatch": "^3.0.4",
-    "read-pkg-up": "^3.0.0",
+    "read-pkg-up": "^4.0.0",
     "require-main-filename": "^1.0.1"
+  },
+  "engines": {
+    "node": ">=6"
   }
 }
