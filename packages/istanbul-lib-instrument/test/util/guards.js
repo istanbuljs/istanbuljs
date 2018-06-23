@@ -55,7 +55,7 @@ export function isExportAvailable() {
 }
 
 export function isDefaultArgsAvailable() {
-    return tryThis('function (a=1) { return a + 1; }', 'default args');
+    return tryThis('function foo(a=1) { return a + 1; }', 'default args');
 }
 
 export function isInferredFunctionNameAvailable() {
