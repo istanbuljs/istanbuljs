@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@4.2.2...test-exclude@5.0.0) (2018-06-26)
+
+
+* test-exclude: bump read-pkg-up dependency (#184) ([bb58139](https://github.com/istanbuljs/istanbuljs/commit/bb58139)), closes [#184](https://github.com/istanbuljs/istanbuljs/issues/184)
+
+
+### BREAKING CHANGES
+
+* Support for Node.js 4.x is dropped.
+
+
+
+
 <a name="4.2.2"></a>
 ## [4.2.2](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@4.2.1...test-exclude@4.2.2) (2018-06-06)
 

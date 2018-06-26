@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.2.0...istanbul-lib-instrument@2.2.1) (2018-06-26)
+
+
+### Bug Fixes
+
+* Instrument ObjectMethod's. ([#182](https://github.com/istanbuljs/istanbuljs/issues/182)) ([126f09d](https://github.com/istanbuljs/istanbuljs/commit/126f09d))
+* update default args test guard to work on supported versions. ([#185](https://github.com/istanbuljs/istanbuljs/issues/185)) ([955511a](https://github.com/istanbuljs/istanbuljs/commit/955511a))
+
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.0.2...istanbul-lib-instrument@2.2.0) (2018-06-06)
 
