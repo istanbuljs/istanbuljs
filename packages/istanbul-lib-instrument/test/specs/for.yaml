@@ -22,7 +22,7 @@ tests:
     args: [10]
     out: 9
     lines: {'1': 1, '2': 10, '3': 1}
-    statements: {'0': 1, '1':1, '2': 1, '3': 10, '4': 1}
+    statements: {'0': 1, '1':1, '2': 1, '3': 1, '4': 10, '5': 1}
 ---
 
 name: simple for, no initializer
@@ -121,3 +121,13 @@ tests:
     lines: {'1': 1, '2': 1, '3': 1, '4': 10, '5': 24, '6': 17, '8': 1}
     branches: {'0': [7, 17]}
     statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 10, '5': 24, '6': 7, '7': 17, '8': 1}
+
+---
+name: function in initializer
+code: |
+  for (var x = function(){ return 100; }, y = true; y; y = false){ output = x(); }
+tests:
+  - out: 100
+    lines: {'1': 1}
+    functions: {'0': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1, '4': 1 }
