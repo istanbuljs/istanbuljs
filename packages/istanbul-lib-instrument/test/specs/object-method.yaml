@@ -1,0 +1,22 @@
+---
+name: object method
+code: |
+  const foo = {test() { return 'value' }}
+  output = foo.test()
+tests:
+  - name: object method is instrumented
+    out: 'value'
+    lines: {'1': 1, '2': 1}
+    functions: {'0': 1}
+    statements: {'0': 1, '1': 1, '2': 1}
+---
+name: object getter
+code: |
+  const foo = {get test() { return 'value' }}
+  output = foo.test;
+tests:
+  - name: object getter is instrumented
+    out: 'value'
+    lines: {'1': 1, '2': 1}
+    functions: {'0': 1}
+    statements: {'0': 1, '1': 1, '2': 1}

@@ -451,6 +451,7 @@ const codeVisitor = {
     BlockStatement: entries(), // ignore processing only
     ClassMethod: entries(coverFunction),
     ClassDeclaration: entries(parenthesizedExpressionProp('superClass')),
+    ObjectMethod: entries(coverFunction),
     ExpressionStatement: entries(coverStatement),
     BreakStatement: entries(coverStatement),
     ContinueStatement: entries(coverStatement),
