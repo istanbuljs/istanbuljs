@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.2.1...istanbul-lib-instrument@2.3.0) (2018-06-27)
+
+
+### Features
+
+* update pinned babel version to latest release. ([#189](https://github.com/istanbuljs/istanbuljs/issues/189)) ([ac8ec07](https://github.com/istanbuljs/istanbuljs/commit/ac8ec07))
+
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.2.0...istanbul-lib-instrument@2.2.1) (2018-06-26)
 

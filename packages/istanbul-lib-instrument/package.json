@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-instrument",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Core istanbul API for JS code coverage",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "dist/index.js",
@@ -23,8 +23,8 @@
     "semver": "^5.5.0"
   },
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.51",
     "@babel/cli": "7.0.0-beta.51",
+    "@babel/core": "7.0.0-beta.51",
     "@babel/preset-env": "7.0.0-beta.51",
     "@babel/register": "7.0.0-beta.51",
     "chai": "^4.1.2",
