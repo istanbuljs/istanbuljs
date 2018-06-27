@@ -14,7 +14,7 @@ Then write a `.babelrc` that looks something like this:
 
 ```json
 {
-  "presets": ["env", "..., etc."],
+  "presets": ["@babel/env", "..., etc."],
   "plugins": ["istanbul"]
 }
 ```
