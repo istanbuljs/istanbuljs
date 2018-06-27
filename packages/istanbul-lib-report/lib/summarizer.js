@@ -173,7 +173,7 @@ function toDirParents(list) {
             parentPath = o.path.parent(),
             parent = nodeMap[parentPath.toString()];
 
-        if (!parent) {
+        if (!parent || !parent.addChild) {
             parent = new ReportNode(parentPath);
             nodeMap[parentPath.toString()] = parent;
             parentNodeList.push(parent);
