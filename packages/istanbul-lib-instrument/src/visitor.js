@@ -3,9 +3,9 @@ import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 import {createHash} from 'crypto';
 import template from '@babel/template';
 
-// istanbul ignore comment pattern
+// pattern for istanbul to ignore a section
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
-// istanbul ignore file pattern
+// pattern for istanbul to ignore the whole file
 const COMMENT_FILE_RE = /^\s*istanbul\s+ignore\s+(file)(?=\W|$)/;
 // source map URL pattern
 const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
