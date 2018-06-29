@@ -26,8 +26,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=6"
+  },
   "peerDependencies": {
-    "babel-plugin-istanbul": "*",
-    "babel-register": "*"
+    "babel-plugin-istanbul": ">=5",
+    "@babel/register": "*"
   }
 }
