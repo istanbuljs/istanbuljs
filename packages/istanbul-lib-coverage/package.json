@@ -40,5 +40,8 @@
   "bugs": {
     "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
-  "homepage": "https://github.com/istanbuljs/istanbuljs"
+  "homepage": "https://github.com/istanbuljs/istanbuljs",
+  "engines": {
+    "node": ">=6"
+  }
 }
