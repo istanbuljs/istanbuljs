@@ -42,5 +42,8 @@
     "sourcemap",
     "source",
     "maps"
-  ]
+  ],
+  "engines": {
+    "node": ">=6"
+  }
 }

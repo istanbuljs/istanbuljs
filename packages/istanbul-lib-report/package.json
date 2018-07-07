@@ -38,5 +38,8 @@
     "report",
     "api",
     "lib"
-  ]
+  ],
+  "engines": {
+    "node": ">=6"
+  }
 }

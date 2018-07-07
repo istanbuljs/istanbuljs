@@ -52,5 +52,8 @@
     "istanbul",
     "js",
     "instrumentation"
-  ]
+  ],
+  "engines": {
+    "node": ">=6"
+  }
 }

@@ -42,5 +42,8 @@
       "lcov"
     ],
     "all": true
+  },
+  "engines": {
+    "node": ">=6"
   }
 }
