@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.5.0...istanbul-reports@2.0.0) (2018-07-07)
+
+
+### Chores
+
+* Specify node >= 6 in istanbul-reports. ([#197](https://github.com/istanbuljs/istanbuljs/issues/197)) ([5810c38](https://github.com/istanbuljs/istanbuljs/commit/5810c38))
+
+
+### BREAKING CHANGES
+
+* Requires node >= 6.
+
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@1.4.1...istanbul-reports@1.5.0) (2018-06-06)
 

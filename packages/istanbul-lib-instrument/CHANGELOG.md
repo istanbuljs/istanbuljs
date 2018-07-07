@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.3.0...istanbul-lib-instrument@2.3.1) (2018-07-07)
+
+
+### Bug Fixes
+
+* Don't ignore src/visitor.js for self test. ([#194](https://github.com/istanbuljs/istanbuljs/issues/194)) ([71b815d](https://github.com/istanbuljs/istanbuljs/commit/71b815d))
+
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.2.1...istanbul-lib-instrument@2.3.0) (2018-06-27)
 

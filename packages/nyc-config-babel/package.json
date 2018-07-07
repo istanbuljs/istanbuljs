@@ -1,6 +1,6 @@
 {
   "name": "@istanbuljs/nyc-config-babel",
-  "version": "1.2.3",
+  "version": "2.0.0",
   "description": "nyc configuration that works with babel-plugin-istanbul",
   "main": "index.json",
   "scripts": {
@@ -30,7 +30,7 @@
     "node": ">=6"
   },
   "peerDependencies": {
-    "babel-plugin-istanbul": ">=5",
-    "@babel/register": "*"
+    "@babel/register": "*",
+    "babel-plugin-istanbul": ">=5"
   }
 }

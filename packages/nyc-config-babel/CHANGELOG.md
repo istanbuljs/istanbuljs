@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/istanbuljs/istanbuljs/compare/@istanbuljs/nyc-config-babel@1.2.3...@istanbuljs/nyc-config-babel@2.0.0) (2018-07-07)
+
+
+### feature
+
+* Update for babel 7. ([#190](https://github.com/istanbuljs/istanbuljs/issues/190)) ([3ef809b](https://github.com/istanbuljs/istanbuljs/commit/3ef809b))
+
+
+### BREAKING CHANGES
+
+* This updated configuration requires babel-plugin-istanbul 5.0.0.
+
+
+
+
 <a name="1.2.3"></a>
 ## [1.2.3](https://github.com/istanbuljs/istanbuljs/compare/@istanbuljs/nyc-config-babel@1.2.2...@istanbuljs/nyc-config-babel@1.2.3) (2018-02-13)
 

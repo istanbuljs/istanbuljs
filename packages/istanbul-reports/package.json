@@ -1,6 +1,6 @@
 {
   "name": "istanbul-reports",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "istanbul reports",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -18,8 +18,8 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "is-windows": "^1.0.2",
-    "istanbul-lib-coverage": "^2.0.0",
-    "istanbul-lib-report": "^2.0.0",
+    "istanbul-lib-coverage": "^2.0.1",
+    "istanbul-lib-report": "^2.0.1",
     "jshint": "^2.9.5",
     "mocha": "^5.2.0"
   },
