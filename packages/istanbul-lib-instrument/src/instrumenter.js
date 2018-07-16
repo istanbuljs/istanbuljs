@@ -86,6 +86,7 @@ class Instrumenter {
             plugins: [
               'asyncGenerators',
               'dynamicImport',
+              'importMeta',
               'objectRestSpread',
               'optionalCatchBinding',
               'flow',
