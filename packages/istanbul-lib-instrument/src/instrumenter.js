@@ -18,7 +18,8 @@ function defaultOpts() {
         produceSourceMap: false,
         ignoreClassMethods: [],
         sourceMapUrlCallback: null,
-        debug: false
+        debug: false,
+        plugins: []
     };
 }
 /**
@@ -37,6 +38,7 @@ function defaultOpts() {
  * @param {Function} [opts.sourceMapUrlCallback=null] a callback function that is called when a source map URL
  *     is found in the original code. This function is called with the source file name and the source map URL.
  * @param {boolean} [opts.debug=false] - turn debugging on
+ * @param {array} [opts.plugins=[]] - set plugins
  */
 class Instrumenter {
     constructor(opts=defaultOpts()) {
@@ -80,17 +82,18 @@ class Instrumenter {
         }
         filename = filename || String(new Date().getTime()) + '.js';
         const opts = this.opts;
+        const defaultPlugins = [
+          'asyncGenerators',
+          'dynamicImport',
+          'objectRestSpread',
+          'optionalCatchBinding',
+          'flow',
+          'jsx'
+        ];
         const ast = parser.parse(code, {
             allowReturnOutsideFunction: opts.autoWrap,
             sourceType: opts.esModules ? "module" : "script",
-            plugins: [
-              'asyncGenerators',
-              'dynamicImport',
-              'objectRestSpread',
-              'optionalCatchBinding',
-              'flow',
-              'jsx'
-            ]
+            plugins: [...defaultPlugins, ...opts.plugins]
         });
         const ee = programVisitor(t, filename, {
             coverageVariable: opts.coverageVariable,
