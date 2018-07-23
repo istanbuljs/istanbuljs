@@ -4,5 +4,9 @@
  * conflicting 'env' preset between build and documentation. */
 module.exports = {
 	"babelrc": false,
-	"presets": ["@babel/env"]
+	"presets": [["@babel/env", {
+		"targets": {
+			"node": "6"
+		}
+	}]]
 };
