@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.2"></a>
+## [2.3.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.3.1...istanbul-lib-instrument@2.3.2) (2018-07-24)
+
+
+
+
+**Note:** Version bump only for package istanbul-lib-instrument
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.3.0...istanbul-lib-instrument@2.3.1) (2018-07-07)
 
