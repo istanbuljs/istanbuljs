@@ -18,7 +18,8 @@ function defaultOpts() {
         produceSourceMap: false,
         ignoreClassMethods: [],
         sourceMapUrlCallback: null,
-        debug: false
+        debug: false,
+        staticType: 'flow'
     };
 }
 /**
@@ -37,6 +38,7 @@ function defaultOpts() {
  * @param {Function} [opts.sourceMapUrlCallback=null] a callback function that is called when a source map URL
  *     is found in the original code. This function is called with the source file name and the source map URL.
  * @param {boolean} [opts.debug=false] - turn debugging on
+ * @param {string} [opts.staticType='flow'] - one of `flow` or `typescript`
  */
 class Instrumenter {
     constructor(opts=defaultOpts()) {
@@ -80,15 +82,16 @@ class Instrumenter {
         }
         filename = filename || String(new Date().getTime()) + '.js';
         const opts = this.opts;
+
         const ast = parser.parse(code, {
             allowReturnOutsideFunction: opts.autoWrap,
             sourceType: opts.esModules ? "module" : "script",
             plugins: [
+              opts.staticType,
               'asyncGenerators',
               'dynamicImport',
               'objectRestSpread',
               'optionalCatchBinding',
-              'flow',
               'jsx'
             ]
         });
