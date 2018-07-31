@@ -24,3 +24,14 @@ opts:
 tests:
   - name: import
 
+---
+name: covers import.meta.url
+guard: isImportAvailable
+code: |
+  let url = import.meta.url;
+instrumentOpts:
+  esModules: true
+opts:
+  generateOnly: true
+tests:
+  - name: import
