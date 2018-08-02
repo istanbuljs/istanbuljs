@@ -8,11 +8,10 @@ const codeNeedDecoratorPlugin = `
   class MyClass {}
 `;
 
-const generateCode = (staticType, code, plugins = []) => {
+const generateCode = (code, plugins) => {
   const opts = {
       esModules: true,
       produceSourceMap: true,
-      staticType,
       plugins
   };
   const instrumenter = new Instrumenter(opts);
@@ -24,7 +23,7 @@ describe('plugins', function () {
     context('without decorator plugin', function() {
       it('should fail', function (done) {
           try {
-            generateCode('flow', codeNeedDecoratorPlugin);
+            generateCode(codeNeedDecoratorPlugin);
           } catch(e) {
             const expected =
             `This experimental syntax requires enabling one of the following parser plugin(s): 'decorators-legacy, decorators'`;
@@ -36,7 +35,7 @@ describe('plugins', function () {
 
     context('with decorator plugin', function() {
       it('should success', function () {
-        const generated = generateCode('flow', codeNeedDecoratorPlugin, ['decorators']);
+        const generated = generateCode(codeNeedDecoratorPlugin, ['decorators']);
         assert.ok(generated);
         assert.ok(typeof generated === 'string');
       });
