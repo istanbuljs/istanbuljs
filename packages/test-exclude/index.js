@@ -14,7 +14,8 @@ class TestExclude {
                 relativePath: true,
                 configKey: null, // the key to load config from in package.json.
                 configPath: null, // optionally override requireMainFilename.
-                configFound: false
+                configFound: false,
+                excludeNodeModules: true
             },
             opts
         );
@@ -41,7 +42,10 @@ class TestExclude {
             this.include = false;
         }
 
-        if (!this.exclude.includes('**/node_modules/**')) {
+        if (
+            this.excludeNodeModules &&
+            !this.exclude.includes('**/node_modules/**')
+        ) {
             this.exclude.push('**/node_modules/**');
         }
 
