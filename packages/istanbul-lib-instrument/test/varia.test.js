@@ -176,4 +176,31 @@ describe('varia', function() {
         code = v.getGeneratedCode();
         assert.ok(code.match(/cov_(.+);class App extends Component/));
     });
+
+    it('can store coverage object in alternative scope', function() {
+        const opts = { generateOnly: true };
+        const instrumentOpts = { coverageGlobalScope: 'window.top' };
+        const v = verifier.create('console.log("test");', opts, instrumentOpts);
+        var code;
+        assert.ok(!v.err);
+        code = v.getGeneratedCode();
+        assert.ok(
+            code.match(
+                /global\s*=\s*\(*new\s*Function\(['"]return\s*window.top['"]\)\)*\(\)/
+            )
+        );
+    });
+
+    it('can store coverage object in alternative scope without function', function() {
+        const opts = { generateOnly: true };
+        const instrumentOpts = {
+            coverageGlobalScope: 'window.top',
+            coverageGlobalScopeFunc: false
+        };
+        const v = verifier.create('console.log("test");', opts, instrumentOpts);
+        var code;
+        assert.ok(!v.err);
+        code = v.getGeneratedCode();
+        assert.ok(code.match(/global\s*=\s*window.top;/));
+    });
 });

@@ -11,6 +11,8 @@ import programVisitor from './visitor';
 export function defaultOpts() {
     return {
         coverageVariable: '__coverage__',
+        coverageGlobalScope: 'this',
+        coverageGlobalScopeFunc: true,
         preserveComments: false,
         compact: true,
         esModules: false,
@@ -96,6 +98,8 @@ class Instrumenter {
         });
         const ee = programVisitor(t, filename, {
             coverageVariable: opts.coverageVariable,
+            coverageGlobalScope: opts.coverageGlobalScope,
+            coverageGlobalScopeFunc: opts.coverageGlobalScopeFunc,
             ignoreClassMethods: opts.ignoreClassMethods,
             inputSourceMap: inputSourceMap
         });
