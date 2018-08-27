@@ -8,7 +8,7 @@ import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import programVisitor from './visitor';
 
-function defaultOpts() {
+export function defaultOpts() {
     return {
         coverageVariable: "__coverage__",
         preserveComments: false,
@@ -18,7 +18,15 @@ function defaultOpts() {
         produceSourceMap: false,
         ignoreClassMethods: [],
         sourceMapUrlCallback: null,
-        debug: false
+        debug: false,
+        plugins: [
+          'asyncGenerators',
+          'dynamicImport',
+          'objectRestSpread',
+          'optionalCatchBinding',
+          'flow',
+          'jsx'
+        ]
     };
 }
 /**
@@ -37,6 +45,7 @@ function defaultOpts() {
  * @param {Function} [opts.sourceMapUrlCallback=null] a callback function that is called when a source map URL
  *     is found in the original code. This function is called with the source file name and the source map URL.
  * @param {boolean} [opts.debug=false] - turn debugging on
+ * @param {array} [opts.plugins=['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']] - set plugins
  */
 class Instrumenter {
     constructor(opts=defaultOpts()) {
@@ -83,14 +92,7 @@ class Instrumenter {
         const ast = parser.parse(code, {
             allowReturnOutsideFunction: opts.autoWrap,
             sourceType: opts.esModules ? "module" : "script",
-            plugins: [
-              'asyncGenerators',
-              'dynamicImport',
-              'objectRestSpread',
-              'optionalCatchBinding',
-              'flow',
-              'jsx'
-            ]
+            plugins: opts.plugins
         });
         const ee = programVisitor(t, filename, {
             coverageVariable: opts.coverageVariable,
