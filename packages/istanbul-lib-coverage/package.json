@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-coverage",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Data library for istanbul coverage objects",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
