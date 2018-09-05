@@ -35,7 +35,7 @@ describe('plugins', function () {
 
     context('with decorator plugin', function() {
       it('should success', function () {
-        const generated = generateCode(codeNeedDecoratorPlugin, ['decorators']);
+        const generated = generateCode(codeNeedDecoratorPlugin, [['decorators', {decoratorsBeforeExport: false}]]);
         assert.ok(generated);
         assert.ok(typeof generated === 'string');
       });
