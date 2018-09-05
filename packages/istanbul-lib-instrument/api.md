@@ -40,6 +40,7 @@ instead.
     -   `opts.sourceMapUrlCallback` **[Function][12]** a callback function that is called when a source map URL
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
     -   `opts.debug` **[boolean][10]** turn debugging on (optional, default `false`)
+    -   `opts.plugins` **[array][11]** set plugins (optional, default `['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']`)
 
 ### instrumentSync
 
