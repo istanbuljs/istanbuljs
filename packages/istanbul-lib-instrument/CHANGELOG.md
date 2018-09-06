@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.3.2...istanbul-lib-instrument@3.0.0) (2018-09-06)
+
+
+### Chores
+
+* Update test for babel 7. ([#218](https://github.com/istanbuljs/istanbuljs/issues/218)) ([9cf4d43](https://github.com/istanbuljs/istanbuljs/commit/9cf4d43)), closes [#205](https://github.com/istanbuljs/istanbuljs/issues/205)
+
+
+### Features
+
+* Add option plugins ([#205](https://github.com/istanbuljs/istanbuljs/issues/205)) ([312f81f](https://github.com/istanbuljs/istanbuljs/commit/312f81f))
+* Update babel to 7.0.0. ([#215](https://github.com/istanbuljs/istanbuljs/issues/215)) ([8a96613](https://github.com/istanbuljs/istanbuljs/commit/8a96613))
+
+
+### BREAKING CHANGES
+
+* was added which requires an option for the `decorators`
+plugin.  Add it to get tests working again, commit updated api.md.
+
+
+
+
 <a name="2.3.2"></a>
 ## [2.3.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@2.3.1...istanbul-lib-instrument@2.3.2) (2018-07-24)
 
