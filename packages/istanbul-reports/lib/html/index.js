@@ -161,6 +161,9 @@ HtmlReport.prototype.getWriter = function (context) {
 
 HtmlReport.prototype.onStart = function (root, context) {
     var that = this,
+        assetHeaders = {
+          '.js': '/* eslint-disable */\n'
+        },
         copyAssets = function (subdir, writer) {
             var srcDir = path.resolve(__dirname, 'assets', subdir);
             fs.readdirSync(srcDir).forEach(function (f) {
@@ -174,7 +177,7 @@ HtmlReport.prototype.onStart = function (root, context) {
                     if (that.verbose) {
                         console.log('Write asset: ' + dest);
                     }
-                    writer.copyFile(resolvedSource, dest);
+                    writer.copyFile(resolvedSource, dest, assetHeaders[path.extname(f)]);
                 }
             });
         };

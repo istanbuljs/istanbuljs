@@ -36,9 +36,16 @@ describe('file-writer', function() {
     });
 
     it('copies files', function () {
-        writer.copyFile(__filename,'out.txt');
+        writer.copyFile(__filename, 'out.txt');
         assert.equal(fs.readFileSync(path.resolve(dataDir, 'out.txt'), 'utf8'),
             fs.readFileSync(__filename, 'utf8'));
+    });
+
+    it('copies files while adding headers', function () {
+        var header = '/* This is some header text, like a copyright or directive. */\n';
+        writer.copyFile(__filename, 'out.txt', header);
+        assert.equal(fs.readFileSync(path.resolve(dataDir, 'out.txt'), 'utf8'),
+            header + fs.readFileSync(__filename, 'utf8'));
     });
 
     it('provides writers for subdirs', function () {
