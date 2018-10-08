@@ -88,7 +88,7 @@ CloverReport.prototype.writeRootStats = function (node, context) {
         attrs[k] = treeStats[k];
     });
 
-    this.xml.openTag('metrics', attrs);
+    this.xml.inlineTag('metrics', attrs);
 
 };
 
