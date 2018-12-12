@@ -25,8 +25,8 @@ describe('map store', function () {
           "column": 0
         },
         "end": {
-          "line": 5,
-          "column": 0
+          "line": 1,
+          "column": 13
         }
       },
       "1": {
@@ -36,7 +36,7 @@ describe('map store', function () {
         },
         "end": {
           "line": 4,
-          "column": 5
+          "column": Infinity
         }
       },
       "2": {
@@ -56,12 +56,12 @@ describe('map store', function () {
         },
         "end": {
           "line": 5,
-          "column": 1
+          "column": Infinity
         }
       },
       "4": {
         "end": {
-          "column": 1,
+          "column": Infinity,
           "line": 5
         },
         "start": {
@@ -79,8 +79,8 @@ describe('map store', function () {
             "column": 0
           },
           "end": {
-            "line": null,
-            "column": -1
+            "line": 1,
+            "column": 13
           }
         },
         "loc": {
@@ -89,8 +89,8 @@ describe('map store', function () {
             "column": 0
           },
           "end": {
-            "line": 1,
-            "column": -1
+            "line": 5,
+            "column": Infinity
           }
         }
       },
@@ -102,8 +102,8 @@ describe('map store', function () {
             "column": 4
           },
           "end": {
-            "line": null,
-            "column": -1
+            "line": 2,
+            "column": 6
           }
         },
         "loc": {
