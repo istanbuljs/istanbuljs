@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.0.1...istanbul-reports@2.0.2) (2018-12-19)
+
+
+### Bug Fixes
+
+* clover report metrics must be an inline xml element ([#226](https://github.com/istanbuljs/istanbuljs/issues/226)) ([e290c95](https://github.com/istanbuljs/istanbuljs/commit/e290c95)), closes [#13](https://github.com/istanbuljs/istanbuljs/issues/13)
+
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.0.0...istanbul-reports@2.0.1) (2018-09-06)
 
