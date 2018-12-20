@@ -3,7 +3,7 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 module.exports = {
-    getDefault: function () {
+    getDefault: function() {
         return {
             statements: [50, 80],
             functions: [50, 80],

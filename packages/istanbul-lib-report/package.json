@@ -9,7 +9,6 @@
     "index.js"
   ],
   "scripts": {
-    "pretest": "jshint index.js lib/ test/",
     "test": "mocha"
   },
   "dependencies": {
@@ -20,7 +19,6 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "istanbul": "^0.4.5",
-    "jshint": "^2.9.5",
     "mocha": "^5.2.0",
     "rimraf": "^2.6.2"
   },

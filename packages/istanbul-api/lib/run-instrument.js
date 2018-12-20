@@ -24,7 +24,7 @@ function BaselineCollector(instrumenter) {
     this.instrument = instrumenter.instrument.bind(this.instrumenter);
 
     var origInstrumentSync = instrumenter.instrumentSync;
-    this.instrumentSync = function () {
+    this.instrumentSync = function() {
         var args = Array.prototype.slice.call(arguments),
             ret = origInstrumentSync.apply(this.instrumenter, args),
             baseline = this.instrumenter.lastFileCoverage();
@@ -35,10 +35,9 @@ function BaselineCollector(instrumenter) {
     instrumenter.instrumentSync = this.instrumentSync.bind(this);
 }
 
-BaselineCollector.prototype.getCoverage = function () {
+BaselineCollector.prototype.getCoverage = function() {
     return this.map.toJSON();
 };
-
 
 function processFiles(instrumenter, opts, callback) {
     var inputDir = opts.inputDir,
@@ -47,13 +46,14 @@ function processFiles(instrumenter, opts, callback) {
         extensions = opts.extensions,
         verbose = opts.verbose;
 
-    var processor = function (name, callback) {
+    var processor = function(name, callback) {
             var inputFile = path.resolve(inputDir, name),
                 outputFile = path.resolve(outputDir, name),
                 inputFileExtension = path.extname(inputFile),
                 isJavaScriptFile = extensions.indexOf(inputFileExtension) > -1,
                 oDir = path.dirname(outputFile),
-                readStream, writeStream;
+                readStream,
+                writeStream;
 
             callback = once(callback);
             mkdirp.sync(oDir);
@@ -64,19 +64,29 @@ function processFiles(instrumenter, opts, callback) {
             }
 
             if (isJavaScriptFile) {
-                fs.readFile(inputFile, 'utf8', function (err, data) {
-                    /* istanbul ignore if */ if (err) { return callback(err, name); }
-                    instrumenter.instrument(data, inputFile, function (iErr, instrumented) {
-                        if (iErr) { return callback(iErr, name); }
-                        fs.writeFile(outputFile, instrumented, 'utf8', function (err) {
+                fs.readFile(inputFile, 'utf8', function(err, data) {
+                    /* istanbul ignore if */ if (err) {
+                        return callback(err, name);
+                    }
+                    instrumenter.instrument(data, inputFile, function(
+                        iErr,
+                        instrumented
+                    ) {
+                        if (iErr) {
+                            return callback(iErr, name);
+                        }
+                        fs.writeFile(outputFile, instrumented, 'utf8', function(
+                            err
+                        ) {
                             return callback(err, name);
                         });
                     });
                 });
-            }
-            else {
+            } else {
                 // non JavaScript file, copy it as is
-                readStream = fs.createReadStream(inputFile, {'bufferSize': READ_FILE_CHUNK_SIZE});
+                readStream = fs.createReadStream(inputFile, {
+                    bufferSize: READ_FILE_CHUNK_SIZE
+                });
                 writeStream = fs.createWriteStream(outputFile);
 
                 readStream.on('error', callback);
@@ -93,10 +103,13 @@ function processFiles(instrumenter, opts, callback) {
         count = 0,
         startTime = new Date().getTime();
 
-    q.push(relativeNames, function (err, name) {
+    q.push(relativeNames, function(err, name) {
         var inputFile, outputFile;
         if (err) {
-            errors.push({ file: name, error: err.message || /* istanbul ignore next */ err.toString() });
+            errors.push({
+                file: name,
+                error: err.message || /* istanbul ignore next */ err.toString()
+            });
             inputFile = path.resolve(inputDir, name);
             outputFile = path.resolve(outputDir, name);
             fs.writeFileSync(outputFile, fs.readFileSync(inputFile));
@@ -104,22 +117,33 @@ function processFiles(instrumenter, opts, callback) {
         if (verbose) {
             console.error('Processed: ' + name);
         } else {
-            if (count % 100 === 0) { process.stdout.write('.'); }
+            if (count % 100 === 0) {
+                process.stdout.write('.');
+            }
         }
         count += 1;
     });
 
-    q.drain = function () {
+    q.drain = function() {
         var endTime = new Date().getTime();
-        console.error('\nProcessed [' + count + '] files in ' + Math.floor((endTime - startTime) / 1000) + ' secs');
+        console.error(
+            '\nProcessed [' +
+                count +
+                '] files in ' +
+                Math.floor((endTime - startTime) / 1000) +
+                ' secs'
+        );
         if (errors.length > 0) {
-            console.error('The following ' + errors.length + ' file(s) had errors and were copied as-is');
+            console.error(
+                'The following ' +
+                    errors.length +
+                    ' file(s) had errors and were copied as-is'
+            );
             console.error(errors);
         }
         return callback();
     };
 }
-
 
 function run(config, opts, callback) {
     opts = opts || {};
@@ -138,8 +162,7 @@ function run(config, opts, callback) {
 
     if (iOpts.completeCopy()) {
         includes = ['**/*'];
-    }
-    else {
+    } else {
         includes = iOpts.extensions().map(function(ext) {
             return '**/*' + ext;
         });
@@ -149,16 +172,22 @@ function run(config, opts, callback) {
         return callback(new Error('No input specified'));
     }
 
-    instrumenter = libInstrument.createInstrumenter(iOpts.getInstrumenterOpts());
+    instrumenter = libInstrument.createInstrumenter(
+        iOpts.getInstrumenterOpts()
+    );
 
     if (needBaseline) {
         mkdirp.sync(path.dirname(baselineFile));
         instrumenter = new BaselineCollector(instrumenter);
-        callback = function (err) {
+        callback = function(err) {
             /* istanbul ignore else */
             if (!err) {
                 console.error('Saving baseline coverage at ' + baselineFile);
-                fs.writeFileSync(baselineFile, JSON.stringify(instrumenter.getCoverage()), 'utf8');
+                fs.writeFileSync(
+                    baselineFile,
+                    JSON.stringify(instrumenter.getCoverage()),
+                    'utf8'
+                );
             }
             return origCallback(err);
         };
@@ -167,32 +196,55 @@ function run(config, opts, callback) {
     file = path.resolve(input);
     stats = fs.statSync(file);
     if (stats.isDirectory()) {
-        if (!output) { return callback(inputError.create('Need an output directory when input is a directory!')); }
-        if (output === file) { return callback(inputError.create('Cannot instrument into the same directory/ file as input!')); }
+        if (!output) {
+            return callback(
+                inputError.create(
+                    'Need an output directory when input is a directory!'
+                )
+            );
+        }
+        if (output === file) {
+            return callback(
+                inputError.create(
+                    'Cannot instrument into the same directory/ file as input!'
+                )
+            );
+        }
         mkdirp.sync(output);
-        filesFor({
-            root: file,
-            includes: includes,
-            excludes: excludes || iOpts.excludes(false),
-            relative: true
-        }, function (err, files) {
-            /* istanbul ignore if */
-            if (err) { return callback(err); }
-            processFiles(instrumenter, {
-                inputDir: file,
-                outputDir: output,
-                names: files,
-                extensions: iOpts.extensions(),
-                verbose: config.verbose
-            }, callback);
-        });
+        filesFor(
+            {
+                root: file,
+                includes: includes,
+                excludes: excludes || iOpts.excludes(false),
+                relative: true
+            },
+            function(err, files) {
+                /* istanbul ignore if */
+                if (err) {
+                    return callback(err);
+                }
+                processFiles(
+                    instrumenter,
+                    {
+                        inputDir: file,
+                        outputDir: output,
+                        names: files,
+                        extensions: iOpts.extensions(),
+                        verbose: config.verbose
+                    },
+                    callback
+                );
+            }
+        );
     } else {
         if (output) {
             stream = fs.createWriteStream(output);
         } else {
             stream = process.stdout;
         }
-        stream.write(instrumenter.instrumentSync(fs.readFileSync(file, 'utf8'), file));
+        stream.write(
+            instrumenter.instrumentSync(fs.readFileSync(file, 'utf8'), file)
+        );
         if (stream !== process.stdout) {
             stream.end();
         }
@@ -203,6 +255,3 @@ function run(config, opts, callback) {
 module.exports = {
     run: run
 };
-
-
-

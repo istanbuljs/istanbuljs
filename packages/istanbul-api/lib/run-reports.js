@@ -8,7 +8,7 @@ var Reporter = require('./reporter'),
     libCoverage = require('istanbul-lib-coverage');
 
 function run(formats, config, opts, callback) {
-    if (!callback && typeof(opts) === 'function') {
+    if (!callback && typeof opts === 'function') {
         callback = opts;
         opts = {};
     }
@@ -29,25 +29,26 @@ function run(formats, config, opts, callback) {
     }
 
     root = opts.root || process.cwd();
-    filesFor({
-        root: root,
-        includes: [ includePattern ]
-    }, function (err, files) {
-        /* istanbul ignore if */
-        if (err) {
-            return callback(err);
+    filesFor(
+        {
+            root: root,
+            includes: [includePattern]
+        },
+        function(err, files) {
+            /* istanbul ignore if */
+            if (err) {
+                return callback(err);
+            }
+            files.forEach(function(file) {
+                var coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
+                coverageMap.merge(coverageObject);
+            });
+            reporter.write(coverageMap, {});
+            return callback();
         }
-        files.forEach(function (file) {
-            var coverageObject =  JSON.parse(fs.readFileSync(file, 'utf8'));
-            coverageMap.merge(coverageObject);
-        });
-        reporter.write(coverageMap, {});
-        return callback();
-    });
+    );
 }
 
 module.exports = {
     run: run
 };
-
-

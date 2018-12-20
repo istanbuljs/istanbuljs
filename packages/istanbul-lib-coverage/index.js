@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-"use strict";
+'use strict';
 
 /**
  * istanbul-lib-coverage exports an API that allows you to create and manipulate
@@ -23,7 +23,7 @@ module.exports = {
      *  as the one passed to the `CoverageSummary` constructor
      * @returns {CoverageSummary}
      */
-    createCoverageSummary: function (obj) {
+    createCoverageSummary: function(obj) {
         if (obj && obj instanceof CoverageSummary) {
             return obj;
         }
@@ -35,7 +35,7 @@ module.exports = {
      *  as the one passed to the CoverageMap constructor.
      * @returns {CoverageMap}
      */
-    createCoverageMap: function (obj) {
+    createCoverageMap: function(obj) {
         if (obj && obj instanceof CoverageMap) {
             return obj;
         }
@@ -47,7 +47,7 @@ module.exports = {
      *  as the one passed to the FileCoverage constructor.
      * @returns {FileCoverage}
      */
-    createFileCoverage: function (obj) {
+    createFileCoverage: function(obj) {
         if (obj && obj instanceof FileCoverage) {
             return obj;
         }

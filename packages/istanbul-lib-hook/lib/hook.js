@@ -10,8 +10,7 @@ var path = require('path'),
     originalRunInContext = vm.runInContext;
 
 function transformFn(matcher, transformer, verbose) {
-
-    return function (code, options) {
+    return function(code, options) {
         options = options || {};
 
         // prior to 2.x, hookRequire returned filename
@@ -20,19 +19,27 @@ function transformFn(matcher, transformer, verbose) {
             options = { filename: options };
         }
 
-        var shouldHook = typeof options.filename === 'string' && matcher(path.resolve(options.filename)),
+        var shouldHook =
+                typeof options.filename === 'string' &&
+                matcher(path.resolve(options.filename)),
             transformed,
             changed = false;
 
         if (shouldHook) {
             if (verbose) {
-                console.error('Module load hook: transform [' + options.filename + ']');
+                console.error(
+                    'Module load hook: transform [' + options.filename + ']'
+                );
             }
             try {
                 transformed = transformer(code, options);
                 changed = true;
             } catch (ex) {
-                console.error('Transformation error for', options.filename, '; return original code');
+                console.error(
+                    'Transformation error for',
+                    options.filename,
+                    '; return original code'
+                );
                 console.error(ex.message || String(ex));
                 if (verbose) {
                     console.error(ex.stack);
@@ -54,7 +61,7 @@ function transformFn(matcher, transformer, verbose) {
 function unloadRequireCache(matcher) {
     /* istanbul ignore else: impossible to test */
     if (matcher && typeof require !== 'undefined' && require && require.cache) {
-        Object.keys(require.cache).forEach(function (filename) {
+        Object.keys(require.cache).forEach(function(filename) {
             if (matcher(filename)) {
                 delete require.cache[filename];
             }
@@ -81,13 +88,15 @@ function hookRequire(matcher, transformer, options) {
     var extensions,
         disable = false,
         fn = transformFn(matcher, transformer, options.verbose),
-        postLoadHook = options.postLoadHook &&
-            typeof options.postLoadHook === 'function' ? options.postLoadHook : null;
+        postLoadHook =
+            options.postLoadHook && typeof options.postLoadHook === 'function'
+                ? options.postLoadHook
+                : null;
 
     extensions = options.extensions || ['.js'];
 
-    extensions.forEach(function(ext){
-        appendTransform(function (code, filename) {
+    extensions.forEach(function(ext) {
+        appendTransform(function(code, filename) {
             if (disable) {
                 return code;
             }
@@ -99,7 +108,7 @@ function hookRequire(matcher, transformer, options) {
         }, ext);
     });
 
-    return function () {
+    return function() {
         disable = true;
     };
 }
@@ -118,7 +127,7 @@ function hookRequire(matcher, transformer, options) {
 function hookCreateScript(matcher, transformer, opts) {
     opts = opts || {};
     var fn = transformFn(matcher, transformer, opts.verbose);
-    vm.createScript = function (code, file) {
+    vm.createScript = function(code, file) {
         var ret = fn(code, file);
         return originalCreateScript(ret.code, file);
     };
@@ -145,7 +154,7 @@ function unhookCreateScript() {
 function hookRunInThisContext(matcher, transformer, opts) {
     opts = opts || {};
     var fn = transformFn(matcher, transformer, opts.verbose);
-    vm.runInThisContext = function (code, options) {
+    vm.runInThisContext = function(code, options) {
         var ret = fn(code, options);
         return originalRunInThisContext(ret.code, options);
     };
@@ -172,7 +181,7 @@ function unhookRunInThisContext() {
 function hookRunInContext(matcher, transformer, opts) {
     opts = opts || {};
     var fn = transformFn(matcher, transformer, opts.verbose);
-    vm.runInContext = function (code, context, file) {
+    vm.runInContext = function(code, context, file) {
         var ret = fn(code, file);
         var coverageVariable = opts.coverageVariable || '__coverage__';
         // Refer coverage variable in context to global coverage variable.
@@ -185,7 +194,6 @@ function hookRunInContext(matcher, transformer, opts) {
         context[coverageVariable] = global[coverageVariable];
         return originalRunInContext(ret.code, context, file);
     };
-    
 }
 /**
  * unhooks vm.runInContext, restoring it to its original state.
@@ -221,11 +229,9 @@ module.exports = {
     hookRequire: hookRequire,
     hookCreateScript: hookCreateScript,
     unhookCreateScript: unhookCreateScript,
-    hookRunInThisContext : hookRunInThisContext,
-    unhookRunInThisContext : unhookRunInThisContext,
-    hookRunInContext : hookRunInContext,
-    unhookRunInContext : unhookRunInContext,
+    hookRunInThisContext: hookRunInThisContext,
+    unhookRunInThisContext: unhookRunInThisContext,
+    hookRunInContext: hookRunInContext,
+    unhookRunInContext: unhookRunInContext,
     unloadRequireCache: unloadRequireCache
 };
-
-

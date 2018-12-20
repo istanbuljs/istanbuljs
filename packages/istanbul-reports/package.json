@@ -9,7 +9,6 @@
     "lib"
   ],
   "scripts": {
-    "pretest": "jshint --exclude=**/prettify.js index.js lib/ test/",
     "test": "mocha --recursive"
   },
   "dependencies": {
@@ -20,7 +19,6 @@
     "is-windows": "^1.0.2",
     "istanbul-lib-coverage": "^2.0.1",
     "istanbul-lib-report": "^2.0.2",
-    "jshint": "^2.9.5",
     "mocha": "^5.2.0"
   },
   "license": "BSD-3-Clause",

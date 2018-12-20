@@ -5,19 +5,17 @@ var util = require('util'),
     rimraf = require('rimraf'),
     fs = require('fs');
 
-function SourceStore(/*opts*/) {
-}
+function SourceStore(/*opts*/) {}
 
-SourceStore.prototype.registerSource = function (/* filePath, sourceText */) {
+SourceStore.prototype.registerSource = function(/* filePath, sourceText */) {
     throw new Error('registerSource must be overridden');
 };
 
-SourceStore.prototype.getSource = function (/* filePath */) {
+SourceStore.prototype.getSource = function(/* filePath */) {
     throw new Error('getSource must be overridden');
 };
 
-SourceStore.prototype.dispose = function () {
-};
+SourceStore.prototype.dispose = function() {};
 
 function MemoryStore() {
     this.data = {};
@@ -25,11 +23,11 @@ function MemoryStore() {
 
 util.inherits(MemoryStore, SourceStore);
 
-MemoryStore.prototype.registerSource = function (filePath, sourceText) {
+MemoryStore.prototype.registerSource = function(filePath, sourceText) {
     this.data[filePath] = sourceText;
 };
 
-MemoryStore.prototype.getSource = function (filePath) {
+MemoryStore.prototype.getSource = function(filePath) {
     return this.data[filePath] || null;
 };
 
@@ -44,7 +42,7 @@ function FileStore(opts) {
 
 util.inherits(FileStore, SourceStore);
 
-FileStore.prototype.registerSource = function (filePath, sourceText) {
+FileStore.prototype.registerSource = function(filePath, sourceText) {
     if (this.mappings[filePath]) {
         return;
     }
@@ -54,7 +52,7 @@ FileStore.prototype.registerSource = function (filePath, sourceText) {
     fs.writeFileSync(mapFile, sourceText, 'utf8');
 };
 
-FileStore.prototype.getSource = function (filePath) {
+FileStore.prototype.getSource = function(filePath) {
     var mapFile = this.mappings[filePath];
     if (!mapFile) {
         return null;
@@ -62,13 +60,13 @@ FileStore.prototype.getSource = function (filePath) {
     return fs.readFileSync(mapFile, 'utf8');
 };
 
-FileStore.prototype.dispose = function () {
+FileStore.prototype.dispose = function() {
     this.mappings = [];
     rimraf.sync(path.dirname(this.basePath));
 };
 
 module.exports = {
-    create: function (type, opts) {
+    create: function(type, opts) {
         opts = opts || {};
         type = (type || 'memory').toLowerCase();
 

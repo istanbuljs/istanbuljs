@@ -1,2 +1,3 @@
-module.exports = function () { return 32; };
-
+module.exports = function() {
+    return 32;
+};

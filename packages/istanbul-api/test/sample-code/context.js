@@ -4,6 +4,6 @@ var vm = require('vm'),
     file = path.resolve(__dirname, 'foo.js'),
     code = fs.readFileSync(file, 'utf8');
 
-vm.runInThisContext(code, { 
-    filename: file 
+vm.runInThisContext(code, {
+    filename: file
 });

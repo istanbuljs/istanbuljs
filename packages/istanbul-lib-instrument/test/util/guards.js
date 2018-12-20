@@ -1,10 +1,13 @@
 function tryThis(str, feature, generateOnly) {
     if (!generateOnly) {
         try {
-            /*jshint evil: true */
             eval(str);
         } catch (ex) {
-            console.error('ES6 feature [' + feature + '] is not available in this environment');
+            console.error(
+                'ES6 feature [' +
+                    feature +
+                    '] is not available in this environment'
+            );
             return false;
         }
     }
@@ -16,8 +19,10 @@ export function isYieldAvailable() {
 }
 
 export function isForOfAvailable() {
-    return tryThis('function *foo() { yield 1; }\n' +
-        'for (var k of foo()) {}', 'for-of');
+    return tryThis(
+        'function *foo() { yield 1; }\n' + 'for (var k of foo()) {}',
+        'for-of'
+    );
 }
 
 export function isArrowFnAvailable() {
@@ -29,7 +34,7 @@ export function isObjectSpreadAvailable() {
 }
 
 export function isObjectFreezeAvailable() {
-    "use strict";
+    'use strict';
     if (!Object.freeze) {
         return false;
     }
@@ -42,7 +47,7 @@ export function isObjectFreezeAvailable() {
     }
 }
 
-export function isOptionalCatchBindingAvailable () {
+export function isOptionalCatchBindingAvailable() {
     return tryThis('try {} catch {}');
 }
 
@@ -59,13 +64,17 @@ export function isDefaultArgsAvailable() {
 }
 
 export function isInferredFunctionNameAvailable() {
-    return tryThis('const foo = function () {}; require("assert").equal(foo.name, "foo")');
+    return tryThis(
+        'const foo = function () {}; require("assert").equal(foo.name, "foo")'
+    );
 }
 
 export function isInferredClassNameAvailable() {
-  return tryThis('const foo = class {}; require("assert").equal(foo.name, "foo")');
+    return tryThis(
+        'const foo = class {}; require("assert").equal(foo.name, "foo")'
+    );
 }
 
 export function isClassAvailable() {
-  return tryThis("new Function('args', '{class Foo extends (Bar) {}}')");
+    return tryThis("new Function('args', '{class Foo extends (Bar) {}}')");
 }

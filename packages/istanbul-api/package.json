@@ -9,7 +9,6 @@
   ],
   "scripts": {
     "fast": "mocha --slow 1000",
-    "pretest": "jshint index.js lib/ test/",
     "test": "mocha"
   },
   "repository": {
@@ -29,7 +28,6 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "is-windows": "^1.0.2",
-    "jshint": "^2.9.5",
     "memory-streams": "^0.1.3",
     "mocha": "^5.2.0",
     "rimraf": "^2.6.2"

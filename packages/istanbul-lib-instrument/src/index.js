@@ -1,7 +1,7 @@
 import Instrumenter from './instrumenter';
 import programVisitor from './visitor';
 import readInitialCoverage from './read-coverage';
-import {defaultOpts} from './instrumenter';
+import { defaultOpts } from './instrumenter';
 
 /**
  * createInstrumenter creates a new instrumenter with the
@@ -13,8 +13,7 @@ function createInstrumenter(opts) {
     return new Instrumenter(opts);
 }
 
-export {createInstrumenter};
-export {programVisitor};
-export {readInitialCoverage};
-export {defaultOpts};
-
+export { createInstrumenter };
+export { programVisitor };
+export { readInitialCoverage };
+export { defaultOpts };

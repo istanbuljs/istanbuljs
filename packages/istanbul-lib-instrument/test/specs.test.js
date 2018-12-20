@@ -5,26 +5,26 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as verifier from './util/verifier';
 import * as guards from './util/guards';
-import {assert} from 'chai';
+import { assert } from 'chai';
 
 const clone = require('clone');
 
 const dir = path.resolve(__dirname, 'specs'),
-    files = fs.readdirSync(dir).filter(function (f) {
+    files = fs.readdirSync(dir).filter(function(f) {
         var match = true;
         if (process.env.FILTER) {
-            match = (new RegExp(`.*${process.env.FILTER}.*`)).test(f);
+            match = new RegExp(`.*${process.env.FILTER}.*`).test(f);
         }
         return f.match(/\.yaml$/) && match;
     });
 
 function loadDocs() {
     var docs = [];
-    files.forEach(function (f) {
+    files.forEach(function(f) {
         var filePath = path.resolve(dir, f),
             contents = fs.readFileSync(filePath, 'utf8');
         try {
-            yaml.safeLoadAll(contents, function (obj) {
+            yaml.safeLoadAll(contents, function(obj) {
                 obj.file = f;
                 docs.push(obj);
             });
@@ -32,7 +32,13 @@ function loadDocs() {
             docs.push({
                 file: f,
                 name: 'loaderr',
-                err: "Unable to load file [" + f + "]\n" + ex.message + "\n" + ex.stack
+                err:
+                    'Unable to load file [' +
+                    f +
+                    ']\n' +
+                    ex.message +
+                    '\n' +
+                    ex.stack
             });
         }
     });
@@ -40,7 +46,7 @@ function loadDocs() {
 }
 
 function generateTests(docs) {
-    docs.forEach(function (doc) {
+    docs.forEach(function(doc) {
         var guard = doc.guard,
             skip = false,
             skipText = '';
@@ -52,18 +58,22 @@ function generateTests(docs) {
             }
         }
 
-        describe(skipText + doc.file + '/' + (doc.name || 'suite'), function () {
+        describe(skipText + doc.file + '/' + (doc.name || 'suite'), function() {
             if (doc.err) {
-                it('has errors', function () {
+                it('has errors', function() {
                     assert.ok(false, doc.err);
                 });
-            }
-            else {
-                (doc.tests || []).forEach(function (t) {
-                    var fn =  function () {
+            } else {
+                (doc.tests || []).forEach(function(t) {
+                    var fn = function() {
                         var genOnly = (doc.opts || {}).generateOnly,
                             noCoverage = (doc.opts || {}).noCoverage,
-                            v = verifier.create(doc.code, doc.opts || {}, doc.instrumentOpts, doc.inputSourceMap),
+                            v = verifier.create(
+                                doc.code,
+                                doc.opts || {},
+                                doc.instrumentOpts,
+                                doc.inputSourceMap
+                            ),
                             test = clone(t),
                             args = test.args,
                             out = test.out;

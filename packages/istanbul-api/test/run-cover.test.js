@@ -13,14 +13,13 @@ var assert = require('chai').assert,
     wrap = hijack.wrap,
     unhookFn;
 
-describe('run cover', function () {
-
-    beforeEach(function () {
+describe('run cover', function() {
+    beforeEach(function() {
         unhookFn = null;
         mkdirp.sync(outputDir);
         hijack.silent();
     });
-    afterEach(function () {
+    afterEach(function() {
         hijack.reset();
         rimraf.sync(outputDir);
         if (unhookFn) {
@@ -29,21 +28,27 @@ describe('run cover', function () {
     });
 
     function getConfig(overrides) {
-        var cfg = configuration.loadObject({
-            verbose: false,
-            instrumentation: {
-                root: codeRoot
+        var cfg = configuration.loadObject(
+            {
+                verbose: false,
+                instrumentation: {
+                    root: codeRoot
+                },
+                reporting: {
+                    dir: outputDir
+                }
             },
-            reporting: {
-                dir: outputDir
-            }
-        }, overrides);
+            overrides
+        );
         return cfg;
     }
 
-    it('hooks require and provides coverage', function (cb) {
+    it('hooks require and provides coverage', function(cb) {
         cb = wrap(cb);
-        var config = getConfig({ verbose: true, instrumentation: { 'include-all-sources': false }});
+        var config = getConfig({
+            verbose: true,
+            instrumentation: { 'include-all-sources': false }
+        });
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
             var fn = data.coverageFn,
@@ -63,20 +68,24 @@ describe('run cover', function () {
             assert.ok(coverageMap);
             coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
             assert.ok(coverage);
-            assert.deepEqual(coverage.s, { 0:1, 1:0, 2:1, 3:1, 4:1 });
-            assert.deepEqual(coverage.f, { 0:1, 1:0 });
-            assert.deepEqual(coverage.b, { 0: [1 ,0], 1: [1,0] });
+            assert.deepEqual(coverage.s, { 0: 1, 1: 0, 2: 1, 3: 1, 4: 1 });
+            assert.deepEqual(coverage.f, { 0: 1, 1: 0 });
+            assert.deepEqual(coverage.b, { 0: [1, 0], 1: [1, 0] });
             exitFn();
-            assert.ok(fs.existsSync(path.resolve(outputDir, 'coverage.raw.json')));
+            assert.ok(
+                fs.existsSync(path.resolve(outputDir, 'coverage.raw.json'))
+            );
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov.info')));
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov-report')));
-            otherMap = JSON.parse(fs.readFileSync(path.resolve(outputDir, 'coverage.raw.json')));
+            otherMap = JSON.parse(
+                fs.readFileSync(path.resolve(outputDir, 'coverage.raw.json'))
+            );
             assert.deepEqual(otherMap, coverageMap);
             cb();
         });
     });
 
-    it('hooks runInContext and provides coverage', function (cb) {
+    it('hooks runInContext and provides coverage', function(cb) {
         cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-context': true },
@@ -98,16 +107,20 @@ describe('run cover', function () {
             coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
             assert.ok(coverage);
             exitFn();
-            assert.ok(fs.existsSync(path.resolve(outputDir, 'coverage.raw.json')));
+            assert.ok(
+                fs.existsSync(path.resolve(outputDir, 'coverage.raw.json'))
+            );
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov.info')));
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov-report')));
-            otherMap = JSON.parse(fs.readFileSync(path.resolve(outputDir, 'coverage.raw.json')));
+            otherMap = JSON.parse(
+                fs.readFileSync(path.resolve(outputDir, 'coverage.raw.json'))
+            );
             assert.deepEqual(otherMap, coverageMap);
             cb();
         });
     });
 
-    it('hooks runInThisContext and provides coverage', function (cb) {
+    it('hooks runInThisContext and provides coverage', function(cb) {
         cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-this-context': true },
@@ -129,14 +142,14 @@ describe('run cover', function () {
         });
     });
 
-    it('includes all sources by default (ignoring bad code)', function (cb) {
+    it('includes all sources by default (ignoring bad code)', function(cb) {
         cb = wrap(cb);
         var config = getConfig({
             verbose: true,
             instrumentation: {
                 'default-excludes': false,
                 'include-all-sources': true,
-                extensions: [ '.js', '.xjs' ]
+                extensions: ['.js', '.xjs']
             }
         });
         cover.getCoverFunctions(config, function(err, data) {
@@ -153,14 +166,16 @@ describe('run cover', function () {
             assert.ok(coverageMap);
             assert.ok(coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
-            assert.ok(coverageMap[path.resolve(codeRoot, 'node_modules', 'adder.js')]);
+            assert.ok(
+                coverageMap[path.resolve(codeRoot, 'node_modules', 'adder.js')]
+            );
             cb();
         });
     });
 
-    it('includes pid in coverage JSON when requested', function (cb) {
+    it('includes pid in coverage JSON when requested', function(cb) {
         cb = wrap(cb);
-        var config = getConfig({ instrumentation: { 'include-pid': true }});
+        var config = getConfig({ instrumentation: { 'include-pid': true } });
         cover.getCoverFunctions(config, function(err, data) {
             assert.ok(!err);
             var hookFn = data.hookFn,
@@ -169,18 +184,25 @@ describe('run cover', function () {
             hookFn();
             require('./sample-code/foo');
             exitFn();
-            assert.ok(fs.existsSync(path.resolve(outputDir, 'coverage-' + process.pid + '.raw.json')));
+            assert.ok(
+                fs.existsSync(
+                    path.resolve(
+                        outputDir,
+                        'coverage-' + process.pid + '.raw.json'
+                    )
+                )
+            );
             cb();
         });
     });
 
-    it('accepts specific includes', function (cb) {
+    it('accepts specific includes', function(cb) {
         cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-this-context': true },
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, [ '**/foo.js' ], function (err, data) {
+        cover.getCoverFunctions(config, ['**/foo.js'], function(err, data) {
             assert.ok(!err);
             var fn = data.coverageFn,
                 hookFn = data.hookFn,
@@ -194,12 +216,14 @@ describe('run cover', function () {
             assert.ok(coverageMap);
             assert.ok(!coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
-            assert.ok(!coverageMap[path.resolve(codeRoot, 'node_modules', 'adder.js')]);
+            assert.ok(
+                !coverageMap[path.resolve(codeRoot, 'node_modules', 'adder.js')]
+            );
             cb();
         });
     });
 
-    it('complains but does not throw when no coverage', function (cb) {
+    it('complains but does not throw when no coverage', function(cb) {
         cb = wrap(cb);
         var config = getConfig();
         cover.getCoverFunctions(config, function(err, data) {
@@ -210,19 +234,19 @@ describe('run cover', function () {
         });
     });
 
-    describe('text reports', function () {
-        var getTextReportConfig = function (type) {
+    describe('text reports', function() {
+        var getTextReportConfig = function(type) {
             return getConfig({
                 reporting: {
                     print: type,
                     'report-config': {
-                        text: { file: 'rpt.txt'},
-                        'text-summary': { file: 'summary.txt'}
+                        text: { file: 'rpt.txt' },
+                        'text-summary': { file: 'summary.txt' }
                     }
                 }
             });
         };
-        it('prints text summary by default', function (cb) {
+        it('prints text summary by default', function(cb) {
             cb = wrap(cb);
             var config = getTextReportConfig();
             cover.getCoverFunctions(config, function(err, data) {
@@ -233,12 +257,14 @@ describe('run cover', function () {
                 hookFn();
                 require('./sample-code/foo');
                 exitFn();
-                assert.ok(fs.existsSync(path.resolve(outputDir, 'summary.txt')));
+                assert.ok(
+                    fs.existsSync(path.resolve(outputDir, 'summary.txt'))
+                );
                 assert.ok(!fs.existsSync(path.resolve(outputDir, 'rpt.txt')));
                 cb();
             });
         });
-        it('prints detail only', function (cb) {
+        it('prints detail only', function(cb) {
             cb = wrap(cb);
             var config = getTextReportConfig('detail');
             cover.getCoverFunctions(config, function(err, data) {
@@ -249,12 +275,14 @@ describe('run cover', function () {
                 hookFn();
                 require('./sample-code/foo');
                 exitFn();
-                assert.ok(!fs.existsSync(path.resolve(outputDir, 'summary.txt')));
+                assert.ok(
+                    !fs.existsSync(path.resolve(outputDir, 'summary.txt'))
+                );
                 assert.ok(fs.existsSync(path.resolve(outputDir, 'rpt.txt')));
                 cb();
             });
         });
-        it('prints both', function (cb) {
+        it('prints both', function(cb) {
             cb = wrap(cb);
             var config = getTextReportConfig('both');
             cover.getCoverFunctions(config, function(err, data) {
@@ -265,12 +293,14 @@ describe('run cover', function () {
                 hookFn();
                 require('./sample-code/foo');
                 exitFn();
-                assert.ok(fs.existsSync(path.resolve(outputDir, 'summary.txt')));
+                assert.ok(
+                    fs.existsSync(path.resolve(outputDir, 'summary.txt'))
+                );
                 assert.ok(fs.existsSync(path.resolve(outputDir, 'rpt.txt')));
                 cb();
             });
         });
-        it('prints nothing', function (cb) {
+        it('prints nothing', function(cb) {
             cb = wrap(cb);
             var config = getTextReportConfig('none');
             cover.getCoverFunctions(config, function(err, data) {
@@ -281,7 +311,9 @@ describe('run cover', function () {
                 hookFn();
                 require('./sample-code/foo');
                 exitFn();
-                assert.ok(!fs.existsSync(path.resolve(outputDir, 'summary.txt')));
+                assert.ok(
+                    !fs.existsSync(path.resolve(outputDir, 'summary.txt'))
+                );
                 assert.ok(!fs.existsSync(path.resolve(outputDir, 'rpt.txt')));
                 cb();
             });

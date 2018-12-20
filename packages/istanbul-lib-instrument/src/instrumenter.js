@@ -10,7 +10,7 @@ import programVisitor from './visitor';
 
 export function defaultOpts() {
     return {
-        coverageVariable: "__coverage__",
+        coverageVariable: '__coverage__',
         preserveComments: false,
         compact: true,
         esModules: false,
@@ -20,12 +20,12 @@ export function defaultOpts() {
         sourceMapUrlCallback: null,
         debug: false,
         plugins: [
-          'asyncGenerators',
-          'dynamicImport',
-          'objectRestSpread',
-          'optionalCatchBinding',
-          'flow',
-          'jsx'
+            'asyncGenerators',
+            'dynamicImport',
+            'objectRestSpread',
+            'optionalCatchBinding',
+            'flow',
+            'jsx'
         ]
     };
 }
@@ -48,7 +48,7 @@ export function defaultOpts() {
  * @param {array} [opts.plugins=['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']] - set plugins
  */
 class Instrumenter {
-    constructor(opts=defaultOpts()) {
+    constructor(opts = defaultOpts()) {
         this.opts = this.normalizeOpts(opts);
         this.fileCoverage = null;
         this.sourceMap = null;
@@ -65,7 +65,7 @@ class Instrumenter {
             }
         };
         const defOpts = defaultOpts();
-        Object.keys(defOpts).forEach(function (k) {
+        Object.keys(defOpts).forEach(function(k) {
             normalize(k, defOpts[k]);
         });
         return opts;
@@ -91,7 +91,7 @@ class Instrumenter {
         const opts = this.opts;
         const ast = parser.parse(code, {
             allowReturnOutsideFunction: opts.autoWrap,
-            sourceType: opts.esModules ? "module" : "script",
+            sourceType: opts.esModules ? 'module' : 'script',
             plugins: opts.plugins
         });
         const ee = programVisitor(t, filename, {
@@ -103,7 +103,7 @@ class Instrumenter {
         const visitor = {
             Program: {
                 enter: ee.enter,
-                exit: function (path) {
+                exit: function(path) {
                     output = ee.exit(path);
                 }
             }

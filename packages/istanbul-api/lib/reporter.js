@@ -22,7 +22,9 @@ function Reporter(cfg, opts) {
     } else {
         summarizer = libReport.summarizers[s];
         if (!summarizer) {
-            throw inputError.create('Invalid summarizer in report config: ' + s);
+            throw inputError.create(
+                'Invalid summarizer in report config: ' + s
+            );
         }
         this.summarizer = summarizer;
     }
@@ -35,8 +37,9 @@ Reporter.prototype = {
      * @method add
      * @param {String} fmt the format of the report to generate
      */
-    add: function (fmt) {
-        if (this.reports[fmt]) { // already added
+    add: function(fmt) {
+        if (this.reports[fmt]) {
+            // already added
             return;
         }
         var config = this.config,
@@ -44,7 +47,7 @@ Reporter.prototype = {
         rptConfig.verbose = config.verbose;
         try {
             if (this.config.verbose) {
-                console.error('Create report', fmt,' with', rptConfig);
+                console.error('Create report', fmt, ' with', rptConfig);
             }
             this.reports[fmt] = libReports.create(fmt, rptConfig);
         } catch (ex) {
@@ -56,9 +59,9 @@ Reporter.prototype = {
      * @method addAll
      * @param {Array} fmts an array of report formats
      */
-    addAll: function (fmts) {
+    addAll: function(fmts) {
         var that = this;
-        fmts.forEach(function (f) {
+        fmts.forEach(function(f) {
             that.add(f);
         });
     },
@@ -66,7 +69,7 @@ Reporter.prototype = {
      * writes all reports added
      * @method write
      */
-    write: function (coverageMap, opts) {
+    write: function(coverageMap, opts) {
         opts = opts || {};
         var that = this,
             sourceFinder = opts.sourceFinder || null,
@@ -79,7 +82,7 @@ Reporter.prototype = {
             sourceFinder: sourceFinder
         });
         tree = this.summarizer(coverageMap);
-        Object.keys(this.reports).forEach(function (name) {
+        Object.keys(this.reports).forEach(function(name) {
             var report = that.reports[name];
             tree.visit(report, context);
         });

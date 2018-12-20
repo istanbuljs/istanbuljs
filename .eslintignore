@@ -1,0 +1,3 @@
+node_modules/
+vendor/
+packages/istanbul-api/test/sample-code/bad.js
