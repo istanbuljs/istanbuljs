@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-"use strict";
+'use strict';
 
 var PCT_COLS = 9,
     MISSING_COL = 18,
@@ -68,7 +68,7 @@ function depthFor(node) {
 
 function findNameWidth(node, context) {
     var last = 0,
-        compareWidth = function (node) {
+        compareWidth = function(node) {
             var depth = depthFor(node),
                 idealWidth = TAB_SIZE * depth + nodeName(node).length;
             if (idealWidth > last) {
@@ -76,10 +76,10 @@ function findNameWidth(node, context) {
             }
         },
         visitor = {
-            onSummary: function (node) {
+            onSummary: function(node) {
                 compareWidth(node);
             },
-            onDetail: function (node) {
+            onDetail: function(node) {
                 compareWidth(node);
             }
         };
@@ -112,48 +112,72 @@ function tableHeader(maxNameCols) {
     return elements.join(' |') + ' |';
 }
 
-function missingLines (node, colorizer) {
-    var missingLines = node.isSummary() ? [] : node.getFileCoverage().getUncoveredLines();
+function missingLines(node, colorizer) {
+    var missingLines = node.isSummary()
+        ? []
+        : node.getFileCoverage().getUncoveredLines();
     return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'low');
 }
 
-function missingBranches (node, colorizer) {
-    var branches = node.isSummary() ? {} : node.getFileCoverage().getBranchCoverageByLine(),
-        missingLines = Object.keys(branches).filter(function (key) {
-            return branches[key].coverage < 100;
-        }).map(function (key) {
-            return key;
-        });
+function missingBranches(node, colorizer) {
+    var branches = node.isSummary()
+            ? {}
+            : node.getFileCoverage().getBranchCoverageByLine(),
+        missingLines = Object.keys(branches)
+            .filter(function(key) {
+                return branches[key].coverage < 100;
+            })
+            .map(function(key) {
+                return key;
+            });
     return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'medium');
 }
 
 function isFull(metrics) {
-    return metrics.statements.pct === 100 &&
+    return (
+        metrics.statements.pct === 100 &&
         metrics.branches.pct === 100 &&
         metrics.functions.pct === 100 &&
-        metrics.lines.pct === 100;
+        metrics.lines.pct === 100
+    );
 }
 
-function tableRow(node, context, colorizer, maxNameCols, level, skipEmpty, skipFull) {
+function tableRow(
+    node,
+    context,
+    colorizer,
+    maxNameCols,
+    level,
+    skipEmpty,
+    skipFull
+) {
     var name = nodeName(node),
         metrics = node.getCoverageSummary(),
         isEmpty = metrics.isEmpty();
-    if (skipEmpty && isEmpty) { return ''; }
-    if (skipFull && isFull(metrics)) { return ''; }
+    if (skipEmpty && isEmpty) {
+        return '';
+    }
+    if (skipFull && isFull(metrics)) {
+        return '';
+    }
 
     var mm = {
             statements: isEmpty ? 0 : metrics.statements.pct,
             branches: isEmpty ? 0 : metrics.branches.pct,
             functions: isEmpty ? 0 : metrics.functions.pct,
-            lines: isEmpty ? 0 : metrics.lines.pct,
+            lines: isEmpty ? 0 : metrics.lines.pct
         },
-        colorize = isEmpty ? function(str){ return str; } : function (str, key) {
-            return colorizer(str, context.classForPercent(key, mm[key]));
-        },
+        colorize = isEmpty
+            ? function(str) {
+                  return str;
+              }
+            : function(str, key) {
+                  return colorizer(str, context.classForPercent(key, mm[key]));
+              },
         elements = [];
 
-    elements.push(colorize(formatName(name, maxNameCols, level),'statements'));
-    elements.push(colorize(formatPct(mm.statements),'statements'));
+    elements.push(colorize(formatName(name, maxNameCols, level), 'statements'));
+    elements.push(colorize(formatPct(mm.statements), 'statements'));
     elements.push(colorize(formatPct(mm.branches), 'branches'));
     elements.push(colorize(formatPct(mm.functions), 'functions'));
     elements.push(colorize(formatPct(mm.lines), 'lines'));
@@ -174,7 +198,7 @@ function TextReport(opts) {
     this.skipFull = opts.skipFull;
 }
 
-TextReport.prototype.onStart = function (root, context) {
+TextReport.prototype.onStart = function(root, context) {
     var line,
         statsWidth = 4 * (PCT_COLS + 2) + MISSING_COL,
         maxRemaining;
@@ -193,17 +217,27 @@ TextReport.prototype.onStart = function (root, context) {
     this.cw.println(line);
 };
 
-TextReport.prototype.onSummary = function (node, context) {
+TextReport.prototype.onSummary = function(node, context) {
     var nodeDepth = depthFor(node);
-    var row = tableRow(node, context, this.cw.colorize.bind(this.cw),this.nameWidth, nodeDepth, this.skipEmpty, this.skipFull);
-    if (row) { this.cw.println(row); }
+    var row = tableRow(
+        node,
+        context,
+        this.cw.colorize.bind(this.cw),
+        this.nameWidth,
+        nodeDepth,
+        this.skipEmpty,
+        this.skipFull
+    );
+    if (row) {
+        this.cw.println(row);
+    }
 };
 
-TextReport.prototype.onDetail = function (node, context) {
+TextReport.prototype.onDetail = function(node, context) {
     return this.onSummary(node, context);
 };
 
-TextReport.prototype.onEnd = function () {
+TextReport.prototype.onEnd = function() {
     this.cw.println(makeLine(this.nameWidth));
     this.cw.close();
 };

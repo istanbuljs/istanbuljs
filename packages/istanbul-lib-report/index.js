@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-"use strict";
+'use strict';
 
 /**
  * @module Exports
@@ -18,7 +18,7 @@ module.exports = {
      * @param {Object} [opts=null] opts
      * @returns {Context}
      */
-    createContext: function (opts) {
+    createContext: function(opts) {
         return context.create(opts);
     },
     /**
@@ -28,7 +28,7 @@ module.exports = {
      *  and `line` keys. Each value is a 2 element array that has the low and
      *  high watermark as percentages.
      */
-    getDefaultWatermarks: function () {
+    getDefaultWatermarks: function() {
         return watermarks.getDefault();
     }
 };
@@ -54,5 +54,3 @@ module.exports.summarizers = {
      */
     pkg: summarizer.createPackageSummary
 };
-
-

@@ -12,15 +12,19 @@ function defaultSourceLookup(path) {
     try {
         return fs.readFileSync(path, 'utf8');
     } catch (ex) {
-        throw new Error('Unable to lookup source: ' + path + '(' + ex.message + ')');
+        throw new Error(
+            'Unable to lookup source: ' + path + '(' + ex.message + ')'
+        );
     }
 }
 
 function mergeWatermarks(specified, defaults) {
     specified = specified || {};
-    Object.keys(defaults).forEach(function (k) {
+    Object.keys(defaults).forEach(function(k) {
         var specValue = specified[k];
-        if (!(specValue && Array.isArray(specValue) && specValue.length === 2)) {
+        if (
+            !(specValue && Array.isArray(specValue) && specValue.length === 2)
+        ) {
             specified[k] = defaults[k];
         }
     });
@@ -47,7 +51,7 @@ function Context(opts) {
 
 Object.defineProperty(Context.prototype, 'writer', {
     enumerable: true,
-    get: function () {
+    get: function() {
         if (!this.data.writer) {
             this.data.writer = new FileWriter(this.dir);
         }
@@ -60,7 +64,7 @@ Object.defineProperty(Context.prototype, 'writer', {
  * as the `writer` property on the context.
  * @returns {Writer}
  */
-Context.prototype.getWriter = function () {
+Context.prototype.getWriter = function() {
     return this.writer;
 };
 
@@ -70,7 +74,7 @@ Context.prototype.getWriter = function () {
  * @param {String} filePath the file path as found in a file coverage object
  * @returns {String} the source code
  */
-Context.prototype.getSource = function (filePath) {
+Context.prototype.getSource = function(filePath) {
     return this.sourceFinder(filePath);
 };
 
@@ -82,7 +86,7 @@ Context.prototype.getSource = function (filePath) {
  * @param {Number} value - the percentage value
  * @returns {String} one of `high`, `medium` or `low`
  */
-Context.prototype.classForPercent = function (type, value) {
+Context.prototype.classForPercent = function(type, value) {
     var watermarks = this.watermarks[type];
     if (!watermarks) {
         return 'unknown';
@@ -101,7 +105,7 @@ Context.prototype.classForPercent = function (type, value) {
  *  writes data
  * @returns {XMLWriter}
  */
-Context.prototype.getXMLWriter = function (contentWriter) {
+Context.prototype.getXMLWriter = function(contentWriter) {
     return new XMLWriter(contentWriter);
 };
 /**
@@ -111,12 +115,12 @@ Context.prototype.getXMLWriter = function (contentWriter) {
  *  supplied object.
  * @returns {Visitor}
  */
-Context.prototype.getVisitor = function (partialVisitor) {
+Context.prototype.getVisitor = function(partialVisitor) {
     return new tree.Visitor(partialVisitor);
 };
 
 module.exports = {
-    create: function (opts) {
+    create: function(opts) {
         return new Context(opts);
     }
 };

@@ -5,21 +5,15 @@
 var path = require('path');
 
 module.exports = {
-    create: function (name, cfg) {
+    create: function(name, cfg) {
         cfg = cfg || {};
         var Cons;
         try {
-          Cons = require(path.join(__dirname, 'lib', name));
+            Cons = require(path.join(__dirname, 'lib', name));
         } catch (e) {
-          Cons = require(name);
+            Cons = require(name);
         }
 
         return new Cons(cfg);
     }
 };
-
-
-
-
-
-

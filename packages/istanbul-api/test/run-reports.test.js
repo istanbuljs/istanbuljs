@@ -13,26 +13,28 @@ var assert = require('chai').assert,
     hijack = require('./hijack-streams'),
     wrap = hijack.wrap;
 
-describe('run reports', function () {
-
+describe('run reports', function() {
     function getConfig(overrides) {
-        var cfg = configuration.loadObject({
-            verbose: false,
-            hooks: {
-                'hook-run-in-this-context': true
+        var cfg = configuration.loadObject(
+            {
+                verbose: false,
+                hooks: {
+                    'hook-run-in-this-context': true
+                },
+                instrumentation: {
+                    root: codeRoot,
+                    'include-all-sources': true
+                },
+                reporting: {
+                    dir: outputDir
+                }
             },
-            instrumentation: {
-                root: codeRoot,
-                'include-all-sources': true
-            },
-            reporting: {
-                dir: outputDir
-            }
-        }, overrides);
+            overrides
+        );
         return cfg;
     }
 
-    beforeEach(function (cb) {
+    beforeEach(function(cb) {
         hijack.silent();
         var config = getConfig({
             reporting: {
@@ -40,7 +42,7 @@ describe('run reports', function () {
                 reports: ['cobertura']
             }
         });
-        cover.getCoverFunctions(config, function (err, data) {
+        cover.getCoverFunctions(config, function(err, data) {
             if (err) {
                 return cb(err);
             }
@@ -54,53 +56,73 @@ describe('run reports', function () {
         });
     });
 
-    afterEach(function () {
+    afterEach(function() {
         hijack.reset();
         rimraf.sync(outputDir);
     });
 
-    it('runs default reports consuming coverage file', function (cb) {
+    it('runs default reports consuming coverage file', function(cb) {
         cb = wrap(cb);
         assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
-        runReports.run(null, getConfig(), function (err) {
+        runReports.run(null, getConfig(), function(err) {
             assert.ok(!err);
             assert.ok(existsSync(path.resolve(outputDir, 'lcov.info')));
-            assert.ok(fs.readFileSync(path.resolve(outputDir, 'lcov.info'), 'utf8') !== '');
+            assert.ok(
+                fs.readFileSync(
+                    path.resolve(outputDir, 'lcov.info'),
+                    'utf8'
+                ) !== ''
+            );
             assert.ok(existsSync(path.resolve(outputDir, 'lcov-report')));
             cb();
         });
     });
 
-    it('respects input pattern', function (cb) {
+    it('respects input pattern', function(cb) {
         cb = wrap(cb);
         assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
-        runReports.run(null, getConfig(), {include: '**/foobar.json'}, function (err) {
-            assert.ok(!err);
-            assert.ok(existsSync(path.resolve(outputDir, 'lcov.info')));
-            assert.ok(fs.readFileSync(path.resolve(outputDir, 'lcov.info'), 'utf8') === '');
-            cb();
-        });
-    });
-
-    it('returns error on junk format', function (cb) {
-        cb = wrap(cb);
-        assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
-        runReports.run(['foo'], getConfig({
-            reporting: {
-                reports: [],
-                print: 'none'
+        runReports.run(
+            null,
+            getConfig(),
+            { include: '**/foobar.json' },
+            function(err) {
+                assert.ok(!err);
+                assert.ok(existsSync(path.resolve(outputDir, 'lcov.info')));
+                assert.ok(
+                    fs.readFileSync(
+                        path.resolve(outputDir, 'lcov.info'),
+                        'utf8'
+                    ) === ''
+                );
+                cb();
             }
-        }), 0, function (err) {
-            assert.ok(err);
-            assert.ok(err.inputError);
-            cb();
-        });
+        );
     });
 
-    it('runs specific reports', function (cb) {
+    it('returns error on junk format', function(cb) {
         cb = wrap(cb);
         assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
-        runReports.run(['clover', 'text'], getConfig(), function (err) {
+        runReports.run(
+            ['foo'],
+            getConfig({
+                reporting: {
+                    reports: [],
+                    print: 'none'
+                }
+            }),
+            0,
+            function(err) {
+                assert.ok(err);
+                assert.ok(err.inputError);
+                cb();
+            }
+        );
+    });
+
+    it('runs specific reports', function(cb) {
+        cb = wrap(cb);
+        assert.ok(existsSync(path.resolve(outputDir, 'coverage.raw.json')));
+        runReports.run(['clover', 'text'], getConfig(), function(err) {
             assert.ok(!err);
             assert.ok(!existsSync(path.resolve(outputDir, 'lcov.info')));
             assert.ok(existsSync(path.resolve(outputDir, 'clover.xml')));

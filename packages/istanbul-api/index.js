@@ -12,7 +12,7 @@ module.exports = {
     reports: require('./lib/run-reports'),
     instrument: require('./lib/run-instrument'),
     checkCoverage: require('./lib/run-check-coverage'),
-    createReporter: function (cfg, opts) {
+    createReporter: function(cfg, opts) {
         return new Reporter(cfg, opts);
     },
     /**
@@ -53,15 +53,17 @@ module.exports = {
 var DASH_PATTERN = /-([a-z])/g;
 
 function camelize(word) {
-    return word.replace(DASH_PATTERN, function (match, lch) {
+    return word.replace(DASH_PATTERN, function(match, lch) {
         return lch.toUpperCase();
     });
 }
 
-[ 'coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(function (k) {
-        var mod = 'lib-' + k,
-            prop = camelize(mod);
-        module.exports[prop] = require('istanbul-' + mod);
+['coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(function(
+    k
+) {
+    var mod = 'lib-' + k,
+        prop = camelize(mod);
+    module.exports[prop] = require('istanbul-' + mod);
 });
 
 module.exports.reportsImpl = require('istanbul-reports');

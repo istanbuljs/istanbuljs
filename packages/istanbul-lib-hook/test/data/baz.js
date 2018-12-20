@@ -1,3 +1,5 @@
 module.exports = {
-    baz: function () { return 'baz'; }
+    baz: function() {
+        return 'baz';
+    }
 };

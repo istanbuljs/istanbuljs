@@ -3,8 +3,8 @@
 var assert = require('chai').assert,
     index = require('../index');
 
-describe('index', function () {
-    it('exports the correct interface', function () {
+describe('index', function() {
+    it('exports the correct interface', function() {
         assert.isObject(index.config);
         assert.isFunction(index.matcherFor);
         assert.isFunction(index.filesFor);
@@ -19,7 +19,7 @@ describe('index', function () {
         assert.isObject(index.libReport);
         assert.isObject(index.libSourceMaps);
         assert.isObject(index.reportsImpl);
-        assert.doesNotThrow(function () {
+        assert.doesNotThrow(function() {
             index.createReporter(index.config.loadObject({}));
         });
     });

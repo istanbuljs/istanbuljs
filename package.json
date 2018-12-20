@@ -4,6 +4,7 @@
   "private": true,
   "description": "monorepo containing the various nuts and bolts that facilitate istanbul.js test instrumentation",
   "scripts": {
+    "pretest": "eslint .",
     "test": "cross-env LERNA_TEST_RUN=1 NODE_ENV=test nyc lerna --ignore nyc exec npm test",
     "postinstall": "lerna bootstrap --hoist",
     "release": "lerna publish --conventional-commits --npm-tag=next"
@@ -26,8 +27,12 @@
   "devDependencies": {
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
+    "eslint": "^5.10.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "lerna": "^2.11.0",
-    "nyc": "^13.0.1"
+    "nyc": "^13.0.1",
+    "prettier": "^1.15.3"
   },
   "nyc": {
     "exclude": [
@@ -45,5 +50,9 @@
   },
   "engines": {
     "node": ">=6"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 4
   }
 }

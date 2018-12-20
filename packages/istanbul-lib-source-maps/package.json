@@ -9,7 +9,6 @@
     "index.js"
   ],
   "scripts": {
-    "pretest": "jshint index.js lib/ test/",
     "test": "mocha"
   },
   "dependencies": {
@@ -23,7 +22,6 @@
     "babel-core": "^6.26.3",
     "chai": "^4.1.2",
     "is-windows": "^1.0.2",
-    "jshint": "^2.9.5",
     "mocha": "^5.2.0",
     "ts-node": "^6.1.0"
   },

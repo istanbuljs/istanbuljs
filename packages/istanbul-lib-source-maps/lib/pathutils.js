@@ -1,5 +1,5 @@
 var path = require('path'),
-    isAbsolute = function (p) {
+    isAbsolute = function(p) {
         if (path.isAbsolute) {
             return path.isAbsolute(p);
         }
@@ -8,10 +8,12 @@ var path = require('path'),
 
 exports.isAbsolute = isAbsolute;
 
-exports.asAbsolute = function (file, baseDir) {
-    return isAbsolute(file) ? file : path.resolve(baseDir || process.cwd(), file);
+exports.asAbsolute = function(file, baseDir) {
+    return isAbsolute(file)
+        ? file
+        : path.resolve(baseDir || process.cwd(), file);
 };
 
-exports.relativeTo = function (file, origFile) {
+exports.relativeTo = function(file, origFile) {
     return isAbsolute(file) ? file : path.resolve(path.dirname(origFile), file);
 };

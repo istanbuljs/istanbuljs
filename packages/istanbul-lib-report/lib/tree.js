@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-"use strict";
+'use strict';
 
 var util = require('util');
 /**
@@ -27,9 +27,9 @@ function Visitor(delegate) {
     this.delegate = delegate;
 }
 
-['Start', 'End', 'Summary', 'SummaryEnd', 'Detail' ].forEach(function (k) {
+['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(function(k) {
     var f = 'on' + k;
-    Visitor.prototype[f] = function (node, state) {
+    Visitor.prototype[f] = function(node, state) {
         if (this.delegate[f] && typeof this.delegate[f] === 'function') {
             this.delegate[f].call(this.delegate, node, state);
         }
@@ -40,7 +40,7 @@ function CompositeVisitor(visitors) {
     if (!Array.isArray(visitors)) {
         visitors = [visitors];
     }
-    this.visitors = visitors.map(function (v) {
+    this.visitors = visitors.map(function(v) {
         if (v instanceof Visitor) {
             return v;
         }
@@ -50,55 +50,54 @@ function CompositeVisitor(visitors) {
 
 util.inherits(CompositeVisitor, Visitor);
 
-['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].forEach(function (k) {
+['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].forEach(function(k) {
     var f = 'on' + k;
-    CompositeVisitor.prototype[f] = function (node, state) {
-        this.visitors.forEach(function (v) {
+    CompositeVisitor.prototype[f] = function(node, state) {
+        this.visitors.forEach(function(v) {
             v[f](node, state);
         });
     };
 });
 
-function Node() {
-}
+function Node() {}
 
 /* istanbul ignore next: abstract method */
-Node.prototype.getQualifiedName = function () {
+Node.prototype.getQualifiedName = function() {
     throw new Error('getQualifiedName must be overridden');
 };
 
 /* istanbul ignore next: abstract method */
-Node.prototype.getRelativeName = function () {
+Node.prototype.getRelativeName = function() {
     throw new Error('getRelativeName must be overridden');
 };
 
 /* istanbul ignore next: abstract method */
-Node.prototype.isRoot = function () {
+Node.prototype.isRoot = function() {
     return !this.getParent();
 };
 
 /* istanbul ignore next: abstract method */
-Node.prototype.getParent = function () {
+Node.prototype.getParent = function() {
     throw new Error('getParent must be overridden');
 };
 
 /* istanbul ignore next: abstract method */
-Node.prototype.getChildren = function () {
+Node.prototype.getChildren = function() {
     throw new Error('getChildren must be overridden');
 };
 
 /* istanbul ignore next: abstract method */
-Node.prototype.isSummary = function () {
+Node.prototype.isSummary = function() {
     throw new Error('isSummary must be overridden');
 };
 
 /* istanbul ignore next: abstract method */
-Node.prototype.getCoverageSummary = function (/* filesOnly */) {
+Node.prototype.getCoverageSummary = function(/* filesOnly */) {
     throw new Error('getCoverageSummary must be overridden');
 };
 
 /* istanbul ignore next: abstract method */
-Node.prototype.getFileCoverage = function () {
+Node.prototype.getFileCoverage = function() {
     throw new Error('getFileCoverage must be overridden');
 };
 /**
@@ -108,11 +107,10 @@ Node.prototype.getFileCoverage = function () {
  * @param visitor a full visitor that is called during tree traversal
  * @param state optional state that is passed around
  */
-Node.prototype.visit = function (visitor, state) {
-
+Node.prototype.visit = function(visitor, state) {
     var that = this,
-        visitChildren = function () {
-            that.getChildren().forEach(function (child) {
+        visitChildren = function() {
+            that.getChildren().forEach(function(child) {
                 child.visit(visitor, state);
             });
         };
@@ -134,14 +132,13 @@ Node.prototype.visit = function (visitor, state) {
  * abstract base class for a coverage tree.
  * @constructor
  */
-function Tree() {
-}
+function Tree() {}
 
 /**
  * returns the root node of the tree
  */
 /* istanbul ignore next: abstract method */
-Tree.prototype.getRoot = function () {
+Tree.prototype.getRoot = function() {
     throw new Error('getRoot must be overridden');
 };
 
@@ -150,7 +147,7 @@ Tree.prototype.getRoot = function () {
  * @param visitor - a potentially partial visitor
  * @param state - the state to be passed around during tree traversal
  */
-Tree.prototype.visit = function (visitor, state) {
+Tree.prototype.visit = function(visitor, state) {
     if (!(visitor instanceof Visitor)) {
         visitor = new Visitor(visitor);
     }

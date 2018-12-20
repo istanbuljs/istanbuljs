@@ -9,38 +9,46 @@ var fs = require('fs'),
 
 require('chai').should();
 
-describe('TextReport', function () {
-  before(function () {
-      FileWriter.startCapture();
-  });
-  after(function () {
-      FileWriter.stopCapture();
-  });
-  beforeEach(function () {
-      FileWriter.resetOutput();
-  });
+describe('TextReport', function() {
+    before(function() {
+        FileWriter.startCapture();
+    });
+    after(function() {
+        FileWriter.stopCapture();
+    });
+    beforeEach(function() {
+        FileWriter.resetOutput();
+    });
 
-  function createTest (file) {
-      var fixture = require(path.resolve(__dirname, '../fixtures/specs/' + file));
-      fixture.map = istanbulLibReport.summarizers.pkg(istanbulLibCoverage.createCoverageMap(fixture.map));
-      it(fixture.title, function () {
-          if (isWindows()) { // appveyor does not render console color.
-              return this.skip();
-          }
-          var context = istanbulLibReport.createContext({
-            dir: './'
-          });
-          var tree = fixture.map;
-          var report = new TextReport(fixture.opts);
-          tree.visit(report, context);
-          var output = FileWriter.getOutput();
-          output.should.equal(fixture.textReportExpected);
-      });
-  }
+    function createTest(file) {
+        var fixture = require(path.resolve(
+            __dirname,
+            '../fixtures/specs/' + file
+        ));
+        fixture.map = istanbulLibReport.summarizers.pkg(
+            istanbulLibCoverage.createCoverageMap(fixture.map)
+        );
+        it(fixture.title, function() {
+            if (isWindows()) {
+                // appveyor does not render console color.
+                return this.skip();
+            }
+            var context = istanbulLibReport.createContext({
+                dir: './'
+            });
+            var tree = fixture.map;
+            var report = new TextReport(fixture.opts);
+            tree.visit(report, context);
+            var output = FileWriter.getOutput();
+            output.should.equal(fixture.textReportExpected);
+        });
+    }
 
-  fs.readdirSync(path.resolve(__dirname, '../fixtures/specs')).forEach(function (file) {
-      if (file.indexOf('.json') !== -1) {
-          createTest(file);
-      }
-  });
+    fs.readdirSync(path.resolve(__dirname, '../fixtures/specs')).forEach(
+        function(file) {
+            if (file.indexOf('.json') !== -1) {
+                createTest(file);
+            }
+        }
+    );
 });

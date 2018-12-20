@@ -19,15 +19,21 @@ function attrString(attrs) {
         return '';
     }
     var ret = [];
-    Object.keys(attrs).forEach(function (k) {
+    Object.keys(attrs).forEach(function(k) {
         var v = attrs[k];
         ret.push(k + '="' + v + '"');
     });
     return ret.length === 0 ? '' : ' ' + ret.join(' ');
 }
 
-XMLWriter.prototype.indent = function (str) {
-    return this.stack.map(function () { return INDENT; }).join('') + str;
+XMLWriter.prototype.indent = function(str) {
+    return (
+        this.stack
+            .map(function() {
+                return INDENT;
+            })
+            .join('') + str
+    );
 };
 
 /**
@@ -35,7 +41,7 @@ XMLWriter.prototype.indent = function (str) {
  * @param {String} name tag name
  * @param {Object} [attrs=null] attrs attributes for the tag
  */
-XMLWriter.prototype.openTag = function (name, attrs) {
+XMLWriter.prototype.openTag = function(name, attrs) {
     var str = this.indent('<' + name + attrString(attrs) + '>');
     this.cw.println(str);
     this.stack.push(name);
@@ -46,7 +52,7 @@ XMLWriter.prototype.openTag = function (name, attrs) {
  * @param {String} name - tag name to close. This must match the writer's
  *  notion of the tag that is currently open.
  */
-XMLWriter.prototype.closeTag = function (name) {
+XMLWriter.prototype.closeTag = function(name) {
     if (this.stack.length === 0) {
         throw new Error('Attempt to close tag ' + name + ' when not opened');
     }
@@ -54,7 +60,13 @@ XMLWriter.prototype.closeTag = function (name) {
         str = '</' + name + '>';
 
     if (stashed !== name) {
-        throw new Error('Attempt to close tag ' + name + ' when ' + stashed + ' was the one open');
+        throw new Error(
+            'Attempt to close tag ' +
+                name +
+                ' when ' +
+                stashed +
+                ' was the one open'
+        );
     }
     this.cw.println(this.indent(str));
 };
@@ -64,7 +76,7 @@ XMLWriter.prototype.closeTag = function (name) {
  * @param {Object} [attrs=null] attrs tag attributes
  * @param {String} [content=null] content optional tag content
  */
-XMLWriter.prototype.inlineTag = function (name, attrs, content) {
+XMLWriter.prototype.inlineTag = function(name, attrs, content) {
     var str = '<' + name + attrString(attrs);
     if (content) {
         str += '>' + content + '</' + name + '>';
@@ -77,11 +89,14 @@ XMLWriter.prototype.inlineTag = function (name, attrs, content) {
 /**
  * closes all open tags and ends the document
  */
-XMLWriter.prototype.closeAll = function () {
+XMLWriter.prototype.closeAll = function() {
     var that = this;
-    this.stack.slice().reverse().forEach(function (name) {
-        that.closeTag(name);
-    });
+    this.stack
+        .slice()
+        .reverse()
+        .forEach(function(name) {
+            that.closeTag(name);
+        });
 };
 
 module.exports = XMLWriter;
