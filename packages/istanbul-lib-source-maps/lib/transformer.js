@@ -118,8 +118,8 @@ function getMapping(sourceMap, generatedLocation, origFile) {
 
     if (start.line === end.line && start.column === end.column) {
         end = sourceMap.originalPositionFor({
-            line: location.end.line,
-            column: location.end.column,
+            line: generatedLocation.end.line,
+            column: generatedLocation.end.column,
             bias: 2
         });
         end.column = end.column - 1;
