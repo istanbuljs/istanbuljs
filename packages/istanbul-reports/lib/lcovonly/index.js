@@ -27,14 +27,14 @@ LcovOnlyReport.prototype.onDetail = function (node) {
     writer.println('TN:'); //no test name
     writer.println('SF:' + fc.path);
 
-    Object.keys(functions).forEach(function (key) {
+    Object.keys(functionMap).forEach(function (key) {
         var meta = functionMap[key];
         writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
     });
     writer.println('FNF:' + summary.functions.total);
     writer.println('FNH:' + summary.functions.covered);
 
-    Object.keys(functions).forEach(function (key) {
+    Object.keys(functionMap).forEach(function (key) {
         var stats = functions[key],
             meta = functionMap[key];
         writer.println('FNDA:' + [stats, meta.name].join(','));
