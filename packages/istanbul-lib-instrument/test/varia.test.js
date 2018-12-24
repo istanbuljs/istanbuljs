@@ -70,13 +70,11 @@ describe('varia', function() {
         var instrumenter = new Instrumenter({
                 coverageVariable: '__testing_coverage__'
             }),
-            generated,
             err,
             cov;
 
-        instrumenter.instrument('output = args[0]', __filename, function(e, c) {
+        instrumenter.instrument('output = args[0]', __filename, function(e) {
             err = e;
-            generated = c;
             cov = instrumenter.lastFileCoverage();
             assert.ok(!err);
             assert.ok(cov);

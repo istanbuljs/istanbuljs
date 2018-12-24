@@ -15,18 +15,16 @@ describe('coverage summary', function() {
     });
 
     it('allows another summary in constructor', function() {
-        var cs1 = new CoverageSummary(),
-            cs2;
+        var cs1 = new CoverageSummary();
         assert.doesNotThrow(function() {
-            cs2 = new CoverageSummary(cs1);
+            new CoverageSummary(cs1);
         });
     });
 
     it('allows summary data in constructor', function() {
-        var cs1 = new CoverageSummary(),
-            cs2;
+        var cs1 = new CoverageSummary();
         assert.doesNotThrow(function() {
-            cs2 = new CoverageSummary(cs1.data);
+            new CoverageSummary(cs1.data);
         });
     });
 
