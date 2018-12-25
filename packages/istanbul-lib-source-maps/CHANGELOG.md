@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@3.0.0...istanbul-lib-source-maps@3.0.1) (2018-12-25)
+
+
+### Bug Fixes
+
+* correct variable name in source-map transform ([#257](https://github.com/istanbuljs/istanbuljs/issues/257)) ([de9c921](https://github.com/istanbuljs/istanbuljs/commit/de9c921))
+
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@2.0.1...istanbul-lib-source-maps@3.0.0) (2018-12-19)
 

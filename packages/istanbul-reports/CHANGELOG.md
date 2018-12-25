@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.0.2...istanbul-reports@2.0.3) (2018-12-25)
+
+
+### Bug Fixes
+
+* functionMap is sometimes missing a key from functions ([#253](https://github.com/istanbuljs/istanbuljs/issues/253)) ([399f215](https://github.com/istanbuljs/istanbuljs/commit/399f215))
+
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.0.1...istanbul-reports@2.0.2) (2018-12-19)
 
