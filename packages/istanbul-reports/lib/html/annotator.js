@@ -10,7 +10,9 @@ var InsertionText = require('./insertion-text'),
     RE_LT = /</g,
     RE_GT = />/g,
     RE_AMP = /&/g,
+    // eslint-disable-next-line
     RE_lt = /\u0001/g,
+    // eslint-disable-next-line
     RE_gt = /\u0002/g;
 
 function title(str) {
@@ -132,7 +134,6 @@ function annotateBranches(fileCoverage, structuredText) {
             i,
             count,
             meta,
-            type,
             startCol,
             endCol,
             startLine,
@@ -151,7 +152,6 @@ function annotateBranches(fileCoverage, structuredText) {
             ) {
                 count = branchArray[i];
                 meta = metaArray[i];
-                type = count > 0 ? 'yes' : 'no';
                 startCol = meta.start.column;
                 endCol = meta.end.column + 1;
                 startLine = meta.start.line;

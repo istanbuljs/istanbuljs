@@ -19,7 +19,7 @@ function asJavaPackage(node) {
 }
 
 function asClassName(node) {
-    return node.getRelativeName().replace(/.*[\\\/]/, '');
+    return node.getRelativeName().replace(/.*[\\/]/, '');
 }
 
 CoberturaReport.prototype.onStart = function(root, context) {
