@@ -5,8 +5,8 @@ var assert = require('chai').assert,
     CoverageSummary = base.CoverageSummary,
     FileCoverage = base.FileCoverage;
 
-describe('coverage summary', function () {
-    it('allows a noop constructor', function () {
+describe('coverage summary', function() {
+    it('allows a noop constructor', function() {
         var cs = new CoverageSummary();
         assert.ok(cs.statements);
         assert.ok(cs.lines);
@@ -14,23 +14,21 @@ describe('coverage summary', function () {
         assert.ok(cs.branches);
     });
 
-    it('allows another summary in constructor', function () {
-        var cs1 = new CoverageSummary(),
-            cs2;
-        assert.doesNotThrow(function () {
-            cs2 = new CoverageSummary(cs1);
+    it('allows another summary in constructor', function() {
+        var cs1 = new CoverageSummary();
+        assert.doesNotThrow(function() {
+            new CoverageSummary(cs1);
         });
     });
 
-    it('allows summary data in constructor', function () {
-        var cs1 = new CoverageSummary(),
-            cs2;
-        assert.doesNotThrow(function () {
-            cs2 = new CoverageSummary(cs1.data);
+    it('allows summary data in constructor', function() {
+        var cs1 = new CoverageSummary();
+        assert.doesNotThrow(function() {
+            new CoverageSummary(cs1.data);
         });
     });
 
-    it('can be initialized with non-zero totals', function () {
+    it('can be initialized with non-zero totals', function() {
         var cs = new CoverageSummary().data,
             cs2;
         cs.statements.total = 5;
@@ -46,15 +44,14 @@ describe('coverage summary', function () {
         });
     });
 
-    it('cannot be initialized with an object with missing keys', function () {
-        assert.throws(function () {
-            /*jshint nonew: false */
-            new CoverageSummary({statements: {}});
+    it('cannot be initialized with an object with missing keys', function() {
+        assert.throws(function() {
+            new CoverageSummary({ statements: {} });
         });
     });
 
-    it('merges summaries correctly', function () {
-        var basic = function () {
+    it('merges summaries correctly', function() {
+        var basic = function() {
                 return {
                     total: 5,
                     covered: 4,
@@ -62,7 +59,7 @@ describe('coverage summary', function () {
                     pct: 80
                 };
             },
-            empty = function () {
+            empty = function() {
                 return {
                     total: 0,
                     covered: 0,
@@ -102,29 +99,26 @@ describe('coverage summary', function () {
         assert.equal(data.branches.pct, 100);
     });
 
-    it('isEmpty() by default', function () {
-      var cs = new CoverageSummary();
-      assert.equal(cs.isEmpty(), true);
+    it('isEmpty() by default', function() {
+        var cs = new CoverageSummary();
+        assert.equal(cs.isEmpty(), true);
     });
 });
 
-describe('base coverage', function () {
-
-    it('does not allow a noop/ invalid constructor', function () {
-        assert.throws(function () {
-            /* jshint nonew: false */
+describe('base coverage', function() {
+    it('does not allow a noop/ invalid constructor', function() {
+        assert.throws(function() {
             new FileCoverage();
         });
-        assert.throws(function () {
-            /* jshint nonew: false */
+        assert.throws(function() {
             new FileCoverage(10);
         });
     });
 
-    it('allows a path in constructor', function () {
+    it('allows a path in constructor', function() {
         var bc = null;
-        assert.doesNotThrow(function () {
-            bc = new FileCoverage("/path/to/file");
+        assert.doesNotThrow(function() {
+            bc = new FileCoverage('/path/to/file');
         });
         assert.ok(bc.statementMap);
         assert.ok(bc.fnMap);
@@ -133,10 +127,10 @@ describe('base coverage', function () {
         assert.ok(bc.f);
         assert.ok(bc.b);
         assert.ok(bc.getLineCoverage());
-        assert.equal(bc.path, "/path/to/file");
+        assert.equal(bc.path, '/path/to/file');
     });
 
-    it('allows another object in constructor, produces JSON', function () {
+    it('allows another object in constructor, produces JSON', function() {
         var bc1 = new FileCoverage('/path/to/file'),
             bc2,
             bc3;
@@ -148,17 +142,16 @@ describe('base coverage', function () {
         assert.deepEqual(bc1.data, JSON.parse(JSON.stringify(bc3)));
 
         delete bc3.data.s;
-        assert.throws(function () {
-            /* jshint nonew: false */
+        assert.throws(function() {
             new FileCoverage(bc3.data);
         });
     });
 
-    it('merges another file coverage correctly', function () {
-        var loc = function (sl, sc, el, ec) {
+    it('merges another file coverage correctly', function() {
+        var loc = function(sl, sc, el, ec) {
                 return {
-                    start: {line: sl, column: sc},
-                    end: {line: el, column: ec}
+                    start: { line: sl, column: sc },
+                    end: { line: el, column: ec }
                 };
             },
             template = new FileCoverage({
@@ -180,7 +173,7 @@ describe('base coverage', function () {
                     1: {
                         type: 'if',
                         line: 2,
-                        locations: [ loc(2,1,2,20), loc(2,50, 2, 100) ]
+                        locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
                     }
                 },
                 s: {
@@ -193,10 +186,12 @@ describe('base coverage', function () {
                     1: 0
                 },
                 b: {
-                    1: [ 0, 0 ]
+                    1: [0, 0]
                 }
             }),
-            clone = function (obj) { return JSON.parse(JSON.stringify(obj));},
+            clone = function(obj) {
+                return JSON.parse(JSON.stringify(obj));
+            },
             c1 = new FileCoverage(clone(template)),
             c2 = new FileCoverage(clone(template)),
             summary;
@@ -210,17 +205,57 @@ describe('base coverage', function () {
         c2.b[1][1] = 2;
         summary = c1.toSummary();
         assert.ok(summary instanceof CoverageSummary);
-        assert.deepEqual(summary.statements, { total: 4, covered: 1, skipped: 0, pct: 25 });
-        assert.deepEqual(summary.lines, { total: 2, covered: 1, skipped: 0, pct: 50 });
-        assert.deepEqual(summary.functions, { total: 1, covered: 1, skipped: 0, pct: 100 });
-        assert.deepEqual(summary.branches, { total: 2, covered: 1, skipped: 0, pct: 50 });
+        assert.deepEqual(summary.statements, {
+            total: 4,
+            covered: 1,
+            skipped: 0,
+            pct: 25
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 1,
+            skipped: 0,
+            pct: 50
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 1,
+            skipped: 0,
+            pct: 50
+        });
 
         c1.merge(c2);
         summary = c1.toSummary();
-        assert.deepEqual(summary.statements, { total: 4, covered: 2, skipped: 0, pct: 50 });
-        assert.deepEqual(summary.lines, { total: 2, covered: 2, skipped: 0, pct: 100 });
-        assert.deepEqual(summary.functions, { total: 1, covered: 1, skipped: 0, pct: 100 });
-        assert.deepEqual(summary.branches, { total: 2, covered: 2, skipped: 0, pct: 100 });
+        assert.deepEqual(summary.statements, {
+            total: 4,
+            covered: 2,
+            skipped: 0,
+            pct: 50
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
 
         assert.equal(c1.s[1], 1);
         assert.equal(c1.s[2], 1);
@@ -229,11 +264,11 @@ describe('base coverage', function () {
         assert.equal(c1.b[1][1], 2);
     });
 
-    it('resets hits when requested', function () {
-        var loc = function (sl, sc, el, ec) {
+    it('resets hits when requested', function() {
+        var loc = function(sl, sc, el, ec) {
                 return {
-                    start: {line: sl, column: sc},
-                    end: {line: el, column: ec}
+                    start: { line: sl, column: sc },
+                    end: { line: el, column: ec }
                 };
             },
             fc = new FileCoverage({
@@ -255,7 +290,7 @@ describe('base coverage', function () {
                     1: {
                         type: 'if',
                         line: 2,
-                        locations: [ loc(2,1,2,20), loc(2,50, 2, 100) ]
+                        locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
                     }
                 },
                 s: {
@@ -268,38 +303,47 @@ describe('base coverage', function () {
                     1: 54
                 },
                 b: {
-                    1: [ 1, 50 ]
+                    1: [1, 50]
                 }
             });
         fc.resetHits();
-        assert.deepEqual({1:0, 2:0, 3:0, 4:0}, fc.s);
-        assert.deepEqual({1:0}, fc.f);
-        assert.deepEqual({1: [0,0]}, fc.b);
+        assert.deepEqual({ 1: 0, 2: 0, 3: 0, 4: 0 }, fc.s);
+        assert.deepEqual({ 1: 0 }, fc.f);
+        assert.deepEqual({ 1: [0, 0] }, fc.b);
     });
 
-    it('returns uncovered lines', function () {
+    it('returns uncovered lines', function() {
         var c = new FileCoverage({
             path: '/path/to/file',
             statementMap: {
-                1: {start: {line: 1, column: 1}, end: {line: 1, column: 100}},
-                2: {start: {line: 1, column: 101}, end: {line: 1, column: 200}},
-                3: {start: {line: 2, column: 1}, end: {line: 2, column: 100}}
+                1: {
+                    start: { line: 1, column: 1 },
+                    end: { line: 1, column: 100 }
+                },
+                2: {
+                    start: { line: 1, column: 101 },
+                    end: { line: 1, column: 200 }
+                },
+                3: {
+                    start: { line: 2, column: 1 },
+                    end: { line: 2, column: 100 }
+                }
             },
             fnMap: {},
             branchMap: {},
-            s: {1: 0, 2: 1, 3: 0},
+            s: { 1: 0, 2: 1, 3: 0 },
             b: {},
             f: {}
         });
         assert.deepEqual(['2'], c.getUncoveredLines());
     });
 
-    it('returns branch coverage by line', function () {
+    it('returns branch coverage by line', function() {
         var c = new FileCoverage({
                 path: '/path/to/file',
                 branchMap: {
-                    1: {line: 1},
-                    2: {line: 2}
+                    1: { line: 1 },
+                    2: { line: 2 }
                 },
                 fnMap: {},
                 statementMap: {},
@@ -311,32 +355,35 @@ describe('base coverage', function () {
                 f: {}
             }),
             bcby = c.getBranchCoverageByLine();
-        assert.deepEqual({
-            1: {
-                covered: 1,
-                total: 2,
-                coverage: 50
+        assert.deepEqual(
+            {
+                1: {
+                    covered: 1,
+                    total: 2,
+                    coverage: 50
+                },
+                2: {
+                    covered: 1,
+                    total: 4,
+                    coverage: 25
+                }
             },
-            2: {
-                covered: 1,
-                total: 4,
-                coverage: 25
-            }
-        }, bcby);
+            bcby
+        );
     });
 
-    it('returns branch coverage by line with Cobertura branchMap structure', function () {
-        var loc = function (sl, sc, el, ec) {
+    it('returns branch coverage by line with Cobertura branchMap structure', function() {
+        var loc = function(sl, sc, el, ec) {
                 return {
-                    start: {line: sl, column: sc},
-                    end: {line: el, column: ec}
+                    start: { line: sl, column: sc },
+                    end: { line: el, column: ec }
                 };
             },
             c = new FileCoverage({
                 path: '/path/to/file',
                 branchMap: {
-                    1: {loc: loc(1,1,1,100)},
-                    2: {loc: loc(2,50,2,100)}
+                    1: { loc: loc(1, 1, 1, 100) },
+                    2: { loc: loc(2, 50, 2, 100) }
                 },
                 fnMap: {},
                 statementMap: {},
@@ -348,17 +395,20 @@ describe('base coverage', function () {
                 f: {}
             }),
             bcby = c.getBranchCoverageByLine();
-        assert.deepEqual({
-            1: {
-                covered: 1,
-                total: 2,
-                coverage: 50
+        assert.deepEqual(
+            {
+                1: {
+                    covered: 1,
+                    total: 2,
+                    coverage: 50
+                },
+                2: {
+                    covered: 1,
+                    total: 4,
+                    coverage: 25
+                }
             },
-            2: {
-                covered: 1,
-                total: 4,
-                coverage: 25
-            }
-        }, bcby);
+            bcby
+        );
     });
 });

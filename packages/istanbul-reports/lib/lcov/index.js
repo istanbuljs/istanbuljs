@@ -6,13 +6,13 @@ var LcovOnlyReport = require('../lcovonly'),
     HtmlReport = require('../html');
 
 function LcovReport() {
-    this.lcov = new LcovOnlyReport({file: 'lcov.info'});
-    this.html = new HtmlReport({ subdir: 'lcov-report'});
+    this.lcov = new LcovOnlyReport({ file: 'lcov.info' });
+    this.html = new HtmlReport({ subdir: 'lcov-report' });
 }
 
-['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(function (what) {
+['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(function(what) {
     var meth = 'on' + what;
-    LcovReport.prototype[meth] = function () {
+    LcovReport.prototype[meth] = function() {
         var args = Array.prototype.slice.call(arguments),
             lcov = this.lcov,
             html = this.html;

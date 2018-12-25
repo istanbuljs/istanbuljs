@@ -7,46 +7,44 @@ var assert = require('chai').assert,
 
 function createData() {
     var sourceMap = {
-        "version": 3,
-        "sources": [
-            "file.js"
-        ],
-        "mappings": ";AAAa,mBAAW,GAAG,MAAM,CAAC;AACrB,kBAAU,GAAG,yBAAyB,CAAC"
+        version: 3,
+        sources: ['file.js'],
+        mappings: ';AAAa,mBAAW,GAAG,MAAM,CAAC;AACrB,kBAAU,GAAG,yBAAyB,CAAC'
     };
 
     var coverageData = {
-        "path": "/path/to/file.js",
-        "statementMap": {
-            "0": {
-                "start": {
-                    "line": 2,
-                    "column": 0
+        path: '/path/to/file.js',
+        statementMap: {
+            '0': {
+                start: {
+                    line: 2,
+                    column: 0
                 },
-                "end": {
-                    "line": 2,
-                    "column": 29
+                end: {
+                    line: 2,
+                    column: 29
                 }
             },
-            "1": {
-                "start": {
-                    "line": 3,
-                    "column": 0
+            '1': {
+                start: {
+                    line: 3,
+                    column: 0
                 },
-                "end": {
-                    "line": 3,
-                    "column": 47
+                end: {
+                    line: 3,
+                    column: 47
                 }
             }
         },
-        "fnMap": {},
-        "branchMap": {},
-        "s": {
-            "0": 0,
-            "1": 0,
-            "2": 0
+        fnMap: {},
+        branchMap: {},
+        s: {
+            '0': 0,
+            '1': 0,
+            '2': 0
         },
-        "f": {},
-        "b": {}
+        f: {},
+        b: {}
     };
 
     return {
@@ -55,8 +53,8 @@ function createData() {
     };
 }
 
-describe('transformer', function () {
-    it('maps statement locations', function () {
+describe('transformer', function() {
+    it('maps statement locations', function() {
         if (isWindows()) {
             return this.skip();
         }
@@ -72,9 +70,14 @@ describe('transformer', function () {
         }).transform(coverageMap);
 
         assert.deepEqual(mapped.data[coverageData.path].statementMap, {
-            '0': { start: { line: 1, column: 13 }, end: { line: 1, column: 34 } },
-            '1': { start: { line: 2, column: 13 }, end: { line: 2, column: 52 } }
+            '0': {
+                start: { line: 1, column: 13 },
+                end: { line: 1, column: 34 }
+            },
+            '1': {
+                start: { line: 2, column: 13 },
+                end: { line: 2, column: 52 }
+            }
         });
     });
 });
-

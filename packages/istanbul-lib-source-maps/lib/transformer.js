@@ -2,15 +2,21 @@
  Copyright 2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-"use strict";
+'use strict';
 
 var debug = require('debug')('istanbuljs'),
     pathutils = require('./pathutils'),
     libCoverage = require('istanbul-lib-coverage'),
     MappedCoverage = require('./mapped').MappedCoverage;
 
-function isInvalidPosition (pos) {
-    return !pos || typeof pos.line !== "number" || typeof pos.column !== "number" || pos.line < 0 || pos.column < 0;
+function isInvalidPosition(pos) {
+    return (
+        !pos ||
+        typeof pos.line !== 'number' ||
+        typeof pos.column !== 'number' ||
+        pos.line < 0 ||
+        pos.column < 0
+    );
 }
 
 /**
@@ -39,7 +45,7 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
     // on the original file, and we want the _end_ of the range.
     var beforeEndMapping = sourceMap.originalPositionFor({
         line: generatedEnd.line,
-        column: generatedEnd.column - 1,
+        column: generatedEnd.column - 1
     });
     if (beforeEndMapping.source === null) {
         return null;
@@ -60,16 +66,16 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
         // If this is null, it means that we've hit the end of the file,
         // so we can use Infinity as the end column.
         afterEndMapping.line === null ||
-
         // If these don't match, it means that the call to
         // 'generatedPositionFor' didn't find any other original mappings on
         // the line we gave, so consider the binding to extend to infinity.
-        sourceMap.originalPositionFor(afterEndMapping).line !== beforeEndMapping.line
+        sourceMap.originalPositionFor(afterEndMapping).line !==
+            beforeEndMapping.line
     ) {
         return {
             source: beforeEndMapping.source,
             line: beforeEndMapping.line,
-            column: Infinity,
+            column: Infinity
         };
     }
 
@@ -84,12 +90,14 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
  * @returns {Object} the remapped location Object
  */
 function getMapping(sourceMap, generatedLocation, origFile) {
-
     if (!generatedLocation) {
         return null;
     }
 
-    if (isInvalidPosition(generatedLocation.start) || isInvalidPosition(generatedLocation.end)) {
+    if (
+        isInvalidPosition(generatedLocation.start) ||
+        isInvalidPosition(generatedLocation.end)
+    ) {
         return null;
     }
 
@@ -146,10 +154,14 @@ function SourceMapTransformer(finder, opts) {
     this.baseDir = opts.baseDir || process.cwd();
 }
 
-SourceMapTransformer.prototype.processFile = function (fc, sourceMap, coverageMapper) {
+SourceMapTransformer.prototype.processFile = function(
+    fc,
+    sourceMap,
+    coverageMapper
+) {
     var changes = 0;
 
-    Object.keys(fc.statementMap).forEach(function (s) {
+    Object.keys(fc.statementMap).forEach(function(s) {
         var loc = fc.statementMap[s],
             hits = fc.s[s],
             mapping = getMapping(sourceMap, loc, fc.path),
@@ -162,7 +174,7 @@ SourceMapTransformer.prototype.processFile = function (fc, sourceMap, coverageMa
         }
     });
 
-    Object.keys(fc.fnMap).forEach(function (f) {
+    Object.keys(fc.fnMap).forEach(function(f) {
         var fnMeta = fc.fnMap[f],
             hits = fc.f[f],
             mapping = getMapping(sourceMap, fnMeta.decl, fc.path),
@@ -172,11 +184,16 @@ SourceMapTransformer.prototype.processFile = function (fc, sourceMap, coverageMa
         if (mapping && spanMapping && mapping.source === spanMapping.source) {
             changes += 1;
             mappedCoverage = coverageMapper(mapping.source);
-            mappedCoverage.addFunction(fnMeta.name, mapping.loc, spanMapping.loc, hits);
+            mappedCoverage.addFunction(
+                fnMeta.name,
+                mapping.loc,
+                spanMapping.loc,
+                hits
+            );
         }
     });
 
-    Object.keys(fc.branchMap).forEach(function (b) {
+    Object.keys(fc.branchMap).forEach(function(b) {
         var branchMeta = fc.branchMap[b],
             source,
             hits = fc.b[b],
@@ -202,25 +219,30 @@ SourceMapTransformer.prototype.processFile = function (fc, sourceMap, coverageMa
         if (!skip && locs.length > 0) {
             changes += 1;
             mappedCoverage = coverageMapper(source);
-            mappedCoverage.addBranch(branchMeta.type, locs[0] /* XXX */, locs, mappedHits);
+            mappedCoverage.addBranch(
+                branchMeta.type,
+                locs[0] /* XXX */,
+                locs,
+                mappedHits
+            );
         }
     });
 
     return changes > 0;
 };
 
-SourceMapTransformer.prototype.transform = function (coverageMap) {
+SourceMapTransformer.prototype.transform = function(coverageMap) {
     var that = this,
         finder = this.finder,
         output = {},
-        getMappedCoverage = function (file) {
+        getMappedCoverage = function(file) {
             if (!output[file]) {
                 output[file] = new MappedCoverage(file);
             }
             return output[file];
         };
 
-    coverageMap.files().forEach(function (file) {
+    coverageMap.files().forEach(function(file) {
         var fc = coverageMap.fileCoverageFor(file),
             sourceMap = finder(file),
             changed;
@@ -239,7 +261,7 @@ SourceMapTransformer.prototype.transform = function (coverageMap) {
 };
 
 module.exports = {
-    create: function (finder, opts) {
+    create: function(finder, opts) {
         return new SourceMapTransformer(finder, opts);
     }
 };

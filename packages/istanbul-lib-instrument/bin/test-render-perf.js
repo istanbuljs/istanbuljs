@@ -11,24 +11,27 @@ const assignTemplate = template(`
 // etc. where the number of keys is controlled by the items arg
 function toProgram(items) {
     let obj = {};
-    for (let i=0; i < items; i += 1) {
+    for (let i = 0; i < items; i += 1) {
         const key = 's' + i;
-        obj[key] = { start: { line: i, column: 0 }, end: { line: i + 1, column: 20 } };
+        obj[key] = {
+            start: { line: i, column: 0 },
+            end: { line: i + 1, column: 20 }
+        };
     }
     const node = T.valueToNode(obj);
     const v = assignTemplate({
-        VAR: T.identifier("foo"),
+        VAR: T.identifier('foo'),
         DATA: node
     });
     return {
-        'type': 'File',
-        program: {  'type': 'Program', 'sourceType': 'script', body: [ v ] }
+        type: 'File',
+        program: { type: 'Program', sourceType: 'script', body: [v] }
     };
 }
 
 const nopt = require('nopt');
 const opts = {
-    "compact": Boolean
+    compact: Boolean
 };
 const parsed = nopt(opts, null, process.argv, 2);
 const compact = parsed.compact;
@@ -46,5 +49,5 @@ for (let i = 1; i < 15; i += 1) {
     if (i == 1) {
         console.log('Sample prog:', codeMap.code);
     }
-    console.log('Items:', n, ', time:', (end - start));
+    console.log('Items:', n, ', time:', end - start);
 }

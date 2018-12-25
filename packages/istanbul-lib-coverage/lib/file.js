@@ -2,20 +2,20 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-"use strict";
+'use strict';
 
 function percent(covered, total) {
     var tmp;
     if (total > 0) {
-        tmp = 1000 * 100 * covered / total + 5;
+        tmp = (1000 * 100 * covered) / total + 5;
         return Math.floor(tmp / 10) / 100;
     } else {
-        return 100.00;
+        return 100.0;
     }
 }
 
 function blankSummary() {
-    var empty = function () {
+    var empty = function() {
         return {
             total: 0,
             covered: 0,
@@ -33,14 +33,13 @@ function blankSummary() {
 
 // asserts that a data object "looks like" a summary coverage object
 function assertValidSummary(obj) {
-    var valid = obj &&
-        obj.lines &&
-        obj.statements &&
-        obj.functions &&
-        obj.branches;
+    var valid =
+        obj && obj.lines && obj.statements && obj.functions && obj.branches;
     if (!valid) {
-        throw new Error('Invalid summary coverage object, missing keys, found:' +
-            Object.keys(obj).join(','));
+        throw new Error(
+            'Invalid summary coverage object, missing keys, found:' +
+                Object.keys(obj).join(',')
+        );
     }
 }
 /**
@@ -63,10 +62,10 @@ function CoverageSummary(obj) {
     assertValidSummary(this.data);
 }
 
-['lines', 'statements', 'functions', 'branches'].forEach(function (p) {
+['lines', 'statements', 'functions', 'branches'].forEach(function(p) {
     Object.defineProperty(CoverageSummary.prototype, p, {
         enumerable: true,
-        get: function () {
+        get: function() {
             return this.data[p];
         }
     });
@@ -76,10 +75,10 @@ function CoverageSummary(obj) {
  * merges a second summary coverage object into this one
  * @param {CoverageSummary} obj - another coverage summary object
  */
-CoverageSummary.prototype.merge = function (obj) {
+CoverageSummary.prototype.merge = function(obj) {
     var that = this,
         keys = ['lines', 'statements', 'branches', 'functions'];
-    keys.forEach(function (key) {
+    keys.forEach(function(key) {
         that[key].total += obj[key].total;
         that[key].covered += obj[key].covered;
         that[key].skipped += obj[key].skipped;
@@ -92,15 +91,15 @@ CoverageSummary.prototype.merge = function (obj) {
  * returns a POJO that is JSON serializable. May be used to get the raw
  * summary object.
  */
-CoverageSummary.prototype.toJSON = function () {
+CoverageSummary.prototype.toJSON = function() {
     return this.data;
 };
 
 /**
  * return true if summary has no lines of code
  */
-CoverageSummary.prototype.isEmpty = function () {
-  return this.lines.total === 0;
+CoverageSummary.prototype.isEmpty = function() {
+    return this.lines.total === 0;
 };
 
 // returns a data object that represents empty coverage
@@ -117,7 +116,8 @@ function emptyCoverage(filePath) {
 }
 // asserts that a data object "looks like" a coverage object
 function assertValidObject(obj) {
-    var valid = obj &&
+    var valid =
+        obj &&
         obj.path &&
         obj.statementMap &&
         obj.fnMap &&
@@ -126,8 +126,10 @@ function assertValidObject(obj) {
         obj.f &&
         obj.b;
     if (!valid) {
-        throw new Error('Invalid file coverage object, missing keys, found:' +
-            Object.keys(obj).join(','));
+        throw new Error(
+            'Invalid file coverage object, missing keys, found:' +
+                Object.keys(obj).join(',')
+        );
     }
 }
 /**
@@ -150,7 +152,9 @@ function assertValidObject(obj) {
  */
 function FileCoverage(pathOrObj) {
     if (!pathOrObj) {
-        throw new Error("Coverage must be initialized with a path or an object");
+        throw new Error(
+            'Coverage must be initialized with a path or an object'
+        );
     }
     if (typeof pathOrObj === 'string') {
         this.data = emptyCoverage(pathOrObj);
@@ -167,12 +171,12 @@ function FileCoverage(pathOrObj) {
  * returns computed line coverage from statement coverage.
  * This is a map of hits keyed by line number in the source.
  */
-FileCoverage.prototype.getLineCoverage = function () {
+FileCoverage.prototype.getLineCoverage = function() {
     var statementMap = this.data.statementMap,
         statements = this.data.s,
         lineMap = Object.create(null);
 
-    Object.keys(statements).forEach(function (st) {
+    Object.keys(statements).forEach(function(st) {
         if (!statementMap[st]) {
             return;
         }
@@ -190,10 +194,10 @@ FileCoverage.prototype.getLineCoverage = function () {
  * @returns {Array} an array of line numbers for which no hits have been
  *  collected.
  */
-FileCoverage.prototype.getUncoveredLines = function () {
+FileCoverage.prototype.getUncoveredLines = function() {
     var lc = this.getLineCoverage(),
         ret = [];
-    Object.keys(lc).forEach(function (l) {
+    Object.keys(lc).forEach(function(l) {
         var hits = lc[l];
         if (hits === 0) {
             ret.push(l);
@@ -206,30 +210,38 @@ FileCoverage.prototype.getUncoveredLines = function () {
  * @returns {Object} an object keyed by line number. Each object
  * has a `covered`, `total` and `coverage` (percentage) property.
  */
-FileCoverage.prototype.getBranchCoverageByLine = function () {
+FileCoverage.prototype.getBranchCoverageByLine = function() {
     var branchMap = this.branchMap,
         branches = this.b,
         ret = {};
-    Object.keys(branchMap).forEach(function (k) {
+    Object.keys(branchMap).forEach(function(k) {
         var line = branchMap[k].line || branchMap[k].loc.start.line,
             branchData = branches[k];
         ret[line] = ret[line] || [];
         ret[line].push.apply(ret[line], branchData);
     });
-    Object.keys(ret).forEach(function (k) {
+    Object.keys(ret).forEach(function(k) {
         var dataArray = ret[k],
-            covered = dataArray.filter(function (item) { return item > 0; }),
-            coverage = covered.length / dataArray.length * 100;
-        ret[k] = { covered: covered.length, total: dataArray.length, coverage: coverage };
+            covered = dataArray.filter(function(item) {
+                return item > 0;
+            }),
+            coverage = (covered.length / dataArray.length) * 100;
+        ret[k] = {
+            covered: covered.length,
+            total: dataArray.length,
+            coverage: coverage
+        };
     });
     return ret;
 };
 
 // expose coverage data attributes
-['path', 'statementMap', 'fnMap', 'branchMap', 's', 'f', 'b' ].forEach(function (p) {
+['path', 'statementMap', 'fnMap', 'branchMap', 's', 'f', 'b'].forEach(function(
+    p
+) {
     Object.defineProperty(FileCoverage.prototype, p, {
         enumerable: true,
-        get: function () {
+        get: function() {
             return this.data[p];
         }
     });
@@ -237,7 +249,7 @@ FileCoverage.prototype.getBranchCoverageByLine = function () {
 /**
  * return a JSON-serializable POJO for this file coverage object
  */
-FileCoverage.prototype.toJSON = function () {
+FileCoverage.prototype.toJSON = function() {
     return this.data;
 };
 /**
@@ -245,15 +257,15 @@ FileCoverage.prototype.toJSON = function () {
  * @param {FileCoverage} other - the coverage object to be merged into this one.
  *  Note that the other object should have the same structure as this one (same file).
  */
-FileCoverage.prototype.merge = function (other) {
+FileCoverage.prototype.merge = function(other) {
     var that = this;
-    Object.keys(other.s).forEach(function (k) {
+    Object.keys(other.s).forEach(function(k) {
         that.data.s[k] += other.s[k];
     });
-    Object.keys(other.f).forEach(function (k) {
+    Object.keys(other.f).forEach(function(k) {
         that.data.f[k] += other.f[k];
     });
-    Object.keys(other.b).forEach(function (k) {
+    Object.keys(other.b).forEach(function(k) {
         var i,
             retArray = that.data.b[k],
             secondArray = other.b[k];
@@ -267,14 +279,14 @@ FileCoverage.prototype.merge = function (other) {
     });
 };
 
-FileCoverage.prototype.computeSimpleTotals = function (property) {
+FileCoverage.prototype.computeSimpleTotals = function(property) {
     var stats = this[property],
-        ret = {total: 0, covered: 0, skipped: 0};
+        ret = { total: 0, covered: 0, skipped: 0 };
 
     if (typeof stats === 'function') {
         stats = stats.call(this);
     }
-    Object.keys(stats).forEach(function (key) {
+    Object.keys(stats).forEach(function(key) {
         var covered = !!stats[key];
         ret.total += 1;
         if (covered) {
@@ -285,14 +297,14 @@ FileCoverage.prototype.computeSimpleTotals = function (property) {
     return ret;
 };
 
-FileCoverage.prototype.computeBranchTotals = function () {
+FileCoverage.prototype.computeBranchTotals = function() {
     var stats = this.b,
-        ret = {total: 0, covered: 0, skipped: 0};
+        ret = { total: 0, covered: 0, skipped: 0 };
 
-    Object.keys(stats).forEach(function (key) {
+    Object.keys(stats).forEach(function(key) {
         var branches = stats[key],
             covered;
-        branches.forEach(function (branchHits) {
+        branches.forEach(function(branchHits) {
             covered = branchHits > 0;
             if (covered) {
                 ret.covered += 1;
@@ -307,19 +319,21 @@ FileCoverage.prototype.computeBranchTotals = function () {
  * resets hit counts for all statements, functions and branches
  * in this coverage object resulting in zero coverage.
  */
-FileCoverage.prototype.resetHits = function () {
+FileCoverage.prototype.resetHits = function() {
     var statements = this.s,
         functions = this.f,
         branches = this.b;
-    Object.keys(statements).forEach(function (s) {
+    Object.keys(statements).forEach(function(s) {
         statements[s] = 0;
     });
-    Object.keys(functions).forEach(function (f) {
+    Object.keys(functions).forEach(function(f) {
         functions[f] = 0;
     });
-    Object.keys(branches).forEach(function (b) {
+    Object.keys(branches).forEach(function(b) {
         var hits = branches[b];
-        branches[b] = hits.map(function () { return 0; });
+        branches[b] = hits.map(function() {
+            return 0;
+        });
     });
 };
 
@@ -327,7 +341,7 @@ FileCoverage.prototype.resetHits = function () {
  * returns a CoverageSummary for this file coverage object
  * @returns {CoverageSummary}
  */
-FileCoverage.prototype.toSummary = function () {
+FileCoverage.prototype.toSummary = function() {
     var ret = {};
     ret.lines = this.computeSimpleTotals('getLineCoverage');
     ret.functions = this.computeSimpleTotals('f', 'fnMap');

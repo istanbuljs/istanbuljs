@@ -11,32 +11,34 @@ function CoberturaReport(opts) {
 }
 
 function asJavaPackage(node) {
-    return node.getRelativeName().
-        replace(/\//g, '.').
-        replace(/\\/g, '.').
-        replace(/\.$/, '');
+    return node
+        .getRelativeName()
+        .replace(/\//g, '.')
+        .replace(/\\/g, '.')
+        .replace(/\.$/, '');
 }
 
 function asClassName(node) {
-    return node.getRelativeName().replace(/.*[\\\/]/, '');
+    return node.getRelativeName().replace(/.*[\\/]/, '');
 }
 
-CoberturaReport.prototype.onStart = function (root, context) {
+CoberturaReport.prototype.onStart = function(root, context) {
     this.cw = context.writer.writeFile(this.file);
     this.xml = context.getXMLWriter(this.cw);
     this.writeRootStats(root);
 };
 
-CoberturaReport.prototype.onEnd = function () {
+CoberturaReport.prototype.onEnd = function() {
     this.xml.closeAll();
     this.cw.close();
 };
 
-CoberturaReport.prototype.writeRootStats = function (node) {
-
+CoberturaReport.prototype.writeRootStats = function(node) {
     var metrics = node.getCoverageSummary();
     this.cw.println('<?xml version="1.0" ?>');
-    this.cw.println('<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">');
+    this.cw.println(
+        '<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">'
+    );
     this.xml.openTag('coverage', {
         'lines-valid': metrics.lines.total,
         'lines-covered': metrics.lines.covered,
@@ -54,7 +56,7 @@ CoberturaReport.prototype.writeRootStats = function (node) {
     this.xml.openTag('packages');
 };
 
-CoberturaReport.prototype.onSummary = function (node) {
+CoberturaReport.prototype.onSummary = function(node) {
     if (node.isRoot()) {
         return;
     }
@@ -70,7 +72,7 @@ CoberturaReport.prototype.onSummary = function (node) {
     this.xml.openTag('classes');
 };
 
-CoberturaReport.prototype.onSummaryEnd = function (node) {
+CoberturaReport.prototype.onSummaryEnd = function(node) {
     if (node.isRoot()) {
         return;
     }
@@ -78,7 +80,7 @@ CoberturaReport.prototype.onSummaryEnd = function (node) {
     this.xml.closeTag('package');
 };
 
-CoberturaReport.prototype.onDetail = function (node) {
+CoberturaReport.prototype.onDetail = function(node) {
     var that = this,
         fileCoverage = node.getFileCoverage(),
         metrics = node.getCoverageSummary(),
@@ -95,7 +97,7 @@ CoberturaReport.prototype.onDetail = function (node) {
 
     this.xml.openTag('methods');
     fnMap = fileCoverage.fnMap;
-    Object.keys(fnMap).forEach(function (k) {
+    Object.keys(fnMap).forEach(function(k) {
         var name = fnMap[k].name,
             hits = fileCoverage.f[k];
         that.xml.openTag('method', {
@@ -111,13 +113,12 @@ CoberturaReport.prototype.onDetail = function (node) {
         });
         that.xml.closeTag('lines');
         that.xml.closeTag('method');
-
     });
     this.xml.closeTag('methods');
 
     this.xml.openTag('lines');
     lines = fileCoverage.getLineCoverage();
-    Object.keys(lines).forEach(function (k) {
+    Object.keys(lines).forEach(function(k) {
         var attrs = {
                 number: k,
                 hits: lines[k],
@@ -127,8 +128,13 @@ CoberturaReport.prototype.onDetail = function (node) {
 
         if (branchDetail) {
             attrs.branch = true;
-            attrs['condition-coverage'] = branchDetail.coverage +
-                '% (' + branchDetail.covered + '/' + branchDetail.total + ')';
+            attrs['condition-coverage'] =
+                branchDetail.coverage +
+                '% (' +
+                branchDetail.covered +
+                '/' +
+                branchDetail.total +
+                ')';
         }
         that.xml.inlineTag('line', attrs);
     });
@@ -138,5 +144,3 @@ CoberturaReport.prototype.onDetail = function (node) {
 };
 
 module.exports = CoberturaReport;
-
-

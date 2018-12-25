@@ -1,6 +1,6 @@
 import Instrumenter from '../../src/instrumenter';
-import {classes} from 'istanbul-lib-coverage';
-import {assert} from 'chai';
+import { classes } from 'istanbul-lib-coverage';
+import { assert } from 'chai';
 import clone from 'clone';
 import readInitialCoverage from '../../src/read-coverage';
 
@@ -17,7 +17,7 @@ function pad(str, len) {
 function annotatedCode(code) {
     var codeArray = code.split('\n'),
         line = 0,
-        annotated = codeArray.map(function (str) {
+        annotated = codeArray.map(function(str) {
             line += 1;
             return pad(line, 6) + ': ' + str;
         });
@@ -25,10 +25,8 @@ function annotatedCode(code) {
 }
 
 function getGlobalObject() {
-    /*jshint evil: true */
-    return (new Function('return this'))();
+    return new Function('return this')();
 }
-
 
 class Verifier {
     constructor(result) {
@@ -37,17 +35,42 @@ class Verifier {
 
     verify(args, expectedOutput, expectedCoverage) {
         assert.ok(!this.result.err, (this.result.err || {}).message);
-        getGlobalObject()[this.result.coverageVariable] = clone(this.result.baseline);
+        getGlobalObject()[this.result.coverageVariable] = clone(
+            this.result.baseline
+        );
         var actualOutput = this.result.fn(args),
             cov = this.getFileCoverage();
 
-        assert.ok(cov && typeof cov === 'object', 'No coverage found for [' + this.result.file + ']');
+        assert.ok(
+            cov && typeof cov === 'object',
+            'No coverage found for [' + this.result.file + ']'
+        );
         assert.deepEqual(actualOutput, expectedOutput, 'Output mismatch');
-        assert.deepEqual(cov.getLineCoverage(), expectedCoverage.lines || {}, 'Line coverage mismatch');
-        assert.deepEqual(cov.f, expectedCoverage.functions || {}, 'Function coverage mismatch');
-        assert.deepEqual(cov.b, expectedCoverage.branches || {}, 'Branch coverage mismatch');
-        assert.deepEqual(cov.s, expectedCoverage.statements || {}, 'Statement coverage mismatch');
-        assert.deepEqual(cov.data.inputSourceMap, expectedCoverage.inputSourceMap || undefined, "Input source map mismatch");
+        assert.deepEqual(
+            cov.getLineCoverage(),
+            expectedCoverage.lines || {},
+            'Line coverage mismatch'
+        );
+        assert.deepEqual(
+            cov.f,
+            expectedCoverage.functions || {},
+            'Function coverage mismatch'
+        );
+        assert.deepEqual(
+            cov.b,
+            expectedCoverage.branches || {},
+            'Branch coverage mismatch'
+        );
+        assert.deepEqual(
+            cov.s,
+            expectedCoverage.statements || {},
+            'Statement coverage mismatch'
+        );
+        assert.deepEqual(
+            cov.data.inputSourceMap,
+            expectedCoverage.inputSourceMap || undefined,
+            'Input source map mismatch'
+        );
         const initial = readInitialCoverage(this.getGeneratedCode());
         assert.ok(initial);
         assert.deepEqual(initial.coverageData, this.result.emptyCoverage);
@@ -86,12 +109,12 @@ function extractTestOption(opts, name, defaultValue) {
 }
 
 function create(code, opts, instrumenterOpts, inputSourceMap) {
-
     opts = opts || {};
     instrumenterOpts = instrumenterOpts || {};
-    instrumenterOpts.coverageVariable = instrumenterOpts.coverageVariable || '__testing_coverage__';
+    instrumenterOpts.coverageVariable =
+        instrumenterOpts.coverageVariable || '__testing_coverage__';
 
-    var debug = extractTestOption(opts, 'debug', process.env.DEBUG==="1"),
+    var debug = extractTestOption(opts, 'debug', process.env.DEBUG === '1'),
         file = extractTestOption(opts, 'file', __filename),
         generateOnly = extractTestOption(opts, 'generateOnly', false),
         noCoverage = extractTestOption(opts, 'noCoverage', false),
@@ -109,29 +132,46 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
     }
     instrumenter = new Instrumenter(instrumenterOpts);
     try {
-        instrumenterOutput = instrumenter.instrumentSync(code, file, inputSourceMap);
+        instrumenterOutput = instrumenter.instrumentSync(
+            code,
+            file,
+            inputSourceMap
+        );
         if (debug) {
-            console.log('================== Original ============================================');
+            console.log(
+                '================== Original ============================================'
+            );
             console.log(annotatedCode(code));
-            console.log('================== Generated ===========================================');
+            console.log(
+                '================== Generated ==========================================='
+            );
             console.log(instrumenterOutput);
-            console.log('========================================================================');
+            console.log(
+                '========================================================================'
+            );
         }
     } catch (ex) {
         if (!quiet) {
             console.error(ex.stack);
         }
-        verror = new Error('Error instrumenting:\n' + annotatedCode(String(code)) + "\n" + ex.message);
+        verror = new Error(
+            'Error instrumenting:\n' +
+                annotatedCode(String(code)) +
+                '\n' +
+                ex.message
+        );
     }
     if (!(verror || generateOnly)) {
-        wrapped = '{ var output;\n' + instrumenterOutput + '\nreturn output;\n}';
+        wrapped =
+            '{ var output;\n' + instrumenterOutput + '\nreturn output;\n}';
         g[coverageVariable] = undefined;
         try {
-            /*jshint evil: true */
             fn = new Function('args', wrapped);
         } catch (ex) {
             console.error(ex.stack);
-            verror = new Error('Error compiling\n' + annotatedCode(code) + '\n' + ex.message);
+            verror = new Error(
+                'Error compiling\n' + annotatedCode(code) + '\n' + ex.message
+            );
         }
     }
     if (generateOnly || noCoverage) {
@@ -150,4 +190,4 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
     });
 }
 
-export {create};
+export { create };

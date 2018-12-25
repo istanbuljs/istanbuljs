@@ -2,7 +2,7 @@
  Copyright 2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-"use strict";
+'use strict';
 
 var FileCoverage = require('istanbul-lib-coverage').classes.FileCoverage,
     util = require('util');
@@ -22,10 +22,15 @@ function MappedCoverage(pathOrObj) {
 util.inherits(MappedCoverage, FileCoverage);
 
 function locString(loc) {
-    return [loc.start.line, loc.start.column, loc.end.line, loc.end.column].join(':');
+    return [
+        loc.start.line,
+        loc.start.column,
+        loc.end.line,
+        loc.end.column
+    ].join(':');
 }
 
-MappedCoverage.prototype.addStatement = function (loc, hits) {
+MappedCoverage.prototype.addStatement = function(loc, hits) {
     var key = 's:' + locString(loc),
         meta = this.meta,
         index = meta.seen[key];
@@ -41,7 +46,7 @@ MappedCoverage.prototype.addStatement = function (loc, hits) {
     return index;
 };
 
-MappedCoverage.prototype.addFunction = function (name, decl, loc, hits) {
+MappedCoverage.prototype.addFunction = function(name, decl, loc, hits) {
     var key = 'f:' + locString(decl),
         meta = this.meta,
         index = meta.seen[key];
@@ -62,14 +67,19 @@ MappedCoverage.prototype.addFunction = function (name, decl, loc, hits) {
     return index;
 };
 
-MappedCoverage.prototype.addBranch = function (type, loc, branchLocations, hits) {
+MappedCoverage.prototype.addBranch = function(
+    type,
+    loc,
+    branchLocations,
+    hits
+) {
     var key = ['b'],
         meta = this.meta,
         that = this,
         index,
         i;
 
-    branchLocations.forEach(function (l) {
+    branchLocations.forEach(function(l) {
         key.push(locString(l));
     });
 
@@ -82,7 +92,7 @@ MappedCoverage.prototype.addBranch = function (type, loc, branchLocations, hits)
         this.branchMap[index] = {
             loc: loc,
             type: type,
-            locations: branchLocations.map(function (l) {
+            locations: branchLocations.map(function(l) {
                 return that.cloneLocation(l);
             })
         };
@@ -90,7 +100,7 @@ MappedCoverage.prototype.addBranch = function (type, loc, branchLocations, hits)
 
     if (!this.b[index]) {
         this.b[index] = [];
-        branchLocations.forEach(function () {
+        branchLocations.forEach(function() {
             that.b[index].push(0);
         });
     }
@@ -102,7 +112,7 @@ MappedCoverage.prototype.addBranch = function (type, loc, branchLocations, hits)
 
 // returns a clone of the location object with only
 // the attributes of interest
-MappedCoverage.prototype.cloneLocation = function (loc) {
+MappedCoverage.prototype.cloneLocation = function(loc) {
     return {
         start: {
             line: loc.start.line,

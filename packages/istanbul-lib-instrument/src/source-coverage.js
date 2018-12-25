@@ -1,4 +1,4 @@
-import {classes} from 'istanbul-lib-coverage';
+import { classes } from 'istanbul-lib-coverage';
 
 function cloneLocation(loc) {
     return {
@@ -77,7 +77,7 @@ class SourceCoverage extends classes.FileCoverage {
 
         /* istanbul ignore if: paranoid check */
         if (!bMeta) {
-            throw new Error("Invalid branch " + name);
+            throw new Error('Invalid branch ' + name);
         }
         bMeta.locations.push(cloneLocation(location));
         counts.push(0);
@@ -97,7 +97,7 @@ class SourceCoverage extends classes.FileCoverage {
         // prune empty branches
         var map = this.data.branchMap,
             branches = this.data.b;
-        Object.keys(map).forEach(function (b) {
+        Object.keys(map).forEach(function(b) {
             if (map[b].locations.length === 0) {
                 delete map[b];
                 delete branches[b];

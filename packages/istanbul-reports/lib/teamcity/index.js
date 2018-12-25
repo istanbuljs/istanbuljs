@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-"use strict";
+'use strict';
 
 function TeamcityReport(opts) {
     opts = opts || {};
@@ -11,19 +11,27 @@ function TeamcityReport(opts) {
 }
 
 function lineForKey(value, teamcityVar) {
-    return '##teamcity[buildStatisticValue key=\'' + teamcityVar + '\' value=\'' + value + '\']';
+    return (
+        "##teamcity[buildStatisticValue key='" +
+        teamcityVar +
+        "' value='" +
+        value +
+        "']"
+    );
 }
 
-TeamcityReport.prototype.onStart = function (node, context) {
+TeamcityReport.prototype.onStart = function(node, context) {
     var metrics = node.getCoverageSummary(),
         cw;
 
     cw = context.writer.writeFile(this.file);
     cw.println('');
-    cw.println('##teamcity[blockOpened name=\''+ this.blockName +'\']');
+    cw.println("##teamcity[blockOpened name='" + this.blockName + "']");
 
     //Statements Covered
-    cw.println(lineForKey(metrics.statements.covered, 'CodeCoverageAbsBCovered'));
+    cw.println(
+        lineForKey(metrics.statements.covered, 'CodeCoverageAbsBCovered')
+    );
     cw.println(lineForKey(metrics.statements.total, 'CodeCoverageAbsBTotal'));
 
     //Branches Covered
@@ -31,14 +39,16 @@ TeamcityReport.prototype.onStart = function (node, context) {
     cw.println(lineForKey(metrics.branches.total, 'CodeCoverageAbsRTotal'));
 
     //Functions Covered
-    cw.println(lineForKey(metrics.functions.covered, 'CodeCoverageAbsMCovered'));
+    cw.println(
+        lineForKey(metrics.functions.covered, 'CodeCoverageAbsMCovered')
+    );
     cw.println(lineForKey(metrics.functions.total, 'CodeCoverageAbsMTotal'));
 
     //Lines Covered
     cw.println(lineForKey(metrics.lines.covered, 'CodeCoverageAbsLCovered'));
     cw.println(lineForKey(metrics.lines.total, 'CodeCoverageAbsLTotal'));
 
-    cw.println('##teamcity[blockClosed name=\''+ this.blockName +'\']');
+    cw.println("##teamcity[blockClosed name='" + this.blockName + "']");
     cw.close();
 };
 

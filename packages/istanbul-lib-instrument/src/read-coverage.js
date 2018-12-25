@@ -3,7 +3,7 @@ import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
 
-export default function readInitialCoverage (code) {
+export default function readInitialCoverage(code) {
     if (typeof code !== 'string') {
         throw new Error('Code must be a string');
     }
@@ -13,30 +13,33 @@ export default function readInitialCoverage (code) {
         allowImportExportEverywhere: true,
         allowReturnOutsideFunction: true,
         allowSuperOutsideMethod: true,
-        sourceType: "script", // I think ?
+        sourceType: 'script', // I think ?
         plugins: [
-          'asyncGenerators',
-          'dynamicImport',
-          'objectRestSpread',
-          'optionalCatchBinding',
-          'flow',
-          'jsx'
+            'asyncGenerators',
+            'dynamicImport',
+            'objectRestSpread',
+            'optionalCatchBinding',
+            'flow',
+            'jsx'
         ]
     });
 
     let covScope;
     traverse(ast, {
-        ObjectProperty: function (path) {
+        ObjectProperty: function(path) {
             const { node } = path;
-            if (!node.computed &&
+            if (
+                !node.computed &&
                 t.isIdentifier(node.key) &&
-                node.key.name === MAGIC_KEY)
-            {
+                node.key.name === MAGIC_KEY
+            ) {
                 const magicValue = path.get('value').evaluate();
                 if (!magicValue.confident || magicValue.value !== MAGIC_VALUE) {
                     return;
                 }
-                covScope = path.scope.getFunctionParent() || path.scope.getProgramParent();
+                covScope =
+                    path.scope.getFunctionParent() ||
+                    path.scope.getProgramParent();
                 path.stop();
             }
         }

@@ -9,12 +9,10 @@
     "index.js"
   ],
   "scripts": {
-    "pretest": "jshint index.js lib/ test/",
     "test": "mocha"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "jshint": "^2.9.5",
     "mocha": "^5.2.0"
   },
   "karmaDeps": {

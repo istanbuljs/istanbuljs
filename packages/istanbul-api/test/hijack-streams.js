@@ -3,8 +3,8 @@ var outWrite = process.stdout.write,
 
 function silent() {
     if (!process.env.DEBUG) {
-        process.stdout.write = function () {};
-        process.stderr.write = function () {};
+        process.stdout.write = function() {};
+        process.stderr.write = function() {};
     }
 }
 
@@ -14,12 +14,11 @@ function reset() {
 }
 
 function wrap(cb) {
-    return function () {
+    return function() {
         reset();
         cb.apply(null, Array.prototype.slice.call(arguments));
     };
 }
-
 
 module.exports = {
     silent: silent,

@@ -14,8 +14,7 @@ function InsertionText(text, consumeBlanks) {
 var WHITE_RE = /[ \f\n\r\t\v\u00A0\u2028\u2029]/;
 
 InsertionText.prototype = {
-
-    findFirstNonBlank: function () {
+    findFirstNonBlank: function() {
         var pos = -1,
             text = this.text,
             len = text.length,
@@ -28,7 +27,7 @@ InsertionText.prototype = {
         }
         return pos;
     },
-    findLastNonBlank: function () {
+    findLastNonBlank: function() {
         var text = this.text,
             len = text.length,
             pos = text.length + 1,
@@ -41,12 +40,15 @@ InsertionText.prototype = {
         }
         return pos;
     },
-    originalLength: function () {
+    originalLength: function() {
         return this.origLength;
     },
 
-    insertAt: function (col, str, insertBefore, consumeBlanks) {
-        consumeBlanks = typeof consumeBlanks === 'undefined' ? this.consumeBlanks : consumeBlanks;
+    insertAt: function(col, str, insertBefore, consumeBlanks) {
+        consumeBlanks =
+            typeof consumeBlanks === 'undefined'
+                ? this.consumeBlanks
+                : consumeBlanks;
         col = col > this.originalLength() ? this.originalLength() : col;
         col = col < 0 ? 0 : col;
 
@@ -67,7 +69,7 @@ InsertionText.prototype = {
         return this;
     },
 
-    findOffset: function (pos, len, insertBefore) {
+    findOffset: function(pos, len, insertBefore) {
         var offsets = this.offsets,
             offsetObj,
             cumulativeOffset = 0,
@@ -75,7 +77,10 @@ InsertionText.prototype = {
 
         for (i = 0; i < offsets.length; i += 1) {
             offsetObj = offsets[i];
-            if (offsetObj.pos < pos || (offsetObj.pos === pos && !insertBefore)) {
+            if (
+                offsetObj.pos < pos ||
+                (offsetObj.pos === pos && !insertBefore)
+            ) {
                 cumulativeOffset += offsetObj.len;
             }
             if (offsetObj.pos >= pos) {
@@ -90,17 +95,17 @@ InsertionText.prototype = {
         return cumulativeOffset;
     },
 
-    wrap: function (startPos, startText, endPos, endText, consumeBlanks) {
+    wrap: function(startPos, startText, endPos, endText, consumeBlanks) {
         this.insertAt(startPos, startText, true, consumeBlanks);
         this.insertAt(endPos, endText, false, consumeBlanks);
         return this;
     },
 
-    wrapLine: function (startText, endText) {
+    wrapLine: function(startText, endText) {
         this.wrap(0, startText, this.originalLength(), endText);
     },
 
-    toString: function () {
+    toString: function() {
         return this.text;
     }
 };

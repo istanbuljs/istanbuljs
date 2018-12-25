@@ -23,32 +23,43 @@ function filesFor(options, callback) {
         opts;
 
     root = root || process.cwd();
-    includes = includes && Array.isArray(includes) ? includes : [ '**/*.js' ];
-    excludes = excludes && Array.isArray(excludes) ? excludes : [ '**/node_modules/**' ];
+    includes = includes && Array.isArray(includes) ? includes : ['**/*.js'];
+    excludes =
+        excludes && Array.isArray(excludes) ? excludes : ['**/node_modules/**'];
 
     opts = { cwd: root, nodir: true, ignore: excludes };
     seq += 1;
     opts['x' + seq + new Date().getTime()] = true; //cache buster for minimatch cache bug
-    fileset(includes.join(' '), excludes.join(' '), opts, function (err, files) {
+    fileset(includes.join(' '), excludes.join(' '), opts, function(err, files) {
         /* istanbul ignore if - untestable */
-        if (err) { return callback(err); }
-        if (relative) { return callback(err, files); }
-
-        if (!realpath) {
-            files = files.map(function (file) { return path.resolve(root, file); });
+        if (err) {
+            return callback(err);
+        }
+        if (relative) {
             return callback(err, files);
         }
 
-        var realPathCache = module.constructor._realpathCache || /* istanbul ignore next */ {};
+        if (!realpath) {
+            files = files.map(function(file) {
+                return path.resolve(root, file);
+            });
+            return callback(err, files);
+        }
 
-        async.map(files, function (file, done) {
-            fs.realpath(path.resolve(root, file), realPathCache, done);
-        }, callback);
+        var realPathCache =
+            module.constructor._realpathCache || /* istanbul ignore next */ {};
+
+        async.map(
+            files,
+            function(file, done) {
+                fs.realpath(path.resolve(root, file), realPathCache, done);
+            },
+            callback
+        );
     });
 }
 
 function matcherFor(options, callback) {
-
     if (!callback && typeof options === 'function') {
         callback = options;
         options = null;
@@ -57,14 +68,20 @@ function matcherFor(options, callback) {
     options.relative = false; //force absolute paths
     options.realpath = true; //force real paths (to match Node.js module paths)
 
-    filesFor(options, function (err, files) {
+    filesFor(options, function(err, files) {
         var fileMap = Object.create(null),
             matchFn;
         /* istanbul ignore if - untestable */
-        if (err) { return callback(err); }
-        files.forEach(function (file) { fileMap[file] = true; });
+        if (err) {
+            return callback(err);
+        }
+        files.forEach(function(file) {
+            fileMap[file] = true;
+        });
 
-        matchFn = function (file) { return fileMap[file]; };
+        matchFn = function(file) {
+            return fileMap[file];
+        };
         matchFn.files = Object.keys(fileMap);
         return callback(null, matchFn);
     });

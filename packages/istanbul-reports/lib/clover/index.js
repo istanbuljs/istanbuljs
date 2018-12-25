@@ -10,42 +10,42 @@ function CloverReport(opts) {
 }
 
 function asJavaPackage(node) {
-    return node.getRelativeName().
-        replace(/\//g, '.').
-        replace(/\\/g, '.').
-        replace(/\.$/, '');
+    return node
+        .getRelativeName()
+        .replace(/\//g, '.')
+        .replace(/\\/g, '.')
+        .replace(/\.$/, '');
 }
 
 function asClassName(node) {
-    return node.getRelativeName().replace(/.*[\\\/]/, '');
+    return node.getRelativeName().replace(/.*[\\/]/, '');
 }
 
-CloverReport.prototype.onStart = function (root, context) {
+CloverReport.prototype.onStart = function(root, context) {
     this.cw = context.writer.writeFile(this.file);
     this.xml = context.getXMLWriter(this.cw);
     this.writeRootStats(root, context);
 };
 
-CloverReport.prototype.onEnd = function () {
+CloverReport.prototype.onEnd = function() {
     this.xml.closeAll();
     this.cw.close();
 };
 
-CloverReport.prototype.getTreeStats = function (node, context) {
-
+CloverReport.prototype.getTreeStats = function(node, context) {
     var state = {
             packages: 0,
             files: 0,
-            classes: 0,
+            classes: 0
         },
         visitor = {
-            onSummary: function (node, state) {
+            onSummary: function(node, state) {
                 var metrics = node.getCoverageSummary(true);
                 if (metrics) {
                     state.packages += 1;
                 }
             },
-            onDetail: function (node, state) {
+            onDetail: function(node, state) {
                 state.classes += 1;
                 state.files += 1;
             }
@@ -54,8 +54,7 @@ CloverReport.prototype.getTreeStats = function (node, context) {
     return state;
 };
 
-CloverReport.prototype.writeRootStats = function (node, context) {
-
+CloverReport.prototype.writeRootStats = function(node, context) {
     var metrics = node.getCoverageSummary(),
         attrs = {
             statements: metrics.lines.total,
@@ -64,8 +63,14 @@ CloverReport.prototype.writeRootStats = function (node, context) {
             coveredconditionals: metrics.branches.covered,
             methods: metrics.functions.total,
             coveredmethods: metrics.functions.covered,
-            elements: metrics.lines.total + metrics.branches.total + metrics.functions.total,
-            coveredelements: metrics.lines.covered + metrics.branches.covered + metrics.functions.covered,
+            elements:
+                metrics.lines.total +
+                metrics.branches.total +
+                metrics.functions.total,
+            coveredelements:
+                metrics.lines.covered +
+                metrics.branches.covered +
+                metrics.functions.covered,
             complexity: 0,
             loc: metrics.lines.total,
             ncloc: metrics.lines.total // what? copied as-is from old report
@@ -80,19 +85,18 @@ CloverReport.prototype.writeRootStats = function (node, context) {
 
     this.xml.openTag('project', {
         timestamp: Date.now().toString(),
-        name: 'All files',
+        name: 'All files'
     });
 
     treeStats = this.getTreeStats(node, context);
-    Object.keys(treeStats).forEach(function (k) {
+    Object.keys(treeStats).forEach(function(k) {
         attrs[k] = treeStats[k];
     });
 
     this.xml.inlineTag('metrics', attrs);
-
 };
 
-CloverReport.prototype.writeMetrics = function (metrics) {
+CloverReport.prototype.writeMetrics = function(metrics) {
     this.xml.inlineTag('metrics', {
         statements: metrics.lines.total,
         coveredstatements: metrics.lines.covered,
@@ -103,7 +107,7 @@ CloverReport.prototype.writeMetrics = function (metrics) {
     });
 };
 
-CloverReport.prototype.onSummary = function (node) {
+CloverReport.prototype.onSummary = function(node) {
     if (node.isRoot()) {
         return;
     }
@@ -118,14 +122,14 @@ CloverReport.prototype.onSummary = function (node) {
     this.writeMetrics(metrics);
 };
 
-CloverReport.prototype.onSummaryEnd = function (node) {
+CloverReport.prototype.onSummaryEnd = function(node) {
     if (node.isRoot()) {
         return;
     }
     this.xml.closeTag('package');
 };
 
-CloverReport.prototype.onDetail = function (node) {
+CloverReport.prototype.onDetail = function(node) {
     var that = this,
         fileCoverage = node.getFileCoverage(),
         metrics = node.getCoverageSummary(),
@@ -140,7 +144,7 @@ CloverReport.prototype.onDetail = function (node) {
     this.writeMetrics(metrics);
 
     lines = fileCoverage.getLineCoverage();
-    Object.keys(lines).forEach(function (k) {
+    Object.keys(lines).forEach(function(k) {
         var attrs = {
                 num: k,
                 count: lines[k],
@@ -160,5 +164,3 @@ CloverReport.prototype.onDetail = function (node) {
 };
 
 module.exports = CloverReport;
-
-
