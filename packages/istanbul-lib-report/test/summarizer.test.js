@@ -322,14 +322,14 @@ describe('summarizer', function() {
         });
 
         it('handles getting root node name when empty coverage map', function() {
-          var map = coverage.createCoverageMap({}),
-              tree = fn(map),
-              root = tree.getRoot(),
-              rootNodeName = root.getRelativeName();
-          assert.equal(rootNodeName, '');
+            var map = coverage.createCoverageMap({}),
+                tree = fn(map),
+                root = tree.getRoot(),
+                rootNodeName = root.getRelativeName();
+            assert.equal(rootNodeName, '');
         });
 
-        it('supports a list of files at top-level', function () {
+        it('supports a list of files at top-level', function() {
             var map = singleDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree);
