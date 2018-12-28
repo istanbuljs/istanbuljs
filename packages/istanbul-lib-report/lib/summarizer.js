@@ -232,7 +232,7 @@ function createNestedSummary(coverageMap) {
         root;
 
     if (topNodes.length === 0) {
-        return treeFor(new ReportNode([]));
+        return treeFor(new ReportNode(new Path([])));
     }
 
     if (topNodes.length === 1) {
