@@ -30,7 +30,7 @@
     "eslint": "^5.10.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.0",
-    "lerna": "^2.11.0",
+    "lerna": "^3.8.1",
     "nyc": "^13.0.1",
     "prettier": "^1.15.3"
   },
