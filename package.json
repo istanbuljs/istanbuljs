@@ -54,5 +54,10 @@
   "prettier": {
     "singleQuote": true,
     "tabWidth": 4
+  },
+  "greenkeeper": {
+    "ignore": [
+      "lerna"
+    ]
   }
 }
