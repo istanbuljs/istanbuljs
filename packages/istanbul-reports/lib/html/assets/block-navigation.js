@@ -10,8 +10,10 @@ var jumpToCode = (function init() {
 
     // Selecter that finds elements on the page to which we can jump
     var selector =
-        fileListingElements.join(', ') + ', ' +
-        notSelector + missingCoverageClasses.join(', ' + notSelector); // becomes `:not(a):not(b) > a, :not(a):not(b) > b`
+        fileListingElements.join(', ') +
+        ', ' +
+        notSelector +
+        missingCoverageClasses.join(', ' + notSelector); // becomes `:not(a):not(b) > a, :not(a):not(b) > b`
 
     // The NodeList of matching elements
     var missingCoverageElements = document.querySelectorAll(selector);
