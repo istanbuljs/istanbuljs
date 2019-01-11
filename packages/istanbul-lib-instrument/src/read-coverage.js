@@ -13,7 +13,7 @@ export default function readInitialCoverage(code) {
         allowImportExportEverywhere: true,
         allowReturnOutsideFunction: true,
         allowSuperOutsideMethod: true,
-        sourceType: 'script', // I think ?
+        sourceType: 'script',
         plugins: [
             'asyncGenerators',
             'dynamicImport',
