@@ -26,10 +26,6 @@
     "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
   "homepage": "https://github.com/istanbuljs/istanbuljs#readme",
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "mocha": "^5.2.0"
-  },
   "dependencies": {
     "arrify": "^1.0.1",
     "minimatch": "^3.0.4",
