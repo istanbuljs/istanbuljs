@@ -11,7 +11,7 @@ node_js:
 
 env:
   global:
-    COVERALLS_PARALLEL: true
+    - "COVERALLS_PARALLEL=true"
 
 before_install:
   - npm cache clear --force
