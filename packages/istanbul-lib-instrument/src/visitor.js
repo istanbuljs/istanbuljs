@@ -358,12 +358,6 @@ function coverVariableDeclarator(path) {
     this.insertStatementCounter(path.get('init'));
 }
 
-function skipInit(path) {
-    if (path.node.init) {
-        this.setAttr(path.node.init, 'skip-all', true);
-    }
-}
-
 function makeBlock(path) {
     const T = this.types;
     if (!path.node) {
@@ -507,9 +501,9 @@ const codeVisitor = {
         coverStatement,
         coverIfBranches
     ),
-    ForStatement: entries(blockProp('body'), skipInit, coverStatement),
-    ForInStatement: entries(blockProp('body'), skipInit, coverStatement),
-    ForOfStatement: entries(blockProp('body'), skipInit, coverStatement),
+    ForStatement: entries(blockProp('body'), coverStatement),
+    ForInStatement: entries(blockProp('body'), coverStatement),
+    ForOfStatement: entries(blockProp('body'), coverStatement),
     WhileStatement: entries(blockProp('body'), coverStatement),
     DoWhileStatement: entries(blockProp('body'), coverStatement),
     SwitchStatement: entries(createSwitchBranch, coverStatement),
