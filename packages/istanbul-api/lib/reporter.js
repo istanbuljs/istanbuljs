@@ -6,7 +6,8 @@ var path = require('path'),
     configuration = require('./config'),
     inputError = require('./input-error'),
     libReport = require('istanbul-lib-report'),
-    libReports = require('istanbul-reports');
+    libReports = require('istanbul-reports'),
+    minimatch = require('minimatch');
 
 function Reporter(cfg, opts) {
     opts = opts || {};
@@ -81,6 +82,15 @@ Reporter.prototype = {
             watermarks: this.config.reporting.watermarks(),
             sourceFinder: sourceFinder
         });
+
+        var excludes = this.config.instrumentation.excludes() || [];
+
+        coverageMap.filter(function(file) {
+            return !excludes.some(function(exclude) {
+                return minimatch(file, exclude, { dot: true });
+            });
+        });
+
         tree = this.summarizer(coverageMap);
         Object.keys(this.reports).forEach(function(name) {
             var report = that.reports[name];
