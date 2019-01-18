@@ -2,6 +2,7 @@ import { SourceCoverage } from './source-coverage';
 import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 import { createHash } from 'crypto';
 import template from '@babel/template';
+import { defaultOpts } from './instrumenter';
 
 // pattern for istanbul to ignore a section
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
@@ -515,16 +516,22 @@ const codeVisitor = {
     ConditionalExpression: entries(coverTernary),
     LogicalExpression: entries(coverLogicalExpression)
 };
+const globalTemplateFunction = template(`
+        var Function = (function(){}).constructor;
+        var global = (new Function(GLOBAL_COVERAGE_SCOPE))();
+`);
+const globalTemplateVariable = template(`
+        var global = GLOBAL_COVERAGE_SCOPE;
+`);
 // the template to insert at the top of the program.
 const coverageTemplate = template(`
     var COVERAGE_VAR = (function () {
-        var path = PATH,
-            hash = HASH,
-            Function = (function(){}).constructor,
-            global = (new Function('return this'))(),
-            gcv = GLOBAL_COVERAGE_VAR,
-            coverageData = INITIAL,
-            coverage = global[gcv] || (global[gcv] = {});
+        var path = PATH;
+        var hash = HASH;
+        GLOBAL_COVERAGE_TEMPLATE
+        var gcv = GLOBAL_COVERAGE_VAR;
+        var coverageData = INITIAL;
+        var coverage = global[gcv] || (global[gcv] = {});
         if (coverage[path] && coverage[path].hash === hash) {
             return coverage[path];
         }
@@ -548,8 +555,6 @@ function shouldIgnoreFile(programNode) {
 }
 
 const defaultProgramVisitorOpts = {
-    coverageVariable: '__coverage__',
-    ignoreClassMethods: [],
     inputSourceMap: undefined
 };
 /**
@@ -569,6 +574,8 @@ const defaultProgramVisitorOpts = {
  * @param {string} sourceFilePath - the path to source file
  * @param {Object} opts - additional options
  * @param {string} [opts.coverageVariable=__coverage__] the global coverage variable name.
+ * @param {string} [opts.coverageGlobalScope=this] the global coverage variable scope.
+ * @param {boolean} [opts.coverageGlobalScopeFunc=true] use an evaluated function to find coverageGlobalScope.
  * @param {Array} [opts.ignoreClassMethods=[]] names of methods to ignore by default on classes.
  * @param {object} [opts.inputSourceMap=undefined] the input source map, that maps the uninstrumented code back to the
  * original code.
@@ -579,6 +586,8 @@ function programVisitor(
     opts = defaultProgramVisitorOpts
 ) {
     const T = types;
+    // This sets some unused options but ensures all required options are initialized
+    opts = Object.assign({}, defaultOpts(), defaultProgramVisitorOpts, opts);
     const visitState = new VisitState(
         types,
         sourceFilePath,
@@ -613,8 +622,21 @@ function programVisitor(
                 .digest('hex');
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
+            let gvTemplate;
+            if (opts.coverageGlobalScopeFunc) {
+                gvTemplate = globalTemplateFunction({
+                    GLOBAL_COVERAGE_SCOPE: T.stringLiteral(
+                        'return ' + opts.coverageGlobalScope
+                    )
+                });
+            } else {
+                gvTemplate = globalTemplateVariable({
+                    GLOBAL_COVERAGE_SCOPE: opts.coverageGlobalScope
+                });
+            }
             const cv = coverageTemplate({
                 GLOBAL_COVERAGE_VAR: T.stringLiteral(opts.coverageVariable),
+                GLOBAL_COVERAGE_TEMPLATE: gvTemplate,
                 COVERAGE_VAR: T.identifier(visitState.varName),
                 PATH: T.stringLiteral(sourceFilePath),
                 INITIAL: coverageNode,

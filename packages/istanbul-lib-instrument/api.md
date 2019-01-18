@@ -106,6 +106,8 @@ The exit function returns an object that currently has the following keys:
 -   `sourceFilePath` **[string][9]** the path to source file (optional, default `'unknown.js'`)
 -   `opts` **[Object][8]** additional options (optional, default `defaultProgramVisitorOpts`)
     -   `opts.coverageVariable` **[string][9]** the global coverage variable name. (optional, default `__coverage__`)
+    -   `opts.coverageGlobalScope` **[string][9]** the global coverage variable scope. (optional, default `this`)
+    -   `opts.coverageGlobalScopeFunc` **[boolean][10]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)
     -   `opts.ignoreClassMethods` **[Array][11]** names of methods to ignore by default on classes. (optional, default `[]`)
     -   `opts.inputSourceMap` **[object][8]** the input source map, that maps the uninstrumented code back to the
         original code. (optional, default `undefined`)
