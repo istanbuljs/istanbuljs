@@ -140,7 +140,8 @@ describe('testExclude', function() {
             'test{,-*}.js',
             '**/*{.,-}test.js',
             '**/__tests__/**',
-            '**/node_modules/**'
+            '**/node_modules/**',
+            '**/babel.config.js'
         ]);
     });
 
