@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-report@2.0.3...istanbul-lib-report@2.0.4) (2019-01-26)
+
+
+### Bug Fixes
+
+* nested summarizer error with no files ([#230](https://github.com/istanbuljs/istanbuljs/issues/230)) ([07724bf](https://github.com/istanbuljs/istanbuljs/commit/07724bf))
+
+
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-report@2.0.2...istanbul-lib-report@2.0.3) (2018-12-25)
 

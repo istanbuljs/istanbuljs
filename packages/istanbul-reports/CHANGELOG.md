@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.0.3...istanbul-reports@2.1.0) (2019-01-26)
+
+
+### Features
+
+* **istanbul-reports:** Enable keyboard shortcuts on HTML report file listing view ([#265](https://github.com/istanbuljs/istanbuljs/issues/265)) ([f49b355](https://github.com/istanbuljs/istanbuljs/commit/f49b355))
+
+
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.0.2...istanbul-reports@2.0.3) (2018-12-25)
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.0.1...istanbul-lib-instrument@3.1.0) (2019-01-26)
+
+
+### Features
+
+* dont skip for loop initialization instrumentation ([#188](https://github.com/istanbuljs/istanbuljs/issues/188)) ([2e0258e](https://github.com/istanbuljs/istanbuljs/commit/2e0258e))
+* New options coverageGlobalScope and coverageGlobalScopeFunc. ([#200](https://github.com/istanbuljs/istanbuljs/issues/200)) ([25509c7](https://github.com/istanbuljs/istanbuljs/commit/25509c7)), closes [#199](https://github.com/istanbuljs/istanbuljs/issues/199)
+
+
+
+
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.0.0...istanbul-lib-instrument@3.0.1) (2018-12-25)
 

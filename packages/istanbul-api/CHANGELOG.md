@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-api@2.0.8...istanbul-api@2.1.0) (2019-01-26)
+
+
+### Features
+
+* support excluding files on writing coverage reports ([#275](https://github.com/istanbuljs/istanbuljs/issues/275)) ([752be13](https://github.com/istanbuljs/istanbuljs/commit/752be13))
+
+
+
+
+
 <a name="2.0.8"></a>
 ## [2.0.8](https://github.com/istanbuljs/istanbuljs/compare/istanbul-api@2.0.7...istanbul-api@2.0.8) (2018-12-25)
 
