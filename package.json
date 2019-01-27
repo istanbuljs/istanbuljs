@@ -36,7 +36,7 @@
     "debug": "^4.1.1",
     "documentation": "^7.1.0",
     "eslint": "^5.10.0",
-    "eslint-config-prettier": "^3.3.0",
+    "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-prettier": "^3.0.0",
     "is-windows": "^1.0.2",
     "js-yaml": "^3.12.0",
