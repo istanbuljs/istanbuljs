@@ -603,6 +603,7 @@ function programVisitor(
                 return;
             }
             path.traverse(codeVisitor, visitState);
+            path.scope.crawl();
         },
         exit(path) {
             if (alreadyInstrumented(path, visitState)) {
