@@ -1,0 +1,39 @@
+{
+  "name": "@istanbuljs/nyc-config-typescript",
+  "version": "1.0.0",
+  "description": "nyc configuration that works with typescript",
+  "main": "index.json",
+  "files": [
+    "index.json"
+  ],
+  "scripts": {
+    "test": "exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+  },
+  "keywords": [
+    "typescript",
+    "config",
+    "nyc",
+    "test",
+    "coverage"
+  ],
+  "author": "Jason Kurian <jgkurian@me.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
+  },
+  "homepage": "https://github.com/istanbuljs/istanbuljs#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "peerDependencies": {
+    "source-map-support": "*",
+    "ts-node": "*"
+  }
+}
