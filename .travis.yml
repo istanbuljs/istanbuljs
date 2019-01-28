@@ -1,15 +1,12 @@
-sudo: false
 language: node_js
 node_js:
-  - 6
+  - 'node'
+  - 10
   - 8
-  - 'stable'
+  - 6
 
 env:
   global:
     COVERALLS_PARALLEL: true
-
-before_install:
-  - npm cache clear --force
 
 after_success: nyc report --reporter=text-lcov | coveralls
