@@ -5,7 +5,7 @@ project with test coverage using [nyc](https://github.com/istanbuljs/nyc).
 
 First install the dependencies:
 
-`npm i source-map-support ts-node @istanbuljs/nyc-config-typescript --save-dev`
+`npm i nyc source-map-support ts-node @istanbuljs/nyc-config-typescript --save-dev`
 
 Then write a `tsconfig.json` that looks something like this:
 
@@ -21,11 +21,13 @@ Then write a `tsconfig.json` that looks something like this:
 
 ## .nycrc
 
-And write a `.nycrc` that looks something like this:
+And write a `.nycrc` that looks like this:
 
 ```json
 {
-  "extends": "@istanbuljs/nyc-config-typescript"
+  "extends": "@istanbuljs/nyc-config-typescript",
+  // OPTIONAL if you want coverage reported on every file, including those that aren't tested:
+  "all": true
 }
 ```
 
