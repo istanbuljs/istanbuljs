@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.1.0...istanbul-reports@2.1.1) (2019-02-14)
+
+
+### Bug Fixes
+
+* update dependendencies due to vulnerabilities ([#294](https://github.com/istanbuljs/istanbuljs/issues/294)) ([4c14fed](https://github.com/istanbuljs/istanbuljs/commit/4c14fed))
+
+
+
+
+
 # [2.1.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.0.3...istanbul-reports@2.1.0) (2019-01-26)
 
 
