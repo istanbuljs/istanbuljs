@@ -72,6 +72,10 @@ function createDataBackslash() {
 
 describe('transformer', function() {
     it('maps statement locations', function() {
+        if (isWindows()) {
+            return this.skip();
+        }
+
         var coverageMap = createMap({}),
             testData = createData(),
             coverageData = testData.coverageData,
