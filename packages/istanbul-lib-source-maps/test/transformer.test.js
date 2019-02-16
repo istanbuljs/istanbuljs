@@ -1,30 +1,30 @@
 /* globals describe, it */
-var assert = require('chai').assert,
-    isWindows = require('is-windows'),
-    createMap = require('istanbul-lib-coverage').createCoverageMap,
-    SMC = require('source-map').SourceMapConsumer,
-    createTransformer = require('../lib/transformer').create,
-    coverageData = {
-        statementMap: {
-            '0': {
-                start: { line: 2, column: 0 },
-                end: { line: 2, column: 29 }
-            },
-            '1': {
-                start: { line: 3, column: 0 },
-                end: { line: 3, column: 47 }
-            }
+const assert = require('chai').assert;
+const isWindows = require('is-windows');
+const createMap = require('istanbul-lib-coverage').createCoverageMap;
+const SMC = require('source-map').SourceMapConsumer;
+const createTransformer = require('../lib/transformer').create;
+const coverageData = {
+    statementMap: {
+        '0': {
+            start: { line: 2, column: 0 },
+            end: { line: 2, column: 29 }
         },
-        fnMap: {},
-        branchMap: {},
-        s: {
-            '0': 0,
-            '1': 0,
-            '2': 0
-        },
-        f: {},
-        b: {}
-    };
+        '1': {
+            start: { line: 3, column: 0 },
+            end: { line: 3, column: 47 }
+        }
+    },
+    fnMap: {},
+    branchMap: {},
+    s: {
+        '0': 0,
+        '1': 0,
+        '2': 0
+    },
+    f: {},
+    b: {}
+};
 
 function createData() {
     var data = Object.assign({}, coverageData);
@@ -53,13 +53,13 @@ describe('transformer', function() {
             return this.skip();
         }
 
-        var coverageMap = createMap({}),
-            testData = createData(),
-            coverageData = testData.coverageData,
-            sourceMap = testData.sourceMap;
+        const coverageMap = createMap({});
+        const testData = createData();
+        const coverageData = testData.coverageData;
+        const sourceMap = testData.sourceMap;
 
         coverageMap.addFileCoverage(coverageData);
-        var mapped = createTransformer(function() {
+        const mapped = createTransformer(function() {
             return new SMC(sourceMap);
         }).transform(coverageMap);
 
@@ -80,17 +80,17 @@ describe('transformer', function() {
             return this.skip();
         }
 
-        var coverageMap = createMap({}),
-            testDataSlash = createData(),
-            testDataBackslash = createDataBackslash(),
-            coverageDataSlash = testDataSlash.coverageData,
-            coverageDataBackslash = testDataBackslash.coverageData,
-            sourceMap = testDataSlash.sourceMap;
+        const coverageMap = createMap({});
+        const testDataSlash = createData();
+        const testDataBackslash = createDataBackslash();
+        const coverageDataSlash = testDataSlash.coverageData;
+        const coverageDataBackslash = testDataBackslash.coverageData;
+        const sourceMap = testDataSlash.sourceMap;
 
         coverageMap.addFileCoverage(coverageDataSlash);
         coverageMap.addFileCoverage(coverageDataBackslash);
 
-        var mapped = createTransformer(function(file) {
+        const mapped = createTransformer(function(file) {
             return file === coverageDataSlash.path
                 ? new SMC(sourceMap)
                 : undefined;
