@@ -273,13 +273,12 @@ function getUniqueKey(path) {
 }
 
 function getOutput(cache) {
-    var output = {},
-        item;
-    Object.keys(cache).forEach(function(key) {
-        item = cache[key];
-        output[item.file] = item.mappedCoverage;
-    });
-    return output;
+    return Object.keys(cache).reduce((output, key) => {
+        const item = cache[key];
+        return Object.assign(output, {
+            [item.file]: item.mappedCoverage
+        });
+    }, {});
 }
 
 module.exports = {
