@@ -484,6 +484,8 @@ const codeVisitor = {
     ArrowFunctionExpression: entries(convertArrowExpression, coverFunction),
     AssignmentPattern: entries(coverAssignmentPattern),
     BlockStatement: entries(), // ignore processing only
+    ExportDefaultDeclaration: entries(), // ignore processing only
+    ExportNamedDeclaration: entries(), // ignore processing only
     ClassMethod: entries(coverFunction),
     ClassDeclaration: entries(parenthesizedExpressionProp('superClass')),
     ObjectMethod: entries(coverFunction),
