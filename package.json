@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
-  "homepage": "https://istanbul.js.org/",
+  "homepage": "https://github.com/istanbuljs/istanbuljs",
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
