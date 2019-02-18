@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/istanbuljs/istanbuljs/issues"
   },
-  "homepage": "https://github.com/istanbuljs/istanbuljs#readme",
+  "homepage": "https://istanbul.js.org/",
   "dependencies": {
     "arrify": "^1.0.1",
     "minimatch": "^3.0.4",
