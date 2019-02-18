@@ -1,6 +1,6 @@
 /* globals describe, it */
+const path = require('path');
 const assert = require('chai').assert;
-const isWindows = require('is-windows');
 const createMap = require('istanbul-lib-coverage').createCoverageMap;
 const SMC = require('source-map').SourceMapConsumer;
 const createTransformer = require('../lib/transformer').create;
@@ -27,29 +27,33 @@ const coverageData = {
     b: {}
 };
 
+const sourceFileSlash = path
+    .join(__dirname, 'path/to/file.js')
+    .replace(/\\/g, '/');
+
+const sourceFileBackslash = path
+    .join(__dirname, 'path\\to\\file.js')
+    .replace(/\//g, '\\');
+
 const testDataSlash = {
     sourceMap: {
         version: 3,
-        sources: ['file.js'],
+        sources: [sourceFileSlash],
         mappings: ';AAAa,mBAAW,GAAG,MAAM,CAAC;AACrB,kBAAU,GAAG,yBAAyB,CAAC'
     },
     coverageData: Object.assign({}, coverageData, {
-        path: '/path/to/file.js'
+        path: sourceFileSlash
     })
 };
 
 const testDataBackslash = {
     coverageData: Object.assign({}, coverageData, {
-        path: '\\path\\to\\file.js'
+        path: sourceFileBackslash
     })
 };
 
 describe('transformer', function() {
     it('maps statement locations', function() {
-        if (isWindows()) {
-            return this.skip();
-        }
-
         const coverageMap = createMap({});
         coverageMap.addFileCoverage(testDataSlash.coverageData);
 
@@ -73,10 +77,6 @@ describe('transformer', function() {
     });
 
     it('maps each file only once, /path/to/file.js and \\path\\to\\file.js are the same file', function() {
-        if (isWindows()) {
-            return this.skip();
-        }
-
         const coverageMap = createMap({});
 
         coverageMap.addFileCoverage(testDataSlash.coverageData);
