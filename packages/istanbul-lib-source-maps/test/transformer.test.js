@@ -27,13 +27,8 @@ const coverageData = {
     b: {}
 };
 
-const sourceFileSlash = path
-    .join(__dirname, 'path/to/file.js')
-    .replace(/\\/g, '/');
-
-const sourceFileBackslash = path
-    .join(__dirname, 'path\\to\\file.js')
-    .replace(/\//g, '\\');
+const sourceFileSlash = path.posix.normalize('/path/to/file.js');
+const sourceFileBackslash = path.win32.normalize('/path/to/file.js');
 
 const testDataSlash = {
     sourceMap: {
