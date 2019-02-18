@@ -66,6 +66,41 @@ describe('varia', function() {
         );
     });
 
+    it('honors ignore next for exported functions', function() {
+        /* https://github.com/istanbuljs/istanbuljs/issues/297 */
+        var v = verifier.create(
+                '/* istanbul ignore next*/ export function fn1() {}' +
+                    '/* istanbul ignore next*/ export default function() {}',
+                { generateOnly: true },
+                { esModules: true }
+            ),
+            code;
+        assert.ok(!v.err);
+        code = v.getGeneratedCode();
+        assert.ok(
+            code.match(
+                /}\(\);export function fn1\(\){}export default function\(\){}/
+            )
+        );
+    });
+
+    it('instruments exported functions', function() {
+        /* https://github.com/istanbuljs/istanbuljs/issues/297 */
+        var v = verifier.create(
+                'export function fn1() {}' + 'export default function() {}',
+                { generateOnly: true },
+                { esModules: true }
+            ),
+            code;
+        assert.ok(!v.err);
+        code = v.getGeneratedCode();
+        assert.ok(
+            code.match(
+                /}\(\);export function fn1\(\){cov_(.+)\.f\[\d+\]\+\+;}export default function\(\){cov_(.+)\.f\[\d+\]\+\+;}/
+            )
+        );
+    });
+
     it('returns last coverage object', function(cb) {
         var instrumenter = new Instrumenter({
                 coverageVariable: '__testing_coverage__'
