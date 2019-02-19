@@ -88,7 +88,7 @@ MapStore.prototype.registerMap = function(transformedFilePath, sourceMap) {
  * coverage map and `sourceFinder` which is a function to return the source
  * text for a file.
  */
-MapStore.prototype.transformCoverage = function(coverageMap) {
+MapStore.prototype.transformCoverage = async function(coverageMap) {
     var that = this,
         mappedCoverage,
         sourceFinder;
@@ -117,8 +117,8 @@ MapStore.prototype.transformCoverage = function(coverageMap) {
             sourceFinder: sourceFinder
         };
     }
-    mappedCoverage = transformer
-        .create(function(filePath) {
+    mappedCoverage = await transformer
+        .create(async function(filePath) {
             try {
                 if (!that.data[filePath]) {
                     return null;
@@ -134,7 +134,7 @@ MapStore.prototype.transformCoverage = function(coverageMap) {
                 } else {
                     obj = d.data;
                 }
-                smc = new SMC(obj);
+                smc = await new SMC(obj);
                 smc.sources.forEach(function(s) {
                     var content = smc.sourceContentFor(s),
                         sourceFilePath = pathutils.relativeTo(s, filePath);

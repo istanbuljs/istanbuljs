@@ -54,7 +54,7 @@ function createData() {
 }
 
 describe('transformer', function() {
-    it('maps statement locations', function() {
+    it('maps statement locations', async function() {
         if (isWindows()) {
             return this.skip();
         }
@@ -65,9 +65,7 @@ describe('transformer', function() {
             sourceMap = testData.sourceMap;
 
         coverageMap.addFileCoverage(coverageData);
-        var mapped = createTransformer(function() {
-            return new SMC(sourceMap);
-        }).transform(coverageMap);
+        var mapped = await createTransformer(() => new SMC(sourceMap)).transform(coverageMap);
 
         assert.deepEqual(mapped.data[coverageData.path].statementMap, {
             '0': {

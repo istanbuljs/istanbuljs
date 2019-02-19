@@ -7,13 +7,13 @@ var assert = require('chai').assert,
 describe('map store', function() {
     var coverageData;
 
-    it('applies the inputSourceMap from the coverage object if available', function() {
+    it('applies the inputSourceMap from the coverage object if available', async function() {
         /* shint ignore:line */
         var mapStore = new MapStore({});
 
         var coverageMap = libCoverage.createCoverageMap(coverageData);
 
-        var transformed = mapStore.transformCoverage(coverageMap);
+        var transformed = await mapStore.transformCoverage(coverageMap);
         assert.isUndefined(transformed.map.data.constructor);
 
         var transformedCoverage =
@@ -26,8 +26,8 @@ describe('map store', function() {
                     column: 0
                 },
                 end: {
-                    line: 1,
-                    column: 13
+                    line: 5,
+                    column: Infinity
                 }
             },
             '1': {
@@ -91,7 +91,7 @@ describe('map store', function() {
                     },
                     end: {
                         line: 5,
-                        column: Infinity
+                        column: 1
                     }
                 }
             },

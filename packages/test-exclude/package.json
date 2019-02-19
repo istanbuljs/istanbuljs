@@ -33,6 +33,6 @@
     "require-main-filename": "^1.0.1"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   }
 }

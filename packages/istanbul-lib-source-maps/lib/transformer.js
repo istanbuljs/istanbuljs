@@ -231,7 +231,7 @@ SourceMapTransformer.prototype.processFile = function(
     return changes > 0;
 };
 
-SourceMapTransformer.prototype.transform = function(coverageMap) {
+SourceMapTransformer.prototype.transform = async function(coverageMap) {
     var that = this,
         finder = this.finder,
         output = {},
@@ -242,9 +242,9 @@ SourceMapTransformer.prototype.transform = function(coverageMap) {
             return output[file];
         };
 
-    coverageMap.files().forEach(function(file) {
+    await Promise.all(coverageMap.files().map(async function(file) {
         var fc = coverageMap.fileCoverageFor(file),
-            sourceMap = finder(file),
+            sourceMap = await finder(file),
             changed;
 
         if (!sourceMap) {
@@ -253,10 +253,12 @@ SourceMapTransformer.prototype.transform = function(coverageMap) {
         }
 
         changed = that.processFile(fc, sourceMap, getMappedCoverage);
+        sourceMap.destroy();
         if (!changed) {
             debug('File [' + file + '] ignored, nothing could be mapped');
         }
-    });
+    }));
+
     return libCoverage.createCoverageMap(output);
 };
 

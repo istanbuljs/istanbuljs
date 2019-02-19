@@ -32,6 +32,6 @@
   },
   "homepage": "https://istanbul.js.org/",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   }
 }
