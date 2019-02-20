@@ -4,10 +4,10 @@
  */
 'use strict';
 
-var debug = require('debug')('istanbuljs'),
-    pathutils = require('./pathutils'),
-    libCoverage = require('istanbul-lib-coverage'),
-    MappedCoverage = require('./mapped').MappedCoverage;
+const debug = require('debug')('istanbuljs');
+const libCoverage = require('istanbul-lib-coverage');
+const pathutils = require('./pathutils');
+const { MappedCoverage } = require('./mapped');
 
 function isInvalidPosition(pos) {
     return (
@@ -43,7 +43,7 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
     // generated file end location. Note however that this position on its
     // own is not useful because it is the position of the _start_ of the range
     // on the original file, and we want the _end_ of the range.
-    var beforeEndMapping = sourceMap.originalPositionFor({
+    const beforeEndMapping = sourceMap.originalPositionFor({
         line: generatedEnd.line,
         column: generatedEnd.column - 1
     });
@@ -56,7 +56,7 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
     // for mappings in the original-order sorted list, this will find the
     // mapping that corresponds to the one immediately after the
     // beforeEndMapping mapping.
-    var afterEndMapping = sourceMap.generatedPositionFor({
+    const afterEndMapping = sourceMap.generatedPositionFor({
         source: beforeEndMapping.source,
         line: beforeEndMapping.line,
         column: beforeEndMapping.column + 1,
@@ -101,16 +101,18 @@ function getMapping(sourceMap, generatedLocation, origFile) {
         return null;
     }
 
-    var start = sourceMap.originalPositionFor(generatedLocation.start),
-        end = originalEndPositionFor(sourceMap, generatedLocation.end);
+    const start = sourceMap.originalPositionFor(generatedLocation.start);
+    let end = originalEndPositionFor(sourceMap, generatedLocation.end);
 
     /* istanbul ignore if: edge case too hard to test for */
     if (!(start && end)) {
         return null;
     }
+
     if (!(start.source && end.source)) {
         return null;
     }
+
     if (start.source !== end.source) {
         return null;
     }
@@ -119,6 +121,7 @@ function getMapping(sourceMap, generatedLocation, origFile) {
     if (start.line === null || start.column === null) {
         return null;
     }
+
     /* istanbul ignore if: edge case too hard to test for */
     if (end.line === null || end.column === null) {
         return null;
@@ -130,7 +133,7 @@ function getMapping(sourceMap, generatedLocation, origFile) {
             column: generatedLocation.end.column,
             bias: 2
         });
-        end.column = end.column - 1;
+        end.column -= 1;
     }
 
     return {
@@ -148,126 +151,6 @@ function getMapping(sourceMap, generatedLocation, origFile) {
     };
 }
 
-function SourceMapTransformer(finder, opts) {
-    opts = opts || {};
-    this.finder = finder;
-    this.baseDir = opts.baseDir || process.cwd();
-}
-
-SourceMapTransformer.prototype.processFile = function(
-    fc,
-    sourceMap,
-    coverageMapper
-) {
-    var changes = 0;
-
-    Object.keys(fc.statementMap).forEach(function(s) {
-        var loc = fc.statementMap[s],
-            hits = fc.s[s],
-            mapping = getMapping(sourceMap, loc, fc.path),
-            mappedCoverage;
-
-        if (mapping) {
-            changes += 1;
-            mappedCoverage = coverageMapper(mapping.source);
-            mappedCoverage.addStatement(mapping.loc, hits);
-        }
-    });
-
-    Object.keys(fc.fnMap).forEach(function(f) {
-        var fnMeta = fc.fnMap[f],
-            hits = fc.f[f],
-            mapping = getMapping(sourceMap, fnMeta.decl, fc.path),
-            spanMapping = getMapping(sourceMap, fnMeta.loc, fc.path),
-            mappedCoverage;
-
-        if (mapping && spanMapping && mapping.source === spanMapping.source) {
-            changes += 1;
-            mappedCoverage = coverageMapper(mapping.source);
-            mappedCoverage.addFunction(
-                fnMeta.name,
-                mapping.loc,
-                spanMapping.loc,
-                hits
-            );
-        }
-    });
-
-    Object.keys(fc.branchMap).forEach(function(b) {
-        var branchMeta = fc.branchMap[b],
-            source,
-            hits = fc.b[b],
-            mapping,
-            locs = [],
-            mappedHits = [],
-            mappedCoverage,
-            skip,
-            i;
-        for (i = 0; i < branchMeta.locations.length; i += 1) {
-            mapping = getMapping(sourceMap, branchMeta.locations[i], fc.path);
-            if (mapping) {
-                if (!source) {
-                    source = mapping.source;
-                }
-                if (mapping.source !== source) {
-                    skip = true;
-                }
-                locs.push(mapping.loc);
-                mappedHits.push(hits[i]);
-            }
-        }
-        if (!skip && locs.length > 0) {
-            changes += 1;
-            mappedCoverage = coverageMapper(source);
-            mappedCoverage.addBranch(
-                branchMeta.type,
-                locs[0] /* XXX */,
-                locs,
-                mappedHits
-            );
-        }
-    });
-
-    return changes > 0;
-};
-
-SourceMapTransformer.prototype.transform = function(coverageMap) {
-    var that = this,
-        finder = this.finder,
-        uniqueFiles = {},
-        key,
-        getMappedCoverage = function(file) {
-            key = getUniqueKey(file);
-            if (!uniqueFiles[key]) {
-                uniqueFiles[key] = {
-                    file: file,
-                    mappedCoverage: new MappedCoverage(file)
-                };
-            }
-            return uniqueFiles[key].mappedCoverage;
-        };
-
-    coverageMap.files().forEach(function(file) {
-        var fc = coverageMap.fileCoverageFor(file),
-            sourceMap = finder(file),
-            changed;
-
-        if (!sourceMap) {
-            uniqueFiles[getUniqueKey(file)] = {
-                file: file,
-                mappedCoverage: fc
-            };
-            return;
-        }
-
-        changed = that.processFile(fc, sourceMap, getMappedCoverage);
-        if (!changed) {
-            debug('File [' + file + '] ignored, nothing could be mapped');
-        }
-    });
-    return libCoverage.createCoverageMap(getOutput(uniqueFiles));
-};
-
 function getUniqueKey(path) {
     return path.replace(/[\\/]/g, '_');
 }
@@ -281,8 +164,125 @@ function getOutput(cache) {
     }, {});
 }
 
+class SourceMapTransformer {
+    constructor(finder, opts = {}) {
+        this.finder = finder;
+        this.baseDir = opts.baseDir || process.cwd();
+    }
+
+    processFile(fc, sourceMap, coverageMapper) {
+        let changes = 0;
+
+        Object.keys(fc.statementMap).forEach(s => {
+            const loc = fc.statementMap[s];
+            const hits = fc.s[s];
+            const mapping = getMapping(sourceMap, loc, fc.path);
+
+            if (mapping) {
+                changes += 1;
+                const mappedCoverage = coverageMapper(mapping.source);
+                mappedCoverage.addStatement(mapping.loc, hits);
+            }
+        });
+
+        Object.keys(fc.fnMap).forEach(f => {
+            const fnMeta = fc.fnMap[f];
+            const hits = fc.f[f];
+            const mapping = getMapping(sourceMap, fnMeta.decl, fc.path);
+            const spanMapping = getMapping(sourceMap, fnMeta.loc, fc.path);
+
+            if (
+                mapping &&
+                spanMapping &&
+                mapping.source === spanMapping.source
+            ) {
+                changes += 1;
+                const mappedCoverage = coverageMapper(mapping.source);
+                mappedCoverage.addFunction(
+                    fnMeta.name,
+                    mapping.loc,
+                    spanMapping.loc,
+                    hits
+                );
+            }
+        });
+
+        Object.keys(fc.branchMap).forEach(b => {
+            const branchMeta = fc.branchMap[b];
+            const hits = fc.b[b];
+            const locs = [];
+            const mappedHits = [];
+            let source;
+            let skip;
+
+            branchMeta.locations.forEach((loc, i) => {
+                const mapping = getMapping(sourceMap, loc, fc.path);
+                if (mapping) {
+                    if (!source) {
+                        source = mapping.source;
+                    }
+
+                    if (mapping.source !== source) {
+                        skip = true;
+                    }
+
+                    locs.push(mapping.loc);
+                    mappedHits.push(hits[i]);
+                }
+            });
+
+            if (!skip && locs.length > 0) {
+                changes += 1;
+                const mappedCoverage = coverageMapper(source);
+                mappedCoverage.addBranch(
+                    branchMeta.type,
+                    locs[0] /* XXX */,
+                    locs,
+                    mappedHits
+                );
+            }
+        });
+
+        return changes > 0;
+    }
+
+    transform(coverageMap) {
+        const uniqueFiles = {};
+        const getMappedCoverage = file => {
+            const key = getUniqueKey(file);
+            if (!uniqueFiles[key]) {
+                uniqueFiles[key] = {
+                    file,
+                    mappedCoverage: new MappedCoverage(file)
+                };
+            }
+
+            return uniqueFiles[key].mappedCoverage;
+        };
+
+        coverageMap.files().forEach(file => {
+            const fc = coverageMap.fileCoverageFor(file);
+            const sourceMap = this.finder(file);
+            if (!sourceMap) {
+                uniqueFiles[getUniqueKey(file)] = {
+                    file,
+                    mappedCoverage: fc
+                };
+                return;
+            }
+
+            const changed = this.processFile(fc, sourceMap, getMappedCoverage);
+            if (!changed) {
+                debug(`File [${file}] ignored, nothing could be mapped`);
+            }
+        });
+
+        return libCoverage.createCoverageMap(getOutput(uniqueFiles));
+    }
+}
+
 module.exports = {
-    create: function(finder, opts) {
+    create(finder, opts) {
         return new SourceMapTransformer(finder, opts);
     }
 };

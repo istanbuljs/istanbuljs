@@ -1,78 +1,80 @@
-var util = require('util'),
-    os = require('os'),
-    path = require('path'),
-    mkdirp = require('make-dir'),
-    rimraf = require('rimraf'),
-    fs = require('fs');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const mkdirp = require('make-dir');
+const rimraf = require('rimraf');
 
-function SourceStore(/*opts*/) {}
+class SourceStore {
+    registerSource(/* filePath, sourceText */) {
+        throw new Error('registerSource must be overridden');
+    }
 
-SourceStore.prototype.registerSource = function(/* filePath, sourceText */) {
-    throw new Error('registerSource must be overridden');
-};
+    getSource(/* filePath */) {
+        throw new Error('getSource must be overridden');
+    }
 
-SourceStore.prototype.getSource = function(/* filePath */) {
-    throw new Error('getSource must be overridden');
-};
-
-SourceStore.prototype.dispose = function() {};
-
-function MemoryStore() {
-    this.data = {};
+    dispose() {}
 }
 
-util.inherits(MemoryStore, SourceStore);
+class MemoryStore extends SourceStore {
+    constructor() {
+        super();
 
-MemoryStore.prototype.registerSource = function(filePath, sourceText) {
-    this.data[filePath] = sourceText;
-};
+        this.data = {};
+    }
 
-MemoryStore.prototype.getSource = function(filePath) {
-    return this.data[filePath] || null;
-};
+    registerSource(filePath, sourceText) {
+        this.data[filePath] = sourceText;
+    }
 
-function FileStore(opts) {
-    opts = opts || {};
-    var tmpDir = opts.tmpdir || os.tmpdir();
-    this.counter = 0;
-    this.mappings = [];
-    this.basePath = path.resolve(tmpDir, '.istanbul', 'cache_');
-    mkdirp.sync(path.dirname(this.basePath));
+    getSource(filePath) {
+        return this.data[filePath] || null;
+    }
 }
 
-util.inherits(FileStore, SourceStore);
+class FileStore extends SourceStore {
+    constructor(opts = {}) {
+        super();
 
-FileStore.prototype.registerSource = function(filePath, sourceText) {
-    if (this.mappings[filePath]) {
-        return;
+        const tmpDir = opts.tmpdir || os.tmpdir();
+        this.counter = 0;
+        this.mappings = [];
+        this.basePath = path.resolve(tmpDir, '.istanbul', 'cache_');
+        mkdirp.sync(path.dirname(this.basePath));
     }
-    this.counter += 1;
-    var mapFile = this.basePath + this.counter;
-    this.mappings[filePath] = mapFile;
-    fs.writeFileSync(mapFile, sourceText, 'utf8');
-};
 
-FileStore.prototype.getSource = function(filePath) {
-    var mapFile = this.mappings[filePath];
-    if (!mapFile) {
-        return null;
+    registerSource(filePath, sourceText) {
+        if (this.mappings[filePath]) {
+            return;
+        }
+
+        this.counter += 1;
+        const mapFile = this.basePath + this.counter;
+        this.mappings[filePath] = mapFile;
+        fs.writeFileSync(mapFile, sourceText, 'utf8');
     }
-    return fs.readFileSync(mapFile, 'utf8');
-};
 
-FileStore.prototype.dispose = function() {
-    this.mappings = [];
-    rimraf.sync(path.dirname(this.basePath));
-};
+    getSource(filePath) {
+        const mapFile = this.mappings[filePath];
+        if (!mapFile) {
+            return null;
+        }
+
+        return fs.readFileSync(mapFile, 'utf8');
+    }
+
+    dispose() {
+        this.mappings = [];
+        rimraf.sync(path.dirname(this.basePath));
+    }
+}
 
 module.exports = {
-    create: function(type, opts) {
-        opts = opts || {};
-        type = (type || 'memory').toLowerCase();
-
-        if (type === 'file') {
+    create(type = 'memory', opts = {}) {
+        if (type.toLowerCase() === 'file') {
             return new FileStore(opts);
         }
+
         return new MemoryStore(opts);
     }
 };
