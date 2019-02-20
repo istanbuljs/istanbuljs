@@ -234,12 +234,17 @@ SourceMapTransformer.prototype.processFile = function(
 SourceMapTransformer.prototype.transform = function(coverageMap) {
     var that = this,
         finder = this.finder,
-        output = {},
+        uniqueFiles = {},
+        key,
         getMappedCoverage = function(file) {
-            if (!output[file]) {
-                output[file] = new MappedCoverage(file);
+            key = getUniqueKey(file);
+            if (!uniqueFiles[key]) {
+                uniqueFiles[key] = {
+                    file: file,
+                    mappedCoverage: new MappedCoverage(file)
+                };
             }
-            return output[file];
+            return uniqueFiles[key].mappedCoverage;
         };
 
     coverageMap.files().forEach(function(file) {
@@ -248,7 +253,10 @@ SourceMapTransformer.prototype.transform = function(coverageMap) {
             changed;
 
         if (!sourceMap) {
-            output[file] = fc;
+            uniqueFiles[getUniqueKey(file)] = {
+                file: file,
+                mappedCoverage: fc
+            };
             return;
         }
 
@@ -257,8 +265,21 @@ SourceMapTransformer.prototype.transform = function(coverageMap) {
             debug('File [' + file + '] ignored, nothing could be mapped');
         }
     });
-    return libCoverage.createCoverageMap(output);
+    return libCoverage.createCoverageMap(getOutput(uniqueFiles));
 };
+
+function getUniqueKey(path) {
+    return path.replace(/[\\/]/g, '_');
+}
+
+function getOutput(cache) {
+    return Object.keys(cache).reduce((output, key) => {
+        const item = cache[key];
+        return Object.assign(output, {
+            [item.file]: item.mappedCoverage
+        });
+    }, {});
+}
 
 module.exports = {
     create: function(finder, opts) {
