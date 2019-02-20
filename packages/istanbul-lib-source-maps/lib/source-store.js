@@ -4,17 +4,9 @@ const path = require('path');
 const mkdirp = require('make-dir');
 const rimraf = require('rimraf');
 
-class SourceStore {
-    registerSource(/* filePath, sourceText */) {
-        throw new Error('registerSource must be overridden');
-    }
-
-    getSource(/* filePath */) {
-        throw new Error('getSource must be overridden');
-    }
-
-    dispose() {}
-}
+/* This exists for compatibility only to avoid changing the
+ * prototype chain. */
+class SourceStore {}
 
 class MemoryStore extends SourceStore {
     constructor() {
@@ -30,6 +22,8 @@ class MemoryStore extends SourceStore {
     getSource(filePath) {
         return this.data[filePath] || null;
     }
+
+    dispose() {}
 }
 
 class FileStore extends SourceStore {

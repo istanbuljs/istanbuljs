@@ -59,7 +59,7 @@ class MapStore {
                     data: sourceMapUrl.substring(pos + b64.length)
                 };
             } else {
-                debug('Unable to interpret source map URL: ' + sourceMapUrl);
+                debug(`Unable to interpret source map URL: ${sourceMapUrl}`);
             }
 
             return;
@@ -84,7 +84,7 @@ class MapStore {
             };
         } else {
             debug(
-                'Invalid source map object:' +
+                'Invalid source map object: ' +
                     JSON.stringify(sourceMap, null, 2)
             );
         }
@@ -105,7 +105,7 @@ class MapStore {
                 return content;
             }
 
-            if (pathutils.isAbsolute(filePath)) {
+            if (path.isAbsolute(filePath)) {
                 return fs.readFileSync(filePath, 'utf8');
             }
 
