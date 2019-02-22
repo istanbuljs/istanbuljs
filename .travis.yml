@@ -8,6 +8,15 @@ node_js:
   - 10
   - 8
   - 6
+matrix:
+## An ENOMEM error occurs with 11.x.x under Travis-CI for Windows.
+## Disable until https://github.com/nodejs/node/issues/25484 is resolved.
+#  include:
+#    - os: windows
+#      node_js: "latest"
+  exclude:
+    - os: windows
+      node_js: "node"
 
 env:
   global:
