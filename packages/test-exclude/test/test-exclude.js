@@ -1,5 +1,7 @@
 /* global describe, it, context */
 
+const { spawnSync } = require('child_process');
+const path = require('path');
 const exclude = require('../');
 
 require('chai').should();
@@ -30,9 +32,18 @@ describe('testExclude', function() {
     });
 
     it('does not instrument files outside cwd', function() {
-        exclude()
+        exclude({ include: ['../foo.js'] })
             .shouldInstrument('../foo.js')
             .should.equal(false);
+    });
+
+    it('can instrument files outside cwd if relativePath=false', function() {
+        exclude({
+            include: ['../foo.js'],
+            relativePath: false
+        })
+            .shouldInstrument('../foo.js')
+            .should.equal(true);
     });
 
     it('does not instrument files in the coverage folder by default', function() {
@@ -106,6 +117,20 @@ describe('testExclude', function() {
         e.shouldInstrument('src/foo.js').should.equal(true);
     });
 
+    it('allows specific node_modules folder to be included, if !node_modules is explicitly provided', function() {
+        const e = exclude({
+            exclude: ['!**/node_modules/some/module/to/cover.js']
+        });
+
+        e.shouldInstrument('./banana/node_modules/cat.js').should.equal(false);
+        e.shouldInstrument('node_modules/some/module/to/cover.js').should.equal(
+            true
+        );
+        e.shouldInstrument('__tests__/a-test.js').should.equal(true);
+        e.shouldInstrument('src/a.test.js').should.equal(true);
+        e.shouldInstrument('src/foo.js').should.equal(true);
+    });
+
     it('allows negated exclude patterns', function() {
         const e = exclude({
             exclude: ['foo/**', '!foo/bar.js']
@@ -155,6 +180,15 @@ describe('testExclude', function() {
             e.shouldInstrument('foo.js').should.equal(true);
             e.shouldInstrument('batman.js').should.equal(false);
             e.configFound.should.equal(true);
+        });
+
+        it('should load exclude rules from config key using process location', function() {
+            /* This needs to be a separate process so we resolve
+             * the correct package.json instead of trying to look
+             * at the package.json provided by mocha */
+            spawnSync(process.argv0, [
+                path.resolve(__dirname, 'fixtures/subprocess/bin/subprocess.js')
+            ]).status.should.equal(0);
         });
 
         it('should load include rules from config key', function() {
