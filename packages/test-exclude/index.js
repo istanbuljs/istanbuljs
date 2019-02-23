@@ -1,5 +1,6 @@
 const path = require('path');
 const arrify = require('arrify');
+const glob = require('glob');
 const minimatch = require('minimatch');
 const readPkgUp = require('read-pkg-up');
 const requireMainFilename = require('require-main-filename');
@@ -108,6 +109,23 @@ class TestExclude {
         }
 
         return {};
+    }
+
+    globSync(extensions = ['.js'], cwd = this.cwd) {
+        const sourceGlob =
+            extensions.length === 1
+                ? `**/*${extensions[0]}`
+                : `**/*{${extensions.join()}}`;
+        const globOpts = { cwd, nodir: true };
+        const ignoreOpts = Object.assign({ ignore: this.exclude }, globOpts);
+
+        /* Package node-glob no longer observes negated
+         * excludes, so we need to restore these files */
+        const files = glob
+            .sync(sourceGlob, ignoreOpts)
+            .concat(...this.excludeNegated.map(p => glob.sync(p, globOpts)));
+
+        return [...new Set(files)];
     }
 }
 

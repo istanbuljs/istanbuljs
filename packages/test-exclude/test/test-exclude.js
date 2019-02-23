@@ -300,6 +300,96 @@ describe('testExclude', function() {
         });
     });
 
+    describe('globSync', function() {
+        const cwd = path.resolve(__dirname, 'fixtures/glob');
+
+        it('should exclude the node_modules folder by default', function() {
+            const e = exclude({ cwd });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal(['file1.js', 'file2.js']);
+
+            e.globSync(['.json'])
+                .sort()
+                .should.deep.equal(['package.json']);
+
+            e.globSync(['.js', '.json'])
+                .sort()
+                .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
+
+            exclude()
+                .globSync(['.js', '.json'], cwd)
+                .sort()
+                .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
+        });
+
+        it('applies exclude rule ahead of include rule', function() {
+            const e = exclude({
+                cwd,
+                include: ['file1.js', 'file2.js'],
+                exclude: ['file1.js']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal(['file2.js']);
+        });
+
+        it('allows node_modules folder to be included, if !node_modules is explicitly provided', function() {
+            const e = exclude({
+                cwd,
+                exclude: ['!node_modules']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal([
+                    'file1.js',
+                    'file2.js',
+                    'node_modules/something/index.js',
+                    'node_modules/something/other.js'
+                ]);
+        });
+
+        it('allows specific node_modules folder to be included, if !node_modules is explicitly provided', function() {
+            const e = exclude({
+                cwd,
+                exclude: ['!node_modules/something/other.js']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal([
+                    'file1.js',
+                    'file2.js',
+                    'node_modules/something/other.js'
+                ]);
+        });
+
+        it('allows negated exclude patterns', function() {
+            const e = exclude({
+                cwd,
+                exclude: ['*.js', '!file1.js']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal(['file1.js']);
+        });
+
+        it('allows negated include patterns', function() {
+            const e = exclude({
+                cwd,
+                include: ['*.js', '!file2.js']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal(['file1.js']);
+        });
+    });
+
     // see: https://github.com/istanbuljs/babel-plugin-istanbul/issues/71
     it('allows exclude/include rule to be a string', function() {
         const e = exclude({
