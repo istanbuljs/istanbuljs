@@ -16,7 +16,8 @@ class TestExclude {
                 configKey: null, // the key to load config from in package.json.
                 configPath: null, // optionally override requireMainFilename.
                 configFound: false,
-                excludeNodeModules: true
+                excludeNodeModules: true,
+                extension: false
             },
             opts
         );
@@ -27,6 +28,15 @@ class TestExclude {
 
         if (typeof this.exclude === 'string') {
             this.exclude = [this.exclude];
+        }
+
+        if (typeof this.extension === 'string') {
+            this.extension = [this.extension];
+        } else if (
+            !Array.isArray(this.extension) ||
+            this.extension.length === 0
+        ) {
+            this.extension = false;
         }
 
         if (!this.include && !this.exclude && this.configKey) {
@@ -77,6 +87,13 @@ class TestExclude {
     }
 
     shouldInstrument(filename, relFile) {
+        if (
+            this.extension &&
+            !this.extension.some(ext => filename.endsWith(ext))
+        ) {
+            return false;
+        }
+
         let pathToCheck = filename;
 
         if (this.relativePath) {
@@ -111,21 +128,10 @@ class TestExclude {
         return {};
     }
 
-    globSync(extensions = ['.js'], cwd = this.cwd) {
-        const sourceGlob =
-            extensions.length === 1
-                ? `**/*${extensions[0]}`
-                : `**/*{${extensions.join()}}`;
-        const globOpts = { cwd, nodir: true };
-        const ignoreOpts = Object.assign({ ignore: this.exclude }, globOpts);
-
-        /* Package node-glob no longer observes negated
-         * excludes, so we need to restore these files */
-        const files = glob
-            .sync(sourceGlob, ignoreOpts)
-            .concat(...this.excludeNegated.map(p => glob.sync(p, globOpts)));
-
-        return [...new Set(files)];
+    globSync(cwd = this.cwd) {
+        return glob
+            .sync('**', { cwd, nodir: true })
+            .filter(file => this.shouldInstrument(path.resolve(cwd, file)));
     }
 }
 

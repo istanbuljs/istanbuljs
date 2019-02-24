@@ -302,24 +302,26 @@ describe('testExclude', function() {
 
     describe('globSync', function() {
         const cwd = path.resolve(__dirname, 'fixtures/glob');
+        const extension = '.js';
 
         it('should exclude the node_modules folder by default', function() {
-            const e = exclude({ cwd });
-
-            e.globSync()
+            exclude({ cwd, extension })
+                .globSync()
                 .sort()
                 .should.deep.equal(['file1.js', 'file2.js']);
 
-            e.globSync(['.json'])
+            exclude({ cwd, extension: ['.json'] })
+                .globSync()
                 .sort()
                 .should.deep.equal(['package.json']);
 
-            e.globSync(['.js', '.json'])
+            exclude({ cwd, extension: [] })
+                .globSync()
                 .sort()
                 .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
 
-            exclude()
-                .globSync(['.js', '.json'], cwd)
+            exclude({ cwd: path.join(process.cwd(), 'test') })
+                .globSync(cwd)
                 .sort()
                 .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
         });
@@ -327,6 +329,7 @@ describe('testExclude', function() {
         it('applies exclude rule ahead of include rule', function() {
             const e = exclude({
                 cwd,
+                extension,
                 include: ['file1.js', 'file2.js'],
                 exclude: ['file1.js']
             });
@@ -339,6 +342,7 @@ describe('testExclude', function() {
         it('allows node_modules folder to be included, if !node_modules is explicitly provided', function() {
             const e = exclude({
                 cwd,
+                extension,
                 exclude: ['!node_modules']
             });
 
@@ -355,6 +359,7 @@ describe('testExclude', function() {
         it('allows specific node_modules folder to be included, if !node_modules is explicitly provided', function() {
             const e = exclude({
                 cwd,
+                extension,
                 exclude: ['!node_modules/something/other.js']
             });
 
@@ -370,6 +375,7 @@ describe('testExclude', function() {
         it('allows negated exclude patterns', function() {
             const e = exclude({
                 cwd,
+                extension,
                 exclude: ['*.js', '!file1.js']
             });
 
