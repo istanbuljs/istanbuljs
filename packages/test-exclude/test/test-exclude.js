@@ -168,6 +168,26 @@ describe('testExclude', function() {
         e.shouldInstrument('./batman/robin.js').should.equal(false);
     });
 
+    it('handles extension option', function() {
+        const js = exclude({
+            extension: '.js'
+        });
+
+        js.shouldInstrument('file.js').should.equal(true);
+        js.shouldInstrument('package.json').should.equal(false);
+
+        const any = exclude();
+        any.shouldInstrument('file.js').should.equal(true);
+        any.shouldInstrument('package.json').should.equal(true);
+
+        const multi = exclude({
+            extension: ['.js', '.json']
+        });
+        multi.shouldInstrument('file.js').should.equal(true);
+        multi.shouldInstrument('file.png').should.equal(false);
+        multi.shouldInstrument('package.json').should.equal(true);
+    });
+
     it('negated exclude patterns unrelated to node_modules do not affect default node_modules exclude behavior', function() {
         const e = exclude({
             exclude: ['!foo/**']
@@ -316,6 +336,11 @@ describe('testExclude', function() {
                 .should.deep.equal(['package.json']);
 
             exclude({ cwd, extension: [] })
+                .globSync()
+                .sort()
+                .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
+
+            exclude({ cwd, extension: ['.js', '.json'] })
                 .globSync()
                 .sort()
                 .should.deep.equal(['file1.js', 'file2.js', 'package.json']);

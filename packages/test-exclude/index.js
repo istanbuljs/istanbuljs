@@ -32,10 +32,7 @@ class TestExclude {
 
         if (typeof this.extension === 'string') {
             this.extension = [this.extension];
-        } else if (
-            !Array.isArray(this.extension) ||
-            this.extension.length === 0
-        ) {
+        } else if (!Array.isArray(this.extension) || this.extension.length === 0) {
             this.extension = false;
         }
 
@@ -129,8 +126,10 @@ class TestExclude {
     }
 
     globSync(cwd = this.cwd) {
+        const sourceGlob = getExtensionPattern(this.extension || []);
+
         return glob
-            .sync('**', { cwd, nodir: true })
+            .sync(sourceGlob, { cwd, nodir: true })
             .filter(file => this.shouldInstrument(path.resolve(cwd, file)));
     }
 }
@@ -149,6 +148,17 @@ function prepGlobPatterns(patterns) {
 
         return result.concat(pattern);
     }, []);
+}
+
+function getExtensionPattern(extension) {
+    switch (extension.length) {
+        case 0:
+            return '**';
+        case 1:
+            return `**/*${extension[0]}`;
+        default:
+            return `**/*{${extension.join()}}`;
+    }
 }
 
 const exportFunc = opts => new TestExclude(opts);
