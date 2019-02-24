@@ -32,7 +32,10 @@ class TestExclude {
 
         if (typeof this.extension === 'string') {
             this.extension = [this.extension];
-        } else if (!Array.isArray(this.extension) || this.extension.length === 0) {
+        } else if (
+            !Array.isArray(this.extension) ||
+            this.extension.length === 0
+        ) {
             this.extension = false;
         }
 
@@ -126,10 +129,16 @@ class TestExclude {
     }
 
     globSync(cwd = this.cwd) {
-        const sourceGlob = getExtensionPattern(this.extension || []);
+        const globPatterns = getExtensionPattern(this.extension || []);
+        const globOptions = { cwd, nodir: true };
+        /* If we don't have any excludeNegated then we can optimize glob by telling
+         * it to not iterate into unwanted directory trees (like node_modules). */
+        if (this.excludeNegated.length === 0) {
+            globOptions.ignore = this.exclude;
+        }
 
         return glob
-            .sync(sourceGlob, { cwd, nodir: true })
+            .sync(globPatterns, globOptions)
             .filter(file => this.shouldInstrument(path.resolve(cwd, file)));
     }
 }
