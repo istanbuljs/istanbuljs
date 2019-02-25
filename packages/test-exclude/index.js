@@ -130,7 +130,7 @@ class TestExclude {
 
     globSync(cwd = this.cwd) {
         const globPatterns = getExtensionPattern(this.extension || []);
-        const globOptions = { cwd, nodir: true };
+        const globOptions = { cwd, nodir: true, dot: true };
         /* If we don't have any excludeNegated then we can optimize glob by telling
          * it to not iterate into unwanted directory trees (like node_modules). */
         if (this.excludeNegated.length === 0) {

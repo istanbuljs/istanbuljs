@@ -338,7 +338,12 @@ describe('testExclude', function() {
             exclude({ cwd, extension: [] })
                 .globSync()
                 .sort()
-                .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
+                .should.deep.equal([
+                    '.nycrc',
+                    'file1.js',
+                    'file2.js',
+                    'package.json'
+                ]);
 
             exclude({ cwd, extension: ['.js', '.json'] })
                 .globSync()
@@ -348,7 +353,12 @@ describe('testExclude', function() {
             exclude({ cwd: path.join(process.cwd(), 'test') })
                 .globSync(cwd)
                 .sort()
-                .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
+                .should.deep.equal([
+                    '.nycrc',
+                    'file1.js',
+                    'file2.js',
+                    'package.json'
+                ]);
         });
 
         it('applies exclude rule ahead of include rule', function() {
