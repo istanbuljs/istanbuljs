@@ -131,6 +131,25 @@ describe('testExclude', function() {
         e.shouldInstrument('src/foo.js').should.equal(true);
     });
 
+    it('allows node_modules default exclusion glob to be turned off, if excludeNodeModules === false', function() {
+        const e = exclude({
+            excludeNodeModules: false,
+            exclude: ['node_modules/**', '**/__test__/**']
+        });
+
+        e.shouldInstrument('node_modules/cat.js').should.equal(false);
+        e.shouldInstrument('./banana/node_modules/cat.js').should.equal(true);
+        e.shouldInstrument(
+            './banana/node_modules/__test__/cat.test.js'
+        ).should.equal(false);
+        e.shouldInstrument(
+            './banana/node_modules/__test__/cat-test.js'
+        ).should.equal(false);
+        e.shouldInstrument(
+            './banana/node_modules/__test__/cat.js'
+        ).should.equal(false);
+    });
+
     it('allows negated exclude patterns', function() {
         const e = exclude({
             exclude: ['foo/**', '!foo/bar.js']
