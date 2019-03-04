@@ -1,6 +1,7 @@
 *.tgz
 .idea/
-node_modules
+node_modules/*
+packages/*/node_modules/*
 coverage
 npm-debug.log
 docs/

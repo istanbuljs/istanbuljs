@@ -168,6 +168,26 @@ describe('testExclude', function() {
         e.shouldInstrument('./batman/robin.js').should.equal(false);
     });
 
+    it('handles extension option', function() {
+        const js = exclude({
+            extension: '.js'
+        });
+
+        js.shouldInstrument('file.js').should.equal(true);
+        js.shouldInstrument('package.json').should.equal(false);
+
+        const any = exclude();
+        any.shouldInstrument('file.js').should.equal(true);
+        any.shouldInstrument('package.json').should.equal(true);
+
+        const multi = exclude({
+            extension: ['.js', '.json']
+        });
+        multi.shouldInstrument('file.js').should.equal(true);
+        multi.shouldInstrument('file.png').should.equal(false);
+        multi.shouldInstrument('package.json').should.equal(true);
+    });
+
     it('negated exclude patterns unrelated to node_modules do not affect default node_modules exclude behavior', function() {
         const e = exclude({
             exclude: ['!foo/**']
@@ -297,6 +317,117 @@ describe('testExclude', function() {
                 e.shouldInstrument('foo.js').should.equal(true);
                 e.shouldInstrument('index.js').should.equal(true);
             });
+        });
+    });
+
+    describe('globSync', function() {
+        const cwd = path.resolve(__dirname, 'fixtures/glob');
+        const extension = '.js';
+
+        it('should exclude the node_modules folder by default', function() {
+            exclude({ cwd, extension })
+                .globSync()
+                .sort()
+                .should.deep.equal(['file1.js', 'file2.js']);
+
+            exclude({ cwd, extension: ['.json'] })
+                .globSync()
+                .sort()
+                .should.deep.equal(['package.json']);
+
+            exclude({ cwd, extension: [] })
+                .globSync()
+                .sort()
+                .should.deep.equal([
+                    '.nycrc',
+                    'file1.js',
+                    'file2.js',
+                    'package.json'
+                ]);
+
+            exclude({ cwd, extension: ['.js', '.json'] })
+                .globSync()
+                .sort()
+                .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
+
+            exclude({ cwd: path.join(process.cwd(), 'test') })
+                .globSync(cwd)
+                .sort()
+                .should.deep.equal([
+                    '.nycrc',
+                    'file1.js',
+                    'file2.js',
+                    'package.json'
+                ]);
+        });
+
+        it('applies exclude rule ahead of include rule', function() {
+            const e = exclude({
+                cwd,
+                extension,
+                include: ['file1.js', 'file2.js'],
+                exclude: ['file1.js']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal(['file2.js']);
+        });
+
+        it('allows node_modules folder to be included, if !node_modules is explicitly provided', function() {
+            const e = exclude({
+                cwd,
+                extension,
+                exclude: ['!node_modules']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal([
+                    'file1.js',
+                    'file2.js',
+                    'node_modules/something/index.js',
+                    'node_modules/something/other.js'
+                ]);
+        });
+
+        it('allows specific node_modules folder to be included, if !node_modules is explicitly provided', function() {
+            const e = exclude({
+                cwd,
+                extension,
+                exclude: ['!node_modules/something/other.js']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal([
+                    'file1.js',
+                    'file2.js',
+                    'node_modules/something/other.js'
+                ]);
+        });
+
+        it('allows negated exclude patterns', function() {
+            const e = exclude({
+                cwd,
+                extension,
+                exclude: ['*.js', '!file1.js']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal(['file1.js']);
+        });
+
+        it('allows negated include patterns', function() {
+            const e = exclude({
+                cwd,
+                include: ['*.js', '!file2.js']
+            });
+
+            e.globSync()
+                .sort()
+                .should.deep.equal(['file1.js']);
         });
     });
 

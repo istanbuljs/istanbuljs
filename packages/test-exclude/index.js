@@ -1,5 +1,6 @@
 const path = require('path');
 const arrify = require('arrify');
+const glob = require('glob');
 const minimatch = require('minimatch');
 const readPkgUp = require('read-pkg-up');
 const requireMainFilename = require('require-main-filename');
@@ -15,7 +16,8 @@ class TestExclude {
                 configKey: null, // the key to load config from in package.json.
                 configPath: null, // optionally override requireMainFilename.
                 configFound: false,
-                excludeNodeModules: true
+                excludeNodeModules: true,
+                extension: false
             },
             opts
         );
@@ -26,6 +28,15 @@ class TestExclude {
 
         if (typeof this.exclude === 'string') {
             this.exclude = [this.exclude];
+        }
+
+        if (typeof this.extension === 'string') {
+            this.extension = [this.extension];
+        } else if (
+            !Array.isArray(this.extension) ||
+            this.extension.length === 0
+        ) {
+            this.extension = false;
         }
 
         if (!this.include && !this.exclude && this.configKey) {
@@ -76,6 +87,13 @@ class TestExclude {
     }
 
     shouldInstrument(filename, relFile) {
+        if (
+            this.extension &&
+            !this.extension.some(ext => filename.endsWith(ext))
+        ) {
+            return false;
+        }
+
         let pathToCheck = filename;
 
         if (this.relativePath) {
@@ -109,6 +127,20 @@ class TestExclude {
 
         return {};
     }
+
+    globSync(cwd = this.cwd) {
+        const globPatterns = getExtensionPattern(this.extension || []);
+        const globOptions = { cwd, nodir: true, dot: true };
+        /* If we don't have any excludeNegated then we can optimize glob by telling
+         * it to not iterate into unwanted directory trees (like node_modules). */
+        if (this.excludeNegated.length === 0) {
+            globOptions.ignore = this.exclude;
+        }
+
+        return glob
+            .sync(globPatterns, globOptions)
+            .filter(file => this.shouldInstrument(path.resolve(cwd, file)));
+    }
 }
 
 function prepGlobPatterns(patterns) {
@@ -125,6 +157,17 @@ function prepGlobPatterns(patterns) {
 
         return result.concat(pattern);
     }, []);
+}
+
+function getExtensionPattern(extension) {
+    switch (extension.length) {
+        case 0:
+            return '**';
+        case 1:
+            return `**/*${extension[0]}`;
+        default:
+            return `**/*{${extension.join()}}`;
+    }
 }
 
 const exportFunc = opts => new TestExclude(opts);

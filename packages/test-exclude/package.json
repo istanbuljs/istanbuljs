@@ -28,6 +28,7 @@
   "homepage": "https://istanbul.js.org/",
   "dependencies": {
     "arrify": "^1.0.1",
+    "glob": "^7.1.3",
     "minimatch": "^3.0.4",
     "read-pkg-up": "^4.0.0",
     "require-main-filename": "^1.0.1"
