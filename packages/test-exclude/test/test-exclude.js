@@ -168,6 +168,16 @@ describe('testExclude', function() {
         e.shouldInstrument('./batman/robin.js').should.equal(false);
     });
 
+    it('negated exclude patterns only works for files that are covered by the `include` pattern', function() {
+        const e = exclude({
+            include: ['index.js'],
+            exclude: ['!index2.js']
+        });
+
+        e.shouldInstrument('index.js').should.equal(true);
+        e.shouldInstrument('index2.js').should.equal(false);
+    });
+
     it('handles extension option', function() {
         const js = exclude({
             extension: '.js'
