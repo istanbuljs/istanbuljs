@@ -3,21 +3,26 @@
 ### Table of Contents
 
 -   [createInstrumenter][1]
--   [Instrumenter][2]
-    -   [instrumentSync][3]
-    -   [instrument][4]
-    -   [lastFileCoverage][5]
-    -   [lastSourceMap][6]
--   [programVisitor][7]
+    -   [Parameters][2]
+-   [Instrumenter][3]
+    -   [Parameters][4]
+    -   [instrumentSync][5]
+        -   [Parameters][6]
+    -   [instrument][7]
+        -   [Parameters][8]
+    -   [lastFileCoverage][9]
+    -   [lastSourceMap][10]
+-   [programVisitor][11]
+    -   [Parameters][12]
 
 ## createInstrumenter
 
 createInstrumenter creates a new instrumenter with the
 supplied options.
 
-**Parameters**
+### Parameters
 
--   `opts` **[Object][8]** instrumenter options. See the documentation
+-   `opts` **[Object][13]** instrumenter options. See the documentation
     for the Instrumenter class.
 
 ## Instrumenter
@@ -27,20 +32,20 @@ It is typically used for ES5 code. For ES6 code that you
 are already running under `babel` use the coverage plugin
 instead.
 
-**Parameters**
+### Parameters
 
--   `opts` **[Object][8]** optional. (optional, default `defaultOpts()`)
-    -   `opts.coverageVariable` **[string][9]** name of global coverage variable. (optional, default `__coverage__`)
-    -   `opts.preserveComments` **[boolean][10]** preserve comments in output (optional, default `false`)
-    -   `opts.compact` **[boolean][10]** generate compact code. (optional, default `true`)
-    -   `opts.esModules` **[boolean][10]** set to true to instrument ES6 modules. (optional, default `false`)
-    -   `opts.autoWrap` **[boolean][10]** set to true to allow `return` statements outside of functions. (optional, default `false`)
-    -   `opts.produceSourceMap` **[boolean][10]** set to true to produce a source map for the instrumented code. (optional, default `false`)
-    -   `opts.ignoreClassMethods` **[Array][11]** set to array of class method names to ignore for coverage. (optional, default `[]`)
-    -   `opts.sourceMapUrlCallback` **[Function][12]** a callback function that is called when a source map URL
+-   `opts` **[Object][13]** optional. (optional, default `defaultOpts()`)
+    -   `opts.coverageVariable` **[string][14]** name of global coverage variable. (optional, default `__coverage__`)
+    -   `opts.preserveComments` **[boolean][15]** preserve comments in output (optional, default `false`)
+    -   `opts.compact` **[boolean][15]** generate compact code. (optional, default `true`)
+    -   `opts.esModules` **[boolean][15]** set to true to instrument ES6 modules. (optional, default `false`)
+    -   `opts.autoWrap` **[boolean][15]** set to true to allow `return` statements outside of functions. (optional, default `false`)
+    -   `opts.produceSourceMap` **[boolean][15]** set to true to produce a source map for the instrumented code. (optional, default `false`)
+    -   `opts.ignoreClassMethods` **[Array][16]** set to array of class method names to ignore for coverage. (optional, default `[]`)
+    -   `opts.sourceMapUrlCallback` **[Function][17]** a callback function that is called when a source map URL
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
-    -   `opts.debug` **[boolean][10]** turn debugging on (optional, default `false`)
-    -   `opts.plugins` **[array][11]** set plugins (optional, default `['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']`)
+    -   `opts.debug` **[boolean][15]** turn debugging on (optional, default `false`)
+    -   `opts.plugins` **[array][16]** set plugins (optional, default `['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']`)
 
 ### instrumentSync
 
@@ -49,15 +54,15 @@ filename. It throws if invalid code is passed to it. ES5 and ES6 syntax
 is supported. To instrument ES6 modules, make sure that you set the
 `esModules` property to `true` when creating the instrumenter.
 
-**Parameters**
+#### Parameters
 
--   `code` **[string][9]** the code to instrument
--   `filename` **[string][9]** the filename against which to track coverage.
--   `inputSourceMap` **[object][8]?** the source map that maps the not instrumented code back to it's original form.
+-   `code` **[string][14]** the code to instrument
+-   `filename` **[string][14]** the filename against which to track coverage.
+-   `inputSourceMap` **[object][13]?** the source map that maps the not instrumented code back to it's original form.
     Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
     coverage to the untranspiled source.
 
-Returns **[string][9]** the instrumented code.
+Returns **[string][14]** the instrumented code.
 
 ### instrument
 
@@ -65,12 +70,12 @@ callback-style instrument method that calls back with an error
 as opposed to throwing one. Note that in the current implementation,
 the callback will be called in the same process tick and is not asynchronous.
 
-**Parameters**
+#### Parameters
 
--   `code` **[string][9]** the code to instrument
--   `filename` **[string][9]** the filename against which to track coverage.
--   `callback` **[Function][12]** the callback
--   `inputSourceMap` **[Object][8]** the source map that maps the not instrumented code back to it's original form.
+-   `code` **[string][14]** the code to instrument
+-   `filename` **[string][14]** the filename against which to track coverage.
+-   `callback` **[Function][17]** the callback
+-   `inputSourceMap` **[Object][13]** the source map that maps the not instrumented code back to it's original form.
     Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
     coverage to the untranspiled source.
 
@@ -78,13 +83,13 @@ the callback will be called in the same process tick and is not asynchronous.
 
 returns the file coverage object for the last file instrumented.
 
-Returns **[Object][8]** the file coverage object.
+Returns **[Object][13]** the file coverage object.
 
 ### lastSourceMap
 
 returns the source map produced for the last file instrumented.
 
-Returns **(null | [Object][8])** the source map object.
+Returns **(null | [Object][13])** the source map object.
 
 ## programVisitor
 
@@ -100,38 +105,48 @@ The exit function returns an object that currently has the following keys:
 `fileCoverage` - the file coverage object created for the source file.
 `sourceMappingURL` - any source mapping URL found when processing the file.
 
-**Parameters**
+### Parameters
 
--   `types` **[Object][8]** an instance of babel-types
--   `sourceFilePath` **[string][9]** the path to source file (optional, default `'unknown.js'`)
--   `opts` **[Object][8]** additional options (optional, default `defaultProgramVisitorOpts`)
-    -   `opts.coverageVariable` **[string][9]** the global coverage variable name. (optional, default `__coverage__`)
-    -   `opts.coverageGlobalScope` **[string][9]** the global coverage variable scope. (optional, default `this`)
-    -   `opts.coverageGlobalScopeFunc` **[boolean][10]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)
-    -   `opts.ignoreClassMethods` **[Array][11]** names of methods to ignore by default on classes. (optional, default `[]`)
-    -   `opts.inputSourceMap` **[object][8]** the input source map, that maps the uninstrumented code back to the
+-   `types` **[Object][13]** an instance of babel-types
+-   `sourceFilePath` **[string][14]** the path to source file (optional, default `'unknown.js'`)
+-   `opts` **[Object][13]** additional options (optional, default `defaultProgramVisitorOpts`)
+    -   `opts.coverageVariable` **[string][14]** the global coverage variable name. (optional, default `__coverage__`)
+    -   `opts.coverageGlobalScope` **[string][14]** the global coverage variable scope. (optional, default `this`)
+    -   `opts.coverageGlobalScopeFunc` **[boolean][15]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)
+    -   `opts.ignoreClassMethods` **[Array][16]** names of methods to ignore by default on classes. (optional, default `[]`)
+    -   `opts.inputSourceMap` **[object][13]** the input source map, that maps the uninstrumented code back to the
         original code. (optional, default `undefined`)
 
 [1]: #createinstrumenter
 
-[2]: #instrumenter
+[2]: #parameters
 
-[3]: #instrumentsync
+[3]: #instrumenter
 
-[4]: #instrument
+[4]: #parameters-1
 
-[5]: #lastfilecoverage
+[5]: #instrumentsync
 
-[6]: #lastsourcemap
+[6]: #parameters-2
 
-[7]: #programvisitor
+[7]: #instrument
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[8]: #parameters-3
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[9]: #lastfilecoverage
 
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[10]: #lastsourcemap
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[11]: #programvisitor
 
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[12]: #parameters-4
+
+[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
