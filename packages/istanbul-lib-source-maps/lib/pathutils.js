@@ -1,19 +1,21 @@
-var path = require('path'),
-    isAbsolute = function(p) {
-        if (path.isAbsolute) {
-            return path.isAbsolute(p);
-        }
-        return path.resolve(p) === path.normalize(p);
-    };
+/*
+ Copyright 2015, Yahoo Inc.
+ Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ */
+'use strict';
 
-exports.isAbsolute = isAbsolute;
+const path = require('path');
 
-exports.asAbsolute = function(file, baseDir) {
-    return isAbsolute(file)
-        ? file
-        : path.resolve(baseDir || process.cwd(), file);
-};
-
-exports.relativeTo = function(file, origFile) {
-    return isAbsolute(file) ? file : path.resolve(path.dirname(origFile), file);
+module.exports = {
+    isAbsolute: path.isAbsolute,
+    asAbsolute(file, baseDir) {
+        return path.isAbsolute(file)
+            ? file
+            : path.resolve(baseDir || process.cwd(), file);
+    },
+    relativeTo(file, origFile) {
+        return path.isAbsolute(file)
+            ? file
+            : path.resolve(path.dirname(origFile), file);
+    }
 };
