@@ -266,13 +266,24 @@ FileCoverage.prototype.merge = function(other) {
         that.data.f[k] += other.f[k];
     });
     Object.keys(other.b).forEach(function(k) {
-        var i,
-            retArray = that.data.b[k],
-            secondArray = other.b[k];
+
+        var retArray = that.data.b[k];
+        var secondArray = other.b[k];
         if (!retArray) {
             that.data.b[k] = secondArray;
-            return;
         }
+
+        var branchMapThis = that.data.branchMap[k];
+        var branchMapOther = other.branchMap[k];
+        if (!branchMapThis) {
+          that.data.branchMap[k] = branchMapOther;
+        }
+
+        if(!retArray || !branchMapThis) {
+          return;
+        }
+
+        var i;
         for (i = 0; i < retArray.length; i += 1) {
             retArray[i] += secondArray[i];
         }
