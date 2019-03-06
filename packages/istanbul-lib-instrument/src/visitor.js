@@ -65,7 +65,6 @@ class VisitState {
 
     // extract a source map URL from comments and keep track of it
     maybeAssignSourceMapURL(node) {
-        const that = this;
         const extractURL = comments => {
             if (!comments) {
                 return;
@@ -76,7 +75,7 @@ class VisitState {
                 ).trim();
                 const groups = v.match(SOURCE_MAP_RE);
                 if (groups) {
-                    that.sourceMappingURL = groups[1];
+                    this.sourceMappingURL = groups[1];
                 }
             });
         };
@@ -326,9 +325,8 @@ function entries() {
         if (this.shouldIgnore(path)) {
             return;
         }
-        const that = this;
         enter.forEach(e => {
-            e.call(that, path, node);
+            e.call(this, path, node);
         });
     };
     const exit = function(path, node) {

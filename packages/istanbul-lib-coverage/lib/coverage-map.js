@@ -41,8 +41,7 @@ function CoverageMap(obj) {
  *  as needed.
  */
 CoverageMap.prototype.merge = function(obj) {
-    var that = this,
-        other;
+    var other;
     if (obj instanceof CoverageMap) {
         other = obj;
     } else {
@@ -50,10 +49,10 @@ CoverageMap.prototype.merge = function(obj) {
     }
     Object.keys(other.data).forEach(k => {
         var fc = other.data[k];
-        if (that.data[k]) {
-            that.data[k].merge(fc);
+        if (this.data[k]) {
+            this.data[k].merge(fc);
         } else {
-            that.data[k] = fc;
+            this.data[k] = fc;
         }
     });
 };
@@ -64,10 +63,9 @@ CoverageMap.prototype.merge = function(obj) {
  *  removed.
  */
 CoverageMap.prototype.filter = function(callback) {
-    var that = this;
-    Object.keys(that.data).forEach(k => {
+    Object.keys(this.data).forEach(k => {
         if (!callback(k)) {
-            delete that.data[k];
+            delete this.data[k];
         }
     });
 };
@@ -117,10 +115,9 @@ CoverageMap.prototype.addFileCoverage = function(fc) {
  * @returns {CoverageSummary}
  */
 CoverageMap.prototype.getCoverageSummary = function() {
-    var that = this,
-        ret = new CoverageSummary();
+    var ret = new CoverageSummary();
     this.files().forEach(key => {
-        ret.merge(that.fileCoverageFor(key).toSummary());
+        ret.merge(this.fileCoverageFor(key).toSummary());
     });
     return ret;
 };

@@ -108,20 +108,15 @@ Node.prototype.getFileCoverage = function() {
  * @param state optional state that is passed around
  */
 Node.prototype.visit = function(visitor, state) {
-    var that = this,
-        visitChildren = function() {
-            that.getChildren().forEach(child => {
-                child.visit(visitor, state);
-            });
-        };
-
     if (this.isSummary()) {
         visitor.onSummary(this, state);
     } else {
         visitor.onDetail(this, state);
     }
 
-    visitChildren();
+    this.getChildren().forEach(child => {
+        child.visit(visitor, state);
+    });
 
     if (this.isSummary()) {
         visitor.onSummaryEnd(this, state);

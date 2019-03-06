@@ -167,34 +167,31 @@ HtmlReport.prototype.getWriter = function(context) {
 };
 
 HtmlReport.prototype.onStart = function(root, context) {
-    var that = this,
-        assetHeaders = {
-            '.js': '/* eslint-disable */\n'
-        },
-        copyAssets = function(subdir, writer) {
-            var srcDir = path.resolve(__dirname, 'assets', subdir);
-            fs.readdirSync(srcDir).forEach(f => {
-                var resolvedSource = path.resolve(srcDir, f),
-                    resolvedDestination = '.',
-                    stat = fs.statSync(resolvedSource),
-                    dest;
-
-                if (stat.isFile()) {
-                    dest = resolvedDestination + '/' + f;
-                    if (that.verbose) {
-                        console.log('Write asset: ' + dest);
-                    }
-                    writer.copyFile(
-                        resolvedSource,
-                        dest,
-                        assetHeaders[path.extname(f)]
-                    );
-                }
-            });
-        };
+    var assetHeaders = {
+        '.js': '/* eslint-disable */\n'
+    };
 
     ['.', 'vendor'].forEach(subdir => {
-        copyAssets(subdir, that.getWriter(context));
+        const writer = this.getWriter(context);
+        var srcDir = path.resolve(__dirname, 'assets', subdir);
+        fs.readdirSync(srcDir).forEach(f => {
+            var resolvedSource = path.resolve(srcDir, f),
+                resolvedDestination = '.',
+                stat = fs.statSync(resolvedSource),
+                dest;
+
+            if (stat.isFile()) {
+                dest = resolvedDestination + '/' + f;
+                if (this.verbose) {
+                    console.log('Write asset: ' + dest);
+                }
+                writer.copyFile(
+                    resolvedSource,
+                    dest,
+                    assetHeaders[path.extname(f)]
+                );
+            }
+        });
     });
 };
 

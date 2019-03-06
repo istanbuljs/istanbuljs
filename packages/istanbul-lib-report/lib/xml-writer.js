@@ -84,12 +84,11 @@ XMLWriter.prototype.inlineTag = function(name, attrs, content) {
  * closes all open tags and ends the document
  */
 XMLWriter.prototype.closeAll = function() {
-    var that = this;
     this.stack
         .slice()
         .reverse()
         .forEach(name => {
-            that.closeTag(name);
+            this.closeTag(name);
         });
 };
 

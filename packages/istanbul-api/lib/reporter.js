@@ -61,9 +61,8 @@ Reporter.prototype = {
      * @param {Array} fmts an array of report formats
      */
     addAll(fmts) {
-        var that = this;
         fmts.forEach(f => {
-            that.add(f);
+            this.add(f);
         });
     },
     /**
@@ -72,8 +71,7 @@ Reporter.prototype = {
      */
     write(coverageMap, opts) {
         opts = opts || {};
-        var that = this,
-            sourceFinder = opts.sourceFinder || null,
+        var sourceFinder = opts.sourceFinder || null,
             context,
             tree;
 
@@ -94,7 +92,7 @@ Reporter.prototype = {
 
         tree = this.summarizer(coverageMap);
         Object.keys(this.reports).forEach(name => {
-            var report = that.reports[name];
+            var report = this.reports[name];
             tree.visit(report, context);
         });
     }

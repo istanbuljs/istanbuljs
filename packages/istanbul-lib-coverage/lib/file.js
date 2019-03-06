@@ -76,13 +76,12 @@ function CoverageSummary(obj) {
  * @param {CoverageSummary} obj - another coverage summary object
  */
 CoverageSummary.prototype.merge = function(obj) {
-    var that = this,
-        keys = ['lines', 'statements', 'branches', 'functions'];
+    var keys = ['lines', 'statements', 'branches', 'functions'];
     keys.forEach(key => {
-        that[key].total += obj[key].total;
-        that[key].covered += obj[key].covered;
-        that[key].skipped += obj[key].skipped;
-        that[key].pct = percent(that[key].covered, that[key].total);
+        this[key].total += obj[key].total;
+        this[key].covered += obj[key].covered;
+        this[key].skipped += obj[key].skipped;
+        this[key].pct = percent(this[key].covered, this[key].total);
     });
     return this;
 };
@@ -254,19 +253,18 @@ FileCoverage.prototype.toJSON = function() {
  *  Note that the other object should have the same structure as this one (same file).
  */
 FileCoverage.prototype.merge = function(other) {
-    var that = this;
     Object.keys(other.s).forEach(k => {
-        that.data.s[k] += other.s[k];
+        this.data.s[k] += other.s[k];
     });
     Object.keys(other.f).forEach(k => {
-        that.data.f[k] += other.f[k];
+        this.data.f[k] += other.f[k];
     });
     Object.keys(other.b).forEach(k => {
         var i,
-            retArray = that.data.b[k],
+            retArray = this.data.b[k],
             secondArray = other.b[k];
         if (!retArray) {
-            that.data.b[k] = secondArray;
+            this.data.b[k] = secondArray;
             return;
         }
         for (i = 0; i < retArray.length; i += 1) {

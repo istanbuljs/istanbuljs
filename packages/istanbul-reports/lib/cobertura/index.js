@@ -81,8 +81,7 @@ CoberturaReport.prototype.onSummaryEnd = function(node) {
 };
 
 CoberturaReport.prototype.onDetail = function(node) {
-    var that = this,
-        fileCoverage = node.getFileCoverage(),
+    var fileCoverage = node.getFileCoverage(),
         metrics = node.getCoverageSummary(),
         branchByLine = fileCoverage.getBranchCoverageByLine(),
         fnMap,
@@ -100,19 +99,19 @@ CoberturaReport.prototype.onDetail = function(node) {
     Object.keys(fnMap).forEach(k => {
         var name = fnMap[k].name,
             hits = fileCoverage.f[k];
-        that.xml.openTag('method', {
+        this.xml.openTag('method', {
             name,
             hits,
             signature: '()V' //fake out a no-args void return
         });
-        that.xml.openTag('lines');
+        this.xml.openTag('lines');
         //Add the function definition line and hits so that jenkins cobertura plugin records method hits
-        that.xml.inlineTag('line', {
+        this.xml.inlineTag('line', {
             number: fnMap[k].decl.start.line,
             hits
         });
-        that.xml.closeTag('lines');
-        that.xml.closeTag('method');
+        this.xml.closeTag('lines');
+        this.xml.closeTag('method');
     });
     this.xml.closeTag('methods');
 
@@ -136,7 +135,7 @@ CoberturaReport.prototype.onDetail = function(node) {
                 branchDetail.total +
                 ')';
         }
-        that.xml.inlineTag('line', attrs);
+        this.xml.inlineTag('line', attrs);
     });
 
     this.xml.closeTag('lines');

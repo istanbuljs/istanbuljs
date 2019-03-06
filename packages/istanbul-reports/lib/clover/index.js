@@ -130,8 +130,7 @@ CloverReport.prototype.onSummaryEnd = function(node) {
 };
 
 CloverReport.prototype.onDetail = function(node) {
-    var that = this,
-        fileCoverage = node.getFileCoverage(),
+    var fileCoverage = node.getFileCoverage(),
         metrics = node.getCoverageSummary(),
         branchByLine = fileCoverage.getBranchCoverageByLine(),
         lines;
@@ -157,7 +156,7 @@ CloverReport.prototype.onDetail = function(node) {
             attrs.truecount = branchDetail.covered;
             attrs.falsecount = branchDetail.total - branchDetail.covered;
         }
-        that.xml.inlineTag('line', attrs);
+        this.xml.inlineTag('line', attrs);
     });
 
     this.xml.closeTag('file');
