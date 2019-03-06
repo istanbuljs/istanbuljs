@@ -31,7 +31,7 @@ function run(formats, config, opts, callback) {
     root = opts.root || process.cwd();
     filesFor(
         {
-            root: root,
+            root,
             includes: [includePattern]
         },
         function(err, files) {
@@ -50,5 +50,5 @@ function run(formats, config, opts, callback) {
 }
 
 module.exports = {
-    run: run
+    run
 };

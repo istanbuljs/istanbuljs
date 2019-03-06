@@ -12,7 +12,7 @@ module.exports = {
     reports: require('./lib/run-reports'),
     instrument: require('./lib/run-instrument'),
     checkCoverage: require('./lib/run-check-coverage'),
-    createReporter: function(cfg, opts) {
+    createReporter(cfg, opts) {
         return new Reporter(cfg, opts);
     },
     /**

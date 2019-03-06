@@ -101,15 +101,15 @@ CoberturaReport.prototype.onDetail = function(node) {
         var name = fnMap[k].name,
             hits = fileCoverage.f[k];
         that.xml.openTag('method', {
-            name: name,
-            hits: hits,
+            name,
+            hits,
             signature: '()V' //fake out a no-args void return
         });
         that.xml.openTag('lines');
         //Add the function definition line and hits so that jenkins cobertura plugin records method hits
         that.xml.inlineTag('line', {
             number: fnMap[k].decl.start.line,
-            hits: hits
+            hits
         });
         that.xml.closeTag('lines');
         that.xml.closeTag('method');

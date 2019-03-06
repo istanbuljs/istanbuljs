@@ -126,5 +126,5 @@ CoverageMap.prototype.getCoverageSummary = function() {
 };
 
 module.exports = {
-    CoverageMap: CoverageMap
+    CoverageMap
 };

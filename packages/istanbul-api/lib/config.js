@@ -516,7 +516,7 @@ module.exports = {
      *  config object loaded
      * @return {Configuration} the config object with overrides applied
      */
-    loadFile: loadFile,
+    loadFile,
     /**
      * loads the specified configuration object with optional overrides.
      * @method loadObject
@@ -526,7 +526,7 @@ module.exports = {
      *  config object
      * @return {Configuration} the config object with overrides applied
      */
-    loadObject: loadObject,
+    loadObject,
     /**
      * returns the default configuration object. Note that this is a plain object
      * and not a `Configuration` instance.
@@ -534,5 +534,5 @@ module.exports = {
      * @static
      * @return {Object} an object that represents the default config
      */
-    defaultConfig: defaultConfig
+    defaultConfig
 };

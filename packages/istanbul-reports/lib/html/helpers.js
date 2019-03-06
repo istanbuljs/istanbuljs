@@ -103,5 +103,5 @@ function registerHelpers(handlebars) {
 }
 
 module.exports = {
-    registerHelpers: registerHelpers
+    registerHelpers
 };

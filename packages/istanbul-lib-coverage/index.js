@@ -23,7 +23,7 @@ module.exports = {
      *  as the one passed to the `CoverageSummary` constructor
      * @returns {CoverageSummary}
      */
-    createCoverageSummary: function(obj) {
+    createCoverageSummary(obj) {
         if (obj && obj instanceof CoverageSummary) {
             return obj;
         }
@@ -35,7 +35,7 @@ module.exports = {
      *  as the one passed to the CoverageMap constructor.
      * @returns {CoverageMap}
      */
-    createCoverageMap: function(obj) {
+    createCoverageMap(obj) {
         if (obj && obj instanceof CoverageMap) {
             return obj;
         }
@@ -47,7 +47,7 @@ module.exports = {
      *  as the one passed to the FileCoverage constructor.
      * @returns {FileCoverage}
      */
-    createFileCoverage: function(obj) {
+    createFileCoverage(obj) {
         if (obj && obj instanceof FileCoverage) {
             return obj;
         }
@@ -60,5 +60,5 @@ module.exports.classes = {
     /**
      * the file coverage constructor
      */
-    FileCoverage: FileCoverage
+    FileCoverage
 };

@@ -88,6 +88,6 @@ function matcherFor(options, callback) {
 }
 
 module.exports = {
-    filesFor: filesFor,
-    matcherFor: matcherFor
+    filesFor,
+    matcherFor
 };

@@ -274,5 +274,5 @@ function annotateSourceCode(fileCoverage, sourceStore) {
 }
 
 module.exports = {
-    annotateSourceCode: annotateSourceCode
+    annotateSourceCode
 };

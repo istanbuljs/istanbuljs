@@ -39,13 +39,13 @@ CloverReport.prototype.getTreeStats = function(node, context) {
             classes: 0
         },
         visitor = {
-            onSummary: function(node, state) {
+            onSummary(node, state) {
                 var metrics = node.getCoverageSummary(true);
                 if (metrics) {
                     state.packages += 1;
                 }
             },
-            onDetail: function(node, state) {
+            onDetail(node, state) {
                 state.classes += 1;
                 state.files += 1;
             }

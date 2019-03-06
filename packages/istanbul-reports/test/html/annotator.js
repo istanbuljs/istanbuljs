@@ -18,7 +18,7 @@ describe('annotator', function() {
             var annotated = annotator.annotateSourceCode(
                 getFixture('github-10'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return '';
                     }
                 }
@@ -31,7 +31,7 @@ describe('annotator', function() {
             var annotated = annotator.annotateSourceCode(
                 getFixture('github-11'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return fs.readFileSync('index.js', 'utf-8');
                     }
                 }
@@ -44,7 +44,7 @@ describe('annotator', function() {
             var annotated = annotator.annotateSourceCode(
                 getFixture('github-80a'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return '  var test = "test";';
                     }
                 }
@@ -59,7 +59,7 @@ describe('annotator', function() {
             var annotated = annotator.annotateSourceCode(
                 getFixture('github-80b'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return '  function test () {};';
                     }
                 }
@@ -74,7 +74,7 @@ describe('annotator', function() {
             var annotated = annotator.annotateSourceCode(
                 getFixture('github-80c'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return 'if (cond1 && cond2) {';
                     }
                 }

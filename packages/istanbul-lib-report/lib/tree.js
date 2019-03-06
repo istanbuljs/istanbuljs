@@ -157,8 +157,8 @@ Tree.prototype.visit = function(visitor, state) {
 };
 
 module.exports = {
-    Tree: Tree,
-    Node: Node,
-    Visitor: Visitor,
-    CompositeVisitor: CompositeVisitor
+    Tree,
+    Node,
+    Visitor,
+    CompositeVisitor
 };

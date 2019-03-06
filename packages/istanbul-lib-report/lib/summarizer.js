@@ -109,10 +109,10 @@ function treeFor(root, childPrefix) {
         return root;
     };
     visitor = {
-        onDetail: function(node) {
+        onDetail(node) {
             maybePrefix(node);
         },
-        onSummary: function(node) {
+        onSummary(node) {
             maybePrefix(node);
             node.children.sort(function(a, b) {
                 var astr = a.path.toString(),
@@ -152,7 +152,7 @@ function toInitialList(coverageMap) {
         var p = new Path(filePath),
             coverage = coverageMap.fileCoverageFor(filePath);
         ret.push({
-            filePath: filePath,
+            filePath,
             path: p,
             fileCoverage: coverage
         });
@@ -169,7 +169,7 @@ function toInitialList(coverageMap) {
     }
     return {
         list: ret,
-        commonParent: commonParent
+        commonParent
     };
 }
 
@@ -288,7 +288,7 @@ function createFlatSummary(coverageMap) {
 }
 
 module.exports = {
-    createNestedSummary: createNestedSummary,
-    createPackageSummary: createPackageSummary,
-    createFlatSummary: createFlatSummary
+    createNestedSummary,
+    createPackageSummary,
+    createFlatSummary
 };

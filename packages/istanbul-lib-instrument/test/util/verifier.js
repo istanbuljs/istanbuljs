@@ -179,12 +179,12 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
     }
     return new Verifier({
         err: verror,
-        debug: debug,
-        file: file,
-        fn: fn,
-        code: code,
+        debug,
+        file,
+        fn,
+        code,
         generatedCode: instrumenterOutput,
-        coverageVariable: coverageVariable,
+        coverageVariable,
         baseline: clone(g[coverageVariable]),
         emptyCoverage: instrumenter.lastFileCoverage()
     });

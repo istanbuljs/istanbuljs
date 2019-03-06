@@ -301,9 +301,9 @@ class VisitState {
             }
         } else {
             accumulator.push({
-                node: node,
-                parent: parent,
-                property: property
+                node,
+                parent,
+                property
             });
         }
     }
@@ -336,7 +336,7 @@ function entries() {
     };
     return {
         enter: wrappedEntry,
-        exit: exit
+        exit
     };
 }
 

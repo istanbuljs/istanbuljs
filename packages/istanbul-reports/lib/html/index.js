@@ -72,7 +72,7 @@ var fs = require('fs'),
 helpers.registerHelpers(handlebars);
 
 var standardLinkMapper = {
-    getPath: function(node) {
+    getPath(node) {
         if (typeof node === 'string') {
             return node;
         }
@@ -89,13 +89,13 @@ var standardLinkMapper = {
         return filePath;
     },
 
-    relativePath: function(source, target) {
+    relativePath(source, target) {
         var targetPath = this.getPath(target),
             sourcePath = path.dirname(this.getPath(source));
         return path.relative(sourcePath, targetPath);
     },
 
-    assetPath: function(node, name) {
+    assetPath(node, name) {
         return this.relativePath(this.getPath(node), name);
     }
 };
@@ -244,7 +244,7 @@ HtmlReport.prototype.onSummary = function(node, context) {
                   },
             data = {
                 metrics: isEmpty ? fixPct(metrics) : metrics,
-                reportClasses: reportClasses,
+                reportClasses,
                 file: child.getRelativeName(),
                 output: linkMapper.relativePath(node, child)
             };

@@ -51,7 +51,7 @@ function Context(opts) {
 
 Object.defineProperty(Context.prototype, 'writer', {
     enumerable: true,
-    get: function() {
+    get() {
         if (!this.data.writer) {
             this.data.writer = new FileWriter(this.dir);
         }
@@ -120,7 +120,7 @@ Context.prototype.getVisitor = function(partialVisitor) {
 };
 
 module.exports = {
-    create: function(opts) {
+    create(opts) {
         return new Context(opts);
     }
 };

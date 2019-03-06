@@ -138,7 +138,7 @@ function run(config, opts, callback) {
                     {
                         global: globalResults,
                         each: eachResults,
-                        thresholds: thresholds
+                        thresholds
                     },
                     undefined,
                     4
@@ -157,7 +157,7 @@ function run(config, opts, callback) {
 
     filesFor(
         {
-            root: root,
+            root,
             includes: [includePattern]
         },
         function(err, files) {
@@ -175,5 +175,5 @@ function run(config, opts, callback) {
 }
 
 module.exports = {
-    run: run
+    run
 };

@@ -38,7 +38,7 @@ Reporter.prototype = {
      * @method add
      * @param {String} fmt the format of the report to generate
      */
-    add: function(fmt) {
+    add(fmt) {
         if (this.reports[fmt]) {
             // already added
             return;
@@ -60,7 +60,7 @@ Reporter.prototype = {
      * @method addAll
      * @param {Array} fmts an array of report formats
      */
-    addAll: function(fmts) {
+    addAll(fmts) {
         var that = this;
         fmts.forEach(function(f) {
             that.add(f);
@@ -70,7 +70,7 @@ Reporter.prototype = {
      * writes all reports added
      * @method write
      */
-    write: function(coverageMap, opts) {
+    write(coverageMap, opts) {
         opts = opts || {};
         var that = this,
             sourceFinder = opts.sourceFinder || null,
@@ -80,7 +80,7 @@ Reporter.prototype = {
         context = libReport.createContext({
             dir: this.dir,
             watermarks: this.config.reporting.watermarks(),
-            sourceFinder: sourceFinder
+            sourceFinder
         });
 
         var excludes = this.config.instrumentation.excludes() || [];

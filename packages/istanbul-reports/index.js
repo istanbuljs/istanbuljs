@@ -5,7 +5,7 @@
 var path = require('path');
 
 module.exports = {
-    create: function(name, cfg) {
+    create(name, cfg) {
         cfg = cfg || {};
         var Cons;
         try {

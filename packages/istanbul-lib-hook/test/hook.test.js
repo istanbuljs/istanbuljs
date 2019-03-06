@@ -61,7 +61,7 @@ describe('hooks', function() {
         it('calls post load hooks', function() {
             var called = null,
                 opts = {
-                    postLoadHook: function(file) {
+                    postLoadHook(file) {
                         called = file;
                     }
                 };

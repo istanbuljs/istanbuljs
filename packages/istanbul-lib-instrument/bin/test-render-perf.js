@@ -37,7 +37,7 @@ const parsed = nopt(opts, null, process.argv, 2);
 const compact = parsed.compact;
 
 const generateOptions = {
-    compact: compact
+    compact
 };
 
 for (let i = 1; i < 15; i += 1) {

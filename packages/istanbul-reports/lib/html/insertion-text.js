@@ -14,7 +14,7 @@ function InsertionText(text, consumeBlanks) {
 var WHITE_RE = /[ \f\n\r\t\v\u00A0\u2028\u2029]/;
 
 InsertionText.prototype = {
-    findFirstNonBlank: function() {
+    findFirstNonBlank() {
         var pos = -1,
             text = this.text,
             len = text.length,
@@ -27,7 +27,7 @@ InsertionText.prototype = {
         }
         return pos;
     },
-    findLastNonBlank: function() {
+    findLastNonBlank() {
         var text = this.text,
             len = text.length,
             pos = text.length + 1,
@@ -40,11 +40,11 @@ InsertionText.prototype = {
         }
         return pos;
     },
-    originalLength: function() {
+    originalLength() {
         return this.origLength;
     },
 
-    insertAt: function(col, str, insertBefore, consumeBlanks) {
+    insertAt(col, str, insertBefore, consumeBlanks) {
         consumeBlanks =
             typeof consumeBlanks === 'undefined'
                 ? this.consumeBlanks
@@ -69,7 +69,7 @@ InsertionText.prototype = {
         return this;
     },
 
-    findOffset: function(pos, len, insertBefore) {
+    findOffset(pos, len, insertBefore) {
         var offsets = this.offsets,
             offsetObj,
             cumulativeOffset = 0,
@@ -90,22 +90,22 @@ InsertionText.prototype = {
         if (offsetObj && offsetObj.pos === pos) {
             offsetObj.len += len;
         } else {
-            offsets.splice(i, 0, { pos: pos, len: len });
+            offsets.splice(i, 0, { pos, len });
         }
         return cumulativeOffset;
     },
 
-    wrap: function(startPos, startText, endPos, endText, consumeBlanks) {
+    wrap(startPos, startText, endPos, endText, consumeBlanks) {
         this.insertAt(startPos, startText, true, consumeBlanks);
         this.insertAt(endPos, endText, false, consumeBlanks);
         return this;
     },
 
-    wrapLine: function(startText, endText) {
+    wrapLine(startText, endText) {
         this.wrap(0, startText, this.originalLength(), endText);
     },
 
-    toString: function() {
+    toString() {
         return this.text;
     }
 };

@@ -23,7 +23,7 @@ describe('Reporter', function() {
                 );
 
                 var opts = {
-                    summarizer: function(cm) {
+                    summarizer(cm) {
                         assert.deepEqual(cm.files(), [
                             '/a/b/c.js',
                             '/d/e/f.js',
@@ -60,7 +60,7 @@ describe('Reporter', function() {
 
                 it('excludes files from reports', function(done) {
                     var opts = {
-                        summarizer: function(cm) {
+                        summarizer(cm) {
                             assert.deepEqual(cm.files(), ['/d/e/f.js']);
                             done();
                         }
@@ -86,7 +86,7 @@ describe('Reporter', function() {
 
                 it('does not exclude files from reports', function(done) {
                     var opts = {
-                        summarizer: function(cm) {
+                        summarizer(cm) {
                             assert.deepEqual(cm.files(), [
                                 '/x/b/c.js',
                                 '/d/e/f.js',

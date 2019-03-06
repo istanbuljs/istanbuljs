@@ -26,7 +26,7 @@ export default function readInitialCoverage(code) {
 
     let covScope;
     traverse(ast, {
-        ObjectProperty: function(path) {
+        ObjectProperty(path) {
             const { node } = path;
             if (
                 !node.computed &&

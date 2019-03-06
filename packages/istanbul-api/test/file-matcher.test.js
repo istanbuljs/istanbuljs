@@ -47,7 +47,7 @@ describe('file matcher', function() {
     it('returns relative filenames when requested', function(cb) {
         fileMatcher.filesFor(
             {
-                root: root,
+                root,
                 relative: true
             },
             function(err, files) {
@@ -94,7 +94,7 @@ describe('file matcher', function() {
         });
     });
     it('ignores node_modules', function(cb) {
-        fileMatcher.matcherFor({ root: root }, function(err, matchFn) {
+        fileMatcher.matcherFor({ root }, function(err, matchFn) {
             assert.ok(!err);
             assert.ok(matchFn.files);
             assert.deepEqual(
@@ -125,7 +125,7 @@ describe('file matcher', function() {
     it('matches stuff with explicit includes and excludes', function(cb) {
         fileMatcher.matcherFor(
             {
-                root: root,
+                root,
                 includes: ['**/general/**/*.js'],
                 excludes: ['**/general.js']
             },

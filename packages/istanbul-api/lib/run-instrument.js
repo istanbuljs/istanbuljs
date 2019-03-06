@@ -214,7 +214,7 @@ function run(config, opts, callback) {
         filesFor(
             {
                 root: file,
-                includes: includes,
+                includes,
                 excludes: excludes || iOpts.excludes(false),
                 relative: true
             },
@@ -253,5 +253,5 @@ function run(config, opts, callback) {
 }
 
 module.exports = {
-    run: run
+    run
 };

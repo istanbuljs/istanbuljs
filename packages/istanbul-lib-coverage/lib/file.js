@@ -65,7 +65,7 @@ function CoverageSummary(obj) {
 ['lines', 'statements', 'functions', 'branches'].forEach(function(p) {
     Object.defineProperty(CoverageSummary.prototype, p, {
         enumerable: true,
-        get: function() {
+        get() {
             return this.data[p];
         }
     });
@@ -229,7 +229,7 @@ FileCoverage.prototype.getBranchCoverageByLine = function() {
         ret[k] = {
             covered: covered.length,
             total: dataArray.length,
-            coverage: coverage
+            coverage
         };
     });
     return ret;
@@ -241,7 +241,7 @@ FileCoverage.prototype.getBranchCoverageByLine = function() {
 ) {
     Object.defineProperty(FileCoverage.prototype, p, {
         enumerable: true,
-        get: function() {
+        get() {
             return this.data[p];
         }
     });
@@ -351,6 +351,6 @@ FileCoverage.prototype.toSummary = function() {
 };
 
 module.exports = {
-    CoverageSummary: CoverageSummary,
-    FileCoverage: FileCoverage
+    CoverageSummary,
+    FileCoverage
 };

@@ -46,7 +46,7 @@ class SourceCoverage extends classes.FileCoverage {
         var f = this.meta.last.f;
         name = name || '(anonymous_' + f + ')';
         this.data.fnMap[f] = {
-            name: name,
+            name,
             decl: cloneLocation(decl),
             loc: cloneLocation(loc),
             // DEPRECATED: some legacy reports require this info.
@@ -62,7 +62,7 @@ class SourceCoverage extends classes.FileCoverage {
         this.data.b[b] = [];
         this.data.branchMap[b] = {
             loc: cloneLocation(loc),
-            type: type,
+            type,
             locations: [],
             // DEPRECATED: some legacy reports require this info.
             line: loc && loc.start.line

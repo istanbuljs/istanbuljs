@@ -103,10 +103,10 @@ function getStructure(tree, localNames) {
     var meth = localNames ? 'getRelativeName' : 'getQualifiedName',
         visitor = {
             nodes: [],
-            onSummary: function(node) {
+            onSummary(node) {
                 this.nodes.push('g:' + node[meth]());
             },
-            onDetail: function(node) {
+            onDetail(node) {
                 this.nodes.push('f:' + node[meth]());
             }
         };
@@ -420,7 +420,7 @@ describe('summarizer', function() {
                 tree = fn(map),
                 node = null,
                 visitor = {
-                    onDetail: function(n) {
+                    onDetail(n) {
                         node = n;
                     }
                 };

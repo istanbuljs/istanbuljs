@@ -76,10 +76,10 @@ function findNameWidth(node, context) {
             }
         },
         visitor = {
-            onSummary: function(node) {
+            onSummary(node) {
                 compareWidth(node);
             },
-            onDetail: function(node) {
+            onDetail(node) {
                 compareWidth(node);
             }
         };

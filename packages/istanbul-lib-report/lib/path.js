@@ -144,18 +144,18 @@ Path.compare = function(a, b) {
 
 Object.defineProperty(Path.prototype, 'length', {
     enumerable: true,
-    get: function() {
+    get() {
         return this.v.length;
     }
 });
 
 module.exports = Path;
 Path.tester = {
-    setParserAndSep: function(p, sep) {
+    setParserAndSep(p, sep) {
         parsePath = p;
         SEP = sep;
     },
-    reset: function() {
+    reset() {
         parsePath = origParser;
         SEP = origSep;
     }

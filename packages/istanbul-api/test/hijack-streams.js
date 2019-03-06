@@ -21,7 +21,7 @@ function wrap(cb) {
 }
 
 module.exports = {
-    silent: silent,
-    reset: reset,
-    wrap: wrap
+    silent,
+    reset,
+    wrap
 };

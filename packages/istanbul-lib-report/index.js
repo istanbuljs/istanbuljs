@@ -18,7 +18,7 @@ module.exports = {
      * @param {Object} [opts=null] opts
      * @returns {Context}
      */
-    createContext: function(opts) {
+    createContext(opts) {
         return context.create(opts);
     },
     /**
@@ -28,7 +28,7 @@ module.exports = {
      *  and `line` keys. Each value is a 2 element array that has the low and
      *  high watermark as percentages.
      */
-    getDefaultWatermarks: function() {
+    getDefaultWatermarks() {
         return watermarks.getDefault();
     }
 };

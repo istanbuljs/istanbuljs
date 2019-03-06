@@ -49,7 +49,7 @@ function transformFn(matcher, transformer, verbose) {
         } else {
             transformed = code;
         }
-        return { code: transformed, changed: changed };
+        return { code: transformed, changed };
     };
 }
 /**
@@ -226,12 +226,12 @@ function unhookRunInContext() {
  * var foo = require('foo'); //will now print foo's module path to console
  */
 module.exports = {
-    hookRequire: hookRequire,
-    hookCreateScript: hookCreateScript,
-    unhookCreateScript: unhookCreateScript,
-    hookRunInThisContext: hookRunInThisContext,
-    unhookRunInThisContext: unhookRunInThisContext,
-    hookRunInContext: hookRunInContext,
-    unhookRunInContext: unhookRunInContext,
-    unloadRequireCache: unloadRequireCache
+    hookRequire,
+    hookCreateScript,
+    unhookCreateScript,
+    hookRunInThisContext,
+    unhookRunInThisContext,
+    hookRunInContext,
+    unhookRunInContext,
+    unloadRequireCache
 };

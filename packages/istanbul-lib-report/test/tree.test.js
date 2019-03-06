@@ -70,16 +70,16 @@ describe('tree', function() {
         it('visits all nodes with correct state with a full visitor', function() {
             var visited = [],
                 visitor = new Visitor({
-                    onStart: function(node, state) {
+                    onStart(node, state) {
                         state.push('start');
                     },
-                    onEnd: function(node, state) {
+                    onEnd(node, state) {
                         state.push('end');
                     },
-                    onSummary: function(node, state) {
+                    onSummary(node, state) {
                         state.push(node.name);
                     },
-                    onDetail: function(node, state) {
+                    onDetail(node, state) {
                         state.push(node.name);
                     }
                 });
@@ -104,10 +104,10 @@ describe('tree', function() {
         it('visits all nodes with correct state with a partial visitor', function() {
             var visited = [],
                 visitor = new Visitor({
-                    onEnd: function(node, state) {
+                    onEnd(node, state) {
                         state.push('end');
                     },
-                    onSummary: function(node, state) {
+                    onSummary(node, state) {
                         state.push(node.name);
                     }
                 });
@@ -120,16 +120,16 @@ describe('tree', function() {
         it('visits multiple visitors in interleaved order with a composite', function() {
             var visited = [],
                 visitor = new Visitor({
-                    onStart: function(root, state) {
+                    onStart(root, state) {
                         state.push('start');
                     },
-                    onEnd: function(root, state) {
+                    onEnd(root, state) {
                         state.push('end');
                     },
-                    onSummary: function(node, state) {
+                    onSummary(node, state) {
                         state.push(node.name);
                     },
-                    onDetail: function(node, state) {
+                    onDetail(node, state) {
                         state.push(node.name);
                     }
                 }),
@@ -160,10 +160,10 @@ describe('tree', function() {
         it('allows use of composite with a partial visitor', function() {
             var visited = [],
                 visitor = new CompositeVisitor({
-                    onEnd: function(root, state) {
+                    onEnd(root, state) {
                         state.push('end');
                     },
-                    onSummary: function(node, state) {
+                    onSummary(node, state) {
                         state.push(node.name);
                     }
                 });

@@ -101,13 +101,13 @@ class Instrumenter {
             coverageGlobalScope: opts.coverageGlobalScope,
             coverageGlobalScopeFunc: opts.coverageGlobalScopeFunc,
             ignoreClassMethods: opts.ignoreClassMethods,
-            inputSourceMap: inputSourceMap
+            inputSourceMap
         });
         let output = {};
         const visitor = {
             Program: {
                 enter: ee.enter,
-                exit: function(path) {
+                exit(path) {
                     output = ee.exit(path);
                 }
             }

@@ -20,6 +20,12 @@
       "env": {
         "browser": true
       }
+    },
+    {
+      "files": "!packages/istanbul-reports/lib/html/assets/**",
+      "rules": {
+        "object-shorthand": "error"
+      }
     }
   ]
 }

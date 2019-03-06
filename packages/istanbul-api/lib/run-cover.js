@@ -226,8 +226,8 @@ function getCoverFunctions(config, includes, callback) {
         root:
             config.instrumentation.root() ||
             /* istanbul ignore next: untestable */ process.cwd(),
-        includes: includes,
-        excludes: excludes
+        includes,
+        excludes
     };
     matcherFor(matchConfig, function(err, matchFn) {
         /* istanbul ignore if: untestable */
@@ -244,5 +244,5 @@ function getCoverFunctions(config, includes, callback) {
 }
 
 module.exports = {
-    getCoverFunctions: getCoverFunctions
+    getCoverFunctions
 };
