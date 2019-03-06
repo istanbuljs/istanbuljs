@@ -88,7 +88,7 @@ function mergeObjects(explicit, template, bothWays) {
     const keys = Object.keys(template);
 
     if (bothWays) {
-        keys.push.apply(keys, Object.keys(explicit));
+        keys.push(...Object.keys(explicit));
     }
     keys.forEach(k => {
         const v1 = template[k];
@@ -122,10 +122,7 @@ function mergeDefaults(explicit, implicit) {
     return initialMerge;
 }
 
-function addMethods() {
-    const args = Array.prototype.slice.call(arguments);
-    const cons = args.shift();
-
+function addMethods(cons, ...args) {
     args.forEach(arg => {
         const property = dasherize(arg);
         cons.prototype[arg] = function() {

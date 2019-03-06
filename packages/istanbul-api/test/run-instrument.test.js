@@ -61,11 +61,8 @@ describe('run instrument', function() {
         beforeEach(() => {
             memStream = new ms.WritableStream();
             origWrite = process.stdout.write;
-            process.stdout.write = function() {
-                memStream.write.apply(
-                    memStream,
-                    Array.prototype.slice.call(arguments)
-                );
+            process.stdout.write = function(...args) {
+                memStream.write(...args);
             };
         });
 

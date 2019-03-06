@@ -119,10 +119,9 @@ Path.prototype.commonPrefixPath = function(other) {
 };
 
 ['push', 'pop', 'shift', 'unshift', 'splice'].forEach(f => {
-    Path.prototype[f] = function() {
-        const args = Array.prototype.slice.call(arguments);
+    Path.prototype[f] = function(...args) {
         const v = this.v;
-        return v[f].apply(v, args);
+        return v[f](...args);
     };
 });
 

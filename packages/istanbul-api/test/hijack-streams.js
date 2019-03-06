@@ -14,9 +14,9 @@ function reset() {
 }
 
 function wrap(cb) {
-    return function() {
+    return function(...args) {
         reset();
-        cb.apply(null, Array.prototype.slice.call(arguments));
+        cb(...args);
     };
 }
 

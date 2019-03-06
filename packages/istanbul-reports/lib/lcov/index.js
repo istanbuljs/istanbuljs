@@ -12,16 +12,15 @@ function LcovReport() {
 
 ['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(what => {
     const meth = 'on' + what;
-    LcovReport.prototype[meth] = function() {
-        const args = Array.prototype.slice.call(arguments);
+    LcovReport.prototype[meth] = function(...args) {
         const lcov = this.lcov;
         const html = this.html;
 
         if (lcov[meth]) {
-            lcov[meth].apply(lcov, args);
+            lcov[meth](...args);
         }
         if (html[meth]) {
-            html[meth].apply(html, args);
+            html[meth](...args);
         }
     };
 });

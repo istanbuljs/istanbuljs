@@ -24,8 +24,7 @@ function BaselineCollector(instrumenter) {
     this.instrument = instrumenter.instrument.bind(this.instrumenter);
 
     const origInstrumentSync = instrumenter.instrumentSync;
-    this.instrumentSync = function() {
-        const args = Array.prototype.slice.call(arguments);
+    this.instrumentSync = function(...args) {
         const ret = origInstrumentSync.apply(this.instrumenter, args);
         const baseline = this.instrumenter.lastFileCoverage();
         this.map.addFileCoverage(baseline);

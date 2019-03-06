@@ -30,7 +30,9 @@
         "object-shorthand": "error",
         "one-var": ["error", "never"],
         "prefer-arrow-callback": "error",
-        "prefer-const": "error"
+        "prefer-const": "error",
+        "prefer-rest-params": "error",
+        "prefer-spread": "error"
       }
     }
   ]

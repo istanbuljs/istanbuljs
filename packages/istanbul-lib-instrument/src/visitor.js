@@ -317,8 +317,7 @@ class VisitState {
 //   This relieves them from worrying about ignore states and generated nodes.
 // * standard exit processing is done
 //
-function entries() {
-    const enter = Array.prototype.slice.call(arguments);
+function entries(...enter) {
     // the enter function
     const wrappedEntry = function(path, node) {
         this.onEnter(path);
