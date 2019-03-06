@@ -34,7 +34,7 @@ function protoDirMap(dir) {
     var files = ['constructor.js', 'toString.js'],
         count = 0,
         map = {};
-    files.forEach(function(f) {
+    files.forEach(f => {
         var filePath = dir ? dir + '/' + f : f,
             fc = makeCoverage(filePath, 4, count);
         count += 1;
@@ -47,7 +47,7 @@ function singleDirMap(dir) {
     var files = ['file3.js', 'file4.js', 'file2.js', 'file1.js'],
         count = 0,
         map = {};
-    files.forEach(function(f) {
+    files.forEach(f => {
         var filePath = dir ? dir + '/' + f : f,
             fc = makeCoverage(filePath, 4, count);
         count += 1;
@@ -72,7 +72,7 @@ function twoDirMap(nested) {
               ],
         count = 0,
         map = {};
-    files.forEach(function(f) {
+    files.forEach(f => {
         var filePath = f,
             fc = makeCoverage(filePath, 4, count);
         count += 1;
@@ -90,7 +90,7 @@ function threeDirMap() {
         ],
         count = 0,
         map = {};
-    files.forEach(function(f) {
+    files.forEach(f => {
         var filePath = f,
             fc = makeCoverage(filePath, 4, count);
         count += 1;
@@ -114,21 +114,21 @@ function getStructure(tree, localNames) {
     return visitor.nodes;
 }
 
-describe('summarizer', function() {
+describe('summarizer', () => {
     var fn;
-    describe('[flat strategy]', function() {
-        beforeEach(function() {
+    describe('[flat strategy]', () => {
+        beforeEach(() => {
             fn = summarizer.createFlatSummary;
         });
 
-        it('supports an empty coverage map', function() {
+        it('supports an empty coverage map', () => {
             var map = coverage.createCoverageMap({}),
                 tree = fn(map),
                 nodes = getStructure(tree);
             assert.deepEqual(nodes, ['g:']);
         });
 
-        it('supports a list of files at top-level', function() {
+        it('supports a list of files at top-level', () => {
             var map = singleDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -141,7 +141,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports a list of files containing Object.prototype names', function() {
+        it('supports a list of files containing Object.prototype names', () => {
             var map = protoDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -152,7 +152,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports a list of files at the same nesting level', function() {
+        it('supports a list of files at the same nesting level', () => {
             var map = singleDirMap('/lib/handlers'),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -165,7 +165,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 top-level dirs', function() {
+        it('supports 2 top-level dirs', () => {
             var map = twoDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree),
@@ -186,7 +186,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 dirs one under another', function() {
+        it('supports 2 dirs one under another', () => {
             var map = twoDirMap(true),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -199,7 +199,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 3 dirs, one nested 2 levels deep', function() {
+        it('supports 3 dirs, one nested 2 levels deep', () => {
             var map = threeDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -213,19 +213,19 @@ describe('summarizer', function() {
         });
     });
 
-    describe('[package strategy]', function() {
-        beforeEach(function() {
+    describe('[package strategy]', () => {
+        beforeEach(() => {
             fn = summarizer.createPackageSummary;
         });
 
-        it('supports an empty coverage map', function() {
+        it('supports an empty coverage map', () => {
             var map = coverage.createCoverageMap({}),
                 tree = fn(map),
                 nodes = getStructure(tree);
             assert.deepEqual(nodes, ['g:']);
         });
 
-        it('supports a list of files at top-level', function() {
+        it('supports a list of files at top-level', () => {
             var map = singleDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -238,7 +238,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports a list of files at the same nesting level', function() {
+        it('supports a list of files at the same nesting level', () => {
             var map = singleDirMap('/lib/handlers'),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -251,7 +251,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 top-level dirs', function() {
+        it('supports 2 top-level dirs', () => {
             var map = twoDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree),
@@ -276,7 +276,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 dirs one under another', function() {
+        it('supports 2 dirs one under another', () => {
             var map = twoDirMap(true),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -291,7 +291,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 3 dirs, one nested 2 levels deep', function() {
+        it('supports 3 dirs, one nested 2 levels deep', () => {
             var map = threeDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -309,19 +309,19 @@ describe('summarizer', function() {
         });
     });
 
-    describe('[nested strategy]', function() {
-        beforeEach(function() {
+    describe('[nested strategy]', () => {
+        beforeEach(() => {
             fn = summarizer.createNestedSummary;
         });
 
-        it('supports an empty coverage map', function() {
+        it('supports an empty coverage map', () => {
             var map = coverage.createCoverageMap({}),
                 tree = fn(map),
                 nodes = getStructure(tree);
             assert.deepEqual(nodes, ['g:']);
         });
 
-        it('handles getting root node name without crashing when empty coverage map', function() {
+        it('handles getting root node name without crashing when empty coverage map', () => {
             var map = coverage.createCoverageMap({}),
                 tree = fn(map),
                 root = tree.getRoot(),
@@ -329,7 +329,7 @@ describe('summarizer', function() {
             assert.equal(rootNodeName, '');
         });
 
-        it('supports a list of files at top-level', function() {
+        it('supports a list of files at top-level', () => {
             var map = singleDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -342,7 +342,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports a list of files at the same nesting level', function() {
+        it('supports a list of files at the same nesting level', () => {
             var map = singleDirMap('/lib/handlers'),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -355,7 +355,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 top-level dirs', function() {
+        it('supports 2 top-level dirs', () => {
             var map = twoDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree),
@@ -380,7 +380,7 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 dirs one under another', function() {
+        it('supports 2 dirs one under another', () => {
             var map = twoDirMap(true),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -393,7 +393,7 @@ describe('summarizer', function() {
                 'f:lib2/file4.js'
             ]);
         });
-        it('supports 3 dirs, one nested 2 levels deep', function() {
+        it('supports 3 dirs, one nested 2 levels deep', () => {
             var map = threeDirMap(),
                 tree = fn(map),
                 nodes = getStructure(tree);
@@ -410,12 +410,12 @@ describe('summarizer', function() {
         });
     });
 
-    describe('report node properties', function() {
-        beforeEach(function() {
+    describe('report node properties', () => {
+        beforeEach(() => {
             fn = summarizer.createPackageSummary;
         });
 
-        it('provides file coverage for leaf nodes', function() {
+        it('provides file coverage for leaf nodes', () => {
             var map = threeDirMap(),
                 tree = fn(map),
                 node = null,
@@ -431,7 +431,7 @@ describe('summarizer', function() {
             assert.ok(node.getCoverageSummary());
         });
 
-        it('provides summary coverage for group nodes w and w/o files', function() {
+        it('provides summary coverage for group nodes w and w/o files', () => {
             var map = threeDirMap(),
                 tree = fn(map),
                 node = tree.getRoot(),

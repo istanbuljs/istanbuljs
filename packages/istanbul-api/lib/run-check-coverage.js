@@ -18,11 +18,11 @@ function removeFiles(origMap, root, files) {
         ret = libCoverage.createCoverageMap();
 
     // Create lookup table.
-    files.forEach(function(file) {
+    files.forEach(file => {
         filesObj[file] = true;
     });
 
-    origMap.files().forEach(function(key) {
+    origMap.files().forEach(key => {
         // Exclude keys will always be relative, but covObj keys can be absolute or relative
         var excludeKey = isAbsolute(key) ? path.relative(root, key) : key;
         // Also normalize for files that start with `./`, etc.
@@ -51,7 +51,7 @@ function run(config, opts, callback) {
         processFiles;
 
     check = function(name, thresholds, actuals) {
-        ['statements', 'branches', 'lines', 'functions'].forEach(function(key) {
+        ['statements', 'branches', 'lines', 'functions'].forEach(key => {
             var actual = actuals[key].pct,
                 actualUncovered = actuals[key].total - actuals[key].covered,
                 threshold = thresholds[key];
@@ -95,7 +95,7 @@ function run(config, opts, callback) {
                 inputError.create('ERROR: No coverage files found.')
             );
         }
-        files.forEach(function(file) {
+        files.forEach(file => {
             var coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
             coverageMap.merge(coverageObject);
         });
@@ -147,7 +147,7 @@ function run(config, opts, callback) {
         }
 
         check('global', thresholds.global, globalResults.getCoverageSummary());
-        eachResults.files().forEach(function(key) {
+        eachResults.files().forEach(key => {
             var summary = eachResults.fileCoverageFor(key).toSummary();
             check('per-file' + ' (' + key + ') ', thresholds.each, summary);
         });
@@ -160,11 +160,11 @@ function run(config, opts, callback) {
             root,
             includes: [includePattern]
         },
-        function(err, files) {
+        (err, files) => {
             if (err) {
                 return callback(err);
             }
-            makeMap(files, function(err, map) {
+            makeMap(files, (err, map) => {
                 if (err) {
                     return callback(err);
                 }

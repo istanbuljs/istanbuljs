@@ -9,7 +9,7 @@ var FileCoverage = require('./file').FileCoverage,
 
 function loadMap(source) {
     var data = Object.create(null);
-    Object.keys(source).forEach(function(k) {
+    Object.keys(source).forEach(k => {
         var cov = source[k];
         if (cov instanceof FileCoverage) {
             data[k] = cov;
@@ -48,7 +48,7 @@ CoverageMap.prototype.merge = function(obj) {
     } else {
         other = new CoverageMap(obj);
     }
-    Object.keys(other.data).forEach(function(k) {
+    Object.keys(other.data).forEach(k => {
         var fc = other.data[k];
         if (that.data[k]) {
             that.data[k].merge(fc);
@@ -65,7 +65,7 @@ CoverageMap.prototype.merge = function(obj) {
  */
 CoverageMap.prototype.filter = function(callback) {
     var that = this;
-    Object.keys(that.data).forEach(function(k) {
+    Object.keys(that.data).forEach(k => {
         if (!callback(k)) {
             delete that.data[k];
         }
@@ -119,7 +119,7 @@ CoverageMap.prototype.addFileCoverage = function(fc) {
 CoverageMap.prototype.getCoverageSummary = function() {
     var that = this,
         ret = new CoverageSummary();
-    this.files().forEach(function(key) {
+    this.files().forEach(key => {
         ret.merge(that.fileCoverageFor(key).toSummary());
     });
     return ret;

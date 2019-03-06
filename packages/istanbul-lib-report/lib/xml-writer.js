@@ -19,7 +19,7 @@ function attrString(attrs) {
         return '';
     }
     var ret = [];
-    Object.keys(attrs).forEach(function(k) {
+    Object.keys(attrs).forEach(k => {
         var v = attrs[k];
         ret.push(k + '="' + v + '"');
     });
@@ -27,13 +27,7 @@ function attrString(attrs) {
 }
 
 XMLWriter.prototype.indent = function(str) {
-    return (
-        this.stack
-            .map(function() {
-                return INDENT;
-            })
-            .join('') + str
-    );
+    return this.stack.map(() => INDENT).join('') + str;
 };
 
 /**
@@ -94,7 +88,7 @@ XMLWriter.prototype.closeAll = function() {
     this.stack
         .slice()
         .reverse()
-        .forEach(function(name) {
+        .forEach(name => {
             that.closeTag(name);
         });
 };

@@ -67,7 +67,7 @@ class Instrumenter {
             }
         };
         const defOpts = defaultOpts();
-        Object.keys(defOpts).forEach(function(k) {
+        Object.keys(defOpts).forEach(k => {
             normalize(k, defOpts[k]);
         });
         return opts;

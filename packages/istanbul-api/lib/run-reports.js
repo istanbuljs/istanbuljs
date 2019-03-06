@@ -34,12 +34,12 @@ function run(formats, config, opts, callback) {
             root,
             includes: [includePattern]
         },
-        function(err, files) {
+        (err, files) => {
             /* istanbul ignore if */
             if (err) {
                 return callback(err);
             }
-            files.forEach(function(file) {
+            files.forEach(file => {
                 var coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
                 coverageMap.merge(coverageObject);
             });

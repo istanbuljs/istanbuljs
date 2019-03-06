@@ -82,7 +82,7 @@ ReportNode.prototype.getCoverageSummary = function(filesOnly) {
     } else {
         var count = 0;
         summary = coverage.createCoverageSummary();
-        this.getChildren().forEach(function(child) {
+        this.getChildren().forEach(child => {
             if (filesOnly && child.isSummary()) {
                 return;
             }
@@ -114,7 +114,7 @@ function treeFor(root, childPrefix) {
         },
         onSummary(node) {
             maybePrefix(node);
-            node.children.sort(function(a, b) {
+            node.children.sort((a, b) => {
                 var astr = a.path.toString(),
                     bstr = b.path.toString();
                 return astr < bstr
@@ -148,7 +148,7 @@ function findCommonParent(paths) {
 function toInitialList(coverageMap) {
     var ret = [],
         commonParent;
-    coverageMap.files().forEach(function(filePath) {
+    coverageMap.files().forEach(filePath => {
         var p = new Path(filePath),
             coverage = coverageMap.fileCoverageFor(filePath);
         ret.push({
@@ -157,13 +157,9 @@ function toInitialList(coverageMap) {
             fileCoverage: coverage
         });
     });
-    commonParent = findCommonParent(
-        ret.map(function(o) {
-            return o.path.parent();
-        })
-    );
+    commonParent = findCommonParent(ret.map(o => o.path.parent()));
     if (commonParent.length > 0) {
-        ret.forEach(function(o) {
+        ret.forEach(o => {
             o.path.splice(0, commonParent.length);
         });
     }
@@ -176,7 +172,7 @@ function toInitialList(coverageMap) {
 function toDirParents(list) {
     var nodeMap = Object.create(null),
         parentNodeList = [];
-    list.forEach(function(o) {
+    list.forEach(o => {
         var node = new ReportNode(o.path, o.fileCoverage),
             parentPath = o.path.parent(),
             parent = nodeMap[parentPath.toString()];
@@ -197,9 +193,7 @@ function foldIntoParents(nodeList) {
         j;
 
     // sort by longest length first
-    nodeList.sort(function(a, b) {
-        return -1 * Path.compare(a.path, b.path);
-    });
+    nodeList.sort((a, b) => -1 * Path.compare(a.path, b.path));
 
     for (i = 0; i < nodeList.length; i += 1) {
         var first = nodeList[i],
@@ -240,7 +234,7 @@ function createNestedSummary(coverageMap) {
     }
 
     root = createRoot();
-    topNodes.forEach(function(node) {
+    topNodes.forEach(node => {
         root.addChild(node);
     });
     return treeFor(root);
@@ -259,7 +253,7 @@ function createPackageSummary(coverageMap) {
         root = createRoot();
         // if one of the dirs is itself the root,
         // then we need to create a top-level dir
-        dirParents.forEach(function(dp) {
+        dirParents.forEach(dp => {
             if (dp.path.length === 0) {
                 prefix = 'root';
             }
@@ -267,7 +261,7 @@ function createPackageSummary(coverageMap) {
         if (prefix && common.length > 0) {
             prefix = common.elements()[common.elements().length - 1];
         }
-        dirParents.forEach(function(node) {
+        dirParents.forEach(node => {
             root.addChild(node);
         });
     }
@@ -280,7 +274,7 @@ function createFlatSummary(coverageMap) {
         root;
 
     root = createRoot();
-    list.forEach(function(o) {
+    list.forEach(o => {
         var node = new ReportNode(o.path, o.fileCoverage);
         root.addChild(node);
     });

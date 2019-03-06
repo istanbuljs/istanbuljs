@@ -9,20 +9,20 @@ var assert = require('chai').assert,
     hijack = require('./hijack-streams'),
     reset = hijack.reset;
 
-describe('config', function() {
+describe('config', () => {
     beforeEach(hijack.silent);
     afterEach(reset);
 
-    describe('no explicit config', function() {
-        beforeEach(function() {
+    describe('no explicit config', () => {
+        beforeEach(() => {
             config = configuration.loadObject(null);
         });
 
-        it('sets verbose option', function() {
+        it('sets verbose option', () => {
             assert.equal(config.verbose, false);
             reset();
         });
-        it('sets sane instrument options', function() {
+        it('sets sane instrument options', () => {
             var iOpts = config.instrumentation;
             assert.equal(iOpts.root(), process.cwd());
             assert.equal(iOpts.defaultExcludes(), true);
@@ -44,14 +44,14 @@ describe('config', function() {
             ]);
             reset();
         });
-        it('sets correct reporting options', function() {
+        it('sets correct reporting options', () => {
             var rOpts = config.reporting;
             assert.equal(rOpts.print(), 'summary');
             assert.deepEqual(rOpts.reports(), ['lcov']);
             assert.equal(rOpts.dir(), './coverage');
             reset();
         });
-        it('sets correct hook options', function() {
+        it('sets correct hook options', () => {
             var hOpts = config.hooks;
             assert.equal(hOpts.hookRunInContext(), false);
             assert.equal(hOpts.hookRunInThisContext(), false);
@@ -59,9 +59,9 @@ describe('config', function() {
             reset();
         });
     });
-    describe('when overrides passed in', function() {
-        describe('as initial object', function() {
-            it('uses overrides', function() {
+    describe('when overrides passed in', () => {
+        describe('as initial object', () => {
+            it('uses overrides', () => {
                 config = configuration.loadObject({
                     instrumentation: {
                         compact: false,
@@ -73,8 +73,8 @@ describe('config', function() {
                 reset();
             });
         });
-        describe('as override object', function() {
-            it('uses overrides', function() {
+        describe('as override object', () => {
+            it('uses overrides', () => {
                 config = configuration.loadObject(
                     {},
                     {
@@ -91,8 +91,8 @@ describe('config', function() {
                 reset();
             });
         });
-        describe('at both levels', function() {
-            it('uses overrides', function() {
+        describe('at both levels', () => {
+            it('uses overrides', () => {
                 config = configuration.loadObject(
                     {
                         verbose: true,
@@ -115,7 +115,7 @@ describe('config', function() {
                 reset();
             });
         });
-        describe('deeper in the tree', function() {
+        describe('deeper in the tree', () => {
             config = configuration.loadObject({
                 check: {
                     global: {
@@ -127,8 +127,8 @@ describe('config', function() {
             reset();
         });
     });
-    describe('excludes array', function() {
-        it('honors default excludes when set', function() {
+    describe('excludes array', () => {
+        it('honors default excludes when set', () => {
             config = configuration.loadObject({
                 instrumentation: {
                     excludes: ['**/vendor/**']
@@ -147,7 +147,7 @@ describe('config', function() {
             ]);
             reset();
         });
-        it('honors default excludes when not set', function() {
+        it('honors default excludes when not set', () => {
             config = configuration.loadObject({
                 instrumentation: {
                     'default-excludes': null,
@@ -159,7 +159,7 @@ describe('config', function() {
             assert.deepEqual(iOpts.excludes(true), ['**/vendor/**']);
             reset();
         });
-        it('returns nothing when defaults off and no excludes', function() {
+        it('returns nothing when defaults off and no excludes', () => {
             config = configuration.loadObject({
                 instrumentation: {
                     'default-excludes': null
@@ -171,27 +171,27 @@ describe('config', function() {
             reset();
         });
     });
-    describe('file loading', function() {
-        it('fails on bad config file', function() {
-            assert.throws(function() {
-                return configuration.loadFile('/a/non/existent/path.js');
-            });
+    describe('file loading', () => {
+        it('fails on bad config file', () => {
+            assert.throws(() =>
+                configuration.loadFile('/a/non/existent/path.js')
+            );
             reset();
         });
-        it('uses default config when no default file found', function() {
+        it('uses default config when no default file found', () => {
             config = configuration.loadFile();
             var defaultConfig = configuration.loadObject();
             assert.deepEqual(defaultConfig, config);
             reset();
         });
-        describe('when files present', function() {
-            beforeEach(function() {
+        describe('when files present', () => {
+            beforeEach(() => {
                 process.chdir(newCwd);
             });
-            afterEach(function() {
+            afterEach(() => {
                 process.chdir(oldCwd);
             });
-            it('uses default YAML config when not explicit', function() {
+            it('uses default YAML config when not explicit', () => {
                 config = configuration.loadFile(undefined, { verbose: true });
                 assert.equal(config.instrumentation.compact(), false);
                 assert.deepEqual(config.reporting.reports(), [
@@ -200,7 +200,7 @@ describe('config', function() {
                 ]);
                 reset();
             });
-            it('uses explicit file when provided', function() {
+            it('uses explicit file when provided', () => {
                 config = configuration.loadFile('cfg.json', { verbose: true });
                 assert.equal(config.instrumentation.compact(), true);
                 assert.deepEqual(config.reporting.reports(), ['lcov']);
@@ -210,8 +210,8 @@ describe('config', function() {
             });
         });
     });
-    describe('custom watermarks', function() {
-        it('loads from sparse config', function() {
+    describe('custom watermarks', () => {
+        it('loads from sparse config', () => {
             config = configuration.loadObject({
                 reporting: { watermarks: { statements: [10, 90] } }
             });
@@ -222,7 +222,7 @@ describe('config', function() {
             assert.deepEqual(w.lines, [50, 80]);
             reset();
         });
-        it('does not load any junk config', function() {
+        it('does not load any junk config', () => {
             config = configuration.loadObject({
                 reporting: {
                     watermarks: {

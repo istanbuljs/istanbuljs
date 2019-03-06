@@ -20,7 +20,7 @@ function defaultSourceLookup(path) {
 
 function mergeWatermarks(specified, defaults) {
     specified = specified || {};
-    Object.keys(defaults).forEach(function(k) {
+    Object.keys(defaults).forEach(k => {
         var specValue = specified[k];
         if (
             !(specValue && Array.isArray(specValue) && specValue.length === 2)

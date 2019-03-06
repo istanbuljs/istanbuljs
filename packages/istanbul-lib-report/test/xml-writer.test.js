@@ -15,8 +15,8 @@ MockContentWriter.prototype.println = function(s) {
     this.write(s + '\n');
 };
 
-describe('xml writer', function() {
-    it('creates an XML document correctly', function() {
+describe('xml writer', () => {
+    it('creates an XML document correctly', () => {
         var cw = new MockContentWriter(),
             xw = new XMLWriter(cw);
         xw.openTag('foo');
@@ -29,7 +29,7 @@ describe('xml writer', function() {
         );
     });
 
-    it('auto-closes open tags correctly', function() {
+    it('auto-closes open tags correctly', () => {
         var cw = new MockContentWriter(),
             xw = new XMLWriter(cw);
         xw.openTag('foo');
@@ -42,19 +42,19 @@ describe('xml writer', function() {
         );
     });
 
-    it('throws when closing a tag when none open', function() {
+    it('throws when closing a tag when none open', () => {
         var cw = new MockContentWriter(),
             xw = new XMLWriter(cw);
-        assert.throws(function() {
+        assert.throws(() => {
             xw.closeTag('foo');
         });
     });
 
-    it('throws when closing a mismatched tag', function() {
+    it('throws when closing a mismatched tag', () => {
         var cw = new MockContentWriter(),
             xw = new XMLWriter(cw);
         xw.openTag('bar');
-        assert.throws(function() {
+        assert.throws(() => {
             xw.closeTag('foo');
         });
     });

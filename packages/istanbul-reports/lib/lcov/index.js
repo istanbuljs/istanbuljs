@@ -10,7 +10,7 @@ function LcovReport() {
     this.html = new HtmlReport({ subdir: 'lcov-report' });
 }
 
-['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(function(what) {
+['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(what => {
     var meth = 'on' + what;
     LcovReport.prototype[meth] = function() {
         var args = Array.prototype.slice.call(arguments),

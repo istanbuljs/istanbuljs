@@ -26,32 +26,32 @@ LcovOnlyReport.prototype.onDetail = function(node) {
     writer.println('TN:'); //no test name
     writer.println('SF:' + fc.path);
 
-    Object.keys(functionMap).forEach(function(key) {
+    Object.keys(functionMap).forEach(key => {
         var meta = functionMap[key];
         writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
     });
     writer.println('FNF:' + summary.functions.total);
     writer.println('FNH:' + summary.functions.covered);
 
-    Object.keys(functionMap).forEach(function(key) {
+    Object.keys(functionMap).forEach(key => {
         var stats = functions[key],
             meta = functionMap[key];
         writer.println('FNDA:' + [stats, meta.name].join(','));
     });
 
-    Object.keys(lines).forEach(function(key) {
+    Object.keys(lines).forEach(key => {
         var stat = lines[key];
         writer.println('DA:' + [key, stat].join(','));
     });
     writer.println('LF:' + summary.lines.total);
     writer.println('LH:' + summary.lines.covered);
 
-    Object.keys(branches).forEach(function(key) {
+    Object.keys(branches).forEach(key => {
         var branchArray = branches[key],
             meta = branchMap[key],
             line = meta.loc.start.line,
             i = 0;
-        branchArray.forEach(function(b) {
+        branchArray.forEach(b => {
             writer.println('BRDA:' + [line, key, i, b].join(','));
             i += 1;
         });

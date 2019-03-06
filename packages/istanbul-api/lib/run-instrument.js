@@ -64,23 +64,25 @@ function processFiles(instrumenter, opts, callback) {
             }
 
             if (isJavaScriptFile) {
-                fs.readFile(inputFile, 'utf8', function(err, data) {
+                fs.readFile(inputFile, 'utf8', (err, data) => {
                     /* istanbul ignore if */ if (err) {
                         return callback(err, name);
                     }
-                    instrumenter.instrument(data, inputFile, function(
-                        iErr,
-                        instrumented
-                    ) {
-                        if (iErr) {
-                            return callback(iErr, name);
+                    instrumenter.instrument(
+                        data,
+                        inputFile,
+                        (iErr, instrumented) => {
+                            if (iErr) {
+                                return callback(iErr, name);
+                            }
+                            fs.writeFile(
+                                outputFile,
+                                instrumented,
+                                'utf8',
+                                err => callback(err, name)
+                            );
                         }
-                        fs.writeFile(outputFile, instrumented, 'utf8', function(
-                            err
-                        ) {
-                            return callback(err, name);
-                        });
-                    });
+                    );
                 });
             } else {
                 // non JavaScript file, copy it as is
@@ -93,7 +95,7 @@ function processFiles(instrumenter, opts, callback) {
                 writeStream.on('error', callback);
 
                 readStream.pipe(writeStream);
-                readStream.on('end', function() {
+                readStream.on('end', () => {
                     callback(null, name);
                 });
             }
@@ -103,7 +105,7 @@ function processFiles(instrumenter, opts, callback) {
         count = 0,
         startTime = new Date().getTime();
 
-    q.push(relativeNames, function(err, name) {
+    q.push(relativeNames, (err, name) => {
         var inputFile, outputFile;
         if (err) {
             errors.push({
@@ -163,9 +165,7 @@ function run(config, opts, callback) {
     if (iOpts.completeCopy()) {
         includes = ['**/*'];
     } else {
-        includes = iOpts.extensions().map(function(ext) {
-            return '**/*' + ext;
-        });
+        includes = iOpts.extensions().map(ext => '**/*' + ext);
     }
 
     if (!input) {
@@ -218,7 +218,7 @@ function run(config, opts, callback) {
                 excludes: excludes || iOpts.excludes(false),
                 relative: true
             },
-            function(err, files) {
+            (err, files) => {
                 /* istanbul ignore if */
                 if (err) {
                     return callback(err);

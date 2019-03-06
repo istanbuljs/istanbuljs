@@ -50,7 +50,7 @@ class VisitState {
     hintFor(node) {
         let hint = null;
         if (node.leadingComments) {
-            node.leadingComments.forEach(function(c) {
+            node.leadingComments.forEach(c => {
                 const v = (
                     c.value || /* istanbul ignore next: paranoid check */ ''
                 ).trim();
@@ -70,7 +70,7 @@ class VisitState {
             if (!comments) {
                 return;
             }
-            comments.forEach(function(c) {
+            comments.forEach(c => {
                 const v = (
                     c.value || /* istanbul ignore next: paranoid check */ ''
                 ).trim();
@@ -327,7 +327,7 @@ function entries() {
             return;
         }
         const that = this;
-        enter.forEach(function(e) {
+        enter.forEach(e => {
             e.call(that, path, node);
         });
     };

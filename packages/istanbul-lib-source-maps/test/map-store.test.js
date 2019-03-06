@@ -4,10 +4,10 @@ var assert = require('chai').assert,
     MapStore = require('../lib/map-store').MapStore,
     libCoverage = require('istanbul-lib-coverage');
 
-describe('map store', function() {
+describe('map store', () => {
     var coverageData;
 
-    it('applies the inputSourceMap from the coverage object if available', function() {
+    it('applies the inputSourceMap from the coverage object if available', () => {
         /* shint ignore:line */
         var mapStore = new MapStore({});
 

@@ -53,14 +53,10 @@ module.exports = {
 var DASH_PATTERN = /-([a-z])/g;
 
 function camelize(word) {
-    return word.replace(DASH_PATTERN, function(match, lch) {
-        return lch.toUpperCase();
-    });
+    return word.replace(DASH_PATTERN, (match, lch) => lch.toUpperCase());
 }
 
-['coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(function(
-    k
-) {
+['coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(k => {
     var mod = 'lib-' + k,
         prop = camelize(mod);
     module.exports[prop] = require('istanbul-' + mod);

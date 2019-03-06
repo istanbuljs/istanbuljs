@@ -17,7 +17,7 @@ function pad(str, len) {
 function annotatedCode(code) {
     var codeArray = code.split('\n'),
         line = 0,
-        annotated = codeArray.map(function(str) {
+        annotated = codeArray.map(str => {
             line += 1;
             return pad(line, 6) + ': ' + str;
         });

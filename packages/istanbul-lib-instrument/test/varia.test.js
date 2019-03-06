@@ -4,8 +4,8 @@ import * as verifier from './util/verifier';
 import Instrumenter from '../src/instrumenter';
 import { assert } from 'chai';
 
-describe('varia', function() {
-    it('debug/ walkDebug should not cause errors', function() {
+describe('varia', () => {
+    it('debug/ walkDebug should not cause errors', () => {
         var v = verifier.create('output = args[0];', {}, { debug: true });
         assert.ok(!v.err);
         v.verify(['X'], 'X', {
@@ -14,7 +14,7 @@ describe('varia', function() {
         });
     });
 
-    it('auto-generates filename', function() {
+    it('auto-generates filename', () => {
         var v = verifier.create('output = args[0];', { file: null });
         assert.ok(!v.err);
         v.verify(['X'], 'X', {
@@ -23,7 +23,7 @@ describe('varia', function() {
         });
     });
 
-    it('handles windows-style paths in file names', function() {
+    it('handles windows-style paths in file names', () => {
         var v = verifier.create('output = args[0];', { file: 'c:\\x\\y.js' }),
             cov;
         assert.ok(!v.err);
@@ -35,7 +35,7 @@ describe('varia', function() {
         assert.equal(Object.keys(cov)[0], 'c:\\x\\y.js');
     });
 
-    it('preserves comments when requested', function() {
+    it('preserves comments when requested', () => {
         var v = verifier.create(
                 '/* hello */\noutput = args[0];',
                 {},
@@ -51,7 +51,7 @@ describe('varia', function() {
         assert.ok(code.match(/\/* hello */));
     });
 
-    it('preserves function names for named export arrow functions', function() {
+    it('preserves function names for named export arrow functions', () => {
         /* https://github.com/istanbuljs/babel-plugin-istanbul/issues/125 */
         var v = verifier.create(
                 'export const func = () => true;',
@@ -66,7 +66,7 @@ describe('varia', function() {
         );
     });
 
-    it('honors ignore next for exported functions', function() {
+    it('honors ignore next for exported functions', () => {
         /* https://github.com/istanbuljs/istanbuljs/issues/297 */
         var v = verifier.create(
                 '/* istanbul ignore next*/ export function fn1() {}' +
@@ -84,7 +84,7 @@ describe('varia', function() {
         );
     });
 
-    it('instruments exported functions', function() {
+    it('instruments exported functions', () => {
         /* https://github.com/istanbuljs/istanbuljs/issues/297 */
         var v = verifier.create(
                 'export function fn1() {}' + 'export default function() {}',
@@ -101,14 +101,14 @@ describe('varia', function() {
         );
     });
 
-    it('returns last coverage object', function(cb) {
+    it('returns last coverage object', cb => {
         var instrumenter = new Instrumenter({
                 coverageVariable: '__testing_coverage__'
             }),
             err,
             cov;
 
-        instrumenter.instrument('output = args[0]', __filename, function(e) {
+        instrumenter.instrument('output = args[0]', __filename, e => {
             err = e;
             cov = instrumenter.lastFileCoverage();
             assert.ok(!err);
@@ -117,7 +117,7 @@ describe('varia', function() {
         });
     });
 
-    it('creates a source-map when requested', function() {
+    it('creates a source-map when requested', () => {
         var opts = {
                 produceSourceMap: true,
                 coverageVariable: '__testing_coverage__'
@@ -133,7 +133,7 @@ describe('varia', function() {
         assert.ok(instrumenter.lastSourceMap());
     });
 
-    it('registers source map URLs seen in the original source', function() {
+    it('registers source map URLs seen in the original source', () => {
         var f = '',
             u = '',
             fn = function(file, sourceMapUrl) {
@@ -155,15 +155,15 @@ describe('varia', function() {
         assert.equal(u, 'foo.map');
     });
 
-    describe('callback style instrumentation', function() {
-        it('allows filename to be optional', function(cb) {
+    describe('callback style instrumentation', () => {
+        it('allows filename to be optional', cb => {
             var instrumenter = new Instrumenter({
                     coverageVariable: '__testing_coverage__'
                 }),
                 generated,
                 err;
 
-            instrumenter.instrument('output = args[0]', function(e, c) {
+            instrumenter.instrument('output = args[0]', (e, c) => {
                 err = e;
                 generated = c;
                 assert.ok(!err);
@@ -171,14 +171,14 @@ describe('varia', function() {
                 cb();
             });
         });
-        it('returns instead of throwing errors', function() {
+        it('returns instead of throwing errors', () => {
             var instrumenter = new Instrumenter({
                     coverageVariable: '__testing_coverage__'
                 }),
                 generated = null,
                 err = null;
 
-            instrumenter.instrument('output = args[0] : 1: 2', function(e, c) {
+            instrumenter.instrument('output = args[0] : 1: 2', (e, c) => {
                 err = e;
                 generated = c;
             });
@@ -190,7 +190,7 @@ describe('varia', function() {
     // see: https://github.com/istanbuljs/istanbuljs/issues/110
     // TODO: it feels like we should be inserting line counters
     // for class exports and class declarations.
-    it('properly exports named classes', function() {
+    it('properly exports named classes', () => {
         var v = verifier.create(
                 'export class App extends Component {};',
                 { generateOnly: true },
@@ -202,7 +202,7 @@ describe('varia', function() {
         assert.ok(code.match(/cov_(.+);export class App extends/));
     });
 
-    it('does not add extra parenthesis when superclass is an identifier', function() {
+    it('does not add extra parenthesis when superclass is an identifier', () => {
         var v = verifier.create('class App extends Component {};', {
                 generateOnly: true
             }),
@@ -212,7 +212,7 @@ describe('varia', function() {
         assert.ok(code.match(/cov_(.+);class App extends Component/));
     });
 
-    it('can store coverage object in alternative scope', function() {
+    it('can store coverage object in alternative scope', () => {
         const opts = { generateOnly: true };
         const instrumentOpts = { coverageGlobalScope: 'window.top' };
         const v = verifier.create('console.log("test");', opts, instrumentOpts);
@@ -226,7 +226,7 @@ describe('varia', function() {
         );
     });
 
-    it('can store coverage object in alternative scope without function', function() {
+    it('can store coverage object in alternative scope without function', () => {
         const opts = { generateOnly: true };
         const instrumentOpts = {
             coverageGlobalScope: 'window.top',

@@ -34,7 +34,7 @@ function annotateLines(fileCoverage, structuredText) {
     if (!lineStats) {
         return;
     }
-    Object.keys(lineStats).forEach(function(lineNumber) {
+    Object.keys(lineStats).forEach(lineNumber => {
         var count = lineStats[lineNumber];
         if (structuredText[lineNumber]) {
             structuredText[lineNumber].covered = count > 0 ? 'yes' : 'no';
@@ -46,7 +46,7 @@ function annotateLines(fileCoverage, structuredText) {
 function annotateStatements(fileCoverage, structuredText) {
     var statementStats = fileCoverage.s,
         statementMeta = fileCoverage.statementMap;
-    Object.keys(statementStats).forEach(function(stName) {
+    Object.keys(statementStats).forEach(stName => {
         var count = statementStats[stName],
             meta = statementMeta[stName],
             type = count > 0 ? 'yes' : 'no',
@@ -85,7 +85,7 @@ function annotateFunctions(fileCoverage, structuredText) {
     if (!fnStats) {
         return;
     }
-    Object.keys(fnStats).forEach(function(fName) {
+    Object.keys(fnStats).forEach(fName => {
         var count = fnStats[fName],
             meta = fnMeta[fName],
             type = count > 0 ? 'yes' : 'no',
@@ -125,11 +125,9 @@ function annotateBranches(fileCoverage, structuredText) {
         return;
     }
 
-    Object.keys(branchStats).forEach(function(branchName) {
+    Object.keys(branchStats).forEach(branchName => {
         var branchArray = branchStats[branchName],
-            sumCount = branchArray.reduce(function(p, n) {
-                return p + n;
-            }, 0),
+            sumCount = branchArray.reduce((p, n) => p + n, 0),
             metaArray = branchMeta[branchName].locations,
             i,
             count,
@@ -218,7 +216,7 @@ function annotateSourceCode(fileCoverage, sourceStore) {
         var sourceText = sourceStore.getSource(fileCoverage.path),
             code = sourceText.split(/(?:\r?\n)|\r/),
             count = 0,
-            structured = code.map(function(str) {
+            structured = code.map(str => {
                 count += 1;
                 return {
                     line: count,
@@ -240,16 +238,14 @@ function annotateSourceCode(fileCoverage, sourceStore) {
         annotateStatements(fileCoverage, structured);
         structured.shift();
 
-        codeArray = structured.map(function(item) {
-            return customEscape(item.text.toString()) || '&nbsp;';
-        });
+        codeArray = structured.map(
+            item => customEscape(item.text.toString()) || '&nbsp;'
+        );
 
-        lineCoverageArray = structured.map(function(item) {
-            return {
-                covered: item.covered,
-                hits: item.hits > 0 ? item.hits + 'x' : '&nbsp;'
-            };
-        });
+        lineCoverageArray = structured.map(item => ({
+            covered: item.covered,
+            hits: item.hits > 0 ? item.hits + 'x' : '&nbsp;'
+        }));
 
         return {
             annotatedCode: codeArray,
@@ -261,7 +257,7 @@ function annotateSourceCode(fileCoverage, sourceStore) {
         lineCoverageArray = [{ covered: 'no', hits: 0 }];
         String(ex.stack || '')
             .split(/\r?\n/)
-            .forEach(function(line) {
+            .forEach(line => {
                 codeArray.push(line);
                 lineCoverageArray.push({ covered: 'no', hits: 0 });
             });

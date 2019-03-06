@@ -30,7 +30,7 @@ function filesFor(options, callback) {
     opts = { cwd: root, nodir: true, ignore: excludes };
     seq += 1;
     opts['x' + seq + new Date().getTime()] = true; //cache buster for minimatch cache bug
-    fileset(includes.join(' '), excludes.join(' '), opts, function(err, files) {
+    fileset(includes.join(' '), excludes.join(' '), opts, (err, files) => {
         /* istanbul ignore if - untestable */
         if (err) {
             return callback(err);
@@ -40,9 +40,7 @@ function filesFor(options, callback) {
         }
 
         if (!realpath) {
-            files = files.map(function(file) {
-                return path.resolve(root, file);
-            });
+            files = files.map(file => path.resolve(root, file));
             return callback(err, files);
         }
 
@@ -51,7 +49,7 @@ function filesFor(options, callback) {
 
         async.map(
             files,
-            function(file, done) {
+            (file, done) => {
                 fs.realpath(path.resolve(root, file), realPathCache, done);
             },
             callback
@@ -68,14 +66,14 @@ function matcherFor(options, callback) {
     options.relative = false; //force absolute paths
     options.realpath = true; //force real paths (to match Node.js module paths)
 
-    filesFor(options, function(err, files) {
+    filesFor(options, (err, files) => {
         var fileMap = Object.create(null),
             matchFn;
         /* istanbul ignore if - untestable */
         if (err) {
             return callback(err);
         }
-        files.forEach(function(file) {
+        files.forEach(file => {
             fileMap[file] = true;
         });
 

@@ -37,7 +37,7 @@ function registerHelpers(handlebars) {
             : opts.fn(this);
     });
 
-    handlebars.registerHelper('show_ignores', function(metrics) {
+    handlebars.registerHelper('show_ignores', metrics => {
         var statements = metrics.statements.skipped,
             functions = metrics.functions.skipped,
             branches = metrics.branches.skipped,
@@ -83,9 +83,9 @@ function registerHelpers(handlebars) {
         return array.join('\n');
     });
 
-    handlebars.registerHelper('show_line_execution_counts', function(context) {
+    handlebars.registerHelper('show_line_execution_counts', context => {
         var array = [];
-        context.forEach(function(data) {
+        context.forEach(data => {
             array.push(
                 '<span class="cline-any cline-' +
                     data.covered +
@@ -97,9 +97,9 @@ function registerHelpers(handlebars) {
         return array.join('\n');
     });
 
-    handlebars.registerHelper('show_code', function(context /*, opts */) {
-        return context.join('\n');
-    });
+    handlebars.registerHelper('show_code', (context /*, opts */) =>
+        context.join('\n')
+    );
 }
 
 module.exports = {

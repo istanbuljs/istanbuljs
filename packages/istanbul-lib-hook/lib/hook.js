@@ -61,7 +61,7 @@ function transformFn(matcher, transformer, verbose) {
 function unloadRequireCache(matcher) {
     /* istanbul ignore else: impossible to test */
     if (matcher && typeof require !== 'undefined' && require && require.cache) {
-        Object.keys(require.cache).forEach(function(filename) {
+        Object.keys(require.cache).forEach(filename => {
             if (matcher(filename)) {
                 delete require.cache[filename];
             }
@@ -95,8 +95,8 @@ function hookRequire(matcher, transformer, options) {
 
     extensions = options.extensions || ['.js'];
 
-    extensions.forEach(function(ext) {
-        appendTransform(function(code, filename) {
+    extensions.forEach(ext => {
+        appendTransform((code, filename) => {
             if (disable) {
                 return code;
             }

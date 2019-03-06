@@ -5,8 +5,8 @@ var assert = require('chai').assert,
     CoverageSummary = base.CoverageSummary,
     FileCoverage = base.FileCoverage;
 
-describe('coverage summary', function() {
-    it('allows a noop constructor', function() {
+describe('coverage summary', () => {
+    it('allows a noop constructor', () => {
         var cs = new CoverageSummary();
         assert.ok(cs.statements);
         assert.ok(cs.lines);
@@ -14,21 +14,21 @@ describe('coverage summary', function() {
         assert.ok(cs.branches);
     });
 
-    it('allows another summary in constructor', function() {
+    it('allows another summary in constructor', () => {
         var cs1 = new CoverageSummary();
-        assert.doesNotThrow(function() {
+        assert.doesNotThrow(() => {
             new CoverageSummary(cs1);
         });
     });
 
-    it('allows summary data in constructor', function() {
+    it('allows summary data in constructor', () => {
         var cs1 = new CoverageSummary();
-        assert.doesNotThrow(function() {
+        assert.doesNotThrow(() => {
             new CoverageSummary(cs1.data);
         });
     });
 
-    it('can be initialized with non-zero totals', function() {
+    it('can be initialized with non-zero totals', () => {
         var cs = new CoverageSummary().data,
             cs2;
         cs.statements.total = 5;
@@ -44,13 +44,13 @@ describe('coverage summary', function() {
         });
     });
 
-    it('cannot be initialized with an object with missing keys', function() {
-        assert.throws(function() {
+    it('cannot be initialized with an object with missing keys', () => {
+        assert.throws(() => {
             new CoverageSummary({ statements: {} });
         });
     });
 
-    it('merges summaries correctly', function() {
+    it('merges summaries correctly', () => {
         var basic = function() {
                 return {
                     total: 5,
@@ -99,25 +99,25 @@ describe('coverage summary', function() {
         assert.equal(data.branches.pct, 100);
     });
 
-    it('isEmpty() by default', function() {
+    it('isEmpty() by default', () => {
         var cs = new CoverageSummary();
         assert.equal(cs.isEmpty(), true);
     });
 });
 
-describe('base coverage', function() {
-    it('does not allow a noop/ invalid constructor', function() {
-        assert.throws(function() {
+describe('base coverage', () => {
+    it('does not allow a noop/ invalid constructor', () => {
+        assert.throws(() => {
             new FileCoverage();
         });
-        assert.throws(function() {
+        assert.throws(() => {
             new FileCoverage(10);
         });
     });
 
-    it('allows a path in constructor', function() {
+    it('allows a path in constructor', () => {
         var bc = null;
-        assert.doesNotThrow(function() {
+        assert.doesNotThrow(() => {
             bc = new FileCoverage('/path/to/file');
         });
         assert.ok(bc.statementMap);
@@ -130,7 +130,7 @@ describe('base coverage', function() {
         assert.equal(bc.path, '/path/to/file');
     });
 
-    it('allows another object in constructor, produces JSON', function() {
+    it('allows another object in constructor, produces JSON', () => {
         var bc1 = new FileCoverage('/path/to/file'),
             bc2,
             bc3;
@@ -142,12 +142,12 @@ describe('base coverage', function() {
         assert.deepEqual(bc1.data, JSON.parse(JSON.stringify(bc3)));
 
         delete bc3.data.s;
-        assert.throws(function() {
+        assert.throws(() => {
             new FileCoverage(bc3.data);
         });
     });
 
-    it('merges another file coverage correctly', function() {
+    it('merges another file coverage correctly', () => {
         var loc = function(sl, sc, el, ec) {
                 return {
                     start: { line: sl, column: sc },
@@ -264,7 +264,7 @@ describe('base coverage', function() {
         assert.equal(c1.b[1][1], 2);
     });
 
-    it('resets hits when requested', function() {
+    it('resets hits when requested', () => {
         var loc = function(sl, sc, el, ec) {
                 return {
                     start: { line: sl, column: sc },
@@ -312,7 +312,7 @@ describe('base coverage', function() {
         assert.deepEqual({ 1: [0, 0] }, fc.b);
     });
 
-    it('returns uncovered lines', function() {
+    it('returns uncovered lines', () => {
         var c = new FileCoverage({
             path: '/path/to/file',
             statementMap: {
@@ -338,7 +338,7 @@ describe('base coverage', function() {
         assert.deepEqual(['2'], c.getUncoveredLines());
     });
 
-    it('returns branch coverage by line', function() {
+    it('returns branch coverage by line', () => {
         var c = new FileCoverage({
                 path: '/path/to/file',
                 branchMap: {
@@ -372,7 +372,7 @@ describe('base coverage', function() {
         );
     });
 
-    it('returns branch coverage by line with Cobertura branchMap structure', function() {
+    it('returns branch coverage by line with Cobertura branchMap structure', () => {
         var loc = function(sl, sc, el, ec) {
                 return {
                     start: { line: sl, column: sc },

@@ -97,7 +97,7 @@ class SourceCoverage extends classes.FileCoverage {
         // prune empty branches
         var map = this.data.branchMap,
             branches = this.data.b;
-        Object.keys(map).forEach(function(b) {
+        Object.keys(map).forEach(b => {
             if (map[b].locations.length === 0) {
                 delete map[b];
                 delete branches[b];

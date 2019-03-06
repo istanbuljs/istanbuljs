@@ -27,7 +27,7 @@ function Visitor(delegate) {
     this.delegate = delegate;
 }
 
-['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(function(k) {
+['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(k => {
     var f = 'on' + k;
     Visitor.prototype[f] = function(node, state) {
         if (this.delegate[f] && typeof this.delegate[f] === 'function') {
@@ -40,7 +40,7 @@ function CompositeVisitor(visitors) {
     if (!Array.isArray(visitors)) {
         visitors = [visitors];
     }
-    this.visitors = visitors.map(function(v) {
+    this.visitors = visitors.map(v => {
         if (v instanceof Visitor) {
             return v;
         }
@@ -50,10 +50,10 @@ function CompositeVisitor(visitors) {
 
 util.inherits(CompositeVisitor, Visitor);
 
-['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].forEach(function(k) {
+['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].forEach(k => {
     var f = 'on' + k;
     CompositeVisitor.prototype[f] = function(node, state) {
-        this.visitors.forEach(function(v) {
+        this.visitors.forEach(v => {
             v[f](node, state);
         });
     };
@@ -110,7 +110,7 @@ Node.prototype.getFileCoverage = function() {
 Node.prototype.visit = function(visitor, state) {
     var that = this,
         visitChildren = function() {
-            that.getChildren().forEach(function(child) {
+            that.getChildren().forEach(child => {
                 child.visit(visitor, state);
             });
         };

@@ -157,14 +157,14 @@ function getCoverFunctions(config, includes, callback) {
             missingFiles = [];
             // Files that are not touched by code ran by the test runner is manually instrumented, to
             // illustrate the missing coverage.
-            matchFn.files.forEach(function(file) {
+            matchFn.files.forEach(file => {
                 if (!cov[file]) {
                     missingFiles.push(file);
                 }
             });
 
             fakeRequire = true;
-            missingFiles.forEach(function(file) {
+            missingFiles.forEach(file => {
                 try {
                     require(file);
                 } catch (ex) {
@@ -219,9 +219,7 @@ function getCoverFunctions(config, includes, callback) {
     );
     includes =
         includes ||
-        config.instrumentation.extensions().map(function(ext) {
-            return '**/*' + ext;
-        });
+        config.instrumentation.extensions().map(ext => '**/*' + ext);
     var matchConfig = {
         root:
             config.instrumentation.root() ||
@@ -229,7 +227,7 @@ function getCoverFunctions(config, includes, callback) {
         includes,
         excludes
     };
-    matcherFor(matchConfig, function(err, matchFn) {
+    matcherFor(matchConfig, (err, matchFn) => {
         /* istanbul ignore if: untestable */
         if (err) {
             return callback(err);

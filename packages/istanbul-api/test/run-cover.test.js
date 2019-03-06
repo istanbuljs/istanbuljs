@@ -13,13 +13,13 @@ var assert = require('chai').assert,
     wrap = hijack.wrap,
     unhookFn;
 
-describe('run cover', function() {
-    beforeEach(function() {
+describe('run cover', () => {
+    beforeEach(() => {
         unhookFn = null;
         mkdirp.sync(outputDir);
         hijack.silent();
     });
-    afterEach(function() {
+    afterEach(() => {
         hijack.reset();
         rimraf.sync(outputDir);
         if (unhookFn) {
@@ -43,13 +43,13 @@ describe('run cover', function() {
         return cfg;
     }
 
-    it('hooks require and provides coverage', function(cb) {
+    it('hooks require and provides coverage', cb => {
         cb = wrap(cb);
         var config = getConfig({
             verbose: true,
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
             var fn = data.coverageFn,
                 hookFn = data.hookFn,
@@ -85,13 +85,13 @@ describe('run cover', function() {
         });
     });
 
-    it('hooks runInContext and provides coverage', function(cb) {
+    it('hooks runInContext and provides coverage', cb => {
         cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-context': true },
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
             var fn = data.coverageFn,
                 exitFn = data.exitFn,
@@ -120,13 +120,13 @@ describe('run cover', function() {
         });
     });
 
-    it('hooks runInThisContext and provides coverage', function(cb) {
+    it('hooks runInThisContext and provides coverage', cb => {
         cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-this-context': true },
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
             var fn = data.coverageFn,
                 hookFn = data.hookFn,
@@ -142,7 +142,7 @@ describe('run cover', function() {
         });
     });
 
-    it('includes all sources by default (ignoring bad code)', function(cb) {
+    it('includes all sources by default (ignoring bad code)', cb => {
         cb = wrap(cb);
         var config = getConfig({
             verbose: true,
@@ -152,7 +152,7 @@ describe('run cover', function() {
                 extensions: ['.js', '.xjs']
             }
         });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
             var fn = data.coverageFn,
                 hookFn = data.hookFn,
@@ -173,10 +173,10 @@ describe('run cover', function() {
         });
     });
 
-    it('includes pid in coverage JSON when requested', function(cb) {
+    it('includes pid in coverage JSON when requested', cb => {
         cb = wrap(cb);
         var config = getConfig({ instrumentation: { 'include-pid': true } });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
             var hookFn = data.hookFn,
                 exitFn = data.exitFn;
@@ -196,13 +196,13 @@ describe('run cover', function() {
         });
     });
 
-    it('accepts specific includes', function(cb) {
+    it('accepts specific includes', cb => {
         cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-this-context': true },
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, ['**/foo.js'], function(err, data) {
+        cover.getCoverFunctions(config, ['**/foo.js'], (err, data) => {
             assert.ok(!err);
             var fn = data.coverageFn,
                 hookFn = data.hookFn,
@@ -223,10 +223,10 @@ describe('run cover', function() {
         });
     });
 
-    it('complains but does not throw when no coverage', function(cb) {
+    it('complains but does not throw when no coverage', cb => {
         cb = wrap(cb);
         var config = getConfig();
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
             unhookFn = data.unhookFn;
             assert.doesNotThrow(data.exitFn);
@@ -234,7 +234,7 @@ describe('run cover', function() {
         });
     });
 
-    describe('text reports', function() {
+    describe('text reports', () => {
         var getTextReportConfig = function(type) {
             return getConfig({
                 reporting: {
@@ -246,10 +246,10 @@ describe('run cover', function() {
                 }
             });
         };
-        it('prints text summary by default', function(cb) {
+        it('prints text summary by default', cb => {
             cb = wrap(cb);
             var config = getTextReportConfig();
-            cover.getCoverFunctions(config, function(err, data) {
+            cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
                 var hookFn = data.hookFn,
                     exitFn = data.exitFn;
@@ -264,10 +264,10 @@ describe('run cover', function() {
                 cb();
             });
         });
-        it('prints detail only', function(cb) {
+        it('prints detail only', cb => {
             cb = wrap(cb);
             var config = getTextReportConfig('detail');
-            cover.getCoverFunctions(config, function(err, data) {
+            cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
                 var hookFn = data.hookFn,
                     exitFn = data.exitFn;
@@ -282,10 +282,10 @@ describe('run cover', function() {
                 cb();
             });
         });
-        it('prints both', function(cb) {
+        it('prints both', cb => {
             cb = wrap(cb);
             var config = getTextReportConfig('both');
-            cover.getCoverFunctions(config, function(err, data) {
+            cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
                 var hookFn = data.hookFn,
                     exitFn = data.exitFn;
@@ -300,10 +300,10 @@ describe('run cover', function() {
                 cb();
             });
         });
-        it('prints nothing', function(cb) {
+        it('prints nothing', cb => {
             cb = wrap(cb);
             var config = getTextReportConfig('none');
-            cover.getCoverFunctions(config, function(err, data) {
+            cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
                 var hookFn = data.hookFn,
                     exitFn = data.exitFn;

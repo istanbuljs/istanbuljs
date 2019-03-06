@@ -97,7 +97,7 @@ CoberturaReport.prototype.onDetail = function(node) {
 
     this.xml.openTag('methods');
     fnMap = fileCoverage.fnMap;
-    Object.keys(fnMap).forEach(function(k) {
+    Object.keys(fnMap).forEach(k => {
         var name = fnMap[k].name,
             hits = fileCoverage.f[k];
         that.xml.openTag('method', {
@@ -118,7 +118,7 @@ CoberturaReport.prototype.onDetail = function(node) {
 
     this.xml.openTag('lines');
     lines = fileCoverage.getLineCoverage();
-    Object.keys(lines).forEach(function(k) {
+    Object.keys(lines).forEach(k => {
         var attrs = {
                 number: k,
                 hits: lines[k],

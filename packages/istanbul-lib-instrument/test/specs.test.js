@@ -10,7 +10,7 @@ import { assert } from 'chai';
 const clone = require('clone');
 
 const dir = path.resolve(__dirname, 'specs'),
-    files = fs.readdirSync(dir).filter(function(f) {
+    files = fs.readdirSync(dir).filter(f => {
         var match = true;
         if (process.env.FILTER) {
             match = new RegExp(`.*${process.env.FILTER}.*`).test(f);
@@ -20,11 +20,11 @@ const dir = path.resolve(__dirname, 'specs'),
 
 function loadDocs() {
     var docs = [];
-    files.forEach(function(f) {
+    files.forEach(f => {
         var filePath = path.resolve(dir, f),
             contents = fs.readFileSync(filePath, 'utf8');
         try {
-            yaml.safeLoadAll(contents, function(obj) {
+            yaml.safeLoadAll(contents, obj => {
                 obj.file = f;
                 docs.push(obj);
             });
@@ -46,7 +46,7 @@ function loadDocs() {
 }
 
 function generateTests(docs) {
-    docs.forEach(function(doc) {
+    docs.forEach(doc => {
         var guard = doc.guard,
             skip = false,
             skipText = '';
@@ -58,13 +58,13 @@ function generateTests(docs) {
             }
         }
 
-        describe(skipText + doc.file + '/' + (doc.name || 'suite'), function() {
+        describe(skipText + doc.file + '/' + (doc.name || 'suite'), () => {
             if (doc.err) {
-                it('has errors', function() {
+                it('has errors', () => {
                     assert.ok(false, doc.err);
                 });
             } else {
-                (doc.tests || []).forEach(function(t) {
+                (doc.tests || []).forEach(t => {
                     var fn = function() {
                         var genOnly = (doc.opts || {}).generateOnly,
                             noCoverage = (doc.opts || {}).noCoverage,

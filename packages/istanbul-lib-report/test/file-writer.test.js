@@ -8,19 +8,19 @@ var assert = require('chai').assert,
     rimraf = require('rimraf'),
     fs = require('fs');
 
-describe('file-writer', function() {
+describe('file-writer', () => {
     var writer;
 
-    beforeEach(function() {
+    beforeEach(() => {
         mkdirp.sync(dataDir);
         writer = new FileWriter(dataDir);
     });
 
-    afterEach(function() {
+    afterEach(() => {
         rimraf.sync(dataDir);
     });
 
-    it('returns a content writer for file', function() {
+    it('returns a content writer for file', () => {
         var cw = writer.writeFile('foo/bar.txt');
         cw.println('hello');
         assert.equal('foo', cw.colorize('foo', 'unknown'));
@@ -31,14 +31,14 @@ describe('file-writer', function() {
         );
     });
 
-    it('returns a console writer for terminal', function() {
+    it('returns a console writer for terminal', () => {
         var cw = writer.writeFile('-');
         cw.println('hello');
         assert.equal('foo', cw.colorize('foo'));
         cw.close();
     });
 
-    it('copies files', function() {
+    it('copies files', () => {
         writer.copyFile(__filename, 'out.txt');
         assert.equal(
             fs.readFileSync(path.resolve(dataDir, 'out.txt'), 'utf8'),
@@ -46,7 +46,7 @@ describe('file-writer', function() {
         );
     });
 
-    it('copies files while adding headers', function() {
+    it('copies files while adding headers', () => {
         var header =
             '/* This is some header text, like a copyright or directive. */\n';
         writer.copyFile(__filename, 'out.txt', header);
@@ -56,7 +56,7 @@ describe('file-writer', function() {
         );
     });
 
-    it('provides writers for subdirs', function() {
+    it('provides writers for subdirs', () => {
         var w = writer.writerForDir('foo'),
             cw = w.writeFile('bar.txt');
         cw.println('hello');
@@ -67,20 +67,18 @@ describe('file-writer', function() {
         );
     });
 
-    it('requires an initial path', function() {
-        assert.throws(function() {
-            return new FileWriter();
-        });
+    it('requires an initial path', () => {
+        assert.throws(() => new FileWriter());
     });
 
-    it('barfs on absolute paths', function() {
-        assert.throws(function() {
+    it('barfs on absolute paths', () => {
+        assert.throws(() => {
             writer.writeFile(__filename);
         });
-        assert.throws(function() {
+        assert.throws(() => {
             writer.copyFile(__filename, __filename);
         });
-        assert.throws(function() {
+        assert.throws(() => {
             writer.writerForDir(__dirname);
         });
     });

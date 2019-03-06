@@ -9,14 +9,14 @@ var fs = require('fs'),
 
 require('chai').should();
 
-describe('TextReport', function() {
-    before(function() {
+describe('TextReport', () => {
+    before(() => {
         FileWriter.startCapture();
     });
-    after(function() {
+    after(() => {
         FileWriter.stopCapture();
     });
-    beforeEach(function() {
+    beforeEach(() => {
         FileWriter.resetOutput();
     });
 
@@ -45,7 +45,7 @@ describe('TextReport', function() {
     }
 
     fs.readdirSync(path.resolve(__dirname, '../fixtures/specs')).forEach(
-        function(file) {
+        file => {
             if (file.indexOf('.json') !== -1) {
                 createTest(file);
             }

@@ -34,10 +34,10 @@ TestNode.prototype.isSummary = function() {
     return this.children.length > 0;
 };
 
-describe('tree', function() {
+describe('tree', () => {
     var leaves, groups, tree;
 
-    beforeEach(function() {
+    beforeEach(() => {
         leaves = [
             new TestNode('l1'),
             new TestNode('l2'),
@@ -66,8 +66,8 @@ describe('tree', function() {
         };
     });
 
-    describe('single visitor', function() {
-        it('visits all nodes with correct state with a full visitor', function() {
+    describe('single visitor', () => {
+        it('visits all nodes with correct state with a full visitor', () => {
             var visited = [],
                 visitor = new Visitor({
                     onStart(node, state) {
@@ -101,7 +101,7 @@ describe('tree', function() {
             ]);
         });
 
-        it('visits all nodes with correct state with a partial visitor', function() {
+        it('visits all nodes with correct state with a partial visitor', () => {
             var visited = [],
                 visitor = new Visitor({
                     onEnd(node, state) {
@@ -116,8 +116,8 @@ describe('tree', function() {
         });
     });
 
-    describe('composite visitor', function() {
-        it('visits multiple visitors in interleaved order with a composite', function() {
+    describe('composite visitor', () => {
+        it('visits multiple visitors in interleaved order with a composite', () => {
             var visited = [],
                 visitor = new Visitor({
                     onStart(root, state) {
@@ -150,14 +150,14 @@ describe('tree', function() {
                 ],
                 expected = [];
             tree.visit(new CompositeVisitor([visitor, visitor]), visited);
-            base.forEach(function(name) {
+            base.forEach(name => {
                 expected.push(name);
                 expected.push(name);
             });
             assert.deepEqual(visited, expected);
         });
 
-        it('allows use of composite with a partial visitor', function() {
+        it('allows use of composite with a partial visitor', () => {
             var visited = [],
                 visitor = new CompositeVisitor({
                     onEnd(root, state) {

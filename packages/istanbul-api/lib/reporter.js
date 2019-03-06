@@ -62,7 +62,7 @@ Reporter.prototype = {
      */
     addAll(fmts) {
         var that = this;
-        fmts.forEach(function(f) {
+        fmts.forEach(f => {
             that.add(f);
         });
     },
@@ -85,14 +85,15 @@ Reporter.prototype = {
 
         var excludes = this.config.instrumentation.excludes() || [];
 
-        coverageMap.filter(function(file) {
-            return !excludes.some(function(exclude) {
-                return minimatch(file, exclude, { dot: true });
-            });
-        });
+        coverageMap.filter(
+            file =>
+                !excludes.some(exclude =>
+                    minimatch(file, exclude, { dot: true })
+                )
+        );
 
         tree = this.summarizer(coverageMap);
-        Object.keys(this.reports).forEach(function(name) {
+        Object.keys(this.reports).forEach(name => {
             var report = that.reports[name];
             tree.visit(report, context);
         });

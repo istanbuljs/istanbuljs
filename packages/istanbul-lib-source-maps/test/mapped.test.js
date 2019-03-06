@@ -2,8 +2,8 @@
 var assert = require('chai').assert,
     MappedCoverage = require('../lib/mapped').MappedCoverage;
 
-describe('mapped coverage', function() {
-    it('allows a path constructor, has all properties', function() {
+describe('mapped coverage', () => {
+    it('allows a path constructor, has all properties', () => {
         var fc = new MappedCoverage('/path/to/file');
         assert.ok(fc.statementMap);
         assert.ok(fc.fnMap);
@@ -14,7 +14,7 @@ describe('mapped coverage', function() {
         assert.ok(fc.getLineCoverage());
     });
 
-    it('allows building object incrementally, resolving dups', function() {
+    it('allows building object incrementally, resolving dups', () => {
         var mc = new MappedCoverage('/path/to/file'),
             loc = function(sl, sc, el, ec) {
                 return {

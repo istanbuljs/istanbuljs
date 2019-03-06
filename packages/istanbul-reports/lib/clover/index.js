@@ -89,7 +89,7 @@ CloverReport.prototype.writeRootStats = function(node, context) {
     });
 
     treeStats = this.getTreeStats(node, context);
-    Object.keys(treeStats).forEach(function(k) {
+    Object.keys(treeStats).forEach(k => {
         attrs[k] = treeStats[k];
     });
 
@@ -144,7 +144,7 @@ CloverReport.prototype.onDetail = function(node) {
     this.writeMetrics(metrics);
 
     lines = fileCoverage.getLineCoverage();
-    Object.keys(lines).forEach(function(k) {
+    Object.keys(lines).forEach(k => {
         var attrs = {
                 num: k,
                 count: lines[k],

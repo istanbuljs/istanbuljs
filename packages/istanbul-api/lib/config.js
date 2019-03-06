@@ -67,9 +67,10 @@ function defaultConfig() {
 }
 
 function dasherize(word) {
-    return word.replace(CAMEL_PATTERN, function(match, lch, uch) {
-        return lch + '-' + uch.toLowerCase();
-    });
+    return word.replace(
+        CAMEL_PATTERN,
+        (match, lch, uch) => lch + '-' + uch.toLowerCase()
+    );
 }
 function isScalar(v) {
     if (v === null) {
@@ -89,7 +90,7 @@ function mergeObjects(explicit, template, bothWays) {
     if (bothWays) {
         keys.push.apply(keys, Object.keys(explicit));
     }
-    keys.forEach(function(k) {
+    keys.forEach(k => {
         var v1 = template[k],
             v2 = explicit[k];
 
@@ -125,7 +126,7 @@ function addMethods() {
     var args = Array.prototype.slice.call(arguments),
         cons = args.shift();
 
-    args.forEach(function(arg) {
+    args.forEach(arg => {
         var property = dasherize(arg);
         cons.prototype[arg] = function() {
             return this.config[property];
@@ -339,7 +340,7 @@ ReportingOptions.prototype.watermarks = function() {
         defs = libReport.getDefaultWatermarks(),
         ret = {};
 
-    Object.keys(defs).forEach(function(k) {
+    Object.keys(defs).forEach(k => {
         var mark = v[k], //it will already be a non-zero length array because of the way the merge works
             message = isInvalidMark(mark, k);
         if (message) {

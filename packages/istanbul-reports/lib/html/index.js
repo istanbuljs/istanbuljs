@@ -110,7 +110,7 @@ function getBreadcrumbHtml(node, linkMapper) {
         parent = parent.getParent();
     }
 
-    linkPath = nodePath.map(function(ancestor) {
+    linkPath = nodePath.map(ancestor => {
         var target = linkMapper.relativePath(node, ancestor),
             name = ancestor.getRelativeName() || 'All files';
         return '<a href="' + target + '">' + name + '</a>';
@@ -173,7 +173,7 @@ HtmlReport.prototype.onStart = function(root, context) {
         },
         copyAssets = function(subdir, writer) {
             var srcDir = path.resolve(__dirname, 'assets', subdir);
-            fs.readdirSync(srcDir).forEach(function(f) {
+            fs.readdirSync(srcDir).forEach(f => {
                 var resolvedSource = path.resolve(srcDir, f),
                     resolvedDestination = '.',
                     stat = fs.statSync(resolvedSource),
@@ -193,13 +193,13 @@ HtmlReport.prototype.onStart = function(root, context) {
             });
         };
 
-    ['.', 'vendor'].forEach(function(subdir) {
+    ['.', 'vendor'].forEach(subdir => {
         copyAssets(subdir, that.getWriter(context));
     });
 };
 
 function fixPct(metrics) {
-    Object.keys(emptyClasses).forEach(function(key) {
+    Object.keys(emptyClasses).forEach(key => {
         metrics[key].pct = 0;
     });
     return metrics;
@@ -216,7 +216,7 @@ HtmlReport.prototype.onSummary = function(node, context) {
     cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
     cw.write(headerTemplate(templateData));
     cw.write(summaryTableHeader);
-    children.forEach(function(child) {
+    children.forEach(child => {
         var metrics = child.getCoverageSummary(),
             isEmpty = metrics.isEmpty();
         if (skipEmpty && isEmpty) {
