@@ -24,7 +24,8 @@
     {
       "files": "!packages/istanbul-reports/lib/html/assets/**",
       "rules": {
-        "object-shorthand": "error"
+        "object-shorthand": "error",
+        "prefer-const": "error"
       }
     }
   ]

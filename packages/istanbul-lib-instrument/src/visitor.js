@@ -460,7 +460,7 @@ function coverLogicalExpression(path) {
     if (path.parentPath.node.type === 'LogicalExpression') {
         return; // already processed
     }
-    let leaves = [];
+    const leaves = [];
     this.findLeaves(path.node, leaves);
     const b = this.cov.newBranch('binary-expr', path.node.loc);
     for (let i = 0; i < leaves.length; i += 1) {
