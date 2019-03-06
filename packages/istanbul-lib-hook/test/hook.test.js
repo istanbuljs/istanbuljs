@@ -1,32 +1,32 @@
 /* globals describe, it, beforeEach, afterEach */
-var hook = require('../lib/hook'),
-    assert = require('chai').assert,
-    currentHook,
-    matcher = function(file) {
-        return file.indexOf('foo.js') > 0;
-    },
-    matcher2 = function(file) {
-        return file.indexOf('bar.es6') > 0;
-    },
-    transformer = function() {
-        return 'module.exports.bar = function () { return "bar"; };';
-    },
-    transformer2 = function() {
-        return 'module.exports.blah = function () { return "blah"; };';
-    },
-    badTransformer = function() {
-        throw 'Boo!';
-    },
-    scriptTransformer = function() {
-        return '(function () { return 42; }());';
-    },
-    disabler,
-    hookIt = function(m, t, o) {
-        if (disabler) {
-            disabler();
-        }
-        disabler = hook.hookRequire(m, t, o);
-    };
+var hook = require('../lib/hook');
+var assert = require('chai').assert;
+var currentHook;
+var matcher = function(file) {
+    return file.indexOf('foo.js') > 0;
+};
+var matcher2 = function(file) {
+    return file.indexOf('bar.es6') > 0;
+};
+var transformer = function() {
+    return 'module.exports.bar = function () { return "bar"; };';
+};
+var transformer2 = function() {
+    return 'module.exports.blah = function () { return "blah"; };';
+};
+var badTransformer = function() {
+    throw 'Boo!';
+};
+var scriptTransformer = function() {
+    return '(function () { return 42; }());';
+};
+var disabler;
+var hookIt = function(m, t, o) {
+    if (disabler) {
+        disabler();
+    }
+    disabler = hook.hookRequire(m, t, o);
+};
 
 describe('hooks', () => {
     describe('require', () => {
@@ -59,12 +59,12 @@ describe('hooks', () => {
         });
 
         it('calls post load hooks', () => {
-            var called = null,
-                opts = {
-                    postLoadHook(file) {
-                        called = file;
-                    }
-                };
+            var called = null;
+            var opts = {
+                postLoadHook(file) {
+                    called = file;
+                }
+            };
 
             hookIt(matcher, transformer, opts);
             require('./data/foo');

@@ -4,16 +4,16 @@
  */
 'use strict';
 
-var InsertionText = require('./insertion-text'),
-    lt = '\u0001',
-    gt = '\u0002',
-    RE_LT = /</g,
-    RE_GT = />/g,
-    RE_AMP = /&/g,
-    // eslint-disable-next-line
-    RE_lt = /\u0001/g,
-    // eslint-disable-next-line
-    RE_gt = /\u0002/g;
+var InsertionText = require('./insertion-text');
+var lt = '\u0001';
+var gt = '\u0002';
+var RE_LT = /</g;
+var RE_GT = />/g;
+var RE_AMP = /&/g;
+// eslint-disable-next-line
+var RE_lt = /\u0001/g;
+// eslint-disable-next-line
+var RE_gt = /\u0002/g;
 
 function title(str) {
     return ' title="' + str + '" ';
@@ -44,25 +44,25 @@ function annotateLines(fileCoverage, structuredText) {
 }
 
 function annotateStatements(fileCoverage, structuredText) {
-    var statementStats = fileCoverage.s,
-        statementMeta = fileCoverage.statementMap;
+    var statementStats = fileCoverage.s;
+    var statementMeta = fileCoverage.statementMap;
     Object.keys(statementStats).forEach(stName => {
-        var count = statementStats[stName],
-            meta = statementMeta[stName],
-            type = count > 0 ? 'yes' : 'no',
-            startCol = meta.start.column,
-            endCol = meta.end.column + 1,
-            startLine = meta.start.line,
-            endLine = meta.end.line,
-            openSpan =
-                lt +
-                'span class="' +
-                (meta.skip ? 'cstat-skip' : 'cstat-no') +
-                '"' +
-                title('statement not covered') +
-                gt,
-            closeSpan = lt + '/span' + gt,
-            text;
+        var count = statementStats[stName];
+        var meta = statementMeta[stName];
+        var type = count > 0 ? 'yes' : 'no';
+        var startCol = meta.start.column;
+        var endCol = meta.end.column + 1;
+        var startLine = meta.start.line;
+        var endLine = meta.end.line;
+        var openSpan =
+            lt +
+            'span class="' +
+            (meta.skip ? 'cstat-skip' : 'cstat-no') +
+            '"' +
+            title('statement not covered') +
+            gt;
+        var closeSpan = lt + '/span' + gt;
+        var text;
 
         if (type === 'no' && structuredText[startLine]) {
             if (endLine !== startLine) {
@@ -80,28 +80,28 @@ function annotateStatements(fileCoverage, structuredText) {
 }
 
 function annotateFunctions(fileCoverage, structuredText) {
-    var fnStats = fileCoverage.f,
-        fnMeta = fileCoverage.fnMap;
+    var fnStats = fileCoverage.f;
+    var fnMeta = fileCoverage.fnMap;
     if (!fnStats) {
         return;
     }
     Object.keys(fnStats).forEach(fName => {
-        var count = fnStats[fName],
-            meta = fnMeta[fName],
-            type = count > 0 ? 'yes' : 'no',
-            startCol = meta.decl.start.column,
-            endCol = meta.decl.end.column + 1,
-            startLine = meta.decl.start.line,
-            endLine = meta.decl.end.line,
-            openSpan =
-                lt +
-                'span class="' +
-                (meta.skip ? 'fstat-skip' : 'fstat-no') +
-                '"' +
-                title('function not covered') +
-                gt,
-            closeSpan = lt + '/span' + gt,
-            text;
+        var count = fnStats[fName];
+        var meta = fnMeta[fName];
+        var type = count > 0 ? 'yes' : 'no';
+        var startCol = meta.decl.start.column;
+        var endCol = meta.decl.end.column + 1;
+        var startLine = meta.decl.start.line;
+        var endLine = meta.decl.end.line;
+        var openSpan =
+            lt +
+            'span class="' +
+            (meta.skip ? 'fstat-skip' : 'fstat-no') +
+            '"' +
+            title('function not covered') +
+            gt;
+        var closeSpan = lt + '/span' + gt;
+        var text;
 
         if (type === 'no' && structuredText[startLine]) {
             if (endLine !== startLine) {
@@ -119,26 +119,26 @@ function annotateFunctions(fileCoverage, structuredText) {
 }
 
 function annotateBranches(fileCoverage, structuredText) {
-    var branchStats = fileCoverage.b,
-        branchMeta = fileCoverage.branchMap;
+    var branchStats = fileCoverage.b;
+    var branchMeta = fileCoverage.branchMap;
     if (!branchStats) {
         return;
     }
 
     Object.keys(branchStats).forEach(branchName => {
-        var branchArray = branchStats[branchName],
-            sumCount = branchArray.reduce((p, n) => p + n, 0),
-            metaArray = branchMeta[branchName].locations,
-            i,
-            count,
-            meta,
-            startCol,
-            endCol,
-            startLine,
-            endLine,
-            openSpan,
-            closeSpan,
-            text;
+        var branchArray = branchStats[branchName];
+        var sumCount = branchArray.reduce((p, n) => p + n, 0);
+        var metaArray = branchMeta[branchName].locations;
+        var i;
+        var count;
+        var meta;
+        var startCol;
+        var endCol;
+        var startLine;
+        var endLine;
+        var openSpan;
+        var closeSpan;
+        var text;
 
         // only highlight if partial branches are missing or if there is a
         // single uncovered branch.
@@ -211,20 +211,21 @@ function annotateBranches(fileCoverage, structuredText) {
 }
 
 function annotateSourceCode(fileCoverage, sourceStore) {
-    var codeArray, lineCoverageArray;
+    var codeArray;
+    var lineCoverageArray;
     try {
-        var sourceText = sourceStore.getSource(fileCoverage.path),
-            code = sourceText.split(/(?:\r?\n)|\r/),
-            count = 0,
-            structured = code.map(str => {
-                count += 1;
-                return {
-                    line: count,
-                    covered: 'neutral',
-                    hits: 0,
-                    text: new InsertionText(str, true)
-                };
-            });
+        var sourceText = sourceStore.getSource(fileCoverage.path);
+        var code = sourceText.split(/(?:\r?\n)|\r/);
+        var count = 0;
+        var structured = code.map(str => {
+            count += 1;
+            return {
+                line: count,
+                covered: 'neutral',
+                hits: 0,
+                text: new InsertionText(str, true)
+            };
+        });
         structured.unshift({
             line: 0,
             covered: null,

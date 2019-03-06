@@ -1,9 +1,9 @@
 /* globals describe, it */
 
-var assert = require('chai').assert,
-    cm = require('../lib/coverage-map'),
-    CoverageMap = cm.CoverageMap,
-    FileCoverage = require('../lib/file').FileCoverage;
+var assert = require('chai').assert;
+var cm = require('../lib/coverage-map');
+var CoverageMap = cm.CoverageMap;
+var FileCoverage = require('../lib/file').FileCoverage;
 
 describe('coverage map', () => {
     it('allows a noop constructor', () => {
@@ -31,26 +31,26 @@ describe('coverage map', () => {
     });
     it('merges another coverage map into itself', () => {
         var cm1 = new CoverageMap({
-                'foo.js': new FileCoverage('foo.js'),
-                'bar.js': new FileCoverage('bar.js')
-            }),
-            cm2 = new CoverageMap({
-                'foo.js': new FileCoverage('foo.js'),
-                'baz.js': new FileCoverage('baz.js')
-            });
+            'foo.js': new FileCoverage('foo.js'),
+            'bar.js': new FileCoverage('bar.js')
+        });
+        var cm2 = new CoverageMap({
+            'foo.js': new FileCoverage('foo.js'),
+            'baz.js': new FileCoverage('baz.js')
+        });
         cm1.merge(cm2);
         assert.equal(3, cm1.files().length);
         assert.deepEqual(['foo.js', 'bar.js', 'baz.js'], cm1.files());
     });
     it('merges coverage map data into itself', () => {
         var cm1 = new CoverageMap({
-                'foo.js': new FileCoverage('foo.js'),
-                'bar.js': new FileCoverage('bar.js')
-            }),
-            cm2 = new CoverageMap({
-                'foo.js': new FileCoverage('foo.js'),
-                'baz.js': new FileCoverage('baz.js')
-            }).toJSON();
+            'foo.js': new FileCoverage('foo.js'),
+            'bar.js': new FileCoverage('bar.js')
+        });
+        var cm2 = new CoverageMap({
+            'foo.js': new FileCoverage('foo.js'),
+            'baz.js': new FileCoverage('baz.js')
+        }).toJSON();
         cm1.merge(cm2);
         assert.equal(3, cm1.files().length);
         assert.deepEqual(['foo.js', 'bar.js', 'baz.js'], cm1.files());
@@ -76,10 +76,10 @@ describe('coverage map', () => {
     });
     it('returns coverage summary for all files', () => {
         var cm = new CoverageMap({
-                'foo.js': new FileCoverage('foo.js'),
-                'bar.js': new FileCoverage('bar.js')
-            }),
-            summary;
+            'foo.js': new FileCoverage('foo.js'),
+            'bar.js': new FileCoverage('bar.js')
+        });
+        var summary;
         cm.addFileCoverage(new FileCoverage('foo.js'));
         cm.addFileCoverage(new FileCoverage('baz.js'));
         summary = cm.getCoverageSummary();

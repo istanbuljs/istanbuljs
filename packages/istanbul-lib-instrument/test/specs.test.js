@@ -9,20 +9,20 @@ import { assert } from 'chai';
 
 const clone = require('clone');
 
-const dir = path.resolve(__dirname, 'specs'),
-    files = fs.readdirSync(dir).filter(f => {
-        var match = true;
-        if (process.env.FILTER) {
-            match = new RegExp(`.*${process.env.FILTER}.*`).test(f);
-        }
-        return f.match(/\.yaml$/) && match;
-    });
+const dir = path.resolve(__dirname, 'specs');
+const files = fs.readdirSync(dir).filter(f => {
+    var match = true;
+    if (process.env.FILTER) {
+        match = new RegExp(`.*${process.env.FILTER}.*`).test(f);
+    }
+    return f.match(/\.yaml$/) && match;
+});
 
 function loadDocs() {
     var docs = [];
     files.forEach(f => {
-        var filePath = path.resolve(dir, f),
-            contents = fs.readFileSync(filePath, 'utf8');
+        var filePath = path.resolve(dir, f);
+        var contents = fs.readFileSync(filePath, 'utf8');
         try {
             yaml.safeLoadAll(contents, obj => {
                 obj.file = f;
@@ -47,9 +47,9 @@ function loadDocs() {
 
 function generateTests(docs) {
     docs.forEach(doc => {
-        var guard = doc.guard,
-            skip = false,
-            skipText = '';
+        var guard = doc.guard;
+        var skip = false;
+        var skipText = '';
 
         if (guard && guards[guard]) {
             if (!guards[guard]()) {
@@ -66,17 +66,17 @@ function generateTests(docs) {
             } else {
                 (doc.tests || []).forEach(t => {
                     var fn = function() {
-                        var genOnly = (doc.opts || {}).generateOnly,
-                            noCoverage = (doc.opts || {}).noCoverage,
-                            v = verifier.create(
-                                doc.code,
-                                doc.opts || {},
-                                doc.instrumentOpts,
-                                doc.inputSourceMap
-                            ),
-                            test = clone(t),
-                            args = test.args,
-                            out = test.out;
+                        var genOnly = (doc.opts || {}).generateOnly;
+                        var noCoverage = (doc.opts || {}).noCoverage;
+                        var v = verifier.create(
+                            doc.code,
+                            doc.opts || {},
+                            doc.instrumentOpts,
+                            doc.inputSourceMap
+                        );
+                        var test = clone(t);
+                        var args = test.args;
+                        var out = test.out;
                         delete test.args;
                         delete test.out;
                         if (!genOnly && !noCoverage) {

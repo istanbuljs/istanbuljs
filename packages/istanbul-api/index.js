@@ -57,8 +57,8 @@ function camelize(word) {
 }
 
 ['coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(k => {
-    var mod = 'lib-' + k,
-        prop = camelize(mod);
+    var mod = 'lib-' + k;
+    var prop = camelize(mod);
     module.exports[prop] = require('istanbul-' + mod);
 });
 

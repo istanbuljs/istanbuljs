@@ -2,15 +2,15 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    mkdirp = require('make-dir'),
-    once = require('once'),
-    async = require('async'),
-    fs = require('fs'),
-    filesFor = require('./file-matcher').filesFor,
-    libInstrument = require('istanbul-lib-instrument'),
-    libCoverage = require('istanbul-lib-coverage'),
-    inputError = require('./input-error');
+var path = require('path');
+var mkdirp = require('make-dir');
+var once = require('once');
+var async = require('async');
+var fs = require('fs');
+var filesFor = require('./file-matcher').filesFor;
+var libInstrument = require('istanbul-lib-instrument');
+var libCoverage = require('istanbul-lib-coverage');
+var inputError = require('./input-error');
 
 /*
  * Chunk file size to use when reading non JavaScript files in memory
@@ -25,9 +25,9 @@ function BaselineCollector(instrumenter) {
 
     var origInstrumentSync = instrumenter.instrumentSync;
     this.instrumentSync = function() {
-        var args = Array.prototype.slice.call(arguments),
-            ret = origInstrumentSync.apply(this.instrumenter, args),
-            baseline = this.instrumenter.lastFileCoverage();
+        var args = Array.prototype.slice.call(arguments);
+        var ret = origInstrumentSync.apply(this.instrumenter, args);
+        var baseline = this.instrumenter.lastFileCoverage();
         this.map.addFileCoverage(baseline);
         return ret;
     };
@@ -40,73 +40,71 @@ BaselineCollector.prototype.getCoverage = function() {
 };
 
 function processFiles(instrumenter, opts, callback) {
-    var inputDir = opts.inputDir,
-        outputDir = opts.outputDir,
-        relativeNames = opts.names,
-        extensions = opts.extensions,
-        verbose = opts.verbose;
+    var inputDir = opts.inputDir;
+    var outputDir = opts.outputDir;
+    var relativeNames = opts.names;
+    var extensions = opts.extensions;
+    var verbose = opts.verbose;
 
     var processor = function(name, callback) {
-            var inputFile = path.resolve(inputDir, name),
-                outputFile = path.resolve(outputDir, name),
-                inputFileExtension = path.extname(inputFile),
-                isJavaScriptFile = extensions.indexOf(inputFileExtension) > -1,
-                oDir = path.dirname(outputFile),
-                readStream,
-                writeStream;
+        var inputFile = path.resolve(inputDir, name);
+        var outputFile = path.resolve(outputDir, name);
+        var inputFileExtension = path.extname(inputFile);
+        var isJavaScriptFile = extensions.indexOf(inputFileExtension) > -1;
+        var oDir = path.dirname(outputFile);
+        var readStream;
+        var writeStream;
 
-            callback = once(callback);
-            mkdirp.sync(oDir);
+        callback = once(callback);
+        mkdirp.sync(oDir);
 
-            /* istanbul ignore if */
-            if (fs.statSync(inputFile).isDirectory()) {
-                return callback(null, name);
-            }
+        /* istanbul ignore if */
+        if (fs.statSync(inputFile).isDirectory()) {
+            return callback(null, name);
+        }
 
-            if (isJavaScriptFile) {
-                fs.readFile(inputFile, 'utf8', (err, data) => {
-                    /* istanbul ignore if */ if (err) {
-                        return callback(err, name);
-                    }
-                    instrumenter.instrument(
-                        data,
-                        inputFile,
-                        (iErr, instrumented) => {
-                            if (iErr) {
-                                return callback(iErr, name);
-                            }
-                            fs.writeFile(
-                                outputFile,
-                                instrumented,
-                                'utf8',
-                                err => callback(err, name)
-                            );
+        if (isJavaScriptFile) {
+            fs.readFile(inputFile, 'utf8', (err, data) => {
+                /* istanbul ignore if */ if (err) {
+                    return callback(err, name);
+                }
+                instrumenter.instrument(
+                    data,
+                    inputFile,
+                    (iErr, instrumented) => {
+                        if (iErr) {
+                            return callback(iErr, name);
                         }
-                    );
-                });
-            } else {
-                // non JavaScript file, copy it as is
-                readStream = fs.createReadStream(inputFile, {
-                    bufferSize: READ_FILE_CHUNK_SIZE
-                });
-                writeStream = fs.createWriteStream(outputFile);
+                        fs.writeFile(outputFile, instrumented, 'utf8', err =>
+                            callback(err, name)
+                        );
+                    }
+                );
+            });
+        } else {
+            // non JavaScript file, copy it as is
+            readStream = fs.createReadStream(inputFile, {
+                bufferSize: READ_FILE_CHUNK_SIZE
+            });
+            writeStream = fs.createWriteStream(outputFile);
 
-                readStream.on('error', callback);
-                writeStream.on('error', callback);
+            readStream.on('error', callback);
+            writeStream.on('error', callback);
 
-                readStream.pipe(writeStream);
-                readStream.on('end', () => {
-                    callback(null, name);
-                });
-            }
-        },
-        q = async.queue(processor, 10),
-        errors = [],
-        count = 0,
-        startTime = new Date().getTime();
+            readStream.pipe(writeStream);
+            readStream.on('end', () => {
+                callback(null, name);
+            });
+        }
+    };
+    var q = async.queue(processor, 10);
+    var errors = [];
+    var count = 0;
+    var startTime = new Date().getTime();
 
     q.push(relativeNames, (err, name) => {
-        var inputFile, outputFile;
+        var inputFile;
+        var outputFile;
         if (err) {
             errors.push({
                 file: name,
@@ -149,18 +147,18 @@ function processFiles(instrumenter, opts, callback) {
 
 function run(config, opts, callback) {
     opts = opts || {};
-    var iOpts = config.instrumentation,
-        input = opts.input,
-        output = opts.output,
-        excludes = opts.excludes,
-        file,
-        stats,
-        stream,
-        includes,
-        instrumenter,
-        origCallback = callback,
-        needBaseline = iOpts.saveBaseline(),
-        baselineFile = path.resolve(iOpts.baselineFile());
+    var iOpts = config.instrumentation;
+    var input = opts.input;
+    var output = opts.output;
+    var excludes = opts.excludes;
+    var file;
+    var stats;
+    var stream;
+    var includes;
+    var instrumenter;
+    var origCallback = callback;
+    var needBaseline = iOpts.saveBaseline();
+    var baselineFile = path.resolve(iOpts.baselineFile());
 
     if (iOpts.completeCopy()) {
         includes = ['**/*'];

@@ -10,9 +10,9 @@ function TextSummaryReport(opts) {
 }
 
 function lineForKey(summary, key) {
-    var metrics = summary[key],
-        skipped,
-        result;
+    var metrics = summary[key];
+    var skipped;
+    var result;
 
     key = key.substring(0, 1).toUpperCase() + key.substring(1);
     if (key.length < 12) {
@@ -34,13 +34,13 @@ function lineForKey(summary, key) {
 }
 
 TextSummaryReport.prototype.onStart = function(node, context) {
-    var summary = node.getCoverageSummary(),
-        cw,
-        printLine = function(key) {
-            var str = lineForKey(summary, key),
-                clazz = context.classForPercent(key, summary[key].pct);
-            cw.println(cw.colorize(str, clazz));
-        };
+    var summary = node.getCoverageSummary();
+    var cw;
+    var printLine = function(key) {
+        var str = lineForKey(summary, key);
+        var clazz = context.classForPercent(key, summary[key].pct);
+        cw.println(cw.colorize(str, clazz));
+    };
 
     cw = context.writer.writeFile(this.file);
     cw.println('');

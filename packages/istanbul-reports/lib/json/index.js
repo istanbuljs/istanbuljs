@@ -15,9 +15,9 @@ JsonReport.prototype.onStart = function(root, context) {
 };
 
 JsonReport.prototype.onDetail = function(node) {
-    var fc = node.getFileCoverage(),
-        key = fc.path,
-        cw = this.contentWriter;
+    var fc = node.getFileCoverage();
+    var key = fc.path;
+    var cw = this.contentWriter;
 
     if (this.first) {
         this.first = false;

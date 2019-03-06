@@ -1,17 +1,17 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    rimraf = require('rimraf'),
-    codeRoot = path.resolve(__dirname, 'sample-code'),
-    outputDir = path.resolve(__dirname, 'coverage'),
-    configuration = require('../lib/config'),
-    cover = require('../lib/run-cover'),
-    fs = require('fs'),
-    existsSync = fs.existsSync,
-    runReports = require('../lib/run-reports'),
-    hijack = require('./hijack-streams'),
-    wrap = hijack.wrap;
+var assert = require('chai').assert;
+var path = require('path');
+var rimraf = require('rimraf');
+var codeRoot = path.resolve(__dirname, 'sample-code');
+var outputDir = path.resolve(__dirname, 'coverage');
+var configuration = require('../lib/config');
+var cover = require('../lib/run-cover');
+var fs = require('fs');
+var existsSync = fs.existsSync;
+var runReports = require('../lib/run-reports');
+var hijack = require('./hijack-streams');
+var wrap = hijack.wrap;
 
 describe('run reports', () => {
     function getConfig(overrides) {
@@ -46,8 +46,8 @@ describe('run reports', () => {
             if (err) {
                 return cb(err);
             }
-            var hookFn = data.hookFn,
-                exitFn = data.exitFn;
+            var hookFn = data.hookFn;
+            var exitFn = data.exitFn;
             hookFn();
             require('./sample-code/test/foo.test.js');
             exitFn();

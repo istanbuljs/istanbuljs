@@ -2,11 +2,11 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var FileWriter = require('./file-writer'),
-    XMLWriter = require('./xml-writer'),
-    tree = require('./tree'),
-    watermarks = require('./watermarks'),
-    fs = require('fs');
+var FileWriter = require('./file-writer');
+var XMLWriter = require('./xml-writer');
+var tree = require('./tree');
+var watermarks = require('./watermarks');
+var fs = require('fs');
 
 function defaultSourceLookup(path) {
     try {

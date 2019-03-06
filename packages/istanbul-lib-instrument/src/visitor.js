@@ -405,11 +405,11 @@ function convertArrowExpression(path) {
 }
 
 function coverIfBranches(path) {
-    const n = path.node,
-        hint = this.hintFor(n),
-        ignoreIf = hint === 'if',
-        ignoreElse = hint === 'else',
-        branch = this.cov.newBranch('if', n.loc);
+    const n = path.node;
+    const hint = this.hintFor(n);
+    const ignoreIf = hint === 'if';
+    const ignoreElse = hint === 'else';
+    const branch = this.cov.newBranch('if', n.loc);
 
     if (ignoreIf) {
         this.setAttr(n.consequent, 'skip-all', true);
@@ -440,10 +440,10 @@ function coverSwitchCase(path) {
 }
 
 function coverTernary(path) {
-    const n = path.node,
-        branch = this.cov.newBranch('cond-expr', path.node.loc),
-        cHint = this.hintFor(n.consequent),
-        aHint = this.hintFor(n.alternate);
+    const n = path.node;
+    const branch = this.cov.newBranch('cond-expr', path.node.loc);
+    const cHint = this.hintFor(n.consequent);
+    const aHint = this.hintFor(n.alternate);
 
     if (cHint !== 'next') {
         this.insertBranchCounter(path.get('consequent'), branch);

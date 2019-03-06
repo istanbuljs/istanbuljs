@@ -2,10 +2,10 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var Reporter = require('./reporter'),
-    fs = require('fs'),
-    filesFor = require('./file-matcher').filesFor,
-    libCoverage = require('istanbul-lib-coverage');
+var Reporter = require('./reporter');
+var fs = require('fs');
+var filesFor = require('./file-matcher').filesFor;
+var libCoverage = require('istanbul-lib-coverage');
 
 function run(formats, config, opts, callback) {
     if (!callback && typeof opts === 'function') {
@@ -13,10 +13,10 @@ function run(formats, config, opts, callback) {
         opts = {};
     }
     opts = opts || {};
-    var root,
-        coverageMap = libCoverage.createCoverageMap(),
-        includePattern = opts.include || '**/coverage*.raw.json',
-        reporter = new Reporter(config);
+    var root;
+    var coverageMap = libCoverage.createCoverageMap();
+    var includePattern = opts.include || '**/coverage*.raw.json';
+    var reporter = new Reporter(config);
 
     if (!formats || formats.length === 0) {
         formats = config.reporting.reports();

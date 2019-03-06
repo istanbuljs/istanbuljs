@@ -4,8 +4,8 @@
  */
 'use strict';
 
-var FileCoverage = require('./file').FileCoverage,
-    CoverageSummary = require('./file').CoverageSummary;
+var FileCoverage = require('./file').FileCoverage;
+var CoverageSummary = require('./file').CoverageSummary;
 
 function loadMap(source) {
     var data = Object.create(null);
@@ -102,8 +102,8 @@ CoverageMap.prototype.fileCoverageFor = function(file) {
  * @param {FileCoverage} fc the file coverage to add
  */
 CoverageMap.prototype.addFileCoverage = function(fc) {
-    var cov = new FileCoverage(fc),
-        path = cov.path;
+    var cov = new FileCoverage(fc);
+    var path = cov.path;
     if (this.data[path]) {
         this.data[path].merge(cov);
     } else {

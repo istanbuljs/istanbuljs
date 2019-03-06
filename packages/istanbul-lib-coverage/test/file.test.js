@@ -1,9 +1,9 @@
 /* globals describe, it */
 
-var assert = require('chai').assert,
-    base = require('../lib/file'),
-    CoverageSummary = base.CoverageSummary,
-    FileCoverage = base.FileCoverage;
+var assert = require('chai').assert;
+var base = require('../lib/file');
+var CoverageSummary = base.CoverageSummary;
+var FileCoverage = base.FileCoverage;
 
 describe('coverage summary', () => {
     it('allows a noop constructor', () => {
@@ -29,8 +29,8 @@ describe('coverage summary', () => {
     });
 
     it('can be initialized with non-zero totals', () => {
-        var cs = new CoverageSummary().data,
-            cs2;
+        var cs = new CoverageSummary().data;
+        var cs2;
         cs.statements.total = 5;
         cs.statements.covered = 4;
         cs.statements.skipped = 0;
@@ -52,34 +52,34 @@ describe('coverage summary', () => {
 
     it('merges summaries correctly', () => {
         var basic = function() {
-                return {
-                    total: 5,
-                    covered: 4,
-                    skipped: 0,
-                    pct: 80
-                };
-            },
-            empty = function() {
-                return {
-                    total: 0,
-                    covered: 0,
-                    skipped: 0,
-                    pct: 100
-                };
-            },
-            cs1 = new CoverageSummary({
-                statements: basic(),
-                functions: basic(),
-                lines: basic(),
-                branches: empty()
-            }),
-            cs2 = new CoverageSummary({
-                statements: basic(),
-                functions: basic(),
-                lines: basic(),
-                branches: empty()
-            }),
-            data;
+            return {
+                total: 5,
+                covered: 4,
+                skipped: 0,
+                pct: 80
+            };
+        };
+        var empty = function() {
+            return {
+                total: 0,
+                covered: 0,
+                skipped: 0,
+                pct: 100
+            };
+        };
+        var cs1 = new CoverageSummary({
+            statements: basic(),
+            functions: basic(),
+            lines: basic(),
+            branches: empty()
+        });
+        var cs2 = new CoverageSummary({
+            statements: basic(),
+            functions: basic(),
+            lines: basic(),
+            branches: empty()
+        });
+        var data;
         cs2.statements.covered = 5;
         cs1.merge(cs2);
         assert.deepEqual(cs1.statements, {
@@ -131,9 +131,9 @@ describe('base coverage', () => {
     });
 
     it('allows another object in constructor, produces JSON', () => {
-        var bc1 = new FileCoverage('/path/to/file'),
-            bc2,
-            bc3;
+        var bc1 = new FileCoverage('/path/to/file');
+        var bc2;
+        var bc3;
 
         bc2 = new FileCoverage(bc1);
         assert.equal(bc2.path, '/path/to/file');
@@ -149,52 +149,52 @@ describe('base coverage', () => {
 
     it('merges another file coverage correctly', () => {
         var loc = function(sl, sc, el, ec) {
-                return {
-                    start: { line: sl, column: sc },
-                    end: { line: el, column: ec }
-                };
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        var template = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                1: loc(1, 1, 1, 100),
+                2: loc(2, 1, 2, 50),
+                3: loc(2, 51, 2, 100),
+                4: loc(2, 101, 3, 100)
             },
-            template = new FileCoverage({
-                path: '/path/to/file',
-                statementMap: {
-                    1: loc(1, 1, 1, 100),
-                    2: loc(2, 1, 2, 50),
-                    3: loc(2, 51, 2, 100),
-                    4: loc(2, 101, 3, 100)
-                },
-                fnMap: {
-                    1: {
-                        name: 'foobar',
-                        line: 1,
-                        loc: loc(1, 1, 1, 50)
-                    }
-                },
-                branchMap: {
-                    1: {
-                        type: 'if',
-                        line: 2,
-                        locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
-                    }
-                },
-                s: {
-                    1: 0,
-                    2: 0,
-                    3: 0,
-                    4: 0
-                },
-                f: {
-                    1: 0
-                },
-                b: {
-                    1: [0, 0]
+            fnMap: {
+                1: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
                 }
-            }),
-            clone = function(obj) {
-                return JSON.parse(JSON.stringify(obj));
             },
-            c1 = new FileCoverage(clone(template)),
-            c2 = new FileCoverage(clone(template)),
-            summary;
+            branchMap: {
+                1: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0
+            },
+            f: {
+                1: 0
+            },
+            b: {
+                1: [0, 0]
+            }
+        });
+        var clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        };
+        var c1 = new FileCoverage(clone(template));
+        var c2 = new FileCoverage(clone(template));
+        var summary;
 
         c1.s[1] = 1;
         c1.f[1] = 1;
@@ -266,46 +266,46 @@ describe('base coverage', () => {
 
     it('resets hits when requested', () => {
         var loc = function(sl, sc, el, ec) {
-                return {
-                    start: { line: sl, column: sc },
-                    end: { line: el, column: ec }
-                };
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        var fc = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                1: loc(1, 1, 1, 100),
+                2: loc(2, 1, 2, 50),
+                3: loc(2, 51, 2, 100),
+                4: loc(2, 101, 3, 100)
             },
-            fc = new FileCoverage({
-                path: '/path/to/file',
-                statementMap: {
-                    1: loc(1, 1, 1, 100),
-                    2: loc(2, 1, 2, 50),
-                    3: loc(2, 51, 2, 100),
-                    4: loc(2, 101, 3, 100)
-                },
-                fnMap: {
-                    1: {
-                        name: 'foobar',
-                        line: 1,
-                        loc: loc(1, 1, 1, 50)
-                    }
-                },
-                branchMap: {
-                    1: {
-                        type: 'if',
-                        line: 2,
-                        locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
-                    }
-                },
-                s: {
-                    1: 2,
-                    2: 3,
-                    3: 1,
-                    4: 0
-                },
-                f: {
-                    1: 54
-                },
-                b: {
-                    1: [1, 50]
+            fnMap: {
+                1: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
                 }
-            });
+            },
+            branchMap: {
+                1: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                1: 2,
+                2: 3,
+                3: 1,
+                4: 0
+            },
+            f: {
+                1: 54
+            },
+            b: {
+                1: [1, 50]
+            }
+        });
         fc.resetHits();
         assert.deepEqual({ 1: 0, 2: 0, 3: 0, 4: 0 }, fc.s);
         assert.deepEqual({ 1: 0 }, fc.f);
@@ -340,21 +340,21 @@ describe('base coverage', () => {
 
     it('returns branch coverage by line', () => {
         var c = new FileCoverage({
-                path: '/path/to/file',
-                branchMap: {
-                    1: { line: 1 },
-                    2: { line: 2 }
-                },
-                fnMap: {},
-                statementMap: {},
-                s: {},
-                b: {
-                    1: [1, 0],
-                    2: [0, 0, 0, 1]
-                },
-                f: {}
-            }),
-            bcby = c.getBranchCoverageByLine();
+            path: '/path/to/file',
+            branchMap: {
+                1: { line: 1 },
+                2: { line: 2 }
+            },
+            fnMap: {},
+            statementMap: {},
+            s: {},
+            b: {
+                1: [1, 0],
+                2: [0, 0, 0, 1]
+            },
+            f: {}
+        });
+        var bcby = c.getBranchCoverageByLine();
         assert.deepEqual(
             {
                 1: {
@@ -374,27 +374,27 @@ describe('base coverage', () => {
 
     it('returns branch coverage by line with Cobertura branchMap structure', () => {
         var loc = function(sl, sc, el, ec) {
-                return {
-                    start: { line: sl, column: sc },
-                    end: { line: el, column: ec }
-                };
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        var c = new FileCoverage({
+            path: '/path/to/file',
+            branchMap: {
+                1: { loc: loc(1, 1, 1, 100) },
+                2: { loc: loc(2, 50, 2, 100) }
             },
-            c = new FileCoverage({
-                path: '/path/to/file',
-                branchMap: {
-                    1: { loc: loc(1, 1, 1, 100) },
-                    2: { loc: loc(2, 50, 2, 100) }
-                },
-                fnMap: {},
-                statementMap: {},
-                s: {},
-                b: {
-                    1: [1, 0],
-                    2: [0, 0, 0, 1]
-                },
-                f: {}
-            }),
-            bcby = c.getBranchCoverageByLine();
+            fnMap: {},
+            statementMap: {},
+            s: {},
+            b: {
+                1: [1, 0],
+                2: [0, 0, 0, 1]
+            },
+            f: {}
+        });
+        var bcby = c.getBranchCoverageByLine();
         assert.deepEqual(
             {
                 1: {

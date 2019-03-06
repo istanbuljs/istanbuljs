@@ -1,6 +1,6 @@
 /* globals describe, it, beforeEach */
-var assert = require('chai').assert,
-    InsertionText = require('../../lib/html/insertion-text');
+var assert = require('chai').assert;
+var InsertionText = require('../../lib/html/insertion-text');
 
 describe('insertion text', () => {
     var text;

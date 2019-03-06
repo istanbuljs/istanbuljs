@@ -2,16 +2,16 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var util = require('util'),
-    path = require('path'),
-    fs = require('fs'),
-    mkdirp = require('make-dir'),
-    supportsColor = require('supports-color'),
-    isAbsolute =
-        path.isAbsolute ||
-        /* istanbul ignore next */ function(p) {
-            return path.resolve(p) === path.normalize(p);
-        };
+var util = require('util');
+var path = require('path');
+var fs = require('fs');
+var mkdirp = require('make-dir');
+var supportsColor = require('supports-color');
+var isAbsolute =
+    path.isAbsolute ||
+    /* istanbul ignore next */ function(p) {
+        return path.resolve(p) === path.normalize(p);
+    };
 
 /**
  * abstract interface for writing content

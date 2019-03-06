@@ -21,8 +21,8 @@ function lineForKey(value, teamcityVar) {
 }
 
 TeamcityReport.prototype.onStart = function(node, context) {
-    var metrics = node.getCoverageSummary(),
-        cw;
+    var metrics = node.getCoverageSummary();
+    var cw;
 
     cw = context.writer.writeFile(this.file);
     cw.println('');

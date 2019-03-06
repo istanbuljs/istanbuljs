@@ -81,11 +81,11 @@ CoberturaReport.prototype.onSummaryEnd = function(node) {
 };
 
 CoberturaReport.prototype.onDetail = function(node) {
-    var fileCoverage = node.getFileCoverage(),
-        metrics = node.getCoverageSummary(),
-        branchByLine = fileCoverage.getBranchCoverageByLine(),
-        fnMap,
-        lines;
+    var fileCoverage = node.getFileCoverage();
+    var metrics = node.getCoverageSummary();
+    var branchByLine = fileCoverage.getBranchCoverageByLine();
+    var fnMap;
+    var lines;
 
     this.xml.openTag('class', {
         name: asClassName(node),
@@ -97,8 +97,8 @@ CoberturaReport.prototype.onDetail = function(node) {
     this.xml.openTag('methods');
     fnMap = fileCoverage.fnMap;
     Object.keys(fnMap).forEach(k => {
-        var name = fnMap[k].name,
-            hits = fileCoverage.f[k];
+        var name = fnMap[k].name;
+        var hits = fileCoverage.f[k];
         this.xml.openTag('method', {
             name,
             hits,
@@ -119,11 +119,11 @@ CoberturaReport.prototype.onDetail = function(node) {
     lines = fileCoverage.getLineCoverage();
     Object.keys(lines).forEach(k => {
         var attrs = {
-                number: k,
-                hits: lines[k],
-                branch: 'false'
-            },
-            branchDetail = branchByLine[k];
+            number: k,
+            hits: lines[k],
+            branch: 'false'
+        };
+        var branchDetail = branchByLine[k];
 
         if (branchDetail) {
             attrs.branch = true;

@@ -1,12 +1,12 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    Path = require('../lib/path');
+var assert = require('chai').assert;
+var path = require('path');
+var Path = require('../lib/path');
 
 function commonBattery(windows) {
-    var p = windows ? path.win32.parse : path.posix.parse,
-        s = windows ? '\\' : '/';
+    var p = windows ? path.win32.parse : path.posix.parse;
+    var s = windows ? '\\' : '/';
     return function() {
         beforeEach(() => {
             Path.tester.setParserAndSep(p, s);
@@ -87,8 +87,8 @@ describe('path', () => {
         });
 
         it('returns a parent when possible', () => {
-            var p = new Path('/foo/bar').parent(),
-                gp;
+            var p = new Path('/foo/bar').parent();
+            var gp;
             assert.equal(p.toString(), 'foo');
             gp = p.parent();
             assert.equal(gp.toString(), '');

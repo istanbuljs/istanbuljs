@@ -2,12 +2,12 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    configuration = require('./config'),
-    inputError = require('./input-error'),
-    libReport = require('istanbul-lib-report'),
-    libReports = require('istanbul-reports'),
-    minimatch = require('minimatch');
+var path = require('path');
+var configuration = require('./config');
+var inputError = require('./input-error');
+var libReport = require('istanbul-lib-report');
+var libReports = require('istanbul-reports');
+var minimatch = require('minimatch');
 
 function Reporter(cfg, opts) {
     opts = opts || {};
@@ -15,8 +15,8 @@ function Reporter(cfg, opts) {
     this.dir = path.resolve(this.config.reporting.dir());
     this.reports = {};
 
-    var summarizer = opts.summarizer,
-        s = this.config.reporting.summarizer();
+    var summarizer = opts.summarizer;
+    var s = this.config.reporting.summarizer();
 
     if (summarizer && typeof summarizer === 'function') {
         this.summarizer = summarizer;
@@ -43,8 +43,8 @@ Reporter.prototype = {
             // already added
             return;
         }
-        var config = this.config,
-            rptConfig = config.reporting.reportConfig()[fmt] || {};
+        var config = this.config;
+        var rptConfig = config.reporting.reportConfig()[fmt] || {};
         rptConfig.verbose = config.verbose;
         try {
             if (this.config.verbose) {
@@ -71,9 +71,9 @@ Reporter.prototype = {
      */
     write(coverageMap, opts) {
         opts = opts || {};
-        var sourceFinder = opts.sourceFinder || null,
-            context,
-            tree;
+        var sourceFinder = opts.sourceFinder || null;
+        var context;
+        var tree;
 
         context = libReport.createContext({
             dir: this.dir,

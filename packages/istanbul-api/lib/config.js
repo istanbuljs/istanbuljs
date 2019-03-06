@@ -2,14 +2,14 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    fs = require('fs'),
-    existsSync = fs.existsSync,
-    CAMEL_PATTERN = /([a-z])([A-Z])/g,
-    YML_PATTERN = /\.ya?ml$/,
-    yaml = require('js-yaml'),
-    libReport = require('istanbul-lib-report'),
-    inputError = require('./input-error');
+var path = require('path');
+var fs = require('fs');
+var existsSync = fs.existsSync;
+var CAMEL_PATTERN = /([a-z])([A-Z])/g;
+var YML_PATTERN = /\.ya?ml$/;
+var yaml = require('js-yaml');
+var libReport = require('istanbul-lib-report');
+var inputError = require('./input-error');
 
 function defaultConfig() {
     var ret = {
@@ -84,15 +84,15 @@ function isObject(v) {
 }
 
 function mergeObjects(explicit, template, bothWays) {
-    var ret = {},
-        keys = Object.keys(template);
+    var ret = {};
+    var keys = Object.keys(template);
 
     if (bothWays) {
         keys.push.apply(keys, Object.keys(explicit));
     }
     keys.forEach(k => {
-        var v1 = template[k],
-            v2 = explicit[k];
+        var v1 = template[k];
+        var v2 = explicit[k];
 
         if (Array.isArray(v1)) {
             ret[k] = Array.isArray(v2) && v2.length > 0 ? v2 : v1;
@@ -110,10 +110,10 @@ function mergeObjects(explicit, template, bothWays) {
 
 function mergeDefaults(explicit, implicit) {
     explicit = explicit || {};
-    var initialMerge = mergeObjects(explicit || {}, implicit),
-        explicitReportConfig =
-            (explicit.reporting || {})['report-config'] || {},
-        implicitReportConfig = initialMerge.reporting['report-config'] || {};
+    var initialMerge = mergeObjects(explicit || {}, implicit);
+    var explicitReportConfig =
+        (explicit.reporting || {})['report-config'] || {};
+    var implicitReportConfig = initialMerge.reporting['report-config'] || {};
     initialMerge.reporting['report-config'] = mergeObjects(
         explicitReportConfig,
         implicitReportConfig,
@@ -123,8 +123,8 @@ function mergeDefaults(explicit, implicit) {
 }
 
 function addMethods() {
-    var args = Array.prototype.slice.call(arguments),
-        cons = args.shift();
+    var args = Array.prototype.slice.call(arguments);
+    var cons = args.shift();
 
     args.forEach(arg => {
         var property = dasherize(arg);
@@ -336,13 +336,14 @@ function isInvalidMark(v, key) {
  *  branches, functions and lines.
  */
 ReportingOptions.prototype.watermarks = function() {
-    var v = this.config.watermarks,
-        defs = libReport.getDefaultWatermarks(),
-        ret = {};
+    var v = this.config.watermarks;
+    var defs = libReport.getDefaultWatermarks();
+    var ret = {};
 
     Object.keys(defs).forEach(k => {
-        var mark = v[k], //it will already be a non-zero length array because of the way the merge works
-            message = isInvalidMark(mark, k);
+        var mark = v[k];
+        //it will already be a non-zero length array because of the way the merge works
+        var message = isInvalidMark(mark, k);
         if (message) {
             console.error(message);
             ret[k] = defs[k];
@@ -460,8 +461,8 @@ function Configuration(obj, overrides) {
  */
 
 function loadFile(file, overrides) {
-    var defaultConfigFile = path.resolve('.istanbul.yml'),
-        configObject;
+    var defaultConfigFile = path.resolve('.istanbul.yml');
+    var configObject;
 
     if (file) {
         if (!existsSync(file)) {

@@ -2,20 +2,20 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    fs = require('fs'),
-    filesFor = require('./file-matcher').filesFor,
-    libCoverage = require('istanbul-lib-coverage'),
-    inputError = require('./input-error'),
-    isAbsolute =
-        path.isAbsolute ||
-        function(file) {
-            return path.resolve(file) === path.normalize(file);
-        };
+var path = require('path');
+var fs = require('fs');
+var filesFor = require('./file-matcher').filesFor;
+var libCoverage = require('istanbul-lib-coverage');
+var inputError = require('./input-error');
+var isAbsolute =
+    path.isAbsolute ||
+    function(file) {
+        return path.resolve(file) === path.normalize(file);
+    };
 
 function removeFiles(origMap, root, files) {
-    var filesObj = {},
-        ret = libCoverage.createCoverageMap();
+    var filesObj = {};
+    var ret = libCoverage.createCoverageMap();
 
     // Create lookup table.
     files.forEach(file => {
@@ -43,18 +43,18 @@ function run(config, opts, callback) {
 
     opts = opts || {};
 
-    var root = opts.root || config.instrumentation.root() || process.cwd(),
-        includePattern = opts.include || '**/coverage*.json',
-        errors = [],
-        check,
-        makeMap,
-        processFiles;
+    var root = opts.root || config.instrumentation.root() || process.cwd();
+    var includePattern = opts.include || '**/coverage*.json';
+    var errors = [];
+    var check;
+    var makeMap;
+    var processFiles;
 
     check = function(name, thresholds, actuals) {
         ['statements', 'branches', 'lines', 'functions'].forEach(key => {
-            var actual = actuals[key].pct,
-                actualUncovered = actuals[key].total - actuals[key].covered,
-                threshold = thresholds[key];
+            var actual = actuals[key].pct;
+            var actualUncovered = actuals[key].total - actuals[key].covered;
+            var threshold = thresholds[key];
 
             if (threshold < 0) {
                 if (threshold * -1 < actualUncovered) {
@@ -104,32 +104,32 @@ function run(config, opts, callback) {
 
     processFiles = function(coverageMap, callback) {
         var thresholds = {
-                global: {
-                    statements: config.check.global.statements || 0,
-                    branches: config.check.global.branches || 0,
-                    lines: config.check.global.lines || 0,
-                    functions: config.check.global.functions || 0,
-                    excludes: config.check.global.excludes || []
-                },
-                each: {
-                    statements: config.check.each.statements || 0,
-                    branches: config.check.each.branches || 0,
-                    lines: config.check.each.lines || 0,
-                    functions: config.check.each.functions || 0,
-                    excludes: config.check.each.excludes || []
-                }
+            global: {
+                statements: config.check.global.statements || 0,
+                branches: config.check.global.branches || 0,
+                lines: config.check.global.lines || 0,
+                functions: config.check.global.functions || 0,
+                excludes: config.check.global.excludes || []
             },
-            globalResults = removeFiles(
-                coverageMap,
-                root,
-                thresholds.global.excludes
-            ),
-            eachResults = removeFiles(
-                coverageMap,
-                root,
-                thresholds.each.excludes
-            ),
-            finalError;
+            each: {
+                statements: config.check.each.statements || 0,
+                branches: config.check.each.branches || 0,
+                lines: config.check.each.lines || 0,
+                functions: config.check.each.functions || 0,
+                excludes: config.check.each.excludes || []
+            }
+        };
+        var globalResults = removeFiles(
+            coverageMap,
+            root,
+            thresholds.global.excludes
+        );
+        var eachResults = removeFiles(
+            coverageMap,
+            root,
+            thresholds.each.excludes
+        );
+        var finalError;
 
         if (config.verbose) {
             console.error('Compare actuals against thresholds');

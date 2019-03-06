@@ -14,14 +14,14 @@ LcovOnlyReport.prototype.onStart = function(root, context) {
 };
 
 LcovOnlyReport.prototype.onDetail = function(node) {
-    var fc = node.getFileCoverage(),
-        writer = this.contentWriter,
-        functions = fc.f,
-        functionMap = fc.fnMap,
-        lines = fc.getLineCoverage(),
-        branches = fc.b,
-        branchMap = fc.branchMap,
-        summary = node.getCoverageSummary();
+    var fc = node.getFileCoverage();
+    var writer = this.contentWriter;
+    var functions = fc.f;
+    var functionMap = fc.fnMap;
+    var lines = fc.getLineCoverage();
+    var branches = fc.b;
+    var branchMap = fc.branchMap;
+    var summary = node.getCoverageSummary();
 
     writer.println('TN:'); //no test name
     writer.println('SF:' + fc.path);
@@ -34,8 +34,8 @@ LcovOnlyReport.prototype.onDetail = function(node) {
     writer.println('FNH:' + summary.functions.covered);
 
     Object.keys(functionMap).forEach(key => {
-        var stats = functions[key],
-            meta = functionMap[key];
+        var stats = functions[key];
+        var meta = functionMap[key];
         writer.println('FNDA:' + [stats, meta.name].join(','));
     });
 
@@ -47,10 +47,10 @@ LcovOnlyReport.prototype.onDetail = function(node) {
     writer.println('LH:' + summary.lines.covered);
 
     Object.keys(branches).forEach(key => {
-        var branchArray = branches[key],
-            meta = branchMap[key],
-            line = meta.loc.start.line,
-            i = 0;
+        var branchArray = branches[key];
+        var meta = branchMap[key];
+        var line = meta.loc.start.line;
+        var i = 0;
         branchArray.forEach(b => {
             writer.println('BRDA:' + [line, key, i, b].join(','));
             i += 1;

@@ -171,17 +171,17 @@ function FileCoverage(pathOrObj) {
  * This is a map of hits keyed by line number in the source.
  */
 FileCoverage.prototype.getLineCoverage = function() {
-    var statementMap = this.data.statementMap,
-        statements = this.data.s,
-        lineMap = Object.create(null);
+    var statementMap = this.data.statementMap;
+    var statements = this.data.s;
+    var lineMap = Object.create(null);
 
     Object.keys(statements).forEach(st => {
         if (!statementMap[st]) {
             return;
         }
-        var line = statementMap[st].start.line,
-            count = statements[st],
-            prevVal = lineMap[line];
+        var line = statementMap[st].start.line;
+        var count = statements[st];
+        var prevVal = lineMap[line];
         if (prevVal === undefined || prevVal < count) {
             lineMap[line] = count;
         }
@@ -194,8 +194,8 @@ FileCoverage.prototype.getLineCoverage = function() {
  *  collected.
  */
 FileCoverage.prototype.getUncoveredLines = function() {
-    var lc = this.getLineCoverage(),
-        ret = [];
+    var lc = this.getLineCoverage();
+    var ret = [];
     Object.keys(lc).forEach(l => {
         var hits = lc[l];
         if (hits === 0) {
@@ -210,19 +210,19 @@ FileCoverage.prototype.getUncoveredLines = function() {
  * has a `covered`, `total` and `coverage` (percentage) property.
  */
 FileCoverage.prototype.getBranchCoverageByLine = function() {
-    var branchMap = this.branchMap,
-        branches = this.b,
-        ret = {};
+    var branchMap = this.branchMap;
+    var branches = this.b;
+    var ret = {};
     Object.keys(branchMap).forEach(k => {
-        var line = branchMap[k].line || branchMap[k].loc.start.line,
-            branchData = branches[k];
+        var line = branchMap[k].line || branchMap[k].loc.start.line;
+        var branchData = branches[k];
         ret[line] = ret[line] || [];
         ret[line].push.apply(ret[line], branchData);
     });
     Object.keys(ret).forEach(k => {
-        var dataArray = ret[k],
-            covered = dataArray.filter(item => item > 0),
-            coverage = (covered.length / dataArray.length) * 100;
+        var dataArray = ret[k];
+        var covered = dataArray.filter(item => item > 0);
+        var coverage = (covered.length / dataArray.length) * 100;
         ret[k] = {
             covered: covered.length,
             total: dataArray.length,
@@ -260,9 +260,9 @@ FileCoverage.prototype.merge = function(other) {
         this.data.f[k] += other.f[k];
     });
     Object.keys(other.b).forEach(k => {
-        var i,
-            retArray = this.data.b[k],
-            secondArray = other.b[k];
+        var i;
+        var retArray = this.data.b[k];
+        var secondArray = other.b[k];
         if (!retArray) {
             this.data.b[k] = secondArray;
             return;
@@ -274,8 +274,8 @@ FileCoverage.prototype.merge = function(other) {
 };
 
 FileCoverage.prototype.computeSimpleTotals = function(property) {
-    var stats = this[property],
-        ret = { total: 0, covered: 0, skipped: 0 };
+    var stats = this[property];
+    var ret = { total: 0, covered: 0, skipped: 0 };
 
     if (typeof stats === 'function') {
         stats = stats.call(this);
@@ -292,12 +292,12 @@ FileCoverage.prototype.computeSimpleTotals = function(property) {
 };
 
 FileCoverage.prototype.computeBranchTotals = function() {
-    var stats = this.b,
-        ret = { total: 0, covered: 0, skipped: 0 };
+    var stats = this.b;
+    var ret = { total: 0, covered: 0, skipped: 0 };
 
     Object.keys(stats).forEach(key => {
-        var branches = stats[key],
-            covered;
+        var branches = stats[key];
+        var covered;
         branches.forEach(branchHits => {
             covered = branchHits > 0;
             if (covered) {
@@ -314,9 +314,9 @@ FileCoverage.prototype.computeBranchTotals = function() {
  * in this coverage object resulting in zero coverage.
  */
 FileCoverage.prototype.resetHits = function() {
-    var statements = this.s,
-        functions = this.f,
-        branches = this.b;
+    var statements = this.s;
+    var functions = this.f;
+    var branches = this.b;
     Object.keys(statements).forEach(s => {
         statements[s] = 0;
     });

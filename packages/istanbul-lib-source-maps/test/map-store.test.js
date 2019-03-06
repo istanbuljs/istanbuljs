@@ -1,8 +1,8 @@
 /* globals describe, it */
-var assert = require('chai').assert,
-    path = require('path'),
-    MapStore = require('../lib/map-store').MapStore,
-    libCoverage = require('istanbul-lib-coverage');
+var assert = require('chai').assert;
+var path = require('path');
+var MapStore = require('../lib/map-store').MapStore;
+var libCoverage = require('istanbul-lib-coverage');
 
 describe('map store', () => {
     var coverageData;

@@ -1,12 +1,12 @@
 /* globals describe, it, before */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    fileset = require('fileset'),
-    root = path.resolve(__dirname, 'data', 'matcher'),
-    src = '../lib/file-matcher.js',
-    fileMatcher = require(src),
-    allFiles;
+var assert = require('chai').assert;
+var path = require('path');
+var fileset = require('fileset');
+var root = path.resolve(__dirname, 'data', 'matcher');
+var src = '../lib/file-matcher.js';
+var fileMatcher = require(src);
+var allFiles;
 
 describe('file matcher', () => {
     before(cb => {
@@ -24,9 +24,9 @@ describe('file matcher', () => {
             assert.ok(!err);
             allFiles.forEach(file => {
                 var matcher = function(f) {
-                        return f === file;
-                    },
-                    shouldMatch = file.indexOf('file.js') < 0;
+                    return f === file;
+                };
+                var shouldMatch = file.indexOf('file.js') < 0;
                 if (shouldMatch) {
                     assert.ok(
                         files.filter(matcher).length,
@@ -52,9 +52,9 @@ describe('file matcher', () => {
                 assert.ok(!err);
                 allFiles.forEach(file => {
                     var matcher = function(f) {
-                            return path.resolve(root, f) === file;
-                        },
-                        shouldMatch = file.indexOf('file.js') < 0;
+                        return path.resolve(root, f) === file;
+                    };
+                    var shouldMatch = file.indexOf('file.js') < 0;
                     if (shouldMatch) {
                         assert.ok(
                             files.filter(matcher).length,

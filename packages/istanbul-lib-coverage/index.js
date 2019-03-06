@@ -12,9 +12,9 @@
  *
  * @module Exports
  */
-var CoverageSummary = require('./lib/file').CoverageSummary,
-    FileCoverage = require('./lib/file').FileCoverage,
-    CoverageMap = require('./lib/coverage-map').CoverageMap;
+var CoverageSummary = require('./lib/file').CoverageSummary;
+var FileCoverage = require('./lib/file').FileCoverage;
+var CoverageMap = require('./lib/coverage-map').CoverageMap;
 
 module.exports = {
     /**

@@ -1,12 +1,12 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    FileWriter = require('../lib/file-writer'),
-    path = require('path'),
-    dataDir = path.resolve(__dirname, '.data'),
-    mkdirp = require('make-dir'),
-    rimraf = require('rimraf'),
-    fs = require('fs');
+var assert = require('chai').assert;
+var FileWriter = require('../lib/file-writer');
+var path = require('path');
+var dataDir = path.resolve(__dirname, '.data');
+var mkdirp = require('make-dir');
+var rimraf = require('rimraf');
+var fs = require('fs');
 
 describe('file-writer', () => {
     var writer;
@@ -57,8 +57,8 @@ describe('file-writer', () => {
     });
 
     it('provides writers for subdirs', () => {
-        var w = writer.writerForDir('foo'),
-            cw = w.writeFile('bar.txt');
+        var w = writer.writerForDir('foo');
+        var cw = w.writeFile('bar.txt');
         cw.println('hello');
         cw.close();
         assert.equal(

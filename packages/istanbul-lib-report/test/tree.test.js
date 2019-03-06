@@ -1,12 +1,12 @@
 /* globals describe, it, beforeEach */
 
-var assert = require('chai').assert,
-    util = require('util'),
-    t = require('../lib/tree'),
-    BaseTree = t.Tree,
-    BaseNode = t.Node,
-    Visitor = t.Visitor,
-    CompositeVisitor = t.CompositeVisitor;
+var assert = require('chai').assert;
+var util = require('util');
+var t = require('../lib/tree');
+var BaseTree = t.Tree;
+var BaseNode = t.Node;
+var Visitor = t.Visitor;
+var CompositeVisitor = t.CompositeVisitor;
 
 function TestNode(name) {
     BaseNode.call(this);
@@ -35,7 +35,9 @@ TestNode.prototype.isSummary = function() {
 };
 
 describe('tree', () => {
-    var leaves, groups, tree;
+    var leaves;
+    var groups;
+    var tree;
 
     beforeEach(() => {
         leaves = [
@@ -68,21 +70,21 @@ describe('tree', () => {
 
     describe('single visitor', () => {
         it('visits all nodes with correct state with a full visitor', () => {
-            var visited = [],
-                visitor = new Visitor({
-                    onStart(node, state) {
-                        state.push('start');
-                    },
-                    onEnd(node, state) {
-                        state.push('end');
-                    },
-                    onSummary(node, state) {
-                        state.push(node.name);
-                    },
-                    onDetail(node, state) {
-                        state.push(node.name);
-                    }
-                });
+            var visited = [];
+            var visitor = new Visitor({
+                onStart(node, state) {
+                    state.push('start');
+                },
+                onEnd(node, state) {
+                    state.push('end');
+                },
+                onSummary(node, state) {
+                    state.push(node.name);
+                },
+                onDetail(node, state) {
+                    state.push(node.name);
+                }
+            });
             tree.visit(visitor, visited);
             assert.deepEqual(visited, [
                 'start',
@@ -102,15 +104,15 @@ describe('tree', () => {
         });
 
         it('visits all nodes with correct state with a partial visitor', () => {
-            var visited = [],
-                visitor = new Visitor({
-                    onEnd(node, state) {
-                        state.push('end');
-                    },
-                    onSummary(node, state) {
-                        state.push(node.name);
-                    }
-                });
+            var visited = [];
+            var visitor = new Visitor({
+                onEnd(node, state) {
+                    state.push('end');
+                },
+                onSummary(node, state) {
+                    state.push(node.name);
+                }
+            });
             tree.visit(visitor, visited);
             assert.deepEqual(visited, ['root', 'g1', 'g2', 'g3', 'end']);
         });
@@ -118,37 +120,37 @@ describe('tree', () => {
 
     describe('composite visitor', () => {
         it('visits multiple visitors in interleaved order with a composite', () => {
-            var visited = [],
-                visitor = new Visitor({
-                    onStart(root, state) {
-                        state.push('start');
-                    },
-                    onEnd(root, state) {
-                        state.push('end');
-                    },
-                    onSummary(node, state) {
-                        state.push(node.name);
-                    },
-                    onDetail(node, state) {
-                        state.push(node.name);
-                    }
-                }),
-                base = [
-                    'start',
-                    'root',
-                    'g1',
-                    'g2',
-                    'l1',
-                    'l2',
-                    'l3',
-                    'l4',
-                    'g3',
-                    'l5',
-                    'l6',
-                    'l7',
-                    'end'
-                ],
-                expected = [];
+            var visited = [];
+            var visitor = new Visitor({
+                onStart(root, state) {
+                    state.push('start');
+                },
+                onEnd(root, state) {
+                    state.push('end');
+                },
+                onSummary(node, state) {
+                    state.push(node.name);
+                },
+                onDetail(node, state) {
+                    state.push(node.name);
+                }
+            });
+            var base = [
+                'start',
+                'root',
+                'g1',
+                'g2',
+                'l1',
+                'l2',
+                'l3',
+                'l4',
+                'g3',
+                'l5',
+                'l6',
+                'l7',
+                'end'
+            ];
+            var expected = [];
             tree.visit(new CompositeVisitor([visitor, visitor]), visited);
             base.forEach(name => {
                 expected.push(name);
@@ -158,15 +160,15 @@ describe('tree', () => {
         });
 
         it('allows use of composite with a partial visitor', () => {
-            var visited = [],
-                visitor = new CompositeVisitor({
-                    onEnd(root, state) {
-                        state.push('end');
-                    },
-                    onSummary(node, state) {
-                        state.push(node.name);
-                    }
-                });
+            var visited = [];
+            var visitor = new CompositeVisitor({
+                onEnd(root, state) {
+                    state.push('end');
+                },
+                onSummary(node, state) {
+                    state.push(node.name);
+                }
+            });
             tree.visit(visitor, visited);
             assert.deepEqual(visited, ['root', 'g1', 'g2', 'g3', 'end']);
         });

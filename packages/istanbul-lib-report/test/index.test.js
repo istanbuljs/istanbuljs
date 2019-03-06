@@ -1,7 +1,7 @@
 /* globals describe, it */
 
-var assert = require('chai').assert,
-    index = require('../index');
+var assert = require('chai').assert;
+var index = require('../index');
 
 describe('report interface', () => {
     it('exports the desired interface', () => {

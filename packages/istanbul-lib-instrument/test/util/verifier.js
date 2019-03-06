@@ -15,12 +15,12 @@ function pad(str, len) {
 }
 
 function annotatedCode(code) {
-    var codeArray = code.split('\n'),
-        line = 0,
-        annotated = codeArray.map(str => {
-            line += 1;
-            return pad(line, 6) + ': ' + str;
-        });
+    var codeArray = code.split('\n');
+    var line = 0;
+    var annotated = codeArray.map(str => {
+        line += 1;
+        return pad(line, 6) + ': ' + str;
+    });
     return annotated.join('\n');
 }
 
@@ -38,8 +38,8 @@ class Verifier {
         getGlobalObject()[this.result.coverageVariable] = clone(
             this.result.baseline
         );
-        var actualOutput = this.result.fn(args),
-            cov = this.getFileCoverage();
+        var actualOutput = this.result.fn(args);
+        var cov = this.getFileCoverage();
 
         assert.ok(
             cov && typeof cov === 'object',
@@ -114,18 +114,18 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
     instrumenterOpts.coverageVariable =
         instrumenterOpts.coverageVariable || '__testing_coverage__';
 
-    var debug = extractTestOption(opts, 'debug', process.env.DEBUG === '1'),
-        file = extractTestOption(opts, 'file', __filename),
-        generateOnly = extractTestOption(opts, 'generateOnly', false),
-        noCoverage = extractTestOption(opts, 'noCoverage', false),
-        quiet = extractTestOption(opts, 'quiet', false),
-        coverageVariable = instrumenterOpts.coverageVariable,
-        g = getGlobalObject(),
-        instrumenter,
-        instrumenterOutput,
-        wrapped,
-        fn,
-        verror;
+    var debug = extractTestOption(opts, 'debug', process.env.DEBUG === '1');
+    var file = extractTestOption(opts, 'file', __filename);
+    var generateOnly = extractTestOption(opts, 'generateOnly', false);
+    var noCoverage = extractTestOption(opts, 'noCoverage', false);
+    var quiet = extractTestOption(opts, 'quiet', false);
+    var coverageVariable = instrumenterOpts.coverageVariable;
+    var g = getGlobalObject();
+    var instrumenter;
+    var instrumenterOutput;
+    var wrapped;
+    var fn;
+    var verror;
 
     if (debug) {
         instrumenterOpts.compact = false;

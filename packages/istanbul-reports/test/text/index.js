@@ -1,11 +1,11 @@
 /* globals describe, it, beforeEach, before, after */
-var fs = require('fs'),
-    isWindows = require('is-windows'),
-    path = require('path'),
-    FileWriter = require('istanbul-lib-report/lib/file-writer'),
-    istanbulLibReport = require('istanbul-lib-report'),
-    istanbulLibCoverage = require('istanbul-lib-coverage'),
-    TextReport = require('../../lib/text/index');
+var fs = require('fs');
+var isWindows = require('is-windows');
+var path = require('path');
+var FileWriter = require('istanbul-lib-report/lib/file-writer');
+var istanbulLibReport = require('istanbul-lib-report');
+var istanbulLibCoverage = require('istanbul-lib-coverage');
+var TextReport = require('../../lib/text/index');
 
 require('chai').should();
 

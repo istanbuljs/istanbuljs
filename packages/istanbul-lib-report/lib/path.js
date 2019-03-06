@@ -4,19 +4,19 @@
  */
 'use strict';
 
-var path = require('path'),
-    parsePath = path.parse,
-    SEP = path.sep || /* istanbul ignore next */ '/',
-    origParser = parsePath,
-    origSep = SEP;
+var path = require('path');
+var parsePath = path.parse;
+var SEP = path.sep || /* istanbul ignore next */ '/';
+var origParser = parsePath;
+var origSep = SEP;
 
 function makeRelativeNormalizedPath(str, sep) {
-    var parsed = parsePath(str),
-        root = parsed.root,
-        dir,
-        file = parsed.base,
-        quoted,
-        pos;
+    var parsed = parsePath(str);
+    var root = parsed.root;
+    var dir;
+    var file = parsed.base;
+    var quoted;
+    var pos;
 
     // handle a weird windows case separately
     if (sep === '\\') {
@@ -104,9 +104,9 @@ Path.prototype.descendantOf = function(other) {
 };
 
 Path.prototype.commonPrefixPath = function(other) {
-    var len = this.length > other.length ? other.length : this.length,
-        i,
-        ret = [];
+    var len = this.length > other.length ? other.length : this.length;
+    var i;
+    var ret = [];
 
     for (i = 0; i < len; i += 1) {
         if (this.v[i] === other.v[i]) {
@@ -120,17 +120,17 @@ Path.prototype.commonPrefixPath = function(other) {
 
 ['push', 'pop', 'shift', 'unshift', 'splice'].forEach(f => {
     Path.prototype[f] = function() {
-        var args = Array.prototype.slice.call(arguments),
-            v = this.v;
+        var args = Array.prototype.slice.call(arguments);
+        var v = this.v;
         return v[f].apply(v, args);
     };
 });
 
 Path.compare = function(a, b) {
-    var al = a.length,
-        bl = b.length,
-        astr,
-        bstr;
+    var al = a.length;
+    var bl = b.length;
+    var astr;
+    var bstr;
     if (al < bl) {
         return -1;
     }

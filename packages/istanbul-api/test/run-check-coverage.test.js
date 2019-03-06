@@ -1,15 +1,15 @@
 /* globals describe, it, before, after, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    rimraf = require('rimraf'),
-    codeRoot = path.resolve(__dirname, 'sample-code'),
-    outputDir = path.resolve(codeRoot, 'coverage'),
-    configuration = require('../lib/config'),
-    cover = require('../lib/run-cover'),
-    checker = require('../lib/run-check-coverage'),
-    hijack = require('./hijack-streams'),
-    wrap = hijack.wrap;
+var assert = require('chai').assert;
+var path = require('path');
+var rimraf = require('rimraf');
+var codeRoot = path.resolve(__dirname, 'sample-code');
+var outputDir = path.resolve(codeRoot, 'coverage');
+var configuration = require('../lib/config');
+var cover = require('../lib/run-cover');
+var checker = require('../lib/run-check-coverage');
+var hijack = require('./hijack-streams');
+var wrap = hijack.wrap;
 
 describe('run check-coverage', () => {
     function getConfig(overrides) {
@@ -37,8 +37,8 @@ describe('run check-coverage', () => {
             if (err) {
                 return cb(err);
             }
-            var hookFn = data.hookFn,
-                exitFn = data.exitFn;
+            var hookFn = data.hookFn;
+            var exitFn = data.exitFn;
             hookFn();
             require('./sample-code/test/foo.test.js');
             exitFn();

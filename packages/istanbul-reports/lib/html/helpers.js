@@ -4,9 +4,9 @@
  */
 function registerHelpers(handlebars) {
     handlebars.registerHelper('show_picture', function(opts) {
-        var num = Number(opts.fn(this)),
-            rest,
-            cls = '';
+        var num = Number(opts.fn(this));
+        var rest;
+        var cls = '';
         if (isFinite(num)) {
             if (num === 100) {
                 cls = ' cover-full';
@@ -38,10 +38,10 @@ function registerHelpers(handlebars) {
     });
 
     handlebars.registerHelper('show_ignores', metrics => {
-        var statements = metrics.statements.skipped,
-            functions = metrics.functions.skipped,
-            branches = metrics.branches.skipped,
-            result;
+        var statements = metrics.statements.skipped;
+        var functions = metrics.functions.skipped;
+        var branches = metrics.branches.skipped;
+        var result;
 
         if (statements === 0 && functions === 0 && branches === 0) {
             return '<span class="ignore-none">none</span>';
@@ -66,9 +66,9 @@ function registerHelpers(handlebars) {
     });
 
     handlebars.registerHelper('show_lines', function(opts) {
-        var maxLines = Number(opts.fn(this)),
-            i,
-            array = [];
+        var maxLines = Number(opts.fn(this));
+        var i;
+        var array = [];
         for (i = 0; i < maxLines; i += 1) {
             var nextNum = i + 1;
             array[i] =

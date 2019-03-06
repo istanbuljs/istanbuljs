@@ -50,8 +50,8 @@ XMLWriter.prototype.closeTag = function(name) {
     if (this.stack.length === 0) {
         throw new Error('Attempt to close tag ' + name + ' when not opened');
     }
-    var stashed = this.stack.pop(),
-        str = '</' + name + '>';
+    var stashed = this.stack.pop();
+    var str = '</' + name + '>';
 
     if (stashed !== name) {
         throw new Error(

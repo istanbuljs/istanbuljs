@@ -2,12 +2,12 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    vm = require('vm'),
-    appendTransform = require('append-transform'),
-    originalCreateScript = vm.createScript,
-    originalRunInThisContext = vm.runInThisContext,
-    originalRunInContext = vm.runInContext;
+var path = require('path');
+var vm = require('vm');
+var appendTransform = require('append-transform');
+var originalCreateScript = vm.createScript;
+var originalRunInThisContext = vm.runInThisContext;
+var originalRunInContext = vm.runInContext;
 
 function transformFn(matcher, transformer, verbose) {
     return function(code, options) {
@@ -20,10 +20,10 @@ function transformFn(matcher, transformer, verbose) {
         }
 
         var shouldHook =
-                typeof options.filename === 'string' &&
-                matcher(path.resolve(options.filename)),
-            transformed,
-            changed = false;
+            typeof options.filename === 'string' &&
+            matcher(path.resolve(options.filename));
+        var transformed;
+        var changed = false;
 
         if (shouldHook) {
             if (verbose) {
@@ -85,13 +85,13 @@ function unloadRequireCache(matcher) {
  */
 function hookRequire(matcher, transformer, options) {
     options = options || {};
-    var extensions,
-        disable = false,
-        fn = transformFn(matcher, transformer, options.verbose),
-        postLoadHook =
-            options.postLoadHook && typeof options.postLoadHook === 'function'
-                ? options.postLoadHook
-                : null;
+    var extensions;
+    var disable = false;
+    var fn = transformFn(matcher, transformer, options.verbose);
+    var postLoadHook =
+        options.postLoadHook && typeof options.postLoadHook === 'function'
+            ? options.postLoadHook
+            : null;
 
     extensions = options.extensions || ['.js'];
 

@@ -1,17 +1,17 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    fs = require('fs'),
-    mkdirp = require('make-dir'),
-    rimraf = require('rimraf'),
-    codeRoot = path.resolve(__dirname, 'sample-code'),
-    outputDir = path.resolve(__dirname, 'coverage'),
-    configuration = require('../lib/config'),
-    cover = require('../lib/run-cover'),
-    hijack = require('./hijack-streams'),
-    wrap = hijack.wrap,
-    unhookFn;
+var assert = require('chai').assert;
+var path = require('path');
+var fs = require('fs');
+var mkdirp = require('make-dir');
+var rimraf = require('rimraf');
+var codeRoot = path.resolve(__dirname, 'sample-code');
+var outputDir = path.resolve(__dirname, 'coverage');
+var configuration = require('../lib/config');
+var cover = require('../lib/run-cover');
+var hijack = require('./hijack-streams');
+var wrap = hijack.wrap;
+var unhookFn;
 
 describe('run cover', () => {
     beforeEach(() => {
@@ -51,12 +51,12 @@ describe('run cover', () => {
         });
         cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                hookFn = data.hookFn,
-                exitFn = data.exitFn,
-                coverageMap,
-                coverage,
-                otherMap;
+            var fn = data.coverageFn;
+            var hookFn = data.hookFn;
+            var exitFn = data.exitFn;
+            var coverageMap;
+            var coverage;
+            var otherMap;
             unhookFn = data.unhookFn;
             assert.isFunction(fn);
             assert.isFunction(unhookFn);
@@ -93,12 +93,12 @@ describe('run cover', () => {
         });
         cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                exitFn = data.exitFn,
-                hookFn = data.hookFn,
-                coverage,
-                coverageMap,
-                otherMap;
+            var fn = data.coverageFn;
+            var exitFn = data.exitFn;
+            var hookFn = data.hookFn;
+            var coverage;
+            var coverageMap;
+            var otherMap;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/runInContext');
@@ -128,9 +128,9 @@ describe('run cover', () => {
         });
         cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                hookFn = data.hookFn,
-                coverageMap;
+            var fn = data.coverageFn;
+            var hookFn = data.hookFn;
+            var coverageMap;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/context');
@@ -154,10 +154,10 @@ describe('run cover', () => {
         });
         cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                hookFn = data.hookFn,
-                exitFn = data.exitFn,
-                coverageMap;
+            var fn = data.coverageFn;
+            var hookFn = data.hookFn;
+            var exitFn = data.exitFn;
+            var coverageMap;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/foo');
@@ -178,8 +178,8 @@ describe('run cover', () => {
         var config = getConfig({ instrumentation: { 'include-pid': true } });
         cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var hookFn = data.hookFn,
-                exitFn = data.exitFn;
+            var hookFn = data.hookFn;
+            var exitFn = data.exitFn;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/foo');
@@ -204,10 +204,10 @@ describe('run cover', () => {
         });
         cover.getCoverFunctions(config, ['**/foo.js'], (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                hookFn = data.hookFn,
-                exitFn = data.exitFn,
-                coverageMap;
+            var fn = data.coverageFn;
+            var hookFn = data.hookFn;
+            var exitFn = data.exitFn;
+            var coverageMap;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/context');
@@ -251,8 +251,8 @@ describe('run cover', () => {
             var config = getTextReportConfig();
             cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
-                var hookFn = data.hookFn,
-                    exitFn = data.exitFn;
+                var hookFn = data.hookFn;
+                var exitFn = data.exitFn;
                 unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
@@ -269,8 +269,8 @@ describe('run cover', () => {
             var config = getTextReportConfig('detail');
             cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
-                var hookFn = data.hookFn,
-                    exitFn = data.exitFn;
+                var hookFn = data.hookFn;
+                var exitFn = data.exitFn;
                 unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
@@ -287,8 +287,8 @@ describe('run cover', () => {
             var config = getTextReportConfig('both');
             cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
-                var hookFn = data.hookFn,
-                    exitFn = data.exitFn;
+                var hookFn = data.hookFn;
+                var exitFn = data.exitFn;
                 unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
@@ -305,8 +305,8 @@ describe('run cover', () => {
             var config = getTextReportConfig('none');
             cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
-                var hookFn = data.hookFn,
-                    exitFn = data.exitFn;
+                var hookFn = data.hookFn;
+                var exitFn = data.exitFn;
                 unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');

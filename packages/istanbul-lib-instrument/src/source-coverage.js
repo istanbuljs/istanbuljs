@@ -72,8 +72,8 @@ class SourceCoverage extends classes.FileCoverage {
     }
 
     addBranchPath(name, location) {
-        var bMeta = this.data.branchMap[name],
-            counts = this.data.b[name];
+        var bMeta = this.data.branchMap[name];
+        var counts = this.data.b[name];
 
         /* istanbul ignore if: paranoid check */
         if (!bMeta) {
@@ -95,8 +95,8 @@ class SourceCoverage extends classes.FileCoverage {
 
     freeze() {
         // prune empty branches
-        var map = this.data.branchMap,
-            branches = this.data.b;
+        var map = this.data.branchMap;
+        var branches = this.data.b;
         Object.keys(map).forEach(b => {
             if (map[b].locations.length === 0) {
                 delete map[b];

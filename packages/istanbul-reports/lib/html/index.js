@@ -2,72 +2,72 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var fs = require('fs'),
-    path = require('path'),
-    handlebars = require('handlebars').create(),
-    annotator = require('./annotator'),
-    helpers = require('./helpers'),
-    templateFor = function(name) {
-        return handlebars.compile(
-            fs.readFileSync(
-                path.resolve(__dirname, 'templates', name + '.txt'),
-                'utf8'
-            )
-        );
-    },
-    headerTemplate = templateFor('head'),
-    footerTemplate = templateFor('foot'),
-    detailTemplate = handlebars.compile(
-        [
-            '<tr>',
-            '<td class="line-count quiet">{{#show_lines}}{{maxLines}}{{/show_lines}}</td>',
-            '<td class="line-coverage quiet">{{#show_line_execution_counts lineCoverage}}{{maxLines}}{{/show_line_execution_counts}}</td>',
-            '<td class="text"><pre class="prettyprint lang-js">{{#show_code annotatedCode}}{{/show_code}}</pre></td>',
-            '</tr>\n'
-        ].join('')
-    ),
-    summaryTableHeader = [
-        '<div class="pad1">',
-        '<table class="coverage-summary">',
-        '<thead>',
+var fs = require('fs');
+var path = require('path');
+var handlebars = require('handlebars').create();
+var annotator = require('./annotator');
+var helpers = require('./helpers');
+var templateFor = function(name) {
+    return handlebars.compile(
+        fs.readFileSync(
+            path.resolve(__dirname, 'templates', name + '.txt'),
+            'utf8'
+        )
+    );
+};
+var headerTemplate = templateFor('head');
+var footerTemplate = templateFor('foot');
+var detailTemplate = handlebars.compile(
+    [
         '<tr>',
-        '   <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>',
-        '   <th data-col="pic" data-type="number" data-fmt="html" data-html="true" class="pic"></th>',
-        '   <th data-col="statements" data-type="number" data-fmt="pct" class="pct">Statements</th>',
-        '   <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>',
-        '   <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>',
-        '   <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>',
-        '   <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>',
-        '   <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>',
-        '   <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>',
-        '   <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>',
-        '</tr>',
-        '</thead>',
-        '<tbody>'
-    ].join('\n'),
-    summaryLineTemplate = handlebars.compile(
-        [
-            '<tr>',
-            '<td class="file {{reportClasses.statements}}" data-value="{{file}}"><a href="{{output}}">{{file}}</a></td>',
-            '<td data-value="{{metrics.statements.pct}}" class="pic {{reportClasses.statements}}"><div class="chart">{{#show_picture}}{{metrics.statements.pct}}{{/show_picture}}</div></td>',
-            '<td data-value="{{metrics.statements.pct}}" class="pct {{reportClasses.statements}}">{{metrics.statements.pct}}%</td>',
-            '<td data-value="{{metrics.statements.total}}" class="abs {{reportClasses.statements}}">{{metrics.statements.covered}}/{{metrics.statements.total}}</td>',
-            '<td data-value="{{metrics.branches.pct}}" class="pct {{reportClasses.branches}}">{{metrics.branches.pct}}%</td>',
-            '<td data-value="{{metrics.branches.total}}" class="abs {{reportClasses.branches}}">{{metrics.branches.covered}}/{{metrics.branches.total}}</td>',
-            '<td data-value="{{metrics.functions.pct}}" class="pct {{reportClasses.functions}}">{{metrics.functions.pct}}%</td>',
-            '<td data-value="{{metrics.functions.total}}" class="abs {{reportClasses.functions}}">{{metrics.functions.covered}}/{{metrics.functions.total}}</td>',
-            '<td data-value="{{metrics.lines.pct}}" class="pct {{reportClasses.lines}}">{{metrics.lines.pct}}%</td>',
-            '<td data-value="{{metrics.lines.total}}" class="abs {{reportClasses.lines}}">{{metrics.lines.covered}}/{{metrics.lines.total}}</td>',
-            '</tr>\n'
-        ].join('\n\t')
-    ),
-    summaryTableFooter = ['</tbody>', '</table>', '</div>'].join('\n'),
-    emptyClasses = {
-        statements: 'empty',
-        lines: 'empty',
-        functions: 'empty',
-        branches: 'empty'
-    };
+        '<td class="line-count quiet">{{#show_lines}}{{maxLines}}{{/show_lines}}</td>',
+        '<td class="line-coverage quiet">{{#show_line_execution_counts lineCoverage}}{{maxLines}}{{/show_line_execution_counts}}</td>',
+        '<td class="text"><pre class="prettyprint lang-js">{{#show_code annotatedCode}}{{/show_code}}</pre></td>',
+        '</tr>\n'
+    ].join('')
+);
+var summaryTableHeader = [
+    '<div class="pad1">',
+    '<table class="coverage-summary">',
+    '<thead>',
+    '<tr>',
+    '   <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>',
+    '   <th data-col="pic" data-type="number" data-fmt="html" data-html="true" class="pic"></th>',
+    '   <th data-col="statements" data-type="number" data-fmt="pct" class="pct">Statements</th>',
+    '   <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>',
+    '   <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>',
+    '   <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>',
+    '   <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>',
+    '   <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>',
+    '   <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>',
+    '   <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>',
+    '</tr>',
+    '</thead>',
+    '<tbody>'
+].join('\n');
+var summaryLineTemplate = handlebars.compile(
+    [
+        '<tr>',
+        '<td class="file {{reportClasses.statements}}" data-value="{{file}}"><a href="{{output}}">{{file}}</a></td>',
+        '<td data-value="{{metrics.statements.pct}}" class="pic {{reportClasses.statements}}"><div class="chart">{{#show_picture}}{{metrics.statements.pct}}{{/show_picture}}</div></td>',
+        '<td data-value="{{metrics.statements.pct}}" class="pct {{reportClasses.statements}}">{{metrics.statements.pct}}%</td>',
+        '<td data-value="{{metrics.statements.total}}" class="abs {{reportClasses.statements}}">{{metrics.statements.covered}}/{{metrics.statements.total}}</td>',
+        '<td data-value="{{metrics.branches.pct}}" class="pct {{reportClasses.branches}}">{{metrics.branches.pct}}%</td>',
+        '<td data-value="{{metrics.branches.total}}" class="abs {{reportClasses.branches}}">{{metrics.branches.covered}}/{{metrics.branches.total}}</td>',
+        '<td data-value="{{metrics.functions.pct}}" class="pct {{reportClasses.functions}}">{{metrics.functions.pct}}%</td>',
+        '<td data-value="{{metrics.functions.total}}" class="abs {{reportClasses.functions}}">{{metrics.functions.covered}}/{{metrics.functions.total}}</td>',
+        '<td data-value="{{metrics.lines.pct}}" class="pct {{reportClasses.lines}}">{{metrics.lines.pct}}%</td>',
+        '<td data-value="{{metrics.lines.total}}" class="abs {{reportClasses.lines}}">{{metrics.lines.covered}}/{{metrics.lines.total}}</td>',
+        '</tr>\n'
+    ].join('\n\t')
+);
+var summaryTableFooter = ['</tbody>', '</table>', '</div>'].join('\n');
+var emptyClasses = {
+    statements: 'empty',
+    lines: 'empty',
+    functions: 'empty',
+    branches: 'empty'
+};
 
 helpers.registerHelpers(handlebars);
 
@@ -90,8 +90,8 @@ var standardLinkMapper = {
     },
 
     relativePath(source, target) {
-        var targetPath = this.getPath(target),
-            sourcePath = path.dirname(this.getPath(source));
+        var targetPath = this.getPath(target);
+        var sourcePath = path.dirname(this.getPath(source));
         return path.relative(sourcePath, targetPath);
     },
 
@@ -101,9 +101,9 @@ var standardLinkMapper = {
 };
 
 function getBreadcrumbHtml(node, linkMapper) {
-    var parent = node.getParent(),
-        nodePath = [],
-        linkPath;
+    var parent = node.getParent();
+    var nodePath = [];
+    var linkPath;
 
     while (parent) {
         nodePath.push(parent);
@@ -111,8 +111,8 @@ function getBreadcrumbHtml(node, linkMapper) {
     }
 
     linkPath = nodePath.map(ancestor => {
-        var target = linkMapper.relativePath(node, ancestor),
-            name = ancestor.getRelativeName() || 'All files';
+        var target = linkMapper.relativePath(node, ancestor);
+        var name = ancestor.getRelativeName() || 'All files';
         return '<a href="' + target + '">' + name + '</a>';
     });
 
@@ -175,10 +175,10 @@ HtmlReport.prototype.onStart = function(root, context) {
         const writer = this.getWriter(context);
         var srcDir = path.resolve(__dirname, 'assets', subdir);
         fs.readdirSync(srcDir).forEach(f => {
-            var resolvedSource = path.resolve(srcDir, f),
-                resolvedDestination = '.',
-                stat = fs.statSync(resolvedSource),
-                dest;
+            var resolvedSource = path.resolve(srcDir, f);
+            var resolvedDestination = '.';
+            var stat = fs.statSync(resolvedSource);
+            var dest;
 
             if (stat.isFile()) {
                 dest = resolvedDestination + '/' + f;
@@ -203,48 +203,45 @@ function fixPct(metrics) {
 }
 
 HtmlReport.prototype.onSummary = function(node, context) {
-    var linkMapper = this.linkMapper,
-        templateData = this.getTemplateData(),
-        children = node.getChildren(),
-        skipEmpty = this.skipEmpty,
-        cw;
+    var linkMapper = this.linkMapper;
+    var templateData = this.getTemplateData();
+    var children = node.getChildren();
+    var skipEmpty = this.skipEmpty;
+    var cw;
 
     fillTemplate(node, templateData, linkMapper, context);
     cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
     cw.write(headerTemplate(templateData));
     cw.write(summaryTableHeader);
     children.forEach(child => {
-        var metrics = child.getCoverageSummary(),
-            isEmpty = metrics.isEmpty();
+        var metrics = child.getCoverageSummary();
+        var isEmpty = metrics.isEmpty();
         if (skipEmpty && isEmpty) {
             return;
         }
         var reportClasses = isEmpty
-                ? emptyClasses
-                : {
-                      statements: context.classForPercent(
-                          'statements',
-                          metrics.statements.pct
-                      ),
-                      lines: context.classForPercent(
-                          'lines',
-                          metrics.lines.pct
-                      ),
-                      functions: context.classForPercent(
-                          'functions',
-                          metrics.functions.pct
-                      ),
-                      branches: context.classForPercent(
-                          'branches',
-                          metrics.branches.pct
-                      )
-                  },
-            data = {
-                metrics: isEmpty ? fixPct(metrics) : metrics,
-                reportClasses,
-                file: child.getRelativeName(),
-                output: linkMapper.relativePath(node, child)
-            };
+            ? emptyClasses
+            : {
+                  statements: context.classForPercent(
+                      'statements',
+                      metrics.statements.pct
+                  ),
+                  lines: context.classForPercent('lines', metrics.lines.pct),
+                  functions: context.classForPercent(
+                      'functions',
+                      metrics.functions.pct
+                  ),
+                  branches: context.classForPercent(
+                      'branches',
+                      metrics.branches.pct
+                  )
+              };
+        var data = {
+            metrics: isEmpty ? fixPct(metrics) : metrics,
+            reportClasses,
+            file: child.getRelativeName(),
+            output: linkMapper.relativePath(node, child)
+        };
         cw.write(summaryLineTemplate(data) + '\n');
     });
     cw.write(summaryTableFooter);
@@ -253,9 +250,9 @@ HtmlReport.prototype.onSummary = function(node, context) {
 };
 
 HtmlReport.prototype.onDetail = function(node, context) {
-    var linkMapper = this.linkMapper,
-        templateData = this.getTemplateData(),
-        cw;
+    var linkMapper = this.linkMapper;
+    var templateData = this.getTemplateData();
+    var cw;
 
     fillTemplate(node, templateData, linkMapper, context);
     cw = this.getWriter(context).writeFile(linkMapper.getPath(node));

@@ -1,9 +1,9 @@
 /* globals context, describe, it */
 
-var assert = require('chai').assert,
-    configuration = require('../lib/config'),
-    coverage = require('istanbul-lib-coverage'),
-    Reporter = require('../lib/reporter');
+var assert = require('chai').assert;
+var configuration = require('../lib/config');
+var coverage = require('istanbul-lib-coverage');
+var Reporter = require('../lib/reporter');
 
 describe('Reporter', () => {
     describe('#write', () => {

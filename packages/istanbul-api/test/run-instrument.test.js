@@ -1,19 +1,19 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    fs = require('fs'),
-    mkdirp = require('make-dir'),
-    rimraf = require('rimraf'),
-    isWindows = require('is-windows'),
-    codeRoot = path.resolve(__dirname, 'sample-code'),
-    outputDir = path.resolve(__dirname, 'coverage'),
-    configuration = require('../lib/config'),
-    instrument = require('../lib/run-instrument'),
-    ms = require('memory-streams'),
-    vm = require('vm'),
-    hijack = require('./hijack-streams'),
-    wrap = hijack.wrap;
+var assert = require('chai').assert;
+var path = require('path');
+var fs = require('fs');
+var mkdirp = require('make-dir');
+var rimraf = require('rimraf');
+var isWindows = require('is-windows');
+var codeRoot = path.resolve(__dirname, 'sample-code');
+var outputDir = path.resolve(__dirname, 'coverage');
+var configuration = require('../lib/config');
+var instrument = require('../lib/run-instrument');
+var ms = require('memory-streams');
+var vm = require('vm');
+var hijack = require('./hijack-streams');
+var wrap = hijack.wrap;
 
 describe('run instrument', function() {
     if (isWindows()) {
@@ -55,7 +55,8 @@ describe('run instrument', function() {
     });
 
     describe('single file', () => {
-        var memStream, origWrite;
+        var memStream;
+        var origWrite;
 
         beforeEach(() => {
             memStream = new ms.WritableStream();

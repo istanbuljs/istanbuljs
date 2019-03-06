@@ -2,11 +2,11 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var async = require('async'),
-    fileset = require('fileset'),
-    fs = require('fs'),
-    path = require('path'),
-    seq = 0;
+var async = require('async');
+var fileset = require('fileset');
+var fs = require('fs');
+var path = require('path');
+var seq = 0;
 
 function filesFor(options, callback) {
     if (!callback && typeof options === 'function') {
@@ -15,12 +15,12 @@ function filesFor(options, callback) {
     }
     options = options || {};
 
-    var root = options.root,
-        includes = options.includes,
-        excludes = options.excludes,
-        realpath = options.realpath,
-        relative = options.relative,
-        opts;
+    var root = options.root;
+    var includes = options.includes;
+    var excludes = options.excludes;
+    var realpath = options.realpath;
+    var relative = options.relative;
+    var opts;
 
     root = root || process.cwd();
     includes = includes && Array.isArray(includes) ? includes : ['**/*.js'];
@@ -67,8 +67,8 @@ function matcherFor(options, callback) {
     options.realpath = true; //force real paths (to match Node.js module paths)
 
     filesFor(options, (err, files) => {
-        var fileMap = Object.create(null),
-            matchFn;
+        var fileMap = Object.create(null);
+        var matchFn;
         /* istanbul ignore if - untestable */
         if (err) {
             return callback(err);

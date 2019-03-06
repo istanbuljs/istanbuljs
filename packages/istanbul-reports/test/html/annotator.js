@@ -1,7 +1,7 @@
 /* globals describe, it */
-var fs = require('fs'),
-    annotator = require('../../lib/html/annotator'),
-    istanbulLibCoverage = require('istanbul-lib-coverage');
+var fs = require('fs');
+var annotator = require('../../lib/html/annotator');
+var istanbulLibCoverage = require('istanbul-lib-coverage');
 
 require('chai').should();
 

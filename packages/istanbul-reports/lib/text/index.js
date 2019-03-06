@@ -4,15 +4,15 @@
  */
 'use strict';
 
-var PCT_COLS = 9,
-    MISSING_COL = 18,
-    TAB_SIZE = 1,
-    DELIM = ' |',
-    COL_DELIM = '-|';
+var PCT_COLS = 9;
+var MISSING_COL = 18;
+var TAB_SIZE = 1;
+var DELIM = ' |';
+var COL_DELIM = '-|';
 
 function padding(num, ch) {
-    var str = '',
-        i;
+    var str = '';
+    var i;
     ch = ch || ' ';
     for (i = 0; i < num; i += 1) {
         str += ch;
@@ -24,12 +24,12 @@ function fill(str, width, right, tabs) {
     tabs = tabs || 0;
     str = String(str);
 
-    var leadingSpaces = tabs * TAB_SIZE,
-        remaining = width - leadingSpaces,
-        leader = padding(leadingSpaces),
-        fmtStr = '',
-        fillStr,
-        strlen = str.length;
+    var leadingSpaces = tabs * TAB_SIZE;
+    var remaining = width - leadingSpaces;
+    var leader = padding(leadingSpaces);
+    var fmtStr = '';
+    var fillStr;
+    var strlen = str.length;
 
     if (remaining > 0) {
         if (remaining >= strlen) {
@@ -67,30 +67,30 @@ function depthFor(node) {
 }
 
 function findNameWidth(node, context) {
-    var last = 0,
-        compareWidth = function(node) {
-            var depth = depthFor(node),
-                idealWidth = TAB_SIZE * depth + nodeName(node).length;
-            if (idealWidth > last) {
-                last = idealWidth;
-            }
+    var last = 0;
+    var compareWidth = function(node) {
+        var depth = depthFor(node);
+        var idealWidth = TAB_SIZE * depth + nodeName(node).length;
+        if (idealWidth > last) {
+            last = idealWidth;
+        }
+    };
+    var visitor = {
+        onSummary(node) {
+            compareWidth(node);
         },
-        visitor = {
-            onSummary(node) {
-                compareWidth(node);
-            },
-            onDetail(node) {
-                compareWidth(node);
-            }
-        };
+        onDetail(node) {
+            compareWidth(node);
+        }
+    };
     node.visit(context.getVisitor(visitor));
     return last;
 }
 
 function makeLine(nameWidth) {
-    var name = padding(nameWidth, '-'),
-        pct = padding(PCT_COLS, '-'),
-        elements = [];
+    var name = padding(nameWidth, '-');
+    var pct = padding(PCT_COLS, '-');
+    var elements = [];
 
     elements.push(name);
     elements.push(pct);
@@ -121,11 +121,11 @@ function missingLines(node, colorizer) {
 
 function missingBranches(node, colorizer) {
     var branches = node.isSummary()
-            ? {}
-            : node.getFileCoverage().getBranchCoverageByLine(),
-        missingLines = Object.keys(branches)
-            .filter(key => branches[key].coverage < 100)
-            .map(key => key);
+        ? {}
+        : node.getFileCoverage().getBranchCoverageByLine();
+    var missingLines = Object.keys(branches)
+        .filter(key => branches[key].coverage < 100)
+        .map(key => key);
     return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'medium');
 }
 
@@ -147,9 +147,9 @@ function tableRow(
     skipEmpty,
     skipFull
 ) {
-    var name = nodeName(node),
-        metrics = node.getCoverageSummary(),
-        isEmpty = metrics.isEmpty();
+    var name = nodeName(node);
+    var metrics = node.getCoverageSummary();
+    var isEmpty = metrics.isEmpty();
     if (skipEmpty && isEmpty) {
         return '';
     }
@@ -158,19 +158,19 @@ function tableRow(
     }
 
     var mm = {
-            statements: isEmpty ? 0 : metrics.statements.pct,
-            branches: isEmpty ? 0 : metrics.branches.pct,
-            functions: isEmpty ? 0 : metrics.functions.pct,
-            lines: isEmpty ? 0 : metrics.lines.pct
-        },
-        colorize = isEmpty
-            ? function(str) {
-                  return str;
-              }
-            : function(str, key) {
-                  return colorizer(str, context.classForPercent(key, mm[key]));
-              },
-        elements = [];
+        statements: isEmpty ? 0 : metrics.statements.pct,
+        branches: isEmpty ? 0 : metrics.branches.pct,
+        functions: isEmpty ? 0 : metrics.functions.pct,
+        lines: isEmpty ? 0 : metrics.lines.pct
+    };
+    var colorize = isEmpty
+        ? function(str) {
+              return str;
+          }
+        : function(str, key) {
+              return colorizer(str, context.classForPercent(key, mm[key]));
+          };
+    var elements = [];
 
     elements.push(colorize(formatName(name, maxNameCols, level), 'statements'));
     elements.push(colorize(formatPct(mm.statements), 'statements'));
@@ -195,9 +195,9 @@ function TextReport(opts) {
 }
 
 TextReport.prototype.onStart = function(root, context) {
-    var line,
-        statsWidth = 4 * (PCT_COLS + 2) + MISSING_COL,
-        maxRemaining;
+    var line;
+    var statsWidth = 4 * (PCT_COLS + 2) + MISSING_COL;
+    var maxRemaining;
 
     this.cw = context.writer.writeFile(this.file);
     this.nameWidth = findNameWidth(root, context);

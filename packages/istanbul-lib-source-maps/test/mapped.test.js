@@ -1,6 +1,6 @@
 /* globals describe, it */
-var assert = require('chai').assert,
-    MappedCoverage = require('../lib/mapped').MappedCoverage;
+var assert = require('chai').assert;
+var MappedCoverage = require('../lib/mapped').MappedCoverage;
 
 describe('mapped coverage', () => {
     it('allows a path constructor, has all properties', () => {
@@ -15,16 +15,16 @@ describe('mapped coverage', () => {
     });
 
     it('allows building object incrementally, resolving dups', () => {
-        var mc = new MappedCoverage('/path/to/file'),
-            loc = function(sl, sc, el, ec) {
-                return {
-                    start: { line: sl, column: sc },
-                    end: { line: el, column: ec }
-                };
-            },
-            index,
-            index2,
-            sc;
+        var mc = new MappedCoverage('/path/to/file');
+        var loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        var index;
+        var index2;
+        var sc;
 
         index = mc.addStatement(loc(1, 0, 1, 100), 1);
         assert.strictEqual(index, 0);
