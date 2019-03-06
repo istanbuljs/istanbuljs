@@ -2,12 +2,12 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var fs = require('fs');
-var path = require('path');
-var handlebars = require('handlebars').create();
-var annotator = require('./annotator');
-var helpers = require('./helpers');
-var templateFor = function(name) {
+const fs = require('fs');
+const path = require('path');
+const handlebars = require('handlebars').create();
+const annotator = require('./annotator');
+const helpers = require('./helpers');
+const templateFor = function(name) {
     return handlebars.compile(
         fs.readFileSync(
             path.resolve(__dirname, 'templates', name + '.txt'),
@@ -15,9 +15,9 @@ var templateFor = function(name) {
         )
     );
 };
-var headerTemplate = templateFor('head');
-var footerTemplate = templateFor('foot');
-var detailTemplate = handlebars.compile(
+const headerTemplate = templateFor('head');
+const footerTemplate = templateFor('foot');
+const detailTemplate = handlebars.compile(
     [
         '<tr>',
         '<td class="line-count quiet">{{#show_lines}}{{maxLines}}{{/show_lines}}</td>',
@@ -26,7 +26,7 @@ var detailTemplate = handlebars.compile(
         '</tr>\n'
     ].join('')
 );
-var summaryTableHeader = [
+const summaryTableHeader = [
     '<div class="pad1">',
     '<table class="coverage-summary">',
     '<thead>',
@@ -45,7 +45,7 @@ var summaryTableHeader = [
     '</thead>',
     '<tbody>'
 ].join('\n');
-var summaryLineTemplate = handlebars.compile(
+const summaryLineTemplate = handlebars.compile(
     [
         '<tr>',
         '<td class="file {{reportClasses.statements}}" data-value="{{file}}"><a href="{{output}}">{{file}}</a></td>',
@@ -61,8 +61,8 @@ var summaryLineTemplate = handlebars.compile(
         '</tr>\n'
     ].join('\n\t')
 );
-var summaryTableFooter = ['</tbody>', '</table>', '</div>'].join('\n');
-var emptyClasses = {
+const summaryTableFooter = ['</tbody>', '</table>', '</div>'].join('\n');
+const emptyClasses = {
     statements: 'empty',
     lines: 'empty',
     functions: 'empty',
@@ -71,12 +71,12 @@ var emptyClasses = {
 
 helpers.registerHelpers(handlebars);
 
-var standardLinkMapper = {
+const standardLinkMapper = {
     getPath(node) {
         if (typeof node === 'string') {
             return node;
         }
-        var filePath = node.getQualifiedName();
+        let filePath = node.getQualifiedName();
         if (node.isSummary()) {
             if (filePath !== '') {
                 filePath += '/index.html';
@@ -90,8 +90,8 @@ var standardLinkMapper = {
     },
 
     relativePath(source, target) {
-        var targetPath = this.getPath(target);
-        var sourcePath = path.dirname(this.getPath(source));
+        const targetPath = this.getPath(target);
+        const sourcePath = path.dirname(this.getPath(source));
         return path.relative(sourcePath, targetPath);
     },
 
@@ -101,18 +101,17 @@ var standardLinkMapper = {
 };
 
 function getBreadcrumbHtml(node, linkMapper) {
-    var parent = node.getParent();
-    var nodePath = [];
-    var linkPath;
+    let parent = node.getParent();
+    const nodePath = [];
 
     while (parent) {
         nodePath.push(parent);
         parent = parent.getParent();
     }
 
-    linkPath = nodePath.map(ancestor => {
-        var target = linkMapper.relativePath(node, ancestor);
-        var name = ancestor.getRelativeName() || 'All files';
+    const linkPath = nodePath.map(ancestor => {
+        const target = linkMapper.relativePath(node, ancestor);
+        const name = ancestor.getRelativeName() || 'All files';
         return '<a href="' + target + '">' + name + '</a>';
     });
 
@@ -123,7 +122,7 @@ function getBreadcrumbHtml(node, linkMapper) {
 }
 
 function fillTemplate(node, templateData, linkMapper, context) {
-    var summary = node.getCoverageSummary();
+    const summary = node.getCoverageSummary();
     templateData.entity = node.getQualifiedName() || 'All files';
     templateData.metrics = summary;
     templateData.reportClass = context.classForPercent(
@@ -167,18 +166,18 @@ HtmlReport.prototype.getWriter = function(context) {
 };
 
 HtmlReport.prototype.onStart = function(root, context) {
-    var assetHeaders = {
+    const assetHeaders = {
         '.js': '/* eslint-disable */\n'
     };
 
     ['.', 'vendor'].forEach(subdir => {
         const writer = this.getWriter(context);
-        var srcDir = path.resolve(__dirname, 'assets', subdir);
+        const srcDir = path.resolve(__dirname, 'assets', subdir);
         fs.readdirSync(srcDir).forEach(f => {
-            var resolvedSource = path.resolve(srcDir, f);
-            var resolvedDestination = '.';
-            var stat = fs.statSync(resolvedSource);
-            var dest;
+            const resolvedSource = path.resolve(srcDir, f);
+            const resolvedDestination = '.';
+            const stat = fs.statSync(resolvedSource);
+            let dest;
 
             if (stat.isFile()) {
                 dest = resolvedDestination + '/' + f;
@@ -203,23 +202,22 @@ function fixPct(metrics) {
 }
 
 HtmlReport.prototype.onSummary = function(node, context) {
-    var linkMapper = this.linkMapper;
-    var templateData = this.getTemplateData();
-    var children = node.getChildren();
-    var skipEmpty = this.skipEmpty;
-    var cw;
+    const linkMapper = this.linkMapper;
+    const templateData = this.getTemplateData();
+    const children = node.getChildren();
+    const skipEmpty = this.skipEmpty;
 
     fillTemplate(node, templateData, linkMapper, context);
-    cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
+    const cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
     cw.write(headerTemplate(templateData));
     cw.write(summaryTableHeader);
     children.forEach(child => {
-        var metrics = child.getCoverageSummary();
-        var isEmpty = metrics.isEmpty();
+        const metrics = child.getCoverageSummary();
+        const isEmpty = metrics.isEmpty();
         if (skipEmpty && isEmpty) {
             return;
         }
-        var reportClasses = isEmpty
+        const reportClasses = isEmpty
             ? emptyClasses
             : {
                   statements: context.classForPercent(
@@ -236,7 +234,7 @@ HtmlReport.prototype.onSummary = function(node, context) {
                       metrics.branches.pct
                   )
               };
-        var data = {
+        const data = {
             metrics: isEmpty ? fixPct(metrics) : metrics,
             reportClasses,
             file: child.getRelativeName(),
@@ -250,12 +248,11 @@ HtmlReport.prototype.onSummary = function(node, context) {
 };
 
 HtmlReport.prototype.onDetail = function(node, context) {
-    var linkMapper = this.linkMapper;
-    var templateData = this.getTemplateData();
-    var cw;
+    const linkMapper = this.linkMapper;
+    const templateData = this.getTemplateData();
 
     fillTemplate(node, templateData, linkMapper, context);
-    cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
+    const cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
     cw.write(headerTemplate(templateData));
     cw.write('<pre><table class="coverage">\n');
     cw.write(

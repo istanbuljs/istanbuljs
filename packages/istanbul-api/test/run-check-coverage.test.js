@@ -1,19 +1,19 @@
 /* globals describe, it, before, after, beforeEach, afterEach */
 
-var assert = require('chai').assert;
-var path = require('path');
-var rimraf = require('rimraf');
-var codeRoot = path.resolve(__dirname, 'sample-code');
-var outputDir = path.resolve(codeRoot, 'coverage');
-var configuration = require('../lib/config');
-var cover = require('../lib/run-cover');
-var checker = require('../lib/run-check-coverage');
-var hijack = require('./hijack-streams');
-var wrap = hijack.wrap;
+const assert = require('chai').assert;
+const path = require('path');
+const rimraf = require('rimraf');
+const codeRoot = path.resolve(__dirname, 'sample-code');
+const outputDir = path.resolve(codeRoot, 'coverage');
+const configuration = require('../lib/config');
+const cover = require('../lib/run-cover');
+const checker = require('../lib/run-check-coverage');
+const hijack = require('./hijack-streams');
+const wrap = hijack.wrap;
 
 describe('run check-coverage', () => {
     function getConfig(overrides) {
-        var cfg = configuration.loadObject(
+        const cfg = configuration.loadObject(
             {
                 verbose: false,
                 instrumentation: {
@@ -32,13 +32,13 @@ describe('run check-coverage', () => {
     before(cb => {
         hijack.silent();
         cb = wrap(cb);
-        var config = getConfig();
+        const config = getConfig();
         cover.getCoverFunctions(config, (err, data) => {
             if (err) {
                 return cb(err);
             }
-            var hookFn = data.hookFn;
-            var exitFn = data.exitFn;
+            const hookFn = data.hookFn;
+            const exitFn = data.exitFn;
             hookFn();
             require('./sample-code/test/foo.test.js');
             exitFn();
@@ -57,7 +57,7 @@ describe('run check-coverage', () => {
     describe('global coverage', () => {
         it('fails on inadequate statement coverage', cb => {
             cb = wrap(cb);
-            var cfg = getConfig({ check: { global: { statements: 60 } } });
+            const cfg = getConfig({ check: { global: { statements: 60 } } });
             checker.run(cfg, err => {
                 assert.ok(err);
                 assert.match(
@@ -69,7 +69,7 @@ describe('run check-coverage', () => {
         });
         it('fails on inadequate branch coverage', cb => {
             cb = wrap(cb);
-            var cfg = getConfig({ check: { global: { branches: 80 } } });
+            const cfg = getConfig({ check: { global: { branches: 80 } } });
             checker.run(cfg, err => {
                 assert.ok(err);
                 assert.match(
@@ -81,7 +81,7 @@ describe('run check-coverage', () => {
         });
         it('fails on inadequate function coverage', cb => {
             cb = wrap(cb);
-            var cfg = getConfig({ check: { global: { functions: 80 } } });
+            const cfg = getConfig({ check: { global: { functions: 80 } } });
             checker.run(cfg, err => {
                 assert.ok(err);
                 assert.match(
@@ -93,7 +93,7 @@ describe('run check-coverage', () => {
         });
         it('fails on inadequate line coverage', cb => {
             cb = wrap(cb);
-            var cfg = getConfig({ check: { global: { lines: 80 } } });
+            const cfg = getConfig({ check: { global: { lines: 80 } } });
             checker.run(cfg, err => {
                 assert.ok(err);
                 assert.match(
@@ -105,7 +105,7 @@ describe('run check-coverage', () => {
         });
         it('fails with multiple reasons when multiple thresholds violated', cb => {
             cb = wrap(cb);
-            var cfg = getConfig({
+            const cfg = getConfig({
                 check: {
                     global: {
                         lines: 80,

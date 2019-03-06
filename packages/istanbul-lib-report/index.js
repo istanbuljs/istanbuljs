@@ -8,9 +8,9 @@
  * @module Exports
  */
 
-var summarizer = require('./lib/summarizer');
-var context = require('./lib/context');
-var watermarks = require('./lib/watermarks');
+const summarizer = require('./lib/summarizer');
+const context = require('./lib/context');
+const watermarks = require('./lib/watermarks');
 
 module.exports = {
     /**

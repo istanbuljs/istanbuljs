@@ -26,6 +26,7 @@
       "rules": {
         "arrow-body-style": "error",
         "consistent-this": ["error", "block_this_alias"],
+        "no-var": "error",
         "object-shorthand": "error",
         "one-var": ["error", "never"],
         "prefer-arrow-callback": "error",

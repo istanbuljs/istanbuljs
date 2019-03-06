@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path');
+const path = require('path');
 function CoberturaReport(opts) {
     this.cw = null;
     this.xml = null;
@@ -34,7 +34,7 @@ CoberturaReport.prototype.onEnd = function() {
 };
 
 CoberturaReport.prototype.writeRootStats = function(node) {
-    var metrics = node.getCoverageSummary();
+    const metrics = node.getCoverageSummary();
     this.cw.println('<?xml version="1.0" ?>');
     this.cw.println(
         '<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">'
@@ -60,7 +60,7 @@ CoberturaReport.prototype.onSummary = function(node) {
     if (node.isRoot()) {
         return;
     }
-    var metrics = node.getCoverageSummary(true);
+    const metrics = node.getCoverageSummary(true);
     if (!metrics) {
         return;
     }
@@ -81,11 +81,9 @@ CoberturaReport.prototype.onSummaryEnd = function(node) {
 };
 
 CoberturaReport.prototype.onDetail = function(node) {
-    var fileCoverage = node.getFileCoverage();
-    var metrics = node.getCoverageSummary();
-    var branchByLine = fileCoverage.getBranchCoverageByLine();
-    var fnMap;
-    var lines;
+    const fileCoverage = node.getFileCoverage();
+    const metrics = node.getCoverageSummary();
+    const branchByLine = fileCoverage.getBranchCoverageByLine();
 
     this.xml.openTag('class', {
         name: asClassName(node),
@@ -95,10 +93,10 @@ CoberturaReport.prototype.onDetail = function(node) {
     });
 
     this.xml.openTag('methods');
-    fnMap = fileCoverage.fnMap;
+    const fnMap = fileCoverage.fnMap;
     Object.keys(fnMap).forEach(k => {
-        var name = fnMap[k].name;
-        var hits = fileCoverage.f[k];
+        const name = fnMap[k].name;
+        const hits = fileCoverage.f[k];
         this.xml.openTag('method', {
             name,
             hits,
@@ -116,14 +114,14 @@ CoberturaReport.prototype.onDetail = function(node) {
     this.xml.closeTag('methods');
 
     this.xml.openTag('lines');
-    lines = fileCoverage.getLineCoverage();
+    const lines = fileCoverage.getLineCoverage();
     Object.keys(lines).forEach(k => {
-        var attrs = {
+        const attrs = {
             number: k,
             hits: lines[k],
             branch: 'false'
         };
-        var branchDetail = branchByLine[k];
+        const branchDetail = branchByLine[k];
 
         if (branchDetail) {
             attrs.branch = true;

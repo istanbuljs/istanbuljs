@@ -1,13 +1,13 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert;
-var path = require('path');
-var configuration = require('../lib/config');
-var oldCwd = process.cwd();
-var newCwd = path.resolve(__dirname, 'config-data');
-var config;
-var hijack = require('./hijack-streams');
-var reset = hijack.reset;
+const assert = require('chai').assert;
+const path = require('path');
+const configuration = require('../lib/config');
+const oldCwd = process.cwd();
+const newCwd = path.resolve(__dirname, 'config-data');
+let config;
+const hijack = require('./hijack-streams');
+const reset = hijack.reset;
 
 describe('config', () => {
     beforeEach(hijack.silent);
@@ -23,7 +23,7 @@ describe('config', () => {
             reset();
         });
         it('sets sane instrument options', () => {
-            var iOpts = config.instrumentation;
+            const iOpts = config.instrumentation;
             assert.equal(iOpts.root(), process.cwd());
             assert.equal(iOpts.defaultExcludes(), true);
             assert.equal(iOpts.variable(), '__coverage__');
@@ -45,14 +45,14 @@ describe('config', () => {
             reset();
         });
         it('sets correct reporting options', () => {
-            var rOpts = config.reporting;
+            const rOpts = config.reporting;
             assert.equal(rOpts.print(), 'summary');
             assert.deepEqual(rOpts.reports(), ['lcov']);
             assert.equal(rOpts.dir(), './coverage');
             reset();
         });
         it('sets correct hook options', () => {
-            var hOpts = config.hooks;
+            const hOpts = config.hooks;
             assert.equal(hOpts.hookRunInContext(), false);
             assert.equal(hOpts.hookRunInThisContext(), false);
             assert.equal(hOpts.postRequireHook(), null);
@@ -134,7 +134,7 @@ describe('config', () => {
                     excludes: ['**/vendor/**']
                 }
             });
-            var iOpts = config.instrumentation;
+            const iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), [
                 '**/node_modules/**',
                 '**/vendor/**'
@@ -154,7 +154,7 @@ describe('config', () => {
                     excludes: ['**/vendor/**']
                 }
             });
-            var iOpts = config.instrumentation;
+            const iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), ['**/vendor/**']);
             assert.deepEqual(iOpts.excludes(true), ['**/vendor/**']);
             reset();
@@ -165,7 +165,7 @@ describe('config', () => {
                     'default-excludes': null
                 }
             });
-            var iOpts = config.instrumentation;
+            const iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), []);
             assert.deepEqual(iOpts.excludes(true), []);
             reset();
@@ -180,7 +180,7 @@ describe('config', () => {
         });
         it('uses default config when no default file found', () => {
             config = configuration.loadFile();
-            var defaultConfig = configuration.loadObject();
+            const defaultConfig = configuration.loadObject();
             assert.deepEqual(defaultConfig, config);
             reset();
         });
@@ -215,7 +215,7 @@ describe('config', () => {
             config = configuration.loadObject({
                 reporting: { watermarks: { statements: [10, 90] } }
             });
-            var w = config.reporting.watermarks();
+            const w = config.reporting.watermarks();
             assert.deepEqual(w.statements, [10, 90]);
             assert.deepEqual(w.branches, [50, 80]);
             assert.deepEqual(w.functions, [50, 80]);
@@ -233,7 +233,7 @@ describe('config', () => {
                     }
                 }
             });
-            var w = config.reporting.watermarks();
+            const w = config.reporting.watermarks();
             assert.deepEqual(w.statements, [50, 80]);
             assert.deepEqual(w.branches, [50, 80]);
             assert.deepEqual(w.functions, [50, 80]);

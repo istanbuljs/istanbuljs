@@ -1,19 +1,19 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert;
-var path = require('path');
-var fs = require('fs');
-var mkdirp = require('make-dir');
-var rimraf = require('rimraf');
-var isWindows = require('is-windows');
-var codeRoot = path.resolve(__dirname, 'sample-code');
-var outputDir = path.resolve(__dirname, 'coverage');
-var configuration = require('../lib/config');
-var instrument = require('../lib/run-instrument');
-var ms = require('memory-streams');
-var vm = require('vm');
-var hijack = require('./hijack-streams');
-var wrap = hijack.wrap;
+const assert = require('chai').assert;
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('make-dir');
+const rimraf = require('rimraf');
+const isWindows = require('is-windows');
+const codeRoot = path.resolve(__dirname, 'sample-code');
+const outputDir = path.resolve(__dirname, 'coverage');
+const configuration = require('../lib/config');
+const instrument = require('../lib/run-instrument');
+const ms = require('memory-streams');
+const vm = require('vm');
+const hijack = require('./hijack-streams');
+const wrap = hijack.wrap;
 
 describe('run instrument', function() {
     if (isWindows()) {
@@ -21,7 +21,7 @@ describe('run instrument', function() {
     }
 
     function getConfig(overrides) {
-        var cfg = configuration.loadObject(
+        const cfg = configuration.loadObject(
             {
                 verbose: false,
                 instrumentation: {
@@ -55,8 +55,8 @@ describe('run instrument', function() {
     });
 
     describe('single file', () => {
-        var memStream;
-        var origWrite;
+        let memStream;
+        let origWrite;
 
         beforeEach(() => {
             memStream = new ms.WritableStream();
@@ -106,14 +106,14 @@ describe('run instrument', function() {
                 { input: path.resolve(codeRoot, 'foo.js') },
                 err => {
                     assert.ok(!err);
-                    var pass1 = memStream.toString();
+                    const pass1 = memStream.toString();
                     memStream = new ms.WritableStream();
                     instrument.run(
                         getConfig({ instrumentation: { compact: false } }),
                         { input: path.resolve(codeRoot, 'foo.js') },
                         err => {
                             assert.ok(!err);
-                            var pass2 = memStream.toString();
+                            const pass2 = memStream.toString();
                             assert.ok(pass2.length > pass1.length);
                             reset(cb);
                         }
@@ -127,7 +127,7 @@ describe('run instrument', function() {
                 return this.skip();
             }
 
-            var outFile = path.resolve(outputDir, 'foo.js');
+            const outFile = path.resolve(outputDir, 'foo.js');
             instrument.run(
                 getConfig(),
                 {

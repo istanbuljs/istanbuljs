@@ -13,7 +13,7 @@ const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
 
 // generate a variable name from hashing the supplied file path
 function genVar(filename) {
-    var hash = createHash(SHA);
+    const hash = createHash(SHA);
     hash.update(filename);
     return 'cov_' + parseInt(hash.digest('hex').substr(0, 12), 16).toString(36);
 }
@@ -375,7 +375,7 @@ function blockProp(prop) {
 }
 
 function makeParenthesizedExpressionForNonIdentifier(path) {
-    var T = this.types;
+    const T = this.types;
     if (path.node && !path.isIdentifier()) {
         path.replaceWith(T.parenthesizedExpression(path.node));
     }

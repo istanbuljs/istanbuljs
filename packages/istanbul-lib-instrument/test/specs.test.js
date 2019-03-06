@@ -11,7 +11,7 @@ const clone = require('clone');
 
 const dir = path.resolve(__dirname, 'specs');
 const files = fs.readdirSync(dir).filter(f => {
-    var match = true;
+    let match = true;
     if (process.env.FILTER) {
         match = new RegExp(`.*${process.env.FILTER}.*`).test(f);
     }
@@ -19,10 +19,10 @@ const files = fs.readdirSync(dir).filter(f => {
 });
 
 function loadDocs() {
-    var docs = [];
+    const docs = [];
     files.forEach(f => {
-        var filePath = path.resolve(dir, f);
-        var contents = fs.readFileSync(filePath, 'utf8');
+        const filePath = path.resolve(dir, f);
+        const contents = fs.readFileSync(filePath, 'utf8');
         try {
             yaml.safeLoadAll(contents, obj => {
                 obj.file = f;
@@ -47,9 +47,9 @@ function loadDocs() {
 
 function generateTests(docs) {
     docs.forEach(doc => {
-        var guard = doc.guard;
-        var skip = false;
-        var skipText = '';
+        const guard = doc.guard;
+        let skip = false;
+        let skipText = '';
 
         if (guard && guards[guard]) {
             if (!guards[guard]()) {
@@ -65,18 +65,18 @@ function generateTests(docs) {
                 });
             } else {
                 (doc.tests || []).forEach(t => {
-                    var fn = function() {
-                        var genOnly = (doc.opts || {}).generateOnly;
-                        var noCoverage = (doc.opts || {}).noCoverage;
-                        var v = verifier.create(
+                    const fn = function() {
+                        const genOnly = (doc.opts || {}).generateOnly;
+                        const noCoverage = (doc.opts || {}).noCoverage;
+                        const v = verifier.create(
                             doc.code,
                             doc.opts || {},
                             doc.instrumentOpts,
                             doc.inputSourceMap
                         );
-                        var test = clone(t);
-                        var args = test.args;
-                        var out = test.out;
+                        const test = clone(t);
+                        const args = test.args;
+                        const out = test.out;
                         delete test.args;
                         delete test.out;
                         if (!genOnly && !noCoverage) {

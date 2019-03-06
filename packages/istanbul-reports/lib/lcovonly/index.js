@@ -14,43 +14,43 @@ LcovOnlyReport.prototype.onStart = function(root, context) {
 };
 
 LcovOnlyReport.prototype.onDetail = function(node) {
-    var fc = node.getFileCoverage();
-    var writer = this.contentWriter;
-    var functions = fc.f;
-    var functionMap = fc.fnMap;
-    var lines = fc.getLineCoverage();
-    var branches = fc.b;
-    var branchMap = fc.branchMap;
-    var summary = node.getCoverageSummary();
+    const fc = node.getFileCoverage();
+    const writer = this.contentWriter;
+    const functions = fc.f;
+    const functionMap = fc.fnMap;
+    const lines = fc.getLineCoverage();
+    const branches = fc.b;
+    const branchMap = fc.branchMap;
+    const summary = node.getCoverageSummary();
 
     writer.println('TN:'); //no test name
     writer.println('SF:' + fc.path);
 
     Object.keys(functionMap).forEach(key => {
-        var meta = functionMap[key];
+        const meta = functionMap[key];
         writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
     });
     writer.println('FNF:' + summary.functions.total);
     writer.println('FNH:' + summary.functions.covered);
 
     Object.keys(functionMap).forEach(key => {
-        var stats = functions[key];
-        var meta = functionMap[key];
+        const stats = functions[key];
+        const meta = functionMap[key];
         writer.println('FNDA:' + [stats, meta.name].join(','));
     });
 
     Object.keys(lines).forEach(key => {
-        var stat = lines[key];
+        const stat = lines[key];
         writer.println('DA:' + [key, stat].join(','));
     });
     writer.println('LF:' + summary.lines.total);
     writer.println('LH:' + summary.lines.covered);
 
     Object.keys(branches).forEach(key => {
-        var branchArray = branches[key];
-        var meta = branchMap[key];
-        var line = meta.loc.start.line;
-        var i = 0;
+        const branchArray = branches[key];
+        const meta = branchMap[key];
+        const line = meta.loc.start.line;
+        let i = 0;
         branchArray.forEach(b => {
             writer.println('BRDA:' + [line, key, i, b].join(','));
             i += 1;

@@ -2,11 +2,11 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var async = require('async');
-var fileset = require('fileset');
-var fs = require('fs');
-var path = require('path');
-var seq = 0;
+const async = require('async');
+const fileset = require('fileset');
+const fs = require('fs');
+const path = require('path');
+let seq = 0;
 
 function filesFor(options, callback) {
     if (!callback && typeof options === 'function') {
@@ -15,19 +15,18 @@ function filesFor(options, callback) {
     }
     options = options || {};
 
-    var root = options.root;
-    var includes = options.includes;
-    var excludes = options.excludes;
-    var realpath = options.realpath;
-    var relative = options.relative;
-    var opts;
+    let root = options.root;
+    let includes = options.includes;
+    let excludes = options.excludes;
+    const realpath = options.realpath;
+    const relative = options.relative;
 
     root = root || process.cwd();
     includes = includes && Array.isArray(includes) ? includes : ['**/*.js'];
     excludes =
         excludes && Array.isArray(excludes) ? excludes : ['**/node_modules/**'];
 
-    opts = { cwd: root, nodir: true, ignore: excludes };
+    const opts = { cwd: root, nodir: true, ignore: excludes };
     seq += 1;
     opts['x' + seq + new Date().getTime()] = true; //cache buster for minimatch cache bug
     fileset(includes.join(' '), excludes.join(' '), opts, (err, files) => {
@@ -44,7 +43,7 @@ function filesFor(options, callback) {
             return callback(err, files);
         }
 
-        var realPathCache =
+        const realPathCache =
             module.constructor._realpathCache || /* istanbul ignore next */ {};
 
         async.map(
@@ -67,8 +66,7 @@ function matcherFor(options, callback) {
     options.realpath = true; //force real paths (to match Node.js module paths)
 
     filesFor(options, (err, files) => {
-        var fileMap = Object.create(null);
-        var matchFn;
+        const fileMap = Object.create(null);
         /* istanbul ignore if - untestable */
         if (err) {
             return callback(err);
@@ -77,7 +75,7 @@ function matcherFor(options, callback) {
             fileMap[file] = true;
         });
 
-        matchFn = function(file) {
+        const matchFn = function(file) {
             return fileMap[file];
         };
         matchFn.files = Object.keys(fileMap);

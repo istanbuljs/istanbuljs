@@ -4,12 +4,12 @@
  */
 'use strict';
 
-var Path = require('./path');
-var util = require('util');
-var tree = require('./tree');
-var coverage = require('istanbul-lib-coverage');
-var BaseNode = tree.Node;
-var BaseTree = tree.Tree;
+const Path = require('./path');
+const util = require('util');
+const tree = require('./tree');
+const coverage = require('istanbul-lib-coverage');
+const BaseNode = tree.Node;
+const BaseTree = tree.Tree;
 
 function ReportNode(path, fileCoverage) {
     this.path = path;
@@ -38,11 +38,11 @@ ReportNode.prototype.getQualifiedName = function() {
 };
 
 ReportNode.prototype.getRelativeName = function() {
-    var parent = this.getParent();
-    var myPath = this.path;
-    var relPath;
-    var i;
-    var parentPath = parent ? parent.path : new Path([]);
+    const parent = this.getParent();
+    const myPath = this.path;
+    let relPath;
+    let i;
+    const parentPath = parent ? parent.path : new Path([]);
     if (parentPath.ancestorOf(myPath)) {
         relPath = new Path(myPath.elements());
         for (i = 0; i < parentPath.length; i += 1) {
@@ -70,8 +70,8 @@ ReportNode.prototype.getFileCoverage = function() {
 };
 
 ReportNode.prototype.getCoverageSummary = function(filesOnly) {
-    var cacheProp = 'c_' + (filesOnly ? 'files' : 'full');
-    var summary;
+    const cacheProp = 'c_' + (filesOnly ? 'files' : 'full');
+    let summary;
 
     if (this.hasOwnProperty(cacheProp)) {
         return this[cacheProp];
@@ -80,7 +80,7 @@ ReportNode.prototype.getCoverageSummary = function(filesOnly) {
     if (!this.isSummary()) {
         summary = this.getFileCoverage().toSummary();
     } else {
-        var count = 0;
+        let count = 0;
         summary = coverage.createCoverageSummary();
         this.getChildren().forEach(child => {
             if (filesOnly && child.isSummary()) {
@@ -98,9 +98,8 @@ ReportNode.prototype.getCoverageSummary = function(filesOnly) {
 };
 
 function treeFor(root, childPrefix) {
-    var tree = new BaseTree();
-    var visitor;
-    var maybePrefix = function(node) {
+    const tree = new BaseTree();
+    const maybePrefix = function(node) {
         if (childPrefix && !node.isRoot()) {
             node.path.unshift(childPrefix);
         }
@@ -108,15 +107,15 @@ function treeFor(root, childPrefix) {
     tree.getRoot = function() {
         return root;
     };
-    visitor = {
+    const visitor = {
         onDetail(node) {
             maybePrefix(node);
         },
         onSummary(node) {
             maybePrefix(node);
             node.children.sort((a, b) => {
-                var astr = a.path.toString();
-                var bstr = b.path.toString();
+                const astr = a.path.toString();
+                const bstr = b.path.toString();
                 return astr < bstr
                     ? -1
                     : astr > bstr
@@ -133,8 +132,8 @@ function findCommonParent(paths) {
     if (paths.length === 0) {
         return new Path([]);
     }
-    var common = paths[0];
-    var i;
+    let common = paths[0];
+    let i;
 
     for (i = 1; i < paths.length; i += 1) {
         common = common.commonPrefixPath(paths[i]);
@@ -146,18 +145,18 @@ function findCommonParent(paths) {
 }
 
 function toInitialList(coverageMap) {
-    var ret = [];
-    var commonParent;
+    const ret = [];
     coverageMap.files().forEach(filePath => {
-        var p = new Path(filePath);
-        var coverage = coverageMap.fileCoverageFor(filePath);
+        const p = new Path(filePath);
+        const coverage = coverageMap.fileCoverageFor(filePath);
         ret.push({
             filePath,
             path: p,
             fileCoverage: coverage
         });
     });
-    commonParent = findCommonParent(ret.map(o => o.path.parent()));
+
+    const commonParent = findCommonParent(ret.map(o => o.path.parent()));
     if (commonParent.length > 0) {
         ret.forEach(o => {
             o.path.splice(0, commonParent.length);
@@ -170,12 +169,12 @@ function toInitialList(coverageMap) {
 }
 
 function toDirParents(list) {
-    var nodeMap = Object.create(null);
-    var parentNodeList = [];
+    const nodeMap = Object.create(null);
+    const parentNodeList = [];
     list.forEach(o => {
-        var node = new ReportNode(o.path, o.fileCoverage);
-        var parentPath = o.path.parent();
-        var parent = nodeMap[parentPath.toString()];
+        const node = new ReportNode(o.path, o.fileCoverage);
+        const parentPath = o.path.parent();
+        let parent = nodeMap[parentPath.toString()];
 
         if (!parent) {
             parent = new ReportNode(parentPath);
@@ -188,19 +187,19 @@ function toDirParents(list) {
 }
 
 function foldIntoParents(nodeList) {
-    var ret = [];
-    var i;
-    var j;
+    const ret = [];
+    let i;
+    let j;
 
     // sort by longest length first
     nodeList.sort((a, b) => -1 * Path.compare(a.path, b.path));
 
     for (i = 0; i < nodeList.length; i += 1) {
-        var first = nodeList[i];
-        var inserted = false;
+        const first = nodeList[i];
+        let inserted = false;
 
         for (j = i + 1; j < nodeList.length; j += 1) {
-            var second = nodeList[j];
+            const second = nodeList[j];
             if (second.path.ancestorOf(first.path)) {
                 second.addChild(first);
                 inserted = true;
@@ -220,10 +219,9 @@ function createRoot() {
 }
 
 function createNestedSummary(coverageMap) {
-    var flattened = toInitialList(coverageMap);
-    var dirParents = toDirParents(flattened.list);
-    var topNodes = foldIntoParents(dirParents);
-    var root;
+    const flattened = toInitialList(coverageMap);
+    const dirParents = toDirParents(flattened.list);
+    const topNodes = foldIntoParents(dirParents);
 
     if (topNodes.length === 0) {
         return treeFor(new ReportNode(new Path([])));
@@ -233,7 +231,7 @@ function createNestedSummary(coverageMap) {
         return treeFor(topNodes[0]);
     }
 
-    root = createRoot();
+    const root = createRoot();
     topNodes.forEach(node => {
         root.addChild(node);
     });
@@ -241,11 +239,11 @@ function createNestedSummary(coverageMap) {
 }
 
 function createPackageSummary(coverageMap) {
-    var flattened = toInitialList(coverageMap);
-    var dirParents = toDirParents(flattened.list);
-    var common = flattened.commonParent;
-    var prefix;
-    var root;
+    const flattened = toInitialList(coverageMap);
+    const dirParents = toDirParents(flattened.list);
+    const common = flattened.commonParent;
+    let prefix;
+    let root;
 
     if (dirParents.length === 1) {
         root = dirParents[0];
@@ -269,13 +267,12 @@ function createPackageSummary(coverageMap) {
 }
 
 function createFlatSummary(coverageMap) {
-    var flattened = toInitialList(coverageMap);
-    var list = flattened.list;
-    var root;
+    const flattened = toInitialList(coverageMap);
+    const list = flattened.list;
+    const root = createRoot();
 
-    root = createRoot();
     list.forEach(o => {
-        var node = new ReportNode(o.path, o.fileCoverage);
+        const node = new ReportNode(o.path, o.fileCoverage);
         root.addChild(node);
     });
     return treeFor(root);

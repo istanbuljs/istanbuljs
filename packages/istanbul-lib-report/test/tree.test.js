@@ -1,12 +1,12 @@
 /* globals describe, it, beforeEach */
 
-var assert = require('chai').assert;
-var util = require('util');
-var t = require('../lib/tree');
-var BaseTree = t.Tree;
-var BaseNode = t.Node;
-var Visitor = t.Visitor;
-var CompositeVisitor = t.CompositeVisitor;
+const assert = require('chai').assert;
+const util = require('util');
+const t = require('../lib/tree');
+const BaseTree = t.Tree;
+const BaseNode = t.Node;
+const Visitor = t.Visitor;
+const CompositeVisitor = t.CompositeVisitor;
 
 function TestNode(name) {
     BaseNode.call(this);
@@ -35,9 +35,9 @@ TestNode.prototype.isSummary = function() {
 };
 
 describe('tree', () => {
-    var leaves;
-    var groups;
-    var tree;
+    let leaves;
+    let groups;
+    let tree;
 
     beforeEach(() => {
         leaves = [
@@ -59,7 +59,7 @@ describe('tree', () => {
         groups[2].addChild(leaves[5]);
         groups[2].addChild(leaves[6]);
 
-        var root = new TestNode('root');
+        const root = new TestNode('root');
         root.addChild(groups[0]);
         root.addChild(groups[2]);
         tree = new BaseTree();
@@ -70,8 +70,8 @@ describe('tree', () => {
 
     describe('single visitor', () => {
         it('visits all nodes with correct state with a full visitor', () => {
-            var visited = [];
-            var visitor = new Visitor({
+            const visited = [];
+            const visitor = new Visitor({
                 onStart(node, state) {
                     state.push('start');
                 },
@@ -104,8 +104,8 @@ describe('tree', () => {
         });
 
         it('visits all nodes with correct state with a partial visitor', () => {
-            var visited = [];
-            var visitor = new Visitor({
+            const visited = [];
+            const visitor = new Visitor({
                 onEnd(node, state) {
                     state.push('end');
                 },
@@ -120,8 +120,8 @@ describe('tree', () => {
 
     describe('composite visitor', () => {
         it('visits multiple visitors in interleaved order with a composite', () => {
-            var visited = [];
-            var visitor = new Visitor({
+            const visited = [];
+            const visitor = new Visitor({
                 onStart(root, state) {
                     state.push('start');
                 },
@@ -135,7 +135,7 @@ describe('tree', () => {
                     state.push(node.name);
                 }
             });
-            var base = [
+            const base = [
                 'start',
                 'root',
                 'g1',
@@ -150,7 +150,7 @@ describe('tree', () => {
                 'l7',
                 'end'
             ];
-            var expected = [];
+            const expected = [];
             tree.visit(new CompositeVisitor([visitor, visitor]), visited);
             base.forEach(name => {
                 expected.push(name);
@@ -160,8 +160,8 @@ describe('tree', () => {
         });
 
         it('allows use of composite with a partial visitor', () => {
-            var visited = [];
-            var visitor = new CompositeVisitor({
+            const visited = [];
+            const visitor = new CompositeVisitor({
                 onEnd(root, state) {
                     state.push('end');
                 },

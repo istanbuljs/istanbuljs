@@ -33,14 +33,14 @@ CloverReport.prototype.onEnd = function() {
 };
 
 CloverReport.prototype.getTreeStats = function(node, context) {
-    var state = {
+    const state = {
         packages: 0,
         files: 0,
         classes: 0
     };
-    var visitor = {
+    const visitor = {
         onSummary(node, state) {
-            var metrics = node.getCoverageSummary(true);
+            const metrics = node.getCoverageSummary(true);
             if (metrics) {
                 state.packages += 1;
             }
@@ -55,8 +55,8 @@ CloverReport.prototype.getTreeStats = function(node, context) {
 };
 
 CloverReport.prototype.writeRootStats = function(node, context) {
-    var metrics = node.getCoverageSummary();
-    var attrs = {
+    const metrics = node.getCoverageSummary();
+    const attrs = {
         statements: metrics.lines.total,
         coveredstatements: metrics.lines.covered,
         conditionals: metrics.branches.total,
@@ -75,7 +75,6 @@ CloverReport.prototype.writeRootStats = function(node, context) {
         loc: metrics.lines.total,
         ncloc: metrics.lines.total // what? copied as-is from old report
     };
-    var treeStats;
 
     this.cw.println('<?xml version="1.0" encoding="UTF-8"?>');
     this.xml.openTag('coverage', {
@@ -88,7 +87,7 @@ CloverReport.prototype.writeRootStats = function(node, context) {
         name: 'All files'
     });
 
-    treeStats = this.getTreeStats(node, context);
+    const treeStats = this.getTreeStats(node, context);
     Object.keys(treeStats).forEach(k => {
         attrs[k] = treeStats[k];
     });
@@ -111,7 +110,7 @@ CloverReport.prototype.onSummary = function(node) {
     if (node.isRoot()) {
         return;
     }
-    var metrics = node.getCoverageSummary(true);
+    const metrics = node.getCoverageSummary(true);
     if (!metrics) {
         return;
     }
@@ -130,10 +129,9 @@ CloverReport.prototype.onSummaryEnd = function(node) {
 };
 
 CloverReport.prototype.onDetail = function(node) {
-    var fileCoverage = node.getFileCoverage();
-    var metrics = node.getCoverageSummary();
-    var branchByLine = fileCoverage.getBranchCoverageByLine();
-    var lines;
+    const fileCoverage = node.getFileCoverage();
+    const metrics = node.getCoverageSummary();
+    const branchByLine = fileCoverage.getBranchCoverageByLine();
 
     this.xml.openTag('file', {
         name: asClassName(node),
@@ -142,14 +140,14 @@ CloverReport.prototype.onDetail = function(node) {
 
     this.writeMetrics(metrics);
 
-    lines = fileCoverage.getLineCoverage();
+    const lines = fileCoverage.getLineCoverage();
     Object.keys(lines).forEach(k => {
-        var attrs = {
+        const attrs = {
             num: k,
             count: lines[k],
             type: 'stmt'
         };
-        var branchDetail = branchByLine[k];
+        const branchDetail = branchByLine[k];
 
         if (branchDetail) {
             attrs.type = 'cond';

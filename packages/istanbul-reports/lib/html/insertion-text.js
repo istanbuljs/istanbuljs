@@ -11,14 +11,14 @@ function InsertionText(text, consumeBlanks) {
     this.endPos = this.findLastNonBlank();
 }
 
-var WHITE_RE = /[ \f\n\r\t\v\u00A0\u2028\u2029]/;
+const WHITE_RE = /[ \f\n\r\t\v\u00A0\u2028\u2029]/;
 
 InsertionText.prototype = {
     findFirstNonBlank() {
-        var pos = -1;
-        var text = this.text;
-        var len = text.length;
-        var i;
+        let pos = -1;
+        const text = this.text;
+        const len = text.length;
+        let i;
         for (i = 0; i < len; i += 1) {
             if (!text.charAt(i).match(WHITE_RE)) {
                 pos = i;
@@ -28,10 +28,10 @@ InsertionText.prototype = {
         return pos;
     },
     findLastNonBlank() {
-        var text = this.text;
-        var len = text.length;
-        var pos = text.length + 1;
-        var i;
+        const text = this.text;
+        const len = text.length;
+        let pos = text.length + 1;
+        let i;
         for (i = len - 1; i >= 0; i -= 1) {
             if (!text.charAt(i).match(WHITE_RE)) {
                 pos = i;
@@ -61,19 +61,19 @@ InsertionText.prototype = {
             }
         }
 
-        var len = str.length;
-        var offset = this.findOffset(col, len, insertBefore);
-        var realPos = col + offset;
-        var text = this.text;
+        const len = str.length;
+        const offset = this.findOffset(col, len, insertBefore);
+        const realPos = col + offset;
+        const text = this.text;
         this.text = text.substring(0, realPos) + str + text.substring(realPos);
         return this;
     },
 
     findOffset(pos, len, insertBefore) {
-        var offsets = this.offsets;
-        var offsetObj;
-        var cumulativeOffset = 0;
-        var i;
+        const offsets = this.offsets;
+        let offsetObj;
+        let cumulativeOffset = 0;
+        let i;
 
         for (i = 0; i < offsets.length; i += 1) {
             offsetObj = offsets[i];

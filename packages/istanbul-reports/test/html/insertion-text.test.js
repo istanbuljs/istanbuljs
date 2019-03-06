@@ -1,9 +1,9 @@
 /* globals describe, it, beforeEach */
-var assert = require('chai').assert;
-var InsertionText = require('../../lib/html/insertion-text');
+const assert = require('chai').assert;
+const InsertionText = require('../../lib/html/insertion-text');
 
 describe('insertion text', () => {
-    var text;
+    let text;
     describe('regular version', () => {
         beforeEach(() => {
             text = new InsertionText('hello world');

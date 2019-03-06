@@ -1,5 +1,5 @@
-var outWrite = process.stdout.write;
-var errWrite = process.stderr.write;
+const outWrite = process.stdout.write;
+const errWrite = process.stderr.write;
 
 function silent() {
     if (!process.env.DEBUG) {

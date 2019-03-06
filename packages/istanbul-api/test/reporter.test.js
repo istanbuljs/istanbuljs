@@ -1,17 +1,17 @@
 /* globals context, describe, it */
 
-var assert = require('chai').assert;
-var configuration = require('../lib/config');
-var coverage = require('istanbul-lib-coverage');
-var Reporter = require('../lib/reporter');
+const assert = require('chai').assert;
+const configuration = require('../lib/config');
+const coverage = require('istanbul-lib-coverage');
+const Reporter = require('../lib/reporter');
 
 describe('Reporter', () => {
     describe('#write', () => {
         context('config to exclude files is not defined', () => {
-            var config = configuration.loadObject();
+            const config = configuration.loadObject();
 
             it('does not exclude files from reports', done => {
-                var coverageMap = coverage.createCoverageMap({});
+                const coverageMap = coverage.createCoverageMap({});
                 coverageMap.addFileCoverage(
                     coverage.createFileCoverage('/a/b/c.js')
                 );
@@ -22,7 +22,7 @@ describe('Reporter', () => {
                     coverage.createFileCoverage('/g/h/i.js')
                 );
 
-                var opts = {
+                const opts = {
                     summarizer(cm) {
                         assert.deepEqual(cm.files(), [
                             '/a/b/c.js',
@@ -33,21 +33,21 @@ describe('Reporter', () => {
                     }
                 };
 
-                var reporter = new Reporter(config, opts);
+                const reporter = new Reporter(config, opts);
 
                 reporter.write(coverageMap);
             });
         });
 
         context('config to exclude files is defined', () => {
-            var config = configuration.loadObject({
+            const config = configuration.loadObject({
                 instrumentation: {
                     excludes: ['**/a/**/*.js', '**/h/**/*.js']
                 }
             });
 
             context('files to be excluded found', () => {
-                var coverageMap = coverage.createCoverageMap();
+                const coverageMap = coverage.createCoverageMap();
                 coverageMap.addFileCoverage(
                     coverage.createFileCoverage('/a/b/c.js')
                 );
@@ -59,21 +59,21 @@ describe('Reporter', () => {
                 );
 
                 it('excludes files from reports', done => {
-                    var opts = {
+                    const opts = {
                         summarizer(cm) {
                             assert.deepEqual(cm.files(), ['/d/e/f.js']);
                             done();
                         }
                     };
 
-                    var reporter = new Reporter(config, opts);
+                    const reporter = new Reporter(config, opts);
 
                     reporter.write(coverageMap);
                 });
             });
 
             context('files to be excluded not found', () => {
-                var coverageMap = coverage.createCoverageMap();
+                const coverageMap = coverage.createCoverageMap();
                 coverageMap.addFileCoverage(
                     coverage.createFileCoverage('/x/b/c.js')
                 );
@@ -85,7 +85,7 @@ describe('Reporter', () => {
                 );
 
                 it('does not exclude files from reports', done => {
-                    var opts = {
+                    const opts = {
                         summarizer(cm) {
                             assert.deepEqual(cm.files(), [
                                 '/x/b/c.js',
@@ -96,7 +96,7 @@ describe('Reporter', () => {
                         }
                     };
 
-                    var reporter = new Reporter(config, opts);
+                    const reporter = new Reporter(config, opts);
 
                     reporter.write(coverageMap);
                 });

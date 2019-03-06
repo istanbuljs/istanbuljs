@@ -1,15 +1,15 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert;
-var FileWriter = require('../lib/file-writer');
-var path = require('path');
-var dataDir = path.resolve(__dirname, '.data');
-var mkdirp = require('make-dir');
-var rimraf = require('rimraf');
-var fs = require('fs');
+const assert = require('chai').assert;
+const FileWriter = require('../lib/file-writer');
+const path = require('path');
+const dataDir = path.resolve(__dirname, '.data');
+const mkdirp = require('make-dir');
+const rimraf = require('rimraf');
+const fs = require('fs');
 
 describe('file-writer', () => {
-    var writer;
+    let writer;
 
     beforeEach(() => {
         mkdirp.sync(dataDir);
@@ -21,7 +21,7 @@ describe('file-writer', () => {
     });
 
     it('returns a content writer for file', () => {
-        var cw = writer.writeFile('foo/bar.txt');
+        const cw = writer.writeFile('foo/bar.txt');
         cw.println('hello');
         assert.equal('foo', cw.colorize('foo', 'unknown'));
         cw.close();
@@ -32,7 +32,7 @@ describe('file-writer', () => {
     });
 
     it('returns a console writer for terminal', () => {
-        var cw = writer.writeFile('-');
+        const cw = writer.writeFile('-');
         cw.println('hello');
         assert.equal('foo', cw.colorize('foo'));
         cw.close();
@@ -47,7 +47,7 @@ describe('file-writer', () => {
     });
 
     it('copies files while adding headers', () => {
-        var header =
+        const header =
             '/* This is some header text, like a copyright or directive. */\n';
         writer.copyFile(__filename, 'out.txt', header);
         assert.equal(
@@ -57,8 +57,8 @@ describe('file-writer', () => {
     });
 
     it('provides writers for subdirs', () => {
-        var w = writer.writerForDir('foo');
-        var cw = w.writeFile('bar.txt');
+        const w = writer.writerForDir('foo');
+        const cw = w.writeFile('bar.txt');
         cw.println('hello');
         cw.close();
         assert.equal(

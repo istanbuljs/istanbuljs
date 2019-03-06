@@ -2,8 +2,8 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var LcovOnlyReport = require('../lcovonly');
-var HtmlReport = require('../html');
+const LcovOnlyReport = require('../lcovonly');
+const HtmlReport = require('../html');
 
 function LcovReport() {
     this.lcov = new LcovOnlyReport({ file: 'lcov.info' });
@@ -11,11 +11,11 @@ function LcovReport() {
 }
 
 ['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(what => {
-    var meth = 'on' + what;
+    const meth = 'on' + what;
     LcovReport.prototype[meth] = function() {
-        var args = Array.prototype.slice.call(arguments);
-        var lcov = this.lcov;
-        var html = this.html;
+        const args = Array.prototype.slice.call(arguments);
+        const lcov = this.lcov;
+        const html = this.html;
 
         if (lcov[meth]) {
             lcov[meth].apply(lcov, args);

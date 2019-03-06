@@ -285,7 +285,7 @@ describe('testExclude', () => {
         });
 
         it('should not throw if a key is missing', () => {
-            var e = exclude({
+            const e = exclude({
                 configPath: './test/fixtures/include',
                 configKey: 'c'
             });

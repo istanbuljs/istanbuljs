@@ -1,10 +1,10 @@
 /* globals describe, it */
-var assert = require('chai').assert;
-var MappedCoverage = require('../lib/mapped').MappedCoverage;
+const assert = require('chai').assert;
+const MappedCoverage = require('../lib/mapped').MappedCoverage;
 
 describe('mapped coverage', () => {
     it('allows a path constructor, has all properties', () => {
-        var fc = new MappedCoverage('/path/to/file');
+        const fc = new MappedCoverage('/path/to/file');
         assert.ok(fc.statementMap);
         assert.ok(fc.fnMap);
         assert.ok(fc.branchMap);
@@ -15,16 +15,15 @@ describe('mapped coverage', () => {
     });
 
     it('allows building object incrementally, resolving dups', () => {
-        var mc = new MappedCoverage('/path/to/file');
-        var loc = function(sl, sc, el, ec) {
+        const mc = new MappedCoverage('/path/to/file');
+        const loc = function(sl, sc, el, ec) {
             return {
                 start: { line: sl, column: sc },
                 end: { line: el, column: ec }
             };
         };
-        var index;
-        var index2;
-        var sc;
+        let index;
+        let index2;
 
         index = mc.addStatement(loc(1, 0, 1, 100), 1);
         assert.strictEqual(index, 0);
@@ -74,7 +73,7 @@ describe('mapped coverage', () => {
         );
         assert.equal(index, index2);
 
-        sc = mc.toSummary();
+        const sc = mc.toSummary();
         assert.equal(50, sc.statements.pct);
         assert.equal(50, sc.functions.pct);
         assert.equal(100, sc.branches.pct);

@@ -4,13 +4,13 @@
  */
 'use strict';
 
-var FileCoverage = require('./file').FileCoverage;
-var CoverageSummary = require('./file').CoverageSummary;
+const FileCoverage = require('./file').FileCoverage;
+const CoverageSummary = require('./file').CoverageSummary;
 
 function loadMap(source) {
-    var data = Object.create(null);
+    const data = Object.create(null);
     Object.keys(source).forEach(k => {
-        var cov = source[k];
+        const cov = source[k];
         if (cov instanceof FileCoverage) {
             data[k] = cov;
         } else {
@@ -41,14 +41,14 @@ function CoverageMap(obj) {
  *  as needed.
  */
 CoverageMap.prototype.merge = function(obj) {
-    var other;
+    let other;
     if (obj instanceof CoverageMap) {
         other = obj;
     } else {
         other = new CoverageMap(obj);
     }
     Object.keys(other.data).forEach(k => {
-        var fc = other.data[k];
+        const fc = other.data[k];
         if (this.data[k]) {
             this.data[k].merge(fc);
         } else {
@@ -89,7 +89,7 @@ CoverageMap.prototype.files = function() {
  * @returns {FileCoverage}
  */
 CoverageMap.prototype.fileCoverageFor = function(file) {
-    var fc = this.data[file];
+    const fc = this.data[file];
     if (!fc) {
         throw new Error('No file coverage available for: ' + file);
     }
@@ -102,8 +102,8 @@ CoverageMap.prototype.fileCoverageFor = function(file) {
  * @param {FileCoverage} fc the file coverage to add
  */
 CoverageMap.prototype.addFileCoverage = function(fc) {
-    var cov = new FileCoverage(fc);
-    var path = cov.path;
+    const cov = new FileCoverage(fc);
+    const path = cov.path;
     if (this.data[path]) {
         this.data[path].merge(cov);
     } else {
@@ -115,7 +115,7 @@ CoverageMap.prototype.addFileCoverage = function(fc) {
  * @returns {CoverageSummary}
  */
 CoverageMap.prototype.getCoverageSummary = function() {
-    var ret = new CoverageSummary();
+    const ret = new CoverageSummary();
     this.files().forEach(key => {
         ret.merge(this.fileCoverageFor(key).toSummary());
     });

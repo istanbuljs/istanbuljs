@@ -2,12 +2,12 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path');
-var vm = require('vm');
-var appendTransform = require('append-transform');
-var originalCreateScript = vm.createScript;
-var originalRunInThisContext = vm.runInThisContext;
-var originalRunInContext = vm.runInContext;
+const path = require('path');
+const vm = require('vm');
+const appendTransform = require('append-transform');
+const originalCreateScript = vm.createScript;
+const originalRunInThisContext = vm.runInThisContext;
+const originalRunInContext = vm.runInContext;
 
 function transformFn(matcher, transformer, verbose) {
     return function(code, options) {
@@ -19,11 +19,11 @@ function transformFn(matcher, transformer, verbose) {
             options = { filename: options };
         }
 
-        var shouldHook =
+        const shouldHook =
             typeof options.filename === 'string' &&
             matcher(path.resolve(options.filename));
-        var transformed;
-        var changed = false;
+        let transformed;
+        let changed = false;
 
         if (shouldHook) {
             if (verbose) {
@@ -85,22 +85,21 @@ function unloadRequireCache(matcher) {
  */
 function hookRequire(matcher, transformer, options) {
     options = options || {};
-    var extensions;
-    var disable = false;
-    var fn = transformFn(matcher, transformer, options.verbose);
-    var postLoadHook =
+    let disable = false;
+    const fn = transformFn(matcher, transformer, options.verbose);
+    const postLoadHook =
         options.postLoadHook && typeof options.postLoadHook === 'function'
             ? options.postLoadHook
             : null;
 
-    extensions = options.extensions || ['.js'];
+    const extensions = options.extensions || ['.js'];
 
     extensions.forEach(ext => {
         appendTransform((code, filename) => {
             if (disable) {
                 return code;
             }
-            var ret = fn(code, filename);
+            const ret = fn(code, filename);
             if (postLoadHook) {
                 postLoadHook(filename);
             }
@@ -126,9 +125,9 @@ function hookRequire(matcher, transformer, options) {
  */
 function hookCreateScript(matcher, transformer, opts) {
     opts = opts || {};
-    var fn = transformFn(matcher, transformer, opts.verbose);
+    const fn = transformFn(matcher, transformer, opts.verbose);
     vm.createScript = function(code, file) {
-        var ret = fn(code, file);
+        const ret = fn(code, file);
         return originalCreateScript(ret.code, file);
     };
 }
@@ -153,9 +152,9 @@ function unhookCreateScript() {
  */
 function hookRunInThisContext(matcher, transformer, opts) {
     opts = opts || {};
-    var fn = transformFn(matcher, transformer, opts.verbose);
+    const fn = transformFn(matcher, transformer, opts.verbose);
     vm.runInThisContext = function(code, options) {
-        var ret = fn(code, options);
+        const ret = fn(code, options);
         return originalRunInThisContext(ret.code, options);
     };
 }
@@ -180,10 +179,10 @@ function unhookRunInThisContext() {
  */
 function hookRunInContext(matcher, transformer, opts) {
     opts = opts || {};
-    var fn = transformFn(matcher, transformer, opts.verbose);
+    const fn = transformFn(matcher, transformer, opts.verbose);
     vm.runInContext = function(code, context, file) {
-        var ret = fn(code, file);
-        var coverageVariable = opts.coverageVariable || '__coverage__';
+        const ret = fn(code, file);
+        const coverageVariable = opts.coverageVariable || '__coverage__';
         // Refer coverage variable in context to global coverage variable.
         // So that coverage data will be written in global coverage variable for unit tests run in vm.runInContext.
         // If all unit tests are run in vm.runInContext, no global coverage variable will be generated.

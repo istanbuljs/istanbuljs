@@ -1,22 +1,20 @@
 /* globals describe, it */
-var assert = require('chai').assert;
-var path = require('path');
-var MapStore = require('../lib/map-store').MapStore;
-var libCoverage = require('istanbul-lib-coverage');
+const assert = require('chai').assert;
+const path = require('path');
+const MapStore = require('../lib/map-store').MapStore;
+const libCoverage = require('istanbul-lib-coverage');
 
 describe('map store', () => {
-    var coverageData;
-
     it('applies the inputSourceMap from the coverage object if available', () => {
         /* shint ignore:line */
-        var mapStore = new MapStore({});
+        const mapStore = new MapStore({});
 
-        var coverageMap = libCoverage.createCoverageMap(coverageData);
+        const coverageMap = libCoverage.createCoverageMap(coverageData);
 
-        var transformed = mapStore.transformCoverage(coverageMap);
+        const transformed = mapStore.transformCoverage(coverageMap);
         assert.isUndefined(transformed.map.data.constructor);
 
-        var transformedCoverage =
+        const transformedCoverage =
             transformed.map.data[path.resolve('./test.ts')].data;
 
         assert.deepEqual(transformedCoverage.statementMap, {
@@ -151,7 +149,7 @@ describe('map store', () => {
     //     return SimpleClass;
     // }());
     // exports.SimpleClass = SimpleClass;
-    coverageData = {
+    const coverageData = {
         'test.js': {
             path: 'test.js',
             statementMap: {

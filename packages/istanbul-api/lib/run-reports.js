@@ -2,10 +2,10 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var Reporter = require('./reporter');
-var fs = require('fs');
-var filesFor = require('./file-matcher').filesFor;
-var libCoverage = require('istanbul-lib-coverage');
+const Reporter = require('./reporter');
+const fs = require('fs');
+const filesFor = require('./file-matcher').filesFor;
+const libCoverage = require('istanbul-lib-coverage');
 
 function run(formats, config, opts, callback) {
     if (!callback && typeof opts === 'function') {
@@ -13,10 +13,9 @@ function run(formats, config, opts, callback) {
         opts = {};
     }
     opts = opts || {};
-    var root;
-    var coverageMap = libCoverage.createCoverageMap();
-    var includePattern = opts.include || '**/coverage*.raw.json';
-    var reporter = new Reporter(config);
+    const coverageMap = libCoverage.createCoverageMap();
+    const includePattern = opts.include || '**/coverage*.raw.json';
+    const reporter = new Reporter(config);
 
     if (!formats || formats.length === 0) {
         formats = config.reporting.reports();
@@ -28,7 +27,7 @@ function run(formats, config, opts, callback) {
         return callback(ex);
     }
 
-    root = opts.root || process.cwd();
+    const root = opts.root || process.cwd();
     filesFor(
         {
             root,
@@ -40,7 +39,9 @@ function run(formats, config, opts, callback) {
                 return callback(err);
             }
             files.forEach(file => {
-                var coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
+                const coverageObject = JSON.parse(
+                    fs.readFileSync(file, 'utf8')
+                );
                 coverageMap.merge(coverageObject);
             });
             reporter.write(coverageMap, {});

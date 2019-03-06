@@ -2,12 +2,12 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path');
-var configuration = require('./config');
-var inputError = require('./input-error');
-var libReport = require('istanbul-lib-report');
-var libReports = require('istanbul-reports');
-var minimatch = require('minimatch');
+const path = require('path');
+const configuration = require('./config');
+const inputError = require('./input-error');
+const libReport = require('istanbul-lib-report');
+const libReports = require('istanbul-reports');
+const minimatch = require('minimatch');
 
 function Reporter(cfg, opts) {
     opts = opts || {};
@@ -15,8 +15,8 @@ function Reporter(cfg, opts) {
     this.dir = path.resolve(this.config.reporting.dir());
     this.reports = {};
 
-    var summarizer = opts.summarizer;
-    var s = this.config.reporting.summarizer();
+    let summarizer = opts.summarizer;
+    const s = this.config.reporting.summarizer();
 
     if (summarizer && typeof summarizer === 'function') {
         this.summarizer = summarizer;
@@ -43,8 +43,8 @@ Reporter.prototype = {
             // already added
             return;
         }
-        var config = this.config;
-        var rptConfig = config.reporting.reportConfig()[fmt] || {};
+        const config = this.config;
+        const rptConfig = config.reporting.reportConfig()[fmt] || {};
         rptConfig.verbose = config.verbose;
         try {
             if (this.config.verbose) {
@@ -71,17 +71,15 @@ Reporter.prototype = {
      */
     write(coverageMap, opts) {
         opts = opts || {};
-        var sourceFinder = opts.sourceFinder || null;
-        var context;
-        var tree;
+        const sourceFinder = opts.sourceFinder || null;
 
-        context = libReport.createContext({
+        const context = libReport.createContext({
             dir: this.dir,
             watermarks: this.config.reporting.watermarks(),
             sourceFinder
         });
 
-        var excludes = this.config.instrumentation.excludes() || [];
+        const excludes = this.config.instrumentation.excludes() || [];
 
         coverageMap.filter(
             file =>
@@ -90,9 +88,9 @@ Reporter.prototype = {
                 )
         );
 
-        tree = this.summarizer(coverageMap);
+        const tree = this.summarizer(coverageMap);
         Object.keys(this.reports).forEach(name => {
-            var report = this.reports[name];
+            const report = this.reports[name];
             tree.visit(report, context);
         });
     }

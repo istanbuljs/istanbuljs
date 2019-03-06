@@ -2,20 +2,20 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path');
-var fs = require('fs');
-var filesFor = require('./file-matcher').filesFor;
-var libCoverage = require('istanbul-lib-coverage');
-var inputError = require('./input-error');
-var isAbsolute =
+const path = require('path');
+const fs = require('fs');
+const filesFor = require('./file-matcher').filesFor;
+const libCoverage = require('istanbul-lib-coverage');
+const inputError = require('./input-error');
+const isAbsolute =
     path.isAbsolute ||
     function(file) {
         return path.resolve(file) === path.normalize(file);
     };
 
 function removeFiles(origMap, root, files) {
-    var filesObj = {};
-    var ret = libCoverage.createCoverageMap();
+    const filesObj = {};
+    const ret = libCoverage.createCoverageMap();
 
     // Create lookup table.
     files.forEach(file => {
@@ -24,7 +24,7 @@ function removeFiles(origMap, root, files) {
 
     origMap.files().forEach(key => {
         // Exclude keys will always be relative, but covObj keys can be absolute or relative
-        var excludeKey = isAbsolute(key) ? path.relative(root, key) : key;
+        let excludeKey = isAbsolute(key) ? path.relative(root, key) : key;
         // Also normalize for files that start with `./`, etc.
         excludeKey = path.normalize(excludeKey);
         if (filesObj[excludeKey] !== true) {
@@ -43,18 +43,15 @@ function run(config, opts, callback) {
 
     opts = opts || {};
 
-    var root = opts.root || config.instrumentation.root() || process.cwd();
-    var includePattern = opts.include || '**/coverage*.json';
-    var errors = [];
-    var check;
-    var makeMap;
-    var processFiles;
+    const root = opts.root || config.instrumentation.root() || process.cwd();
+    const includePattern = opts.include || '**/coverage*.json';
+    const errors = [];
 
-    check = function(name, thresholds, actuals) {
+    const check = function(name, thresholds, actuals) {
         ['statements', 'branches', 'lines', 'functions'].forEach(key => {
-            var actual = actuals[key].pct;
-            var actualUncovered = actuals[key].total - actuals[key].covered;
-            var threshold = thresholds[key];
+            const actual = actuals[key].pct;
+            const actualUncovered = actuals[key].total - actuals[key].covered;
+            const threshold = thresholds[key];
 
             if (threshold < 0) {
                 if (threshold * -1 < actualUncovered) {
@@ -88,22 +85,22 @@ function run(config, opts, callback) {
         });
     };
 
-    makeMap = function(files, callback) {
-        var coverageMap = libCoverage.createCoverageMap();
+    const makeMap = function(files, callback) {
+        const coverageMap = libCoverage.createCoverageMap();
         if (files.length === 0) {
             return callback(
                 inputError.create('ERROR: No coverage files found.')
             );
         }
         files.forEach(file => {
-            var coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
+            const coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
             coverageMap.merge(coverageObject);
         });
         return callback(null, coverageMap);
     };
 
-    processFiles = function(coverageMap, callback) {
-        var thresholds = {
+    const processFiles = function(coverageMap, callback) {
+        const thresholds = {
             global: {
                 statements: config.check.global.statements || 0,
                 branches: config.check.global.branches || 0,
@@ -119,17 +116,16 @@ function run(config, opts, callback) {
                 excludes: config.check.each.excludes || []
             }
         };
-        var globalResults = removeFiles(
+        const globalResults = removeFiles(
             coverageMap,
             root,
             thresholds.global.excludes
         );
-        var eachResults = removeFiles(
+        const eachResults = removeFiles(
             coverageMap,
             root,
             thresholds.each.excludes
         );
-        var finalError;
 
         if (config.verbose) {
             console.error('Compare actuals against thresholds');
@@ -148,10 +144,10 @@ function run(config, opts, callback) {
 
         check('global', thresholds.global, globalResults.getCoverageSummary());
         eachResults.files().forEach(key => {
-            var summary = eachResults.fileCoverageFor(key).toSummary();
+            const summary = eachResults.fileCoverageFor(key).toSummary();
             check('per-file' + ' (' + key + ') ', thresholds.each, summary);
         });
-        finalError = errors.length === 0 ? null : errors.join('\n');
+        const finalError = errors.length === 0 ? null : errors.join('\n');
         return callback(finalError);
     };
 

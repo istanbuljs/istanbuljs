@@ -4,7 +4,7 @@
  */
 'use strict';
 
-var util = require('util');
+const util = require('util');
 /**
  * An object with methods that are called during the traversal of the coverage tree.
  * A visitor has the following methods that are called during tree traversal.
@@ -28,7 +28,7 @@ function Visitor(delegate) {
 }
 
 ['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(k => {
-    var f = 'on' + k;
+    const f = 'on' + k;
     Visitor.prototype[f] = function(node, state) {
         if (this.delegate[f] && typeof this.delegate[f] === 'function') {
             this.delegate[f].call(this.delegate, node, state);
@@ -51,7 +51,7 @@ function CompositeVisitor(visitors) {
 util.inherits(CompositeVisitor, Visitor);
 
 ['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].forEach(k => {
-    var f = 'on' + k;
+    const f = 'on' + k;
     CompositeVisitor.prototype[f] = function(node, state) {
         this.visitors.forEach(v => {
             v[f](node, state);

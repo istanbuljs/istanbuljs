@@ -1,12 +1,12 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert;
-var path = require('path');
-var Path = require('../lib/path');
+const assert = require('chai').assert;
+const path = require('path');
+const Path = require('../lib/path');
 
 function commonBattery(windows) {
-    var p = windows ? path.win32.parse : path.posix.parse;
-    var s = windows ? '\\' : '/';
+    const p = windows ? path.win32.parse : path.posix.parse;
+    const s = windows ? '\\' : '/';
     return function() {
         beforeEach(() => {
             Path.tester.setParserAndSep(p, s);
@@ -20,7 +20,7 @@ function commonBattery(windows) {
             { s: '/foo/bar/baz.txt', out: 'foo/bar/baz.txt' }
         ].forEach(t => {
             it('returns "' + t.out + '" on "' + t.s + '"', () => {
-                var p = new Path(t.s);
+                const p = new Path(t.s);
                 assert.equal(p.toString(), t.out);
             });
         });
@@ -40,7 +40,7 @@ describe('path', () => {
         });
         [{ s: '//foo/bar/baz.txt', out: 'foo/bar/baz.txt' }].forEach(t => {
             it('returns "' + t.out + '" on "' + t.s + '"', () => {
-                var p = new Path(t.s);
+                const p = new Path(t.s);
                 assert.equal(p.toString(), t.out);
             });
         });
@@ -61,7 +61,7 @@ describe('path', () => {
             { s: '//c:\\foo\\bar', out: 'foo/bar' }
         ].forEach(t => {
             it('returns "' + t.out + '" on "' + t.s + '"', () => {
-                var p = new Path(t.s);
+                const p = new Path(t.s);
                 assert.equal(p.toString(), t.out);
             });
         });
@@ -76,26 +76,26 @@ describe('path', () => {
         });
 
         it('returns elements and supports a length property correctly', () => {
-            var p = new Path('/foo/bar');
+            const p = new Path('/foo/bar');
             assert.deepEqual(p.elements(), ['foo', 'bar']);
             assert.equal(p.length, 2);
         });
 
         it('can be inited with an array', () => {
-            var p = new Path(['foo', 'bar']);
+            const p = new Path(['foo', 'bar']);
             assert.deepEqual(p.elements(), ['foo', 'bar']);
         });
 
         it('returns a parent when possible', () => {
-            var p = new Path('/foo/bar').parent();
-            var gp;
+            const p = new Path('/foo/bar').parent();
             assert.equal(p.toString(), 'foo');
-            gp = p.parent();
+
+            const gp = p.parent();
             assert.equal(gp.toString(), '');
         });
 
         it('throws when a parent cannot be returned', () => {
-            var p = new Path('');
+            const p = new Path('');
             assert.deepEqual(p.elements(), []);
             assert.ok(!p.hasParent());
             assert.throws(() => p.parent());
@@ -125,7 +125,7 @@ describe('path', () => {
         });
 
         it('propagates array operations correctly', () => {
-            var p = new Path('/foo/bar');
+            const p = new Path('/foo/bar');
             assert.deepEqual(p.toString(), 'foo/bar');
             p.unshift('root');
             assert.deepEqual(p.toString(), 'root/foo/bar');
@@ -138,21 +138,21 @@ describe('path', () => {
         });
 
         it('calculates a common prefix path when one exists', () => {
-            var p = new Path('/foo/bar/baz').commonPrefixPath(
+            const p = new Path('/foo/bar/baz').commonPrefixPath(
                 new Path('/foo/bar')
             );
             assert.deepEqual(['foo', 'bar'], p.elements());
         });
 
         it('calculates a common prefix path when one exists at a higher level', () => {
-            var p = new Path('/foo/bar/baz').commonPrefixPath(
+            const p = new Path('/foo/bar/baz').commonPrefixPath(
                 new Path('/foo/baz/quux')
             );
             assert.deepEqual(['foo'], p.elements());
         });
 
         it('calculates an empty prefix path when no overlap', () => {
-            var p = new Path('/foo1/bar/baz').commonPrefixPath(
+            const p = new Path('/foo1/bar/baz').commonPrefixPath(
                 new Path('/foo2/baz/quux')
             );
             assert.deepEqual([], p.elements());

@@ -1,12 +1,12 @@
 /* globals describe, it */
-var fs = require('fs');
-var annotator = require('../../lib/html/annotator');
-var istanbulLibCoverage = require('istanbul-lib-coverage');
+const fs = require('fs');
+const annotator = require('../../lib/html/annotator');
+const istanbulLibCoverage = require('istanbul-lib-coverage');
 
 require('chai').should();
 
 function getFixture(fixtureName) {
-    var fileCoverage = istanbulLibCoverage.createFileCoverage('foo.js');
+    const fileCoverage = istanbulLibCoverage.createFileCoverage('foo.js');
     fileCoverage.data = require('../fixtures/' + fixtureName + '.json');
     return fileCoverage;
 }
@@ -15,7 +15,7 @@ describe('annotator', () => {
     describe('annotateSourceCode', () => {
         // see: https://github.com/istanbuljs/istanbul-reports/pull/10
         it('handles structuredText missing entry for startLine', () => {
-            var annotated = annotator.annotateSourceCode(
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-10'),
                 {
                     getSource() {
@@ -28,7 +28,7 @@ describe('annotator', () => {
 
         // see: https://github.com/istanbuljs/istanbul-reports/pull/11
         it('handles missing branch meta information', () => {
-            var annotated = annotator.annotateSourceCode(
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-11'),
                 {
                     getSource() {
@@ -41,7 +41,7 @@ describe('annotator', () => {
 
         // see: https://github.com/istanbuljs/istanbuljs/pull/80
         it('handles statement meta information with end column less than start column', () => {
-            var annotated = annotator.annotateSourceCode(
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-80a'),
                 {
                     getSource() {
@@ -56,7 +56,7 @@ describe('annotator', () => {
 
         // see: https://github.com/istanbuljs/istanbuljs/pull/80
         it('handles function meta information with end column less than start column', () => {
-            var annotated = annotator.annotateSourceCode(
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-80b'),
                 {
                     getSource() {
@@ -71,7 +71,7 @@ describe('annotator', () => {
 
         // see: https://github.com/istanbuljs/istanbuljs/pull/80
         it('handles branch meta information with end column less than start column', () => {
-            var annotated = annotator.annotateSourceCode(
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-80c'),
                 {
                     getSource() {

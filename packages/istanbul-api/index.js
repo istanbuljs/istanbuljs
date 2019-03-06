@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var Reporter = require('./lib/reporter');
+const Reporter = require('./lib/reporter');
 /**
  * @module Exports
  */
@@ -50,15 +50,15 @@ module.exports = {
 // export all the istanbul libraries as is so users don't have to take 5 deps
 // that are potentially inconsistent
 
-var DASH_PATTERN = /-([a-z])/g;
+const DASH_PATTERN = /-([a-z])/g;
 
 function camelize(word) {
     return word.replace(DASH_PATTERN, (match, lch) => lch.toUpperCase());
 }
 
 ['coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(k => {
-    var mod = 'lib-' + k;
-    var prop = camelize(mod);
+    const mod = 'lib-' + k;
+    const prop = camelize(mod);
     module.exports[prop] = require('istanbul-' + mod);
 });
 

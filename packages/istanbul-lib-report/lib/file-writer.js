@@ -2,12 +2,12 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var util = require('util');
-var path = require('path');
-var fs = require('fs');
-var mkdirp = require('make-dir');
-var supportsColor = require('supports-color');
-var isAbsolute =
+const util = require('util');
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('make-dir');
+const supportsColor = require('supports-color');
+const isAbsolute =
     path.isAbsolute ||
     /* istanbul ignore next */ function(p) {
         return path.resolve(p) === path.normalize(p);
@@ -84,8 +84,8 @@ function ConsoleWriter() {}
 util.inherits(ConsoleWriter, ContentWriter);
 
 // allow stdout to be captured for tests.
-var capture = false;
-var output = '';
+let capture = false;
+let output = '';
 ConsoleWriter.prototype.write = function(str) {
     if (capture) {
         output += str;
@@ -95,7 +95,7 @@ ConsoleWriter.prototype.write = function(str) {
 };
 
 ConsoleWriter.prototype.colorize = function(str, clazz) {
-    var colors = {
+    const colors = {
         low: '31;1',
         medium: '33;1',
         high: '32;1'

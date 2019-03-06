@@ -2,32 +2,32 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path');
-var mkdirp = require('make-dir');
-var once = require('once');
-var async = require('async');
-var fs = require('fs');
-var filesFor = require('./file-matcher').filesFor;
-var libInstrument = require('istanbul-lib-instrument');
-var libCoverage = require('istanbul-lib-coverage');
-var inputError = require('./input-error');
+const path = require('path');
+const mkdirp = require('make-dir');
+const once = require('once');
+const async = require('async');
+const fs = require('fs');
+const filesFor = require('./file-matcher').filesFor;
+const libInstrument = require('istanbul-lib-instrument');
+const libCoverage = require('istanbul-lib-coverage');
+const inputError = require('./input-error');
 
 /*
  * Chunk file size to use when reading non JavaScript files in memory
  * and copying them over when using complete-copy flag.
  */
-var READ_FILE_CHUNK_SIZE = 64 * 1024;
+const READ_FILE_CHUNK_SIZE = 64 * 1024;
 
 function BaselineCollector(instrumenter) {
     this.instrumenter = instrumenter;
     this.map = libCoverage.createCoverageMap();
     this.instrument = instrumenter.instrument.bind(this.instrumenter);
 
-    var origInstrumentSync = instrumenter.instrumentSync;
+    const origInstrumentSync = instrumenter.instrumentSync;
     this.instrumentSync = function() {
-        var args = Array.prototype.slice.call(arguments);
-        var ret = origInstrumentSync.apply(this.instrumenter, args);
-        var baseline = this.instrumenter.lastFileCoverage();
+        const args = Array.prototype.slice.call(arguments);
+        const ret = origInstrumentSync.apply(this.instrumenter, args);
+        const baseline = this.instrumenter.lastFileCoverage();
         this.map.addFileCoverage(baseline);
         return ret;
     };
@@ -40,20 +40,20 @@ BaselineCollector.prototype.getCoverage = function() {
 };
 
 function processFiles(instrumenter, opts, callback) {
-    var inputDir = opts.inputDir;
-    var outputDir = opts.outputDir;
-    var relativeNames = opts.names;
-    var extensions = opts.extensions;
-    var verbose = opts.verbose;
+    const inputDir = opts.inputDir;
+    const outputDir = opts.outputDir;
+    const relativeNames = opts.names;
+    const extensions = opts.extensions;
+    const verbose = opts.verbose;
 
-    var processor = function(name, callback) {
-        var inputFile = path.resolve(inputDir, name);
-        var outputFile = path.resolve(outputDir, name);
-        var inputFileExtension = path.extname(inputFile);
-        var isJavaScriptFile = extensions.indexOf(inputFileExtension) > -1;
-        var oDir = path.dirname(outputFile);
-        var readStream;
-        var writeStream;
+    const processor = function(name, callback) {
+        const inputFile = path.resolve(inputDir, name);
+        const outputFile = path.resolve(outputDir, name);
+        const inputFileExtension = path.extname(inputFile);
+        const isJavaScriptFile = extensions.indexOf(inputFileExtension) > -1;
+        const oDir = path.dirname(outputFile);
+        let readStream;
+        let writeStream;
 
         callback = once(callback);
         mkdirp.sync(oDir);
@@ -97,14 +97,14 @@ function processFiles(instrumenter, opts, callback) {
             });
         }
     };
-    var q = async.queue(processor, 10);
-    var errors = [];
-    var count = 0;
-    var startTime = new Date().getTime();
+    const q = async.queue(processor, 10);
+    const errors = [];
+    let count = 0;
+    const startTime = new Date().getTime();
 
     q.push(relativeNames, (err, name) => {
-        var inputFile;
-        var outputFile;
+        let inputFile;
+        let outputFile;
         if (err) {
             errors.push({
                 file: name,
@@ -125,7 +125,7 @@ function processFiles(instrumenter, opts, callback) {
     });
 
     q.drain = function() {
-        var endTime = new Date().getTime();
+        const endTime = new Date().getTime();
         console.error(
             '\nProcessed [' +
                 count +
@@ -147,18 +147,16 @@ function processFiles(instrumenter, opts, callback) {
 
 function run(config, opts, callback) {
     opts = opts || {};
-    var iOpts = config.instrumentation;
-    var input = opts.input;
-    var output = opts.output;
-    var excludes = opts.excludes;
-    var file;
-    var stats;
-    var stream;
-    var includes;
-    var instrumenter;
-    var origCallback = callback;
-    var needBaseline = iOpts.saveBaseline();
-    var baselineFile = path.resolve(iOpts.baselineFile());
+    const iOpts = config.instrumentation;
+    const input = opts.input;
+    const output = opts.output;
+    const excludes = opts.excludes;
+    let stream;
+    let includes;
+    let instrumenter;
+    const origCallback = callback;
+    const needBaseline = iOpts.saveBaseline();
+    const baselineFile = path.resolve(iOpts.baselineFile());
 
     if (iOpts.completeCopy()) {
         includes = ['**/*'];
@@ -191,8 +189,8 @@ function run(config, opts, callback) {
         };
     }
 
-    file = path.resolve(input);
-    stats = fs.statSync(file);
+    const file = path.resolve(input);
+    const stats = fs.statSync(file);
     if (stats.isDirectory()) {
         if (!output) {
             return callback(

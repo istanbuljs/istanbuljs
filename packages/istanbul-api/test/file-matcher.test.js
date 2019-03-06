@@ -1,12 +1,12 @@
 /* globals describe, it, before */
 
-var assert = require('chai').assert;
-var path = require('path');
-var fileset = require('fileset');
-var root = path.resolve(__dirname, 'data', 'matcher');
-var src = '../lib/file-matcher.js';
-var fileMatcher = require(src);
-var allFiles;
+const assert = require('chai').assert;
+const path = require('path');
+const fileset = require('fileset');
+const root = path.resolve(__dirname, 'data', 'matcher');
+const src = '../lib/file-matcher.js';
+const fileMatcher = require(src);
+let allFiles;
 
 describe('file matcher', () => {
     before(cb => {
@@ -23,10 +23,10 @@ describe('file matcher', () => {
         fileMatcher.filesFor((err, files) => {
             assert.ok(!err);
             allFiles.forEach(file => {
-                var matcher = function(f) {
+                const matcher = function(f) {
                     return f === file;
                 };
-                var shouldMatch = file.indexOf('file.js') < 0;
+                const shouldMatch = file.indexOf('file.js') < 0;
                 if (shouldMatch) {
                     assert.ok(
                         files.filter(matcher).length,
@@ -51,10 +51,10 @@ describe('file matcher', () => {
             (err, files) => {
                 assert.ok(!err);
                 allFiles.forEach(file => {
-                    var matcher = function(f) {
+                    const matcher = function(f) {
                         return path.resolve(root, f) === file;
                     };
-                    var shouldMatch = file.indexOf('file.js') < 0;
+                    const shouldMatch = file.indexOf('file.js') < 0;
                     if (shouldMatch) {
                         assert.ok(
                             files.filter(matcher).length,
@@ -100,7 +100,7 @@ describe('file matcher', () => {
                 allFiles.filter(f => !f.match(/node_modules/)).sort()
             );
             allFiles.forEach(file => {
-                var shouldMatch = file.indexOf('file.js') < 0;
+                const shouldMatch = file.indexOf('file.js') < 0;
                 if (shouldMatch) {
                     assert.ok(
                         matchFn(file),
@@ -129,7 +129,7 @@ describe('file matcher', () => {
                     if (file.indexOf('/general/') < 0) {
                         return;
                     }
-                    var shouldMatch = file.indexOf('file.js') >= 0;
+                    const shouldMatch = file.indexOf('file.js') >= 0;
                     if (shouldMatch) {
                         assert.ok(
                             matchFn(file),

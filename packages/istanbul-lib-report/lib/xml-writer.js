@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var INDENT = '  ';
+const INDENT = '  ';
 
 /**
  * a utility class to produce well-formed, indented XML
@@ -18,9 +18,9 @@ function attrString(attrs) {
     if (!attrs) {
         return '';
     }
-    var ret = [];
+    const ret = [];
     Object.keys(attrs).forEach(k => {
-        var v = attrs[k];
+        const v = attrs[k];
         ret.push(k + '="' + v + '"');
     });
     return ret.length === 0 ? '' : ' ' + ret.join(' ');
@@ -36,7 +36,7 @@ XMLWriter.prototype.indent = function(str) {
  * @param {Object} [attrs=null] attrs attributes for the tag
  */
 XMLWriter.prototype.openTag = function(name, attrs) {
-    var str = this.indent('<' + name + attrString(attrs) + '>');
+    const str = this.indent('<' + name + attrString(attrs) + '>');
     this.cw.println(str);
     this.stack.push(name);
 };
@@ -50,8 +50,8 @@ XMLWriter.prototype.closeTag = function(name) {
     if (this.stack.length === 0) {
         throw new Error('Attempt to close tag ' + name + ' when not opened');
     }
-    var stashed = this.stack.pop();
-    var str = '</' + name + '>';
+    const stashed = this.stack.pop();
+    const str = '</' + name + '>';
 
     if (stashed !== name) {
         throw new Error(
@@ -71,7 +71,7 @@ XMLWriter.prototype.closeTag = function(name) {
  * @param {String} [content=null] content optional tag content
  */
 XMLWriter.prototype.inlineTag = function(name, attrs, content) {
-    var str = '<' + name + attrString(attrs);
+    let str = '<' + name + attrString(attrs);
     if (content) {
         str += '>' + content + '</' + name + '>';
     } else {

@@ -4,10 +4,10 @@ import { assert } from 'chai';
 import clone from 'clone';
 import readInitialCoverage from '../../src/read-coverage';
 
-var FileCoverage = classes.FileCoverage;
+const FileCoverage = classes.FileCoverage;
 
 function pad(str, len) {
-    var blanks = '                                             ';
+    const blanks = '                                             ';
     if (str.length >= len) {
         return str;
     }
@@ -15,9 +15,9 @@ function pad(str, len) {
 }
 
 function annotatedCode(code) {
-    var codeArray = code.split('\n');
-    var line = 0;
-    var annotated = codeArray.map(str => {
+    const codeArray = code.split('\n');
+    let line = 0;
+    const annotated = codeArray.map(str => {
         line += 1;
         return pad(line, 6) + ': ' + str;
     });
@@ -38,8 +38,8 @@ class Verifier {
         getGlobalObject()[this.result.coverageVariable] = clone(
             this.result.baseline
         );
-        var actualOutput = this.result.fn(args);
-        var cov = this.getFileCoverage();
+        const actualOutput = this.result.fn(args);
+        const cov = this.getFileCoverage();
 
         assert.ok(
             cov && typeof cov === 'object',
@@ -87,7 +87,7 @@ class Verifier {
     }
 
     getFileCoverage() {
-        var cov = this.getCoverage();
+        const cov = this.getCoverage();
         return new FileCoverage(cov[Object.keys(cov)[0]]);
     }
 
@@ -101,7 +101,7 @@ class Verifier {
 }
 
 function extractTestOption(opts, name, defaultValue) {
-    var v = defaultValue;
+    let v = defaultValue;
     if (opts.hasOwnProperty(name)) {
         v = opts[name];
     }
@@ -114,23 +114,22 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
     instrumenterOpts.coverageVariable =
         instrumenterOpts.coverageVariable || '__testing_coverage__';
 
-    var debug = extractTestOption(opts, 'debug', process.env.DEBUG === '1');
-    var file = extractTestOption(opts, 'file', __filename);
-    var generateOnly = extractTestOption(opts, 'generateOnly', false);
-    var noCoverage = extractTestOption(opts, 'noCoverage', false);
-    var quiet = extractTestOption(opts, 'quiet', false);
-    var coverageVariable = instrumenterOpts.coverageVariable;
-    var g = getGlobalObject();
-    var instrumenter;
-    var instrumenterOutput;
-    var wrapped;
-    var fn;
-    var verror;
+    const debug = extractTestOption(opts, 'debug', process.env.DEBUG === '1');
+    const file = extractTestOption(opts, 'file', __filename);
+    const generateOnly = extractTestOption(opts, 'generateOnly', false);
+    const noCoverage = extractTestOption(opts, 'noCoverage', false);
+    const quiet = extractTestOption(opts, 'quiet', false);
+    const coverageVariable = instrumenterOpts.coverageVariable;
+    const g = getGlobalObject();
+    let instrumenterOutput;
+    let wrapped;
+    let fn;
+    let verror;
 
     if (debug) {
         instrumenterOpts.compact = false;
     }
-    instrumenter = new Instrumenter(instrumenterOpts);
+    const instrumenter = new Instrumenter(instrumenterOpts);
     try {
         instrumenterOutput = instrumenter.instrumentSync(
             code,

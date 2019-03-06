@@ -147,7 +147,7 @@ class Instrumenter {
             filename = null;
         }
         try {
-            var out = this.instrumentSync(code, filename, inputSourceMap);
+            const out = this.instrumentSync(code, filename, inputSourceMap);
             callback(null, out);
         } catch (ex) {
             callback(ex);

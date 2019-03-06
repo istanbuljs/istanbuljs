@@ -1,7 +1,7 @@
 /* globals describe, it */
 
-var assert = require('chai').assert;
-var index = require('../index');
+const assert = require('chai').assert;
+const index = require('../index');
 
 describe('report interface', () => {
     it('exports the desired interface', () => {
@@ -13,7 +13,7 @@ describe('report interface', () => {
         assert.isFunction(index.summarizers.pkg);
     });
     it('exposes default watermarks', () => {
-        var w = index.getDefaultWatermarks();
+        const w = index.getDefaultWatermarks();
         assert.deepEqual(
             {
                 statements: [50, 80],

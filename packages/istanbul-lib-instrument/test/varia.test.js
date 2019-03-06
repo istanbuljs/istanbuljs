@@ -6,7 +6,7 @@ import { assert } from 'chai';
 
 describe('varia', () => {
     it('debug/ walkDebug should not cause errors', () => {
-        var v = verifier.create('output = args[0];', {}, { debug: true });
+        const v = verifier.create('output = args[0];', {}, { debug: true });
         assert.ok(!v.err);
         v.verify(['X'], 'X', {
             lines: { 1: 1 },
@@ -15,7 +15,7 @@ describe('varia', () => {
     });
 
     it('auto-generates filename', () => {
-        var v = verifier.create('output = args[0];', { file: null });
+        const v = verifier.create('output = args[0];', { file: null });
         assert.ok(!v.err);
         v.verify(['X'], 'X', {
             lines: { 1: 1 },
@@ -24,43 +24,43 @@ describe('varia', () => {
     });
 
     it('handles windows-style paths in file names', () => {
-        var v = verifier.create('output = args[0];', { file: 'c:\\x\\y.js' });
-        var cov;
+        const v = verifier.create('output = args[0];', { file: 'c:\\x\\y.js' });
         assert.ok(!v.err);
         v.verify(['X'], 'X', {
             lines: { 1: 1 },
             statements: { 0: 1 }
         });
-        cov = v.getCoverage();
+
+        const cov = v.getCoverage();
         assert.equal(Object.keys(cov)[0], 'c:\\x\\y.js');
     });
 
     it('preserves comments when requested', () => {
-        var v = verifier.create(
+        const v = verifier.create(
             '/* hello */\noutput = args[0];',
             {},
             { preserveComments: true }
         );
-        var code;
         assert.ok(!v.err);
         v.verify(['X'], 'X', {
             lines: { 2: 1 },
             statements: { 0: 1 }
         });
-        code = v.getGeneratedCode();
+
+        const code = v.getGeneratedCode();
         assert.ok(code.match(/\/* hello */));
     });
 
     it('preserves function names for named export arrow functions', () => {
         /* https://github.com/istanbuljs/babel-plugin-istanbul/issues/125 */
-        var v = verifier.create(
+        const v = verifier.create(
             'export const func = () => true;',
             { generateOnly: true },
             { esModules: true }
         );
-        var code;
         assert.ok(!v.err);
-        code = v.getGeneratedCode();
+
+        const code = v.getGeneratedCode();
         assert.ok(
             code.match(/cov_(.+)\.s\[\d+\]\+\+;export const func=\(\)=>/)
         );
@@ -68,15 +68,15 @@ describe('varia', () => {
 
     it('honors ignore next for exported functions', () => {
         /* https://github.com/istanbuljs/istanbuljs/issues/297 */
-        var v = verifier.create(
+        const v = verifier.create(
             '/* istanbul ignore next*/ export function fn1() {}' +
                 '/* istanbul ignore next*/ export default function() {}',
             { generateOnly: true },
             { esModules: true }
         );
-        var code;
         assert.ok(!v.err);
-        code = v.getGeneratedCode();
+
+        const code = v.getGeneratedCode();
         assert.ok(
             code.match(
                 /}\(\);export function fn1\(\){}export default function\(\){}/
@@ -86,14 +86,14 @@ describe('varia', () => {
 
     it('instruments exported functions', () => {
         /* https://github.com/istanbuljs/istanbuljs/issues/297 */
-        var v = verifier.create(
+        const v = verifier.create(
             'export function fn1() {}' + 'export default function() {}',
             { generateOnly: true },
             { esModules: true }
         );
-        var code;
         assert.ok(!v.err);
-        code = v.getGeneratedCode();
+
+        const code = v.getGeneratedCode();
         assert.ok(
             code.match(
                 /}\(\);export function fn1\(\){cov_(.+)\.f\[\d+\]\+\+;}export default function\(\){cov_(.+)\.f\[\d+\]\+\+;}/
@@ -102,11 +102,11 @@ describe('varia', () => {
     });
 
     it('returns last coverage object', cb => {
-        var instrumenter = new Instrumenter({
+        const instrumenter = new Instrumenter({
             coverageVariable: '__testing_coverage__'
         });
-        var err;
-        var cov;
+        let err;
+        let cov;
 
         instrumenter.instrument('output = args[0]', __filename, e => {
             err = e;
@@ -118,12 +118,12 @@ describe('varia', () => {
     });
 
     it('creates a source-map when requested', () => {
-        var opts = {
+        const opts = {
             produceSourceMap: true,
             coverageVariable: '__testing_coverage__'
         };
-        var instrumenter = new Instrumenter(opts);
-        var generated = instrumenter.instrumentSync(
+        const instrumenter = new Instrumenter(opts);
+        const generated = instrumenter.instrumentSync(
             'output = args[0]',
             __filename
         );
@@ -134,18 +134,18 @@ describe('varia', () => {
     });
 
     it('registers source map URLs seen in the original source', () => {
-        var f = '';
-        var u = '';
-        var fn = function(file, sourceMapUrl) {
+        let f = '';
+        let u = '';
+        const fn = function(file, sourceMapUrl) {
             f = file;
             u = sourceMapUrl;
         };
-        var opts = {
+        const opts = {
             sourceMapUrlCallback: fn,
             coverageVariable: '__testing_coverage__'
         };
-        var instrumenter = new Instrumenter(opts);
-        var generated = instrumenter.instrumentSync(
+        const instrumenter = new Instrumenter(opts);
+        const generated = instrumenter.instrumentSync(
             '/* foobar */ output = args[0]\n// @sourceMappingURL=foo.map',
             __filename
         );
@@ -157,11 +157,11 @@ describe('varia', () => {
 
     describe('callback style instrumentation', () => {
         it('allows filename to be optional', cb => {
-            var instrumenter = new Instrumenter({
+            const instrumenter = new Instrumenter({
                 coverageVariable: '__testing_coverage__'
             });
-            var generated;
-            var err;
+            let generated;
+            let err;
 
             instrumenter.instrument('output = args[0]', (e, c) => {
                 err = e;
@@ -172,11 +172,11 @@ describe('varia', () => {
             });
         });
         it('returns instead of throwing errors', () => {
-            var instrumenter = new Instrumenter({
+            const instrumenter = new Instrumenter({
                 coverageVariable: '__testing_coverage__'
             });
-            var generated = null;
-            var err = null;
+            let generated = null;
+            let err = null;
 
             instrumenter.instrument('output = args[0] : 1: 2', (e, c) => {
                 err = e;
@@ -191,24 +191,24 @@ describe('varia', () => {
     // TODO: it feels like we should be inserting line counters
     // for class exports and class declarations.
     it('properly exports named classes', () => {
-        var v = verifier.create(
+        const v = verifier.create(
             'export class App extends Component {};',
             { generateOnly: true },
             { esModules: true }
         );
-        var code;
         assert.ok(!v.err);
-        code = v.getGeneratedCode();
+
+        const code = v.getGeneratedCode();
         assert.ok(code.match(/cov_(.+);export class App extends/));
     });
 
     it('does not add extra parenthesis when superclass is an identifier', () => {
-        var v = verifier.create('class App extends Component {};', {
+        const v = verifier.create('class App extends Component {};', {
             generateOnly: true
         });
-        var code;
         assert.ok(!v.err);
-        code = v.getGeneratedCode();
+
+        const code = v.getGeneratedCode();
         assert.ok(code.match(/cov_(.+);class App extends Component/));
     });
 
@@ -216,9 +216,9 @@ describe('varia', () => {
         const opts = { generateOnly: true };
         const instrumentOpts = { coverageGlobalScope: 'window.top' };
         const v = verifier.create('console.log("test");', opts, instrumentOpts);
-        var code;
         assert.ok(!v.err);
-        code = v.getGeneratedCode();
+
+        const code = v.getGeneratedCode();
         assert.ok(
             code.match(
                 /global\s*=\s*\(*new\s*Function\(['"]return\s*window.top['"]\)\)*\(\)/
@@ -233,9 +233,9 @@ describe('varia', () => {
             coverageGlobalScopeFunc: false
         };
         const v = verifier.create('console.log("test");', opts, instrumentOpts);
-        var code;
         assert.ok(!v.err);
-        code = v.getGeneratedCode();
+
+        const code = v.getGeneratedCode();
         assert.ok(code.match(/global\s*=\s*window.top;/));
     });
 });

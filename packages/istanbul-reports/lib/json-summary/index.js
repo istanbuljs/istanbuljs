@@ -16,7 +16,7 @@ JsonSummaryReport.prototype.onStart = function(root, context) {
 };
 
 JsonSummaryReport.prototype.writeSummary = function(filePath, sc) {
-    var cw = this.contentWriter;
+    const cw = this.contentWriter;
     if (this.first) {
         this.first = false;
     } else {
@@ -40,7 +40,7 @@ JsonSummaryReport.prototype.onDetail = function(node) {
 };
 
 JsonSummaryReport.prototype.onEnd = function() {
-    var cw = this.contentWriter;
+    const cw = this.contentWriter;
     cw.println('}');
     cw.close();
 };
