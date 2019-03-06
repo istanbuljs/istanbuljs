@@ -1,10 +1,11 @@
 /* globals describe, it, before */
 
-const assert = require('chai').assert;
 const path = require('path');
+const assert = require('chai').assert;
 const fileset = require('fileset');
-const root = path.resolve(__dirname, 'data', 'matcher');
 const src = '../lib/file-matcher.js';
+
+const root = path.resolve(__dirname, 'data', 'matcher');
 const fileMatcher = require(src);
 let allFiles;
 

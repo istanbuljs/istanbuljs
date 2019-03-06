@@ -1,7 +1,9 @@
 {
   "extends": [
     "eslint:recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
   ],
   "parserOptions": {
     "ecmaVersion": 7,
@@ -12,7 +14,8 @@
     "node": true
   },
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "import/namespace": "off"
   },
   "overrides": [
     {

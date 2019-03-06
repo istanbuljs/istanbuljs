@@ -1,18 +1,19 @@
 /* globals describe, it, beforeEach, afterEach */
 
-const assert = require('chai').assert;
 const path = require('path');
 const fs = require('fs');
+const vm = require('vm');
+const assert = require('chai').assert;
 const mkdirp = require('make-dir');
 const rimraf = require('rimraf');
 const isWindows = require('is-windows');
-const codeRoot = path.resolve(__dirname, 'sample-code');
-const outputDir = path.resolve(__dirname, 'coverage');
+const ms = require('memory-streams');
 const configuration = require('../lib/config');
 const instrument = require('../lib/run-instrument');
-const ms = require('memory-streams');
-const vm = require('vm');
 const hijack = require('./hijack-streams');
+
+const codeRoot = path.resolve(__dirname, 'sample-code');
+const outputDir = path.resolve(__dirname, 'coverage');
 const wrap = hijack.wrap;
 
 describe('run instrument', function() {

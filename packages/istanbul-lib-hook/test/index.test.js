@@ -1,7 +1,7 @@
 /* global describe, it */
 
-const index = require('../index');
 const assert = require('chai').assert;
+const index = require('../index');
 
 describe('external interface', () => {
     it('exports the correct interface', () => {

@@ -1,7 +1,7 @@
 /* globals describe, it */
 
-import * as verifier from './util/verifier';
 import { assert } from 'chai';
+import * as verifier from './util/verifier';
 
 describe('negative tests', () => {
     it('should barf on junk code', () => {

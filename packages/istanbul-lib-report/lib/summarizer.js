@@ -4,10 +4,10 @@
  */
 'use strict';
 
-const Path = require('./path');
 const util = require('util');
-const tree = require('./tree');
 const coverage = require('istanbul-lib-coverage');
+const Path = require('./path');
+const tree = require('./tree');
 const BaseNode = tree.Node;
 const BaseTree = tree.Tree;
 

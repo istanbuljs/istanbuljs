@@ -3,9 +3,9 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
+import { assert } from 'chai';
 import * as verifier from './util/verifier';
 import * as guards from './util/guards';
-import { assert } from 'chai';
 
 const clone = require('clone');
 

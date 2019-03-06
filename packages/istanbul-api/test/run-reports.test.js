@@ -1,16 +1,17 @@
 /* globals describe, it, beforeEach, afterEach */
 
-const assert = require('chai').assert;
+const fs = require('fs');
 const path = require('path');
+const assert = require('chai').assert;
 const rimraf = require('rimraf');
-const codeRoot = path.resolve(__dirname, 'sample-code');
-const outputDir = path.resolve(__dirname, 'coverage');
 const configuration = require('../lib/config');
 const cover = require('../lib/run-cover');
-const fs = require('fs');
-const existsSync = fs.existsSync;
 const runReports = require('../lib/run-reports');
 const hijack = require('./hijack-streams');
+
+const codeRoot = path.resolve(__dirname, 'sample-code');
+const outputDir = path.resolve(__dirname, 'coverage');
+const existsSync = fs.existsSync;
 const wrap = hijack.wrap;
 
 describe('run reports', () => {

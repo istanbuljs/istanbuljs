@@ -1,8 +1,8 @@
 /* globals describe, it */
-const assert = require('chai').assert;
 const path = require('path');
-const MapStore = require('../lib/map-store').MapStore;
+const assert = require('chai').assert;
 const libCoverage = require('istanbul-lib-coverage');
+const MapStore = require('../lib/map-store').MapStore;
 
 describe('map store', () => {
     it('applies the inputSourceMap from the coverage object if available', () => {

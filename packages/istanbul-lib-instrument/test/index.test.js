@@ -1,6 +1,6 @@
 /* globals describe, it */
-import * as index from '../src/index';
 import { assert } from 'chai';
+import * as index from '../src/index';
 
 describe('external interface', () => {
     it('exposes the correct objects', () => {

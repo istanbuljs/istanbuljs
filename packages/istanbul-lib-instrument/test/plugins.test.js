@@ -1,7 +1,7 @@
 /* globals describe, it, context */
 
-import Instrumenter from '../src/instrumenter';
 import { assert } from 'chai';
+import Instrumenter from '../src/instrumenter';
 
 const codeNeedDecoratorPlugin = `
   @decorator

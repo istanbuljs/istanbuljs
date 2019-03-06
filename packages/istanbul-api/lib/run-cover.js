@@ -6,11 +6,11 @@ const path = require('path');
 const fs = require('fs');
 const mkdirp = require('make-dir');
 const compareVersions = require('compare-versions');
-const matcherFor = require('./file-matcher').matcherFor;
 const libInstrument = require('istanbul-lib-instrument');
 const libCoverage = require('istanbul-lib-coverage');
 const libSourceMaps = require('istanbul-lib-source-maps');
 const hook = require('istanbul-lib-hook');
+const matcherFor = require('./file-matcher').matcherFor;
 const Reporter = require('./reporter');
 
 function getCoverFunctions(config, includes, callback) {

@@ -1,14 +1,15 @@
 /* globals describe, it, before, after, beforeEach, afterEach */
 
-const assert = require('chai').assert;
 const path = require('path');
+const assert = require('chai').assert;
 const rimraf = require('rimraf');
-const codeRoot = path.resolve(__dirname, 'sample-code');
-const outputDir = path.resolve(codeRoot, 'coverage');
 const configuration = require('../lib/config');
 const cover = require('../lib/run-cover');
 const checker = require('../lib/run-check-coverage');
 const hijack = require('./hijack-streams');
+
+const codeRoot = path.resolve(__dirname, 'sample-code');
+const outputDir = path.resolve(codeRoot, 'coverage');
 const wrap = hijack.wrap;
 
 describe('run check-coverage', () => {

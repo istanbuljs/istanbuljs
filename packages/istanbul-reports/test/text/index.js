@@ -1,7 +1,7 @@
 /* globals describe, it, beforeEach, before, after */
 const fs = require('fs');
-const isWindows = require('is-windows');
 const path = require('path');
+const isWindows = require('is-windows');
 const FileWriter = require('istanbul-lib-report/lib/file-writer');
 const istanbulLibReport = require('istanbul-lib-report');
 const istanbulLibCoverage = require('istanbul-lib-coverage');

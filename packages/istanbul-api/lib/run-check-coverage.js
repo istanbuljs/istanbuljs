@@ -4,8 +4,8 @@
  */
 const path = require('path');
 const fs = require('fs');
-const filesFor = require('./file-matcher').filesFor;
 const libCoverage = require('istanbul-lib-coverage');
+const filesFor = require('./file-matcher').filesFor;
 const inputError = require('./input-error');
 const isAbsolute =
     path.isAbsolute ||

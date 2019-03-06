@@ -1,12 +1,13 @@
 /* globals describe, it, beforeEach, afterEach */
 
-const assert = require('chai').assert;
 const path = require('path');
+const assert = require('chai').assert;
 const configuration = require('../lib/config');
-const oldCwd = process.cwd();
-const newCwd = path.resolve(__dirname, 'config-data');
-let config;
 const hijack = require('./hijack-streams');
+
+const newCwd = path.resolve(__dirname, 'config-data');
+const oldCwd = process.cwd();
+let config;
 const reset = hijack.reset;
 
 describe('config', () => {

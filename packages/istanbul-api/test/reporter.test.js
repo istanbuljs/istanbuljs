@@ -1,8 +1,8 @@
 /* globals context, describe, it */
 
 const assert = require('chai').assert;
-const configuration = require('../lib/config');
 const coverage = require('istanbul-lib-coverage');
+const configuration = require('../lib/config');
 const Reporter = require('../lib/reporter');
 
 describe('Reporter', () => {

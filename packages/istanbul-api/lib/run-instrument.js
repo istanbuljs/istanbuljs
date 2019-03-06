@@ -3,13 +3,13 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 const path = require('path');
+const fs = require('fs');
 const mkdirp = require('make-dir');
 const once = require('once');
 const async = require('async');
-const fs = require('fs');
-const filesFor = require('./file-matcher').filesFor;
 const libInstrument = require('istanbul-lib-instrument');
 const libCoverage = require('istanbul-lib-coverage');
+const filesFor = require('./file-matcher').filesFor;
 const inputError = require('./input-error');
 
 /*

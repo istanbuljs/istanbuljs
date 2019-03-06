@@ -1,8 +1,8 @@
 /* globals describe, it, beforeEach, afterEach */
 
-const assert = require('chai').assert;
 const path = require('path');
 const fs = require('fs');
+const assert = require('chai').assert;
 const mkdirp = require('make-dir');
 const rimraf = require('rimraf');
 const codeRoot = path.resolve(__dirname, 'sample-code');

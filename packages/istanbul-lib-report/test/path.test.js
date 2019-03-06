@@ -1,7 +1,7 @@
 /* globals describe, it, beforeEach, afterEach */
 
-const assert = require('chai').assert;
 const path = require('path');
+const assert = require('chai').assert;
 const Path = require('../lib/path');
 
 function commonBattery(windows) {

@@ -1,7 +1,7 @@
-import { SourceCoverage } from './source-coverage';
-import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 import { createHash } from 'crypto';
 import template from '@babel/template';
+import { SourceCoverage } from './source-coverage';
+import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 import { defaultOpts } from './instrumenter';
 
 // pattern for istanbul to ignore a section

@@ -3,11 +3,11 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 const path = require('path');
-const configuration = require('./config');
-const inputError = require('./input-error');
 const libReport = require('istanbul-lib-report');
 const libReports = require('istanbul-reports');
 const minimatch = require('minimatch');
+const inputError = require('./input-error');
+const configuration = require('./config');
 
 function Reporter(cfg, opts) {
     opts = opts || {};

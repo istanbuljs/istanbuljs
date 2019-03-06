@@ -1,8 +1,9 @@
 /* globals describe, it, beforeEach */
 
-const assert = require('chai').assert;
 const util = require('util');
+const assert = require('chai').assert;
 const t = require('../lib/tree');
+
 const BaseTree = t.Tree;
 const BaseNode = t.Node;
 const Visitor = t.Visitor;

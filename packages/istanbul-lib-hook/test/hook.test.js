@@ -1,6 +1,7 @@
 /* globals describe, it, beforeEach, afterEach */
-const hook = require('../lib/hook');
 const assert = require('chai').assert;
+const hook = require('../lib/hook');
+
 let currentHook;
 const matcher = function(file) {
     return file.indexOf('foo.js') > 0;

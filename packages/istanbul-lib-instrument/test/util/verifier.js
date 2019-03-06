@@ -1,7 +1,7 @@
-import Instrumenter from '../../src/instrumenter';
 import { classes } from 'istanbul-lib-coverage';
 import { assert } from 'chai';
 import clone from 'clone';
+import Instrumenter from '../../src/instrumenter';
 import readInitialCoverage from '../../src/read-coverage';
 
 const FileCoverage = classes.FileCoverage;

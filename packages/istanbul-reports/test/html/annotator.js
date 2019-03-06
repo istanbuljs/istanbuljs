@@ -1,7 +1,7 @@
 /* globals describe, it */
 const fs = require('fs');
-const annotator = require('../../lib/html/annotator');
 const istanbulLibCoverage = require('istanbul-lib-coverage');
+const annotator = require('../../lib/html/annotator');
 
 require('chai').should();
 

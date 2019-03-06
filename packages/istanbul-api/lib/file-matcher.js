@@ -2,10 +2,10 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-const async = require('async');
-const fileset = require('fileset');
 const fs = require('fs');
 const path = require('path');
+const async = require('async');
+const fileset = require('fileset');
 let seq = 0;
 
 function filesFor(options, callback) {

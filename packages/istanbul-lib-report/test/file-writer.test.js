@@ -1,12 +1,13 @@
 /* globals describe, it, beforeEach, afterEach */
 
-const assert = require('chai').assert;
-const FileWriter = require('../lib/file-writer');
+const fs = require('fs');
 const path = require('path');
-const dataDir = path.resolve(__dirname, '.data');
+const assert = require('chai').assert;
 const mkdirp = require('make-dir');
 const rimraf = require('rimraf');
-const fs = require('fs');
+const FileWriter = require('../lib/file-writer');
+
+const dataDir = path.resolve(__dirname, '.data');
 
 describe('file-writer', () => {
     let writer;

@@ -1,8 +1,8 @@
 /* globals describe, it */
 
-import * as verifier from './util/verifier';
-import Instrumenter from '../src/instrumenter';
 import { assert } from 'chai';
+import Instrumenter from '../src/instrumenter';
+import * as verifier from './util/verifier';
 
 describe('varia', () => {
     it('debug/ walkDebug should not cause errors', () => {
