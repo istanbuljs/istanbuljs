@@ -38,7 +38,7 @@ export function isObjectFreezeAvailable() {
     if (!Object.freeze) {
         return false;
     }
-    var foo = Object.freeze({});
+    const foo = Object.freeze({});
     try {
         foo.bar = 1;
         return false;

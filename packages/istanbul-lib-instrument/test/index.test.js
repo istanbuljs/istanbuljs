@@ -1,9 +1,9 @@
 /* globals describe, it */
-import * as index from '../src/index';
 import { assert } from 'chai';
+import * as index from '../src/index';
 
-describe('external interface', function() {
-    it('exposes the correct objects', function() {
+describe('external interface', () => {
+    it('exposes the correct objects', () => {
         const i = index.createInstrumenter();
         assert.ok(i);
         assert.ok(i.instrumentSync);
@@ -14,8 +14,8 @@ describe('external interface', function() {
     });
 });
 
-describe('instrumenter', function() {
-    it('should remove comments when asked to', function() {
+describe('instrumenter', () => {
+    it('should remove comments when asked to', () => {
         const instrumenter = index.createInstrumenter({
             preserveComments: false
         });

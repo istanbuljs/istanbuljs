@@ -1,7 +1,6 @@
-import Instrumenter from './instrumenter';
+import Instrumenter, { defaultOpts } from './instrumenter';
 import programVisitor from './visitor';
 import readInitialCoverage from './read-coverage';
-import { defaultOpts } from './instrumenter';
 
 /**
  * createInstrumenter creates a new instrumenter with the

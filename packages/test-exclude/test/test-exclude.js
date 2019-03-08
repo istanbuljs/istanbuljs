@@ -6,8 +6,8 @@ const exclude = require('../');
 
 require('chai').should();
 
-describe('testExclude', function() {
-    it('should exclude the node_modules folder by default', function() {
+describe('testExclude', () => {
+    it('should exclude the node_modules folder by default', () => {
         exclude()
             .shouldInstrument('./banana/node_modules/cat.js')
             .should.equal(false);
@@ -16,7 +16,7 @@ describe('testExclude', function() {
             .should.equal(false);
     });
 
-    it('ignores ./', function() {
+    it('ignores ./', () => {
         exclude()
             .shouldInstrument('./test.js')
             .should.equal(false);
@@ -25,19 +25,19 @@ describe('testExclude', function() {
             .should.equal(false);
     });
 
-    it('matches files in root with **/', function() {
+    it('matches files in root with **/', () => {
         exclude()
             .shouldInstrument('__tests__/**')
             .should.equal(false);
     });
 
-    it('does not instrument files outside cwd', function() {
+    it('does not instrument files outside cwd', () => {
         exclude({ include: ['../foo.js'] })
             .shouldInstrument('../foo.js')
             .should.equal(false);
     });
 
-    it('can instrument files outside cwd if relativePath=false', function() {
+    it('can instrument files outside cwd if relativePath=false', () => {
         exclude({
             include: ['../foo.js'],
             relativePath: false
@@ -46,13 +46,13 @@ describe('testExclude', function() {
             .should.equal(true);
     });
 
-    it('does not instrument files in the coverage folder by default', function() {
+    it('does not instrument files in the coverage folder by default', () => {
         exclude()
             .shouldInstrument('coverage/foo.js')
             .should.equal(false);
     });
 
-    it('applies exclude rule ahead of include rule', function() {
+    it('applies exclude rule ahead of include rule', () => {
         const e = exclude({
             include: ['test.js', 'foo.js'],
             exclude: ['test.js']
@@ -62,7 +62,7 @@ describe('testExclude', function() {
         e.shouldInstrument('banana.js').should.equal(false);
     });
 
-    it('should handle gitignore-style excludes', function() {
+    it('should handle gitignore-style excludes', () => {
         const e = exclude({
             exclude: ['dist']
         });
@@ -72,7 +72,7 @@ describe('testExclude', function() {
         e.shouldInstrument('src/foo.js').should.equal(true);
     });
 
-    it('should handle gitignore-style includes', function() {
+    it('should handle gitignore-style includes', () => {
         const e = exclude({
             include: ['src']
         });
@@ -82,14 +82,14 @@ describe('testExclude', function() {
         e.shouldInstrument('src/foo/bar.js').should.equal(true);
     });
 
-    it("handles folder '.' in path", function() {
+    it("handles folder '.' in path", () => {
         const e = exclude();
         e.shouldInstrument(
             'test/fixtures/basic/.next/dist/pages/async-props.js'
         ).should.equal(false);
     });
 
-    it('excludes node_modules folder, even when empty exclude group is provided', function() {
+    it('excludes node_modules folder, even when empty exclude group is provided', () => {
         const e = exclude({
             exclude: []
         });
@@ -103,7 +103,7 @@ describe('testExclude', function() {
         e.shouldInstrument('src/foo.js').should.equal(true);
     });
 
-    it('allows node_modules folder to be included, if !node_modules is explicitly provided', function() {
+    it('allows node_modules folder to be included, if !node_modules is explicitly provided', () => {
         const e = exclude({
             exclude: ['!**/node_modules/**']
         });
@@ -117,7 +117,7 @@ describe('testExclude', function() {
         e.shouldInstrument('src/foo.js').should.equal(true);
     });
 
-    it('allows specific node_modules folder to be included, if !node_modules is explicitly provided', function() {
+    it('allows specific node_modules folder to be included, if !node_modules is explicitly provided', () => {
         const e = exclude({
             exclude: ['!**/node_modules/some/module/to/cover.js']
         });
@@ -131,7 +131,7 @@ describe('testExclude', function() {
         e.shouldInstrument('src/foo.js').should.equal(true);
     });
 
-    it('allows node_modules default exclusion glob to be turned off, if excludeNodeModules === false', function() {
+    it('allows node_modules default exclusion glob to be turned off, if excludeNodeModules === false', () => {
         const e = exclude({
             excludeNodeModules: false,
             exclude: ['node_modules/**', '**/__test__/**']
@@ -150,7 +150,7 @@ describe('testExclude', function() {
         ).should.equal(false);
     });
 
-    it('allows negated exclude patterns', function() {
+    it('allows negated exclude patterns', () => {
         const e = exclude({
             exclude: ['foo/**', '!foo/bar.js']
         });
@@ -159,7 +159,7 @@ describe('testExclude', function() {
         e.shouldInstrument('./foo/bar.js').should.equal(true);
     });
 
-    it('allows negated include patterns', function() {
+    it('allows negated include patterns', () => {
         const e = exclude({
             include: ['batman/**', '!batman/robin.js']
         });
@@ -168,7 +168,7 @@ describe('testExclude', function() {
         e.shouldInstrument('./batman/robin.js').should.equal(false);
     });
 
-    it('negated exclude patterns only works for files that are covered by the `include` pattern', function() {
+    it('negated exclude patterns only works for files that are covered by the `include` pattern', () => {
         const e = exclude({
             include: ['index.js'],
             exclude: ['!index2.js']
@@ -178,7 +178,7 @@ describe('testExclude', function() {
         e.shouldInstrument('index2.js').should.equal(false);
     });
 
-    it('handles extension option', function() {
+    it('handles extension option', () => {
         const js = exclude({
             extension: '.js'
         });
@@ -198,7 +198,7 @@ describe('testExclude', function() {
         multi.shouldInstrument('package.json').should.equal(true);
     });
 
-    it('negated exclude patterns unrelated to node_modules do not affect default node_modules exclude behavior', function() {
+    it('negated exclude patterns unrelated to node_modules do not affect default node_modules exclude behavior', () => {
         const e = exclude({
             exclude: ['!foo/**']
         });
@@ -206,7 +206,7 @@ describe('testExclude', function() {
         e.shouldInstrument('node_modules/cat.js').should.equal(false);
     });
 
-    it('exports defaultExclude', function() {
+    it('exports defaultExclude', () => {
         exclude.defaultExclude.should.deep.equal([
             'coverage/**',
             'packages/*/test/**',
@@ -219,8 +219,8 @@ describe('testExclude', function() {
         ]);
     });
 
-    describe('pkgConf', function() {
-        it('should load exclude rules from config key', function() {
+    describe('pkgConf', () => {
+        it('should load exclude rules from config key', () => {
             const e = exclude({
                 configPath: './test/fixtures/exclude',
                 configKey: 'a'
@@ -231,7 +231,7 @@ describe('testExclude', function() {
             e.configFound.should.equal(true);
         });
 
-        it('should load exclude rules from config key using process location', function() {
+        it('should load exclude rules from config key using process location', () => {
             /* This needs to be a separate process so we resolve
              * the correct package.json instead of trying to look
              * at the package.json provided by mocha */
@@ -240,7 +240,7 @@ describe('testExclude', function() {
             ]).status.should.equal(0);
         });
 
-        it('should load include rules from config key', function() {
+        it('should load include rules from config key', () => {
             const e = exclude({
                 configPath: './test/fixtures/include',
                 configKey: 'b'
@@ -251,7 +251,7 @@ describe('testExclude', function() {
             e.configFound.should.equal(true);
         });
 
-        it('should only instrument files that are included in subdirs', function() {
+        it('should only instrument files that are included in subdirs', () => {
             const e = exclude({
                 configPath: './test/fixtures/include-src-only',
                 configKey: 'c'
@@ -264,7 +264,7 @@ describe('testExclude', function() {
             e.shouldInstrument('src/app.js').should.equal(true);
         });
 
-        it('should respect defaultExcludes if no config is given', function() {
+        it('should respect defaultExcludes if no config is given', () => {
             const e = exclude({
                 configPath: './test/fixtures/defaults',
                 configKey: 'd'
@@ -284,16 +284,16 @@ describe('testExclude', function() {
             e.shouldInstrument('index.js').should.equal(true);
         });
 
-        it('should not throw if a key is missing', function() {
-            var e = exclude({
+        it('should not throw if a key is missing', () => {
+            const e = exclude({
                 configPath: './test/fixtures/include',
                 configKey: 'c'
             });
             e.configFound.should.equal(false);
         });
 
-        context('when given an object', function() {
-            it('should use the defaultExcludes if the object is empty', function() {
+        context('when given an object', () => {
+            it('should use the defaultExcludes if the object is empty', () => {
                 const e = exclude({
                     configPath: './test/fixtures/exclude-empty-object',
                     configKey: 'e'
@@ -308,7 +308,7 @@ describe('testExclude', function() {
                 e.shouldInstrument('index.js').should.equal(true);
             });
 
-            it('should use the defaultExcludes if the object is not empty', function() {
+            it('should use the defaultExcludes if the object is not empty', () => {
                 const e = exclude({
                     configPath: './test/fixtures/exclude-object',
                     configKey: 'e'
@@ -330,11 +330,11 @@ describe('testExclude', function() {
         });
     });
 
-    describe('globSync', function() {
+    describe('globSync', () => {
         const cwd = path.resolve(__dirname, 'fixtures/glob');
         const extension = '.js';
 
-        it('should exclude the node_modules folder by default', function() {
+        it('should exclude the node_modules folder by default', () => {
             exclude({ cwd, extension })
                 .globSync()
                 .sort()
@@ -371,7 +371,7 @@ describe('testExclude', function() {
                 ]);
         });
 
-        it('applies exclude rule ahead of include rule', function() {
+        it('applies exclude rule ahead of include rule', () => {
             const e = exclude({
                 cwd,
                 extension,
@@ -384,7 +384,7 @@ describe('testExclude', function() {
                 .should.deep.equal(['file2.js']);
         });
 
-        it('allows node_modules folder to be included, if !node_modules is explicitly provided', function() {
+        it('allows node_modules folder to be included, if !node_modules is explicitly provided', () => {
             const e = exclude({
                 cwd,
                 extension,
@@ -401,7 +401,7 @@ describe('testExclude', function() {
                 ]);
         });
 
-        it('allows specific node_modules folder to be included, if !node_modules is explicitly provided', function() {
+        it('allows specific node_modules folder to be included, if !node_modules is explicitly provided', () => {
             const e = exclude({
                 cwd,
                 extension,
@@ -417,7 +417,7 @@ describe('testExclude', function() {
                 ]);
         });
 
-        it('allows negated exclude patterns', function() {
+        it('allows negated exclude patterns', () => {
             const e = exclude({
                 cwd,
                 extension,
@@ -429,7 +429,7 @@ describe('testExclude', function() {
                 .should.deep.equal(['file1.js']);
         });
 
-        it('allows negated include patterns', function() {
+        it('allows negated include patterns', () => {
             const e = exclude({
                 cwd,
                 include: ['*.js', '!file2.js']
@@ -442,7 +442,7 @@ describe('testExclude', function() {
     });
 
     // see: https://github.com/istanbuljs/babel-plugin-istanbul/issues/71
-    it('allows exclude/include rule to be a string', function() {
+    it('allows exclude/include rule to be a string', () => {
         const e = exclude({
             exclude: 'src/**/*.spec.js',
             include: 'src/**'

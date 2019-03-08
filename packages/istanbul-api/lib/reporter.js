@@ -2,12 +2,12 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    configuration = require('./config'),
-    inputError = require('./input-error'),
-    libReport = require('istanbul-lib-report'),
-    libReports = require('istanbul-reports'),
-    minimatch = require('minimatch');
+const path = require('path');
+const libReport = require('istanbul-lib-report');
+const libReports = require('istanbul-reports');
+const minimatch = require('minimatch');
+const inputError = require('./input-error');
+const configuration = require('./config');
 
 function Reporter(cfg, opts) {
     opts = opts || {};
@@ -15,8 +15,8 @@ function Reporter(cfg, opts) {
     this.dir = path.resolve(this.config.reporting.dir());
     this.reports = {};
 
-    var summarizer = opts.summarizer,
-        s = this.config.reporting.summarizer();
+    let summarizer = opts.summarizer;
+    const s = this.config.reporting.summarizer();
 
     if (summarizer && typeof summarizer === 'function') {
         this.summarizer = summarizer;
@@ -38,13 +38,13 @@ Reporter.prototype = {
      * @method add
      * @param {String} fmt the format of the report to generate
      */
-    add: function(fmt) {
+    add(fmt) {
         if (this.reports[fmt]) {
             // already added
             return;
         }
-        var config = this.config,
-            rptConfig = config.reporting.reportConfig()[fmt] || {};
+        const config = this.config;
+        const rptConfig = config.reporting.reportConfig()[fmt] || {};
         rptConfig.verbose = config.verbose;
         try {
             if (this.config.verbose) {
@@ -60,40 +60,37 @@ Reporter.prototype = {
      * @method addAll
      * @param {Array} fmts an array of report formats
      */
-    addAll: function(fmts) {
-        var that = this;
-        fmts.forEach(function(f) {
-            that.add(f);
+    addAll(fmts) {
+        fmts.forEach(f => {
+            this.add(f);
         });
     },
     /**
      * writes all reports added
      * @method write
      */
-    write: function(coverageMap, opts) {
+    write(coverageMap, opts) {
         opts = opts || {};
-        var that = this,
-            sourceFinder = opts.sourceFinder || null,
-            context,
-            tree;
+        const sourceFinder = opts.sourceFinder || null;
 
-        context = libReport.createContext({
+        const context = libReport.createContext({
             dir: this.dir,
             watermarks: this.config.reporting.watermarks(),
-            sourceFinder: sourceFinder
+            sourceFinder
         });
 
-        var excludes = this.config.instrumentation.excludes() || [];
+        const excludes = this.config.instrumentation.excludes() || [];
 
-        coverageMap.filter(function(file) {
-            return !excludes.some(function(exclude) {
-                return minimatch(file, exclude, { dot: true });
-            });
-        });
+        coverageMap.filter(
+            file =>
+                !excludes.some(exclude =>
+                    minimatch(file, exclude, { dot: true })
+                )
+        );
 
-        tree = this.summarizer(coverageMap);
-        Object.keys(this.reports).forEach(function(name) {
-            var report = that.reports[name];
+        const tree = this.summarizer(coverageMap);
+        Object.keys(this.reports).forEach(name => {
+            const report = this.reports[name];
             tree.visit(report, context);
         });
     }

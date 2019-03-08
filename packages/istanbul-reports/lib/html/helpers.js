@@ -4,9 +4,9 @@
  */
 function registerHelpers(handlebars) {
     handlebars.registerHelper('show_picture', function(opts) {
-        var num = Number(opts.fn(this)),
-            rest,
-            cls = '';
+        let num = Number(opts.fn(this));
+        let rest;
+        let cls = '';
         if (isFinite(num)) {
             if (num === 100) {
                 cls = ' cover-full';
@@ -37,17 +37,16 @@ function registerHelpers(handlebars) {
             : opts.fn(this);
     });
 
-    handlebars.registerHelper('show_ignores', function(metrics) {
-        var statements = metrics.statements.skipped,
-            functions = metrics.functions.skipped,
-            branches = metrics.branches.skipped,
-            result;
+    handlebars.registerHelper('show_ignores', metrics => {
+        const statements = metrics.statements.skipped;
+        const functions = metrics.functions.skipped;
+        const branches = metrics.branches.skipped;
 
         if (statements === 0 && functions === 0 && branches === 0) {
             return '<span class="ignore-none">none</span>';
         }
 
-        result = [];
+        const result = [];
         if (statements > 0) {
             result.push(
                 statements === 1 ? '1 statement' : statements + ' statements'
@@ -66,11 +65,11 @@ function registerHelpers(handlebars) {
     });
 
     handlebars.registerHelper('show_lines', function(opts) {
-        var maxLines = Number(opts.fn(this)),
-            i,
-            array = [];
+        const maxLines = Number(opts.fn(this));
+        let i;
+        const array = [];
         for (i = 0; i < maxLines; i += 1) {
-            var nextNum = i + 1;
+            const nextNum = i + 1;
             array[i] =
                 "<a name='L" +
                 nextNum +
@@ -83,9 +82,9 @@ function registerHelpers(handlebars) {
         return array.join('\n');
     });
 
-    handlebars.registerHelper('show_line_execution_counts', function(context) {
-        var array = [];
-        context.forEach(function(data) {
+    handlebars.registerHelper('show_line_execution_counts', context => {
+        const array = [];
+        context.forEach(data => {
             array.push(
                 '<span class="cline-any cline-' +
                     data.covered +
@@ -97,11 +96,11 @@ function registerHelpers(handlebars) {
         return array.join('\n');
     });
 
-    handlebars.registerHelper('show_code', function(context /*, opts */) {
-        return context.join('\n');
-    });
+    handlebars.registerHelper('show_code', (context /*, opts */) =>
+        context.join('\n')
+    );
 }
 
 module.exports = {
-    registerHelpers: registerHelpers
+    registerHelpers
 };

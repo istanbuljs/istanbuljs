@@ -2,11 +2,11 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var FileWriter = require('./file-writer'),
-    XMLWriter = require('./xml-writer'),
-    tree = require('./tree'),
-    watermarks = require('./watermarks'),
-    fs = require('fs');
+const fs = require('fs');
+const FileWriter = require('./file-writer');
+const XMLWriter = require('./xml-writer');
+const tree = require('./tree');
+const watermarks = require('./watermarks');
 
 function defaultSourceLookup(path) {
     try {
@@ -20,8 +20,8 @@ function defaultSourceLookup(path) {
 
 function mergeWatermarks(specified, defaults) {
     specified = specified || {};
-    Object.keys(defaults).forEach(function(k) {
-        var specValue = specified[k];
+    Object.keys(defaults).forEach(k => {
+        const specValue = specified[k];
         if (
             !(specValue && Array.isArray(specValue) && specValue.length === 2)
         ) {
@@ -51,7 +51,7 @@ function Context(opts) {
 
 Object.defineProperty(Context.prototype, 'writer', {
     enumerable: true,
-    get: function() {
+    get() {
         if (!this.data.writer) {
             this.data.writer = new FileWriter(this.dir);
         }
@@ -87,7 +87,7 @@ Context.prototype.getSource = function(filePath) {
  * @returns {String} one of `high`, `medium` or `low`
  */
 Context.prototype.classForPercent = function(type, value) {
-    var watermarks = this.watermarks[type];
+    const watermarks = this.watermarks[type];
     if (!watermarks) {
         return 'unknown';
     }
@@ -120,7 +120,7 @@ Context.prototype.getVisitor = function(partialVisitor) {
 };
 
 module.exports = {
-    create: function(opts) {
+    create(opts) {
         return new Context(opts);
     }
 };

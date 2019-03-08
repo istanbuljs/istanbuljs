@@ -1,19 +1,20 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    fs = require('fs'),
-    mkdirp = require('make-dir'),
-    rimraf = require('rimraf'),
-    isWindows = require('is-windows'),
-    codeRoot = path.resolve(__dirname, 'sample-code'),
-    outputDir = path.resolve(__dirname, 'coverage'),
-    configuration = require('../lib/config'),
-    instrument = require('../lib/run-instrument'),
-    ms = require('memory-streams'),
-    vm = require('vm'),
-    hijack = require('./hijack-streams'),
-    wrap = hijack.wrap;
+const path = require('path');
+const fs = require('fs');
+const vm = require('vm');
+const assert = require('chai').assert;
+const mkdirp = require('make-dir');
+const rimraf = require('rimraf');
+const isWindows = require('is-windows');
+const ms = require('memory-streams');
+const configuration = require('../lib/config');
+const instrument = require('../lib/run-instrument');
+const hijack = require('./hijack-streams');
+
+const codeRoot = path.resolve(__dirname, 'sample-code');
+const outputDir = path.resolve(__dirname, 'coverage');
+const wrap = hijack.wrap;
 
 describe('run instrument', function() {
     if (isWindows()) {
@@ -21,7 +22,7 @@ describe('run instrument', function() {
     }
 
     function getConfig(overrides) {
-        var cfg = configuration.loadObject(
+        const cfg = configuration.loadObject(
             {
                 verbose: false,
                 instrumentation: {
@@ -37,7 +38,7 @@ describe('run instrument', function() {
     }
 
     function assertValidCode(code) {
-        assert.doesNotThrow(function() {
+        assert.doesNotThrow(() => {
             vm.createScript(code, 'foo.js');
         }, 'Invalid code generated; logging interference perhaps?');
     }
@@ -46,25 +47,23 @@ describe('run instrument', function() {
         return path.resolve(outputDir, f);
     }
 
-    beforeEach(function() {
+    beforeEach(() => {
         mkdirp.sync(outputDir);
     });
 
-    afterEach(function() {
+    afterEach(() => {
         rimraf.sync(outputDir);
     });
 
-    describe('single file', function() {
-        var memStream, origWrite;
+    describe('single file', () => {
+        let memStream;
+        let origWrite;
 
-        beforeEach(function() {
+        beforeEach(() => {
             memStream = new ms.WritableStream();
             origWrite = process.stdout.write;
-            process.stdout.write = function() {
-                memStream.write.apply(
-                    memStream,
-                    Array.prototype.slice.call(arguments)
-                );
+            process.stdout.write = function(...args) {
+                memStream.write(...args);
             };
         });
 
@@ -74,22 +73,22 @@ describe('run instrument', function() {
         }
 
         afterEach(reset);
-        it('works with default options for a single file', function(cb) {
+        it('works with default options for a single file', cb => {
             instrument.run(
                 getConfig(),
                 { input: path.resolve(codeRoot, 'foo.js') },
-                function(err) {
+                err => {
                     assert.ok(!err);
                     assertValidCode(memStream.toString());
                     reset(cb);
                 }
             );
         });
-        it('preserves comments in output', function(cb) {
+        it('preserves comments in output', cb => {
             instrument.run(
                 getConfig({ instrumentation: { 'preserve-comments': true } }),
                 { input: path.resolve(codeRoot, 'foo.js') },
-                function(err) {
+                err => {
                     assert.ok(!err);
                     assert.ok(
                         memStream.toString().match(/call bind in mainline/)
@@ -99,20 +98,20 @@ describe('run instrument', function() {
                 }
             );
         });
-        it('works with compact as default', function(cb) {
+        it('works with compact as default', cb => {
             instrument.run(
                 getConfig(),
                 { input: path.resolve(codeRoot, 'foo.js') },
-                function(err) {
+                err => {
                     assert.ok(!err);
-                    var pass1 = memStream.toString();
+                    const pass1 = memStream.toString();
                     memStream = new ms.WritableStream();
                     instrument.run(
                         getConfig({ instrumentation: { compact: false } }),
                         { input: path.resolve(codeRoot, 'foo.js') },
-                        function(err) {
+                        err => {
                             assert.ok(!err);
-                            var pass2 = memStream.toString();
+                            const pass2 = memStream.toString();
                             assert.ok(pass2.length > pass1.length);
                             reset(cb);
                         }
@@ -126,14 +125,14 @@ describe('run instrument', function() {
                 return this.skip();
             }
 
-            var outFile = path.resolve(outputDir, 'foo.js');
+            const outFile = path.resolve(outputDir, 'foo.js');
             instrument.run(
                 getConfig(),
                 {
                     input: path.resolve(codeRoot, 'foo.js'),
                     output: outFile
                 },
-                function(err) {
+                err => {
                     assert.ok(!err);
                     assert.ok(fs.existsSync(outFile));
                     assertValidCode(fs.readFileSync(outFile, 'utf8'));
@@ -143,16 +142,16 @@ describe('run instrument', function() {
         });
     });
 
-    describe('multiple files', function() {
+    describe('multiple files', () => {
         beforeEach(hijack.silent);
         afterEach(hijack.reset);
 
-        it('instruments multiple files', function(cb) {
+        it('instruments multiple files', cb => {
             cb = wrap(cb);
             instrument.run(
                 getConfig({ verbose: true }),
                 { input: codeRoot, output: outputDir },
-                function(err) {
+                err => {
                     assert.ok(!err);
                     assert.ok(fs.existsSync(outFile('foo.js')));
                     assert.ok(fs.existsSync(outFile('context.js')));
@@ -161,7 +160,7 @@ describe('run instrument', function() {
                 }
             );
         });
-        it('saves baseline coverage when requested', function(cb) {
+        it('saves baseline coverage when requested', cb => {
             cb = wrap(cb);
             instrument.run(
                 getConfig({
@@ -173,7 +172,7 @@ describe('run instrument', function() {
                     }
                 }),
                 { input: codeRoot, output: outputDir },
-                function(err) {
+                err => {
                     assert.ok(!err);
                     assert.ok(fs.existsSync(outFile('foo.js')));
                     assert.ok(fs.existsSync(outFile('node_modules/adder.js')));
@@ -183,21 +182,21 @@ describe('run instrument', function() {
             );
         });
     });
-    describe('negative tests', function() {
+    describe('negative tests', () => {
         beforeEach(hijack.silent);
         afterEach(hijack.reset);
 
-        it('barfs on no inputs', function(cb) {
+        it('barfs on no inputs', cb => {
             cb = wrap(cb);
-            instrument.run(getConfig(), null, function(err) {
+            instrument.run(getConfig(), null, err => {
                 assert.ok(err);
                 assert.equal(err.message, 'No input specified');
                 cb();
             });
         });
-        it('barfs on directory coverage when output option not provided', function(cb) {
+        it('barfs on directory coverage when output option not provided', cb => {
             cb = wrap(cb);
-            instrument.run(getConfig(), { input: codeRoot }, function(err) {
+            instrument.run(getConfig(), { input: codeRoot }, err => {
                 assert.ok(err);
                 assert.equal(
                     err.message,
@@ -206,12 +205,12 @@ describe('run instrument', function() {
                 cb();
             });
         });
-        it('barfs on directory coverage when output == input', function(cb) {
+        it('barfs on directory coverage when output == input', cb => {
             cb = wrap(cb);
             instrument.run(
                 getConfig(),
                 { input: codeRoot, output: codeRoot },
-                function(err) {
+                err => {
                     assert.ok(err);
                     assert.equal(
                         err.message,
@@ -222,28 +221,28 @@ describe('run instrument', function() {
             );
         });
     });
-    describe('complete copy', function() {
+    describe('complete copy', () => {
         beforeEach(hijack.silent);
         afterEach(hijack.reset);
 
-        it('does not copy non-JS files by default', function(cb) {
+        it('does not copy non-JS files by default', cb => {
             cb = wrap(cb);
             instrument.run(
                 getConfig(),
                 { input: codeRoot, output: outputDir },
-                function(err) {
+                err => {
                     assert.ok(!err);
                     assert.ok(!fs.existsSync(outFile('styles.css')));
                     cb();
                 }
             );
         });
-        it('copies non-JS files when requested', function(cb) {
+        it('copies non-JS files when requested', cb => {
             cb = wrap(cb);
             instrument.run(
                 getConfig({ instrumentation: { 'complete-copy': true } }),
                 { input: codeRoot, output: outputDir },
-                function(err) {
+                err => {
                     assert.ok(!err);
                     assert.ok(fs.existsSync(outFile('styles.css')));
                     cb();

@@ -35,7 +35,7 @@ class SourceCoverage extends classes.FileCoverage {
     }
 
     newStatement(loc) {
-        var s = this.meta.last.s;
+        const s = this.meta.last.s;
         this.data.statementMap[s] = cloneLocation(loc);
         this.data.s[s] = 0;
         this.meta.last.s += 1;
@@ -43,10 +43,10 @@ class SourceCoverage extends classes.FileCoverage {
     }
 
     newFunction(name, decl, loc) {
-        var f = this.meta.last.f;
+        const f = this.meta.last.f;
         name = name || '(anonymous_' + f + ')';
         this.data.fnMap[f] = {
-            name: name,
+            name,
             decl: cloneLocation(decl),
             loc: cloneLocation(loc),
             // DEPRECATED: some legacy reports require this info.
@@ -58,11 +58,11 @@ class SourceCoverage extends classes.FileCoverage {
     }
 
     newBranch(type, loc) {
-        var b = this.meta.last.b;
+        const b = this.meta.last.b;
         this.data.b[b] = [];
         this.data.branchMap[b] = {
             loc: cloneLocation(loc),
-            type: type,
+            type,
             locations: [],
             // DEPRECATED: some legacy reports require this info.
             line: loc && loc.start.line
@@ -72,8 +72,8 @@ class SourceCoverage extends classes.FileCoverage {
     }
 
     addBranchPath(name, location) {
-        var bMeta = this.data.branchMap[name],
-            counts = this.data.b[name];
+        const bMeta = this.data.branchMap[name];
+        const counts = this.data.b[name];
 
         /* istanbul ignore if: paranoid check */
         if (!bMeta) {
@@ -95,9 +95,9 @@ class SourceCoverage extends classes.FileCoverage {
 
     freeze() {
         // prune empty branches
-        var map = this.data.branchMap,
-            branches = this.data.b;
-        Object.keys(map).forEach(function(b) {
+        const map = this.data.branchMap;
+        const branches = this.data.b;
+        Object.keys(map).forEach(b => {
             if (map[b].locations.length === 0) {
                 delete map[b];
                 delete branches[b];

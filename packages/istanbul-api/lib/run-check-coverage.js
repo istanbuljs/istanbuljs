@@ -2,29 +2,29 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    fs = require('fs'),
-    filesFor = require('./file-matcher').filesFor,
-    libCoverage = require('istanbul-lib-coverage'),
-    inputError = require('./input-error'),
-    isAbsolute =
-        path.isAbsolute ||
-        function(file) {
-            return path.resolve(file) === path.normalize(file);
-        };
+const path = require('path');
+const fs = require('fs');
+const libCoverage = require('istanbul-lib-coverage');
+const filesFor = require('./file-matcher').filesFor;
+const inputError = require('./input-error');
+const isAbsolute =
+    path.isAbsolute ||
+    function(file) {
+        return path.resolve(file) === path.normalize(file);
+    };
 
 function removeFiles(origMap, root, files) {
-    var filesObj = {},
-        ret = libCoverage.createCoverageMap();
+    const filesObj = {};
+    const ret = libCoverage.createCoverageMap();
 
     // Create lookup table.
-    files.forEach(function(file) {
+    files.forEach(file => {
         filesObj[file] = true;
     });
 
-    origMap.files().forEach(function(key) {
+    origMap.files().forEach(key => {
         // Exclude keys will always be relative, but covObj keys can be absolute or relative
-        var excludeKey = isAbsolute(key) ? path.relative(root, key) : key;
+        let excludeKey = isAbsolute(key) ? path.relative(root, key) : key;
         // Also normalize for files that start with `./`, etc.
         excludeKey = path.normalize(excludeKey);
         if (filesObj[excludeKey] !== true) {
@@ -43,18 +43,15 @@ function run(config, opts, callback) {
 
     opts = opts || {};
 
-    var root = opts.root || config.instrumentation.root() || process.cwd(),
-        includePattern = opts.include || '**/coverage*.json',
-        errors = [],
-        check,
-        makeMap,
-        processFiles;
+    const root = opts.root || config.instrumentation.root() || process.cwd();
+    const includePattern = opts.include || '**/coverage*.json';
+    const errors = [];
 
-    check = function(name, thresholds, actuals) {
-        ['statements', 'branches', 'lines', 'functions'].forEach(function(key) {
-            var actual = actuals[key].pct,
-                actualUncovered = actuals[key].total - actuals[key].covered,
-                threshold = thresholds[key];
+    const check = function(name, thresholds, actuals) {
+        ['statements', 'branches', 'lines', 'functions'].forEach(key => {
+            const actual = actuals[key].pct;
+            const actualUncovered = actuals[key].total - actuals[key].covered;
+            const threshold = thresholds[key];
 
             if (threshold < 0) {
                 if (threshold * -1 < actualUncovered) {
@@ -88,48 +85,47 @@ function run(config, opts, callback) {
         });
     };
 
-    makeMap = function(files, callback) {
-        var coverageMap = libCoverage.createCoverageMap();
+    const makeMap = function(files, callback) {
+        const coverageMap = libCoverage.createCoverageMap();
         if (files.length === 0) {
             return callback(
                 inputError.create('ERROR: No coverage files found.')
             );
         }
-        files.forEach(function(file) {
-            var coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
+        files.forEach(file => {
+            const coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
             coverageMap.merge(coverageObject);
         });
         return callback(null, coverageMap);
     };
 
-    processFiles = function(coverageMap, callback) {
-        var thresholds = {
-                global: {
-                    statements: config.check.global.statements || 0,
-                    branches: config.check.global.branches || 0,
-                    lines: config.check.global.lines || 0,
-                    functions: config.check.global.functions || 0,
-                    excludes: config.check.global.excludes || []
-                },
-                each: {
-                    statements: config.check.each.statements || 0,
-                    branches: config.check.each.branches || 0,
-                    lines: config.check.each.lines || 0,
-                    functions: config.check.each.functions || 0,
-                    excludes: config.check.each.excludes || []
-                }
+    const processFiles = function(coverageMap, callback) {
+        const thresholds = {
+            global: {
+                statements: config.check.global.statements || 0,
+                branches: config.check.global.branches || 0,
+                lines: config.check.global.lines || 0,
+                functions: config.check.global.functions || 0,
+                excludes: config.check.global.excludes || []
             },
-            globalResults = removeFiles(
-                coverageMap,
-                root,
-                thresholds.global.excludes
-            ),
-            eachResults = removeFiles(
-                coverageMap,
-                root,
-                thresholds.each.excludes
-            ),
-            finalError;
+            each: {
+                statements: config.check.each.statements || 0,
+                branches: config.check.each.branches || 0,
+                lines: config.check.each.lines || 0,
+                functions: config.check.each.functions || 0,
+                excludes: config.check.each.excludes || []
+            }
+        };
+        const globalResults = removeFiles(
+            coverageMap,
+            root,
+            thresholds.global.excludes
+        );
+        const eachResults = removeFiles(
+            coverageMap,
+            root,
+            thresholds.each.excludes
+        );
 
         if (config.verbose) {
             console.error('Compare actuals against thresholds');
@@ -138,7 +134,7 @@ function run(config, opts, callback) {
                     {
                         global: globalResults,
                         each: eachResults,
-                        thresholds: thresholds
+                        thresholds
                     },
                     undefined,
                     4
@@ -147,24 +143,24 @@ function run(config, opts, callback) {
         }
 
         check('global', thresholds.global, globalResults.getCoverageSummary());
-        eachResults.files().forEach(function(key) {
-            var summary = eachResults.fileCoverageFor(key).toSummary();
+        eachResults.files().forEach(key => {
+            const summary = eachResults.fileCoverageFor(key).toSummary();
             check('per-file' + ' (' + key + ') ', thresholds.each, summary);
         });
-        finalError = errors.length === 0 ? null : errors.join('\n');
+        const finalError = errors.length === 0 ? null : errors.join('\n');
         return callback(finalError);
     };
 
     filesFor(
         {
-            root: root,
+            root,
             includes: [includePattern]
         },
-        function(err, files) {
+        (err, files) => {
             if (err) {
                 return callback(err);
             }
-            makeMap(files, function(err, map) {
+            makeMap(files, (err, map) => {
                 if (err) {
                     return callback(err);
                 }
@@ -175,5 +171,5 @@ function run(config, opts, callback) {
 }
 
 module.exports = {
-    run: run
+    run
 };

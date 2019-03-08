@@ -10,15 +10,13 @@ function TextSummaryReport(opts) {
 }
 
 function lineForKey(summary, key) {
-    var metrics = summary[key],
-        skipped,
-        result;
+    const metrics = summary[key];
 
     key = key.substring(0, 1).toUpperCase() + key.substring(1);
     if (key.length < 12) {
         key += '                   '.substring(0, 12 - key.length);
     }
-    result = [
+    const result = [
         key,
         ':',
         metrics.pct + '%',
@@ -26,23 +24,22 @@ function lineForKey(summary, key) {
         metrics.covered + '/' + metrics.total,
         ')'
     ].join(' ');
-    skipped = metrics.skipped;
+    const skipped = metrics.skipped;
     if (skipped > 0) {
-        result += ', ' + skipped + ' ignored';
+        return result + ', ' + skipped + ' ignored';
     }
     return result;
 }
 
 TextSummaryReport.prototype.onStart = function(node, context) {
-    var summary = node.getCoverageSummary(),
-        cw,
-        printLine = function(key) {
-            var str = lineForKey(summary, key),
-                clazz = context.classForPercent(key, summary[key].pct);
-            cw.println(cw.colorize(str, clazz));
-        };
+    const summary = node.getCoverageSummary();
+    const cw = context.writer.writeFile(this.file);
+    const printLine = function(key) {
+        const str = lineForKey(summary, key);
+        const clazz = context.classForPercent(key, summary[key].pct);
+        cw.println(cw.colorize(str, clazz));
+    };
 
-    cw = context.writer.writeFile(this.file);
     cw.println('');
     cw.println(
         '=============================== Coverage summary ==============================='

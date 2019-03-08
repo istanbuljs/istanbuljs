@@ -1,34 +1,33 @@
 /* globals describe, it, before */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    fileset = require('fileset'),
-    root = path.resolve(__dirname, 'data', 'matcher'),
-    src = '../lib/file-matcher.js',
-    fileMatcher = require(src),
-    allFiles;
+const path = require('path');
+const assert = require('chai').assert;
+const fileset = require('fileset');
+const src = '../lib/file-matcher.js';
 
-describe('file matcher', function() {
-    before(function(cb) {
+const root = path.resolve(__dirname, 'data', 'matcher');
+const fileMatcher = require(src);
+let allFiles;
+
+describe('file matcher', () => {
+    before(cb => {
         if (!allFiles) {
-            fileset('**/*.js', '', { cwd: root }, function(err, files) {
-                allFiles = files.map(function(file) {
-                    return path.resolve(root, file);
-                });
+            fileset('**/*.js', '', { cwd: root }, (err, files) => {
+                allFiles = files.map(file => path.resolve(root, file));
                 cb();
             });
         } else {
             cb();
         }
     });
-    it('returns all files except those under node_modules by default', function(cb) {
-        fileMatcher.filesFor(function(err, files) {
+    it('returns all files except those under node_modules by default', cb => {
+        fileMatcher.filesFor((err, files) => {
             assert.ok(!err);
-            allFiles.forEach(function(file) {
-                var matcher = function(f) {
-                        return f === file;
-                    },
-                    shouldMatch = file.indexOf('file.js') < 0;
+            allFiles.forEach(file => {
+                const matcher = function(f) {
+                    return f === file;
+                };
+                const shouldMatch = file.indexOf('file.js') < 0;
                 if (shouldMatch) {
                     assert.ok(
                         files.filter(matcher).length,
@@ -44,19 +43,19 @@ describe('file matcher', function() {
             cb();
         });
     });
-    it('returns relative filenames when requested', function(cb) {
+    it('returns relative filenames when requested', cb => {
         fileMatcher.filesFor(
             {
-                root: root,
+                root,
                 relative: true
             },
-            function(err, files) {
+            (err, files) => {
                 assert.ok(!err);
-                allFiles.forEach(function(file) {
-                    var matcher = function(f) {
-                            return path.resolve(root, f) === file;
-                        },
-                        shouldMatch = file.indexOf('file.js') < 0;
+                allFiles.forEach(file => {
+                    const matcher = function(f) {
+                        return path.resolve(root, f) === file;
+                    };
+                    const shouldMatch = file.indexOf('file.js') < 0;
                     if (shouldMatch) {
                         assert.ok(
                             files.filter(matcher).length,
@@ -73,8 +72,8 @@ describe('file matcher', function() {
             }
         );
     });
-    it('matches stuff under cwd', function(cb) {
-        fileMatcher.matcherFor(function(err, matchFn) {
+    it('matches stuff under cwd', cb => {
+        fileMatcher.matcherFor((err, matchFn) => {
             assert.ok(!err);
             assert.ok(
                 matchFn(path.resolve(__dirname, src)),
@@ -83,8 +82,8 @@ describe('file matcher', function() {
             cb();
         });
     });
-    it('matches stuff under cwd overriding relative opts passed in', function(cb) {
-        fileMatcher.matcherFor({ relative: true }, function(err, matchFn) {
+    it('matches stuff under cwd overriding relative opts passed in', cb => {
+        fileMatcher.matcherFor({ relative: true }, (err, matchFn) => {
             assert.ok(!err);
             assert.ok(
                 matchFn(path.resolve(__dirname, src)),
@@ -93,20 +92,16 @@ describe('file matcher', function() {
             cb();
         });
     });
-    it('ignores node_modules', function(cb) {
-        fileMatcher.matcherFor({ root: root }, function(err, matchFn) {
+    it('ignores node_modules', cb => {
+        fileMatcher.matcherFor({ root }, (err, matchFn) => {
             assert.ok(!err);
             assert.ok(matchFn.files);
             assert.deepEqual(
                 matchFn.files.sort(),
-                allFiles
-                    .filter(function(f) {
-                        return !f.match(/node_modules/);
-                    })
-                    .sort()
+                allFiles.filter(f => !f.match(/node_modules/)).sort()
             );
-            allFiles.forEach(function(file) {
-                var shouldMatch = file.indexOf('file.js') < 0;
+            allFiles.forEach(file => {
+                const shouldMatch = file.indexOf('file.js') < 0;
                 if (shouldMatch) {
                     assert.ok(
                         matchFn(file),
@@ -122,20 +117,20 @@ describe('file matcher', function() {
             cb();
         });
     });
-    it('matches stuff with explicit includes and excludes', function(cb) {
+    it('matches stuff with explicit includes and excludes', cb => {
         fileMatcher.matcherFor(
             {
-                root: root,
+                root,
                 includes: ['**/general/**/*.js'],
                 excludes: ['**/general.js']
             },
-            function(err, matchFn) {
+            (err, matchFn) => {
                 assert.ok(!err);
-                allFiles.forEach(function(file) {
+                allFiles.forEach(file => {
                     if (file.indexOf('/general/') < 0) {
                         return;
                     }
-                    var shouldMatch = file.indexOf('file.js') >= 0;
+                    const shouldMatch = file.indexOf('file.js') >= 0;
                     if (shouldMatch) {
                         assert.ok(
                             matchFn(file),

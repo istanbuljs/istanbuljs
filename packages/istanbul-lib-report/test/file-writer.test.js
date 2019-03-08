@@ -1,27 +1,28 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    FileWriter = require('../lib/file-writer'),
-    path = require('path'),
-    dataDir = path.resolve(__dirname, '.data'),
-    mkdirp = require('make-dir'),
-    rimraf = require('rimraf'),
-    fs = require('fs');
+const fs = require('fs');
+const path = require('path');
+const assert = require('chai').assert;
+const mkdirp = require('make-dir');
+const rimraf = require('rimraf');
+const FileWriter = require('../lib/file-writer');
 
-describe('file-writer', function() {
-    var writer;
+const dataDir = path.resolve(__dirname, '.data');
 
-    beforeEach(function() {
+describe('file-writer', () => {
+    let writer;
+
+    beforeEach(() => {
         mkdirp.sync(dataDir);
         writer = new FileWriter(dataDir);
     });
 
-    afterEach(function() {
+    afterEach(() => {
         rimraf.sync(dataDir);
     });
 
-    it('returns a content writer for file', function() {
-        var cw = writer.writeFile('foo/bar.txt');
+    it('returns a content writer for file', () => {
+        const cw = writer.writeFile('foo/bar.txt');
         cw.println('hello');
         assert.equal('foo', cw.colorize('foo', 'unknown'));
         cw.close();
@@ -31,14 +32,14 @@ describe('file-writer', function() {
         );
     });
 
-    it('returns a console writer for terminal', function() {
-        var cw = writer.writeFile('-');
+    it('returns a console writer for terminal', () => {
+        const cw = writer.writeFile('-');
         cw.println('hello');
         assert.equal('foo', cw.colorize('foo'));
         cw.close();
     });
 
-    it('copies files', function() {
+    it('copies files', () => {
         writer.copyFile(__filename, 'out.txt');
         assert.equal(
             fs.readFileSync(path.resolve(dataDir, 'out.txt'), 'utf8'),
@@ -46,8 +47,8 @@ describe('file-writer', function() {
         );
     });
 
-    it('copies files while adding headers', function() {
-        var header =
+    it('copies files while adding headers', () => {
+        const header =
             '/* This is some header text, like a copyright or directive. */\n';
         writer.copyFile(__filename, 'out.txt', header);
         assert.equal(
@@ -56,9 +57,9 @@ describe('file-writer', function() {
         );
     });
 
-    it('provides writers for subdirs', function() {
-        var w = writer.writerForDir('foo'),
-            cw = w.writeFile('bar.txt');
+    it('provides writers for subdirs', () => {
+        const w = writer.writerForDir('foo');
+        const cw = w.writeFile('bar.txt');
         cw.println('hello');
         cw.close();
         assert.equal(
@@ -67,20 +68,18 @@ describe('file-writer', function() {
         );
     });
 
-    it('requires an initial path', function() {
-        assert.throws(function() {
-            return new FileWriter();
-        });
+    it('requires an initial path', () => {
+        assert.throws(() => new FileWriter());
     });
 
-    it('barfs on absolute paths', function() {
-        assert.throws(function() {
+    it('barfs on absolute paths', () => {
+        assert.throws(() => {
             writer.writeFile(__filename);
         });
-        assert.throws(function() {
+        assert.throws(() => {
             writer.copyFile(__filename, __filename);
         });
-        assert.throws(function() {
+        assert.throws(() => {
             writer.writerForDir(__dirname);
         });
     });

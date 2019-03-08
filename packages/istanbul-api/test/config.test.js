@@ -1,29 +1,30 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    configuration = require('../lib/config'),
-    oldCwd = process.cwd(),
-    newCwd = path.resolve(__dirname, 'config-data'),
-    config,
-    hijack = require('./hijack-streams'),
-    reset = hijack.reset;
+const path = require('path');
+const assert = require('chai').assert;
+const configuration = require('../lib/config');
+const hijack = require('./hijack-streams');
 
-describe('config', function() {
+const newCwd = path.resolve(__dirname, 'config-data');
+const oldCwd = process.cwd();
+let config;
+const reset = hijack.reset;
+
+describe('config', () => {
     beforeEach(hijack.silent);
     afterEach(reset);
 
-    describe('no explicit config', function() {
-        beforeEach(function() {
+    describe('no explicit config', () => {
+        beforeEach(() => {
             config = configuration.loadObject(null);
         });
 
-        it('sets verbose option', function() {
+        it('sets verbose option', () => {
             assert.equal(config.verbose, false);
             reset();
         });
-        it('sets sane instrument options', function() {
-            var iOpts = config.instrumentation;
+        it('sets sane instrument options', () => {
+            const iOpts = config.instrumentation;
             assert.equal(iOpts.root(), process.cwd());
             assert.equal(iOpts.defaultExcludes(), true);
             assert.equal(iOpts.variable(), '__coverage__');
@@ -44,24 +45,24 @@ describe('config', function() {
             ]);
             reset();
         });
-        it('sets correct reporting options', function() {
-            var rOpts = config.reporting;
+        it('sets correct reporting options', () => {
+            const rOpts = config.reporting;
             assert.equal(rOpts.print(), 'summary');
             assert.deepEqual(rOpts.reports(), ['lcov']);
             assert.equal(rOpts.dir(), './coverage');
             reset();
         });
-        it('sets correct hook options', function() {
-            var hOpts = config.hooks;
+        it('sets correct hook options', () => {
+            const hOpts = config.hooks;
             assert.equal(hOpts.hookRunInContext(), false);
             assert.equal(hOpts.hookRunInThisContext(), false);
             assert.equal(hOpts.postRequireHook(), null);
             reset();
         });
     });
-    describe('when overrides passed in', function() {
-        describe('as initial object', function() {
-            it('uses overrides', function() {
+    describe('when overrides passed in', () => {
+        describe('as initial object', () => {
+            it('uses overrides', () => {
                 config = configuration.loadObject({
                     instrumentation: {
                         compact: false,
@@ -73,8 +74,8 @@ describe('config', function() {
                 reset();
             });
         });
-        describe('as override object', function() {
-            it('uses overrides', function() {
+        describe('as override object', () => {
+            it('uses overrides', () => {
                 config = configuration.loadObject(
                     {},
                     {
@@ -91,8 +92,8 @@ describe('config', function() {
                 reset();
             });
         });
-        describe('at both levels', function() {
-            it('uses overrides', function() {
+        describe('at both levels', () => {
+            it('uses overrides', () => {
                 config = configuration.loadObject(
                     {
                         verbose: true,
@@ -115,7 +116,7 @@ describe('config', function() {
                 reset();
             });
         });
-        describe('deeper in the tree', function() {
+        describe('deeper in the tree', () => {
             config = configuration.loadObject({
                 check: {
                     global: {
@@ -127,14 +128,14 @@ describe('config', function() {
             reset();
         });
     });
-    describe('excludes array', function() {
-        it('honors default excludes when set', function() {
+    describe('excludes array', () => {
+        it('honors default excludes when set', () => {
             config = configuration.loadObject({
                 instrumentation: {
                     excludes: ['**/vendor/**']
                 }
             });
-            var iOpts = config.instrumentation;
+            const iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), [
                 '**/node_modules/**',
                 '**/vendor/**'
@@ -147,51 +148,51 @@ describe('config', function() {
             ]);
             reset();
         });
-        it('honors default excludes when not set', function() {
+        it('honors default excludes when not set', () => {
             config = configuration.loadObject({
                 instrumentation: {
                     'default-excludes': null,
                     excludes: ['**/vendor/**']
                 }
             });
-            var iOpts = config.instrumentation;
+            const iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), ['**/vendor/**']);
             assert.deepEqual(iOpts.excludes(true), ['**/vendor/**']);
             reset();
         });
-        it('returns nothing when defaults off and no excludes', function() {
+        it('returns nothing when defaults off and no excludes', () => {
             config = configuration.loadObject({
                 instrumentation: {
                     'default-excludes': null
                 }
             });
-            var iOpts = config.instrumentation;
+            const iOpts = config.instrumentation;
             assert.deepEqual(iOpts.excludes(), []);
             assert.deepEqual(iOpts.excludes(true), []);
             reset();
         });
     });
-    describe('file loading', function() {
-        it('fails on bad config file', function() {
-            assert.throws(function() {
-                return configuration.loadFile('/a/non/existent/path.js');
-            });
+    describe('file loading', () => {
+        it('fails on bad config file', () => {
+            assert.throws(() =>
+                configuration.loadFile('/a/non/existent/path.js')
+            );
             reset();
         });
-        it('uses default config when no default file found', function() {
+        it('uses default config when no default file found', () => {
             config = configuration.loadFile();
-            var defaultConfig = configuration.loadObject();
+            const defaultConfig = configuration.loadObject();
             assert.deepEqual(defaultConfig, config);
             reset();
         });
-        describe('when files present', function() {
-            beforeEach(function() {
+        describe('when files present', () => {
+            beforeEach(() => {
                 process.chdir(newCwd);
             });
-            afterEach(function() {
+            afterEach(() => {
                 process.chdir(oldCwd);
             });
-            it('uses default YAML config when not explicit', function() {
+            it('uses default YAML config when not explicit', () => {
                 config = configuration.loadFile(undefined, { verbose: true });
                 assert.equal(config.instrumentation.compact(), false);
                 assert.deepEqual(config.reporting.reports(), [
@@ -200,7 +201,7 @@ describe('config', function() {
                 ]);
                 reset();
             });
-            it('uses explicit file when provided', function() {
+            it('uses explicit file when provided', () => {
                 config = configuration.loadFile('cfg.json', { verbose: true });
                 assert.equal(config.instrumentation.compact(), true);
                 assert.deepEqual(config.reporting.reports(), ['lcov']);
@@ -210,19 +211,19 @@ describe('config', function() {
             });
         });
     });
-    describe('custom watermarks', function() {
-        it('loads from sparse config', function() {
+    describe('custom watermarks', () => {
+        it('loads from sparse config', () => {
             config = configuration.loadObject({
                 reporting: { watermarks: { statements: [10, 90] } }
             });
-            var w = config.reporting.watermarks();
+            const w = config.reporting.watermarks();
             assert.deepEqual(w.statements, [10, 90]);
             assert.deepEqual(w.branches, [50, 80]);
             assert.deepEqual(w.functions, [50, 80]);
             assert.deepEqual(w.lines, [50, 80]);
             reset();
         });
-        it('does not load any junk config', function() {
+        it('does not load any junk config', () => {
             config = configuration.loadObject({
                 reporting: {
                     watermarks: {
@@ -233,7 +234,7 @@ describe('config', function() {
                     }
                 }
             });
-            var w = config.reporting.watermarks();
+            const w = config.reporting.watermarks();
             assert.deepEqual(w.statements, [50, 80]);
             assert.deepEqual(w.branches, [50, 80]);
             assert.deepEqual(w.functions, [50, 80]);

@@ -2,32 +2,31 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    mkdirp = require('make-dir'),
-    once = require('once'),
-    async = require('async'),
-    fs = require('fs'),
-    filesFor = require('./file-matcher').filesFor,
-    libInstrument = require('istanbul-lib-instrument'),
-    libCoverage = require('istanbul-lib-coverage'),
-    inputError = require('./input-error');
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('make-dir');
+const once = require('once');
+const async = require('async');
+const libInstrument = require('istanbul-lib-instrument');
+const libCoverage = require('istanbul-lib-coverage');
+const filesFor = require('./file-matcher').filesFor;
+const inputError = require('./input-error');
 
 /*
  * Chunk file size to use when reading non JavaScript files in memory
  * and copying them over when using complete-copy flag.
  */
-var READ_FILE_CHUNK_SIZE = 64 * 1024;
+const READ_FILE_CHUNK_SIZE = 64 * 1024;
 
 function BaselineCollector(instrumenter) {
     this.instrumenter = instrumenter;
     this.map = libCoverage.createCoverageMap();
     this.instrument = instrumenter.instrument.bind(this.instrumenter);
 
-    var origInstrumentSync = instrumenter.instrumentSync;
-    this.instrumentSync = function() {
-        var args = Array.prototype.slice.call(arguments),
-            ret = origInstrumentSync.apply(this.instrumenter, args),
-            baseline = this.instrumenter.lastFileCoverage();
+    const origInstrumentSync = instrumenter.instrumentSync;
+    this.instrumentSync = function(...args) {
+        const ret = origInstrumentSync.apply(this.instrumenter, args);
+        const baseline = this.instrumenter.lastFileCoverage();
         this.map.addFileCoverage(baseline);
         return ret;
     };
@@ -40,71 +39,71 @@ BaselineCollector.prototype.getCoverage = function() {
 };
 
 function processFiles(instrumenter, opts, callback) {
-    var inputDir = opts.inputDir,
-        outputDir = opts.outputDir,
-        relativeNames = opts.names,
-        extensions = opts.extensions,
-        verbose = opts.verbose;
+    const inputDir = opts.inputDir;
+    const outputDir = opts.outputDir;
+    const relativeNames = opts.names;
+    const extensions = opts.extensions;
+    const verbose = opts.verbose;
 
-    var processor = function(name, callback) {
-            var inputFile = path.resolve(inputDir, name),
-                outputFile = path.resolve(outputDir, name),
-                inputFileExtension = path.extname(inputFile),
-                isJavaScriptFile = extensions.indexOf(inputFileExtension) > -1,
-                oDir = path.dirname(outputFile),
-                readStream,
-                writeStream;
+    const processor = function(name, callback) {
+        const inputFile = path.resolve(inputDir, name);
+        const outputFile = path.resolve(outputDir, name);
+        const inputFileExtension = path.extname(inputFile);
+        const isJavaScriptFile = extensions.indexOf(inputFileExtension) > -1;
+        const oDir = path.dirname(outputFile);
+        let readStream;
+        let writeStream;
 
-            callback = once(callback);
-            mkdirp.sync(oDir);
+        callback = once(callback);
+        mkdirp.sync(oDir);
 
-            /* istanbul ignore if */
-            if (fs.statSync(inputFile).isDirectory()) {
-                return callback(null, name);
-            }
+        /* istanbul ignore if */
+        if (fs.statSync(inputFile).isDirectory()) {
+            return callback(null, name);
+        }
 
-            if (isJavaScriptFile) {
-                fs.readFile(inputFile, 'utf8', function(err, data) {
-                    /* istanbul ignore if */ if (err) {
-                        return callback(err, name);
-                    }
-                    instrumenter.instrument(data, inputFile, function(
-                        iErr,
-                        instrumented
-                    ) {
+        if (isJavaScriptFile) {
+            fs.readFile(inputFile, 'utf8', (err, data) => {
+                /* istanbul ignore if */ if (err) {
+                    return callback(err, name);
+                }
+                instrumenter.instrument(
+                    data,
+                    inputFile,
+                    (iErr, instrumented) => {
                         if (iErr) {
                             return callback(iErr, name);
                         }
-                        fs.writeFile(outputFile, instrumented, 'utf8', function(
-                            err
-                        ) {
-                            return callback(err, name);
-                        });
-                    });
-                });
-            } else {
-                // non JavaScript file, copy it as is
-                readStream = fs.createReadStream(inputFile, {
-                    bufferSize: READ_FILE_CHUNK_SIZE
-                });
-                writeStream = fs.createWriteStream(outputFile);
+                        fs.writeFile(outputFile, instrumented, 'utf8', err =>
+                            callback(err, name)
+                        );
+                    }
+                );
+            });
+        } else {
+            // non JavaScript file, copy it as is
+            readStream = fs.createReadStream(inputFile, {
+                bufferSize: READ_FILE_CHUNK_SIZE
+            });
+            writeStream = fs.createWriteStream(outputFile);
 
-                readStream.on('error', callback);
-                writeStream.on('error', callback);
+            readStream.on('error', callback);
+            writeStream.on('error', callback);
 
-                readStream.pipe(writeStream);
-                readStream.on('end', function() {
-                    callback(null, name);
-                });
-            }
-        },
-        q = async.queue(processor, 10),
-        errors = [],
-        count = 0,
-        startTime = new Date().getTime();
+            readStream.pipe(writeStream);
+            readStream.on('end', () => {
+                callback(null, name);
+            });
+        }
+    };
+    const q = async.queue(processor, 10);
+    const errors = [];
+    let count = 0;
+    const startTime = new Date().getTime();
 
-    q.push(relativeNames, function(err, name) {
-        var inputFile, outputFile;
+    q.push(relativeNames, (err, name) => {
+        let inputFile;
+        let outputFile;
         if (err) {
             errors.push({
                 file: name,
@@ -125,7 +124,7 @@ function processFiles(instrumenter, opts, callback) {
     });
 
     q.drain = function() {
-        var endTime = new Date().getTime();
+        const endTime = new Date().getTime();
         console.error(
             '\nProcessed [' +
                 count +
@@ -147,25 +146,21 @@ function processFiles(instrumenter, opts, callback) {
 
 function run(config, opts, callback) {
     opts = opts || {};
-    var iOpts = config.instrumentation,
-        input = opts.input,
-        output = opts.output,
-        excludes = opts.excludes,
-        file,
-        stats,
-        stream,
-        includes,
-        instrumenter,
-        origCallback = callback,
-        needBaseline = iOpts.saveBaseline(),
-        baselineFile = path.resolve(iOpts.baselineFile());
+    const iOpts = config.instrumentation;
+    const input = opts.input;
+    const output = opts.output;
+    const excludes = opts.excludes;
+    let stream;
+    let includes;
+    let instrumenter;
+    const origCallback = callback;
+    const needBaseline = iOpts.saveBaseline();
+    const baselineFile = path.resolve(iOpts.baselineFile());
 
     if (iOpts.completeCopy()) {
         includes = ['**/*'];
     } else {
-        includes = iOpts.extensions().map(function(ext) {
-            return '**/*' + ext;
-        });
+        includes = iOpts.extensions().map(ext => '**/*' + ext);
     }
 
     if (!input) {
@@ -193,8 +188,8 @@ function run(config, opts, callback) {
         };
     }
 
-    file = path.resolve(input);
-    stats = fs.statSync(file);
+    const file = path.resolve(input);
+    const stats = fs.statSync(file);
     if (stats.isDirectory()) {
         if (!output) {
             return callback(
@@ -214,11 +209,11 @@ function run(config, opts, callback) {
         filesFor(
             {
                 root: file,
-                includes: includes,
+                includes,
                 excludes: excludes || iOpts.excludes(false),
                 relative: true
             },
-            function(err, files) {
+            (err, files) => {
                 /* istanbul ignore if */
                 if (err) {
                     return callback(err);
@@ -253,5 +248,5 @@ function run(config, opts, callback) {
 }
 
 module.exports = {
-    run: run
+    run
 };

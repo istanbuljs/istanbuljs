@@ -11,7 +11,7 @@ boundToTen(9);
 
 if (typeof module !== 'undefined') {
     module.exports = {
-        boundToTen: boundToTen,
-        lessThan: lessThan
+        boundToTen,
+        lessThan
     };
 }

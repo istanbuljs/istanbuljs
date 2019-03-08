@@ -1,24 +1,24 @@
 /* globals describe, it */
-var fs = require('fs'),
-    annotator = require('../../lib/html/annotator'),
-    istanbulLibCoverage = require('istanbul-lib-coverage');
+const fs = require('fs');
+const istanbulLibCoverage = require('istanbul-lib-coverage');
+const annotator = require('../../lib/html/annotator');
 
 require('chai').should();
 
 function getFixture(fixtureName) {
-    var fileCoverage = istanbulLibCoverage.createFileCoverage('foo.js');
+    const fileCoverage = istanbulLibCoverage.createFileCoverage('foo.js');
     fileCoverage.data = require('../fixtures/' + fixtureName + '.json');
     return fileCoverage;
 }
 
-describe('annotator', function() {
-    describe('annotateSourceCode', function() {
+describe('annotator', () => {
+    describe('annotateSourceCode', () => {
         // see: https://github.com/istanbuljs/istanbul-reports/pull/10
-        it('handles structuredText missing entry for startLine', function() {
-            var annotated = annotator.annotateSourceCode(
+        it('handles structuredText missing entry for startLine', () => {
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-10'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return '';
                     }
                 }
@@ -27,11 +27,11 @@ describe('annotator', function() {
         });
 
         // see: https://github.com/istanbuljs/istanbul-reports/pull/11
-        it('handles missing branch meta information', function() {
-            var annotated = annotator.annotateSourceCode(
+        it('handles missing branch meta information', () => {
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-11'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return fs.readFileSync('index.js', 'utf-8');
                     }
                 }
@@ -40,11 +40,11 @@ describe('annotator', function() {
         });
 
         // see: https://github.com/istanbuljs/istanbuljs/pull/80
-        it('handles statement meta information with end column less than start column', function() {
-            var annotated = annotator.annotateSourceCode(
+        it('handles statement meta information with end column less than start column', () => {
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-80a'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return '  var test = "test";';
                     }
                 }
@@ -55,11 +55,11 @@ describe('annotator', function() {
         });
 
         // see: https://github.com/istanbuljs/istanbuljs/pull/80
-        it('handles function meta information with end column less than start column', function() {
-            var annotated = annotator.annotateSourceCode(
+        it('handles function meta information with end column less than start column', () => {
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-80b'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return '  function test () {};';
                     }
                 }
@@ -70,11 +70,11 @@ describe('annotator', function() {
         });
 
         // see: https://github.com/istanbuljs/istanbuljs/pull/80
-        it('handles branch meta information with end column less than start column', function() {
-            var annotated = annotator.annotateSourceCode(
+        it('handles branch meta information with end column less than start column', () => {
+            const annotated = annotator.annotateSourceCode(
                 getFixture('github-80c'),
                 {
-                    getSource: function() {
+                    getSource() {
                         return 'if (cond1 && cond2) {';
                     }
                 }

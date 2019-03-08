@@ -1,33 +1,33 @@
 /* globals describe, it */
 
-var assert = require('chai').assert,
-    CoverageSummary = require('../lib/file').CoverageSummary,
-    CoverageMap = require('../lib/coverage-map').CoverageMap,
-    index = require('../index');
+const assert = require('chai').assert;
+const CoverageSummary = require('../lib/file').CoverageSummary;
+const CoverageMap = require('../lib/coverage-map').CoverageMap;
+const index = require('../index');
 
-describe('external interface', function() {
-    it('exports the FileCoverage constructor', function() {
+describe('external interface', () => {
+    it('exports the FileCoverage constructor', () => {
         assert.isFunction(index.classes.FileCoverage);
     });
-    it('allows coverage summary creation', function() {
-        var fc = index.createCoverageSummary(),
-            fc2;
+    it('allows coverage summary creation', () => {
+        const fc = index.createCoverageSummary();
         assert.ok(fc instanceof CoverageSummary);
-        fc2 = index.createCoverageSummary(fc);
+
+        const fc2 = index.createCoverageSummary(fc);
         assert.ok(fc2 === fc);
     });
-    it('allows coverage map creation', function() {
-        var fc = index.createCoverageMap(),
-            fc2;
+    it('allows coverage map creation', () => {
+        const fc = index.createCoverageMap();
         assert.ok(fc instanceof CoverageMap);
-        fc2 = index.createCoverageMap(fc);
+
+        const fc2 = index.createCoverageMap(fc);
         assert.ok(fc2 === fc);
     });
-    it('allows file coverage creation', function() {
-        var fc = index.createFileCoverage('/path/to/foo.js'),
-            fc2;
+    it('allows file coverage creation', () => {
+        const fc = index.createFileCoverage('/path/to/foo.js');
         assert.ok(fc instanceof index.classes.FileCoverage);
-        fc2 = index.createFileCoverage(fc);
+
+        const fc2 = index.createFileCoverage(fc);
         assert.ok(fc2 === fc);
     });
 });

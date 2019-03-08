@@ -2,16 +2,16 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    fs = require('fs'),
-    mkdirp = require('make-dir'),
-    compareVersions = require('compare-versions'),
-    matcherFor = require('./file-matcher').matcherFor,
-    libInstrument = require('istanbul-lib-instrument'),
-    libCoverage = require('istanbul-lib-coverage'),
-    libSourceMaps = require('istanbul-lib-source-maps'),
-    hook = require('istanbul-lib-hook'),
-    Reporter = require('./reporter');
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('make-dir');
+const compareVersions = require('compare-versions');
+const libInstrument = require('istanbul-lib-instrument');
+const libCoverage = require('istanbul-lib-coverage');
+const libSourceMaps = require('istanbul-lib-source-maps');
+const hook = require('istanbul-lib-hook');
+const matcherFor = require('./file-matcher').matcherFor;
+const Reporter = require('./reporter');
 
 function getCoverFunctions(config, includes, callback) {
     if (!callback && typeof includes === 'function') {
@@ -19,54 +19,44 @@ function getCoverFunctions(config, includes, callback) {
         includes = null;
     }
 
-    var includePid = config.instrumentation.includePid(),
-        reportingDir = path.resolve(config.reporting.dir()),
-        reporter = new Reporter(config),
-        excludes = config.instrumentation.excludes(true),
-        // The coverage variable below should have different value than
-        // that of the coverage variable actually used by the instrumenter (in this case: __coverage__).
-        // Otherwise if you run nyc to provide coverage on these files,
-        // both the actual instrumenter and this file will write to the global coverage variable,
-        // and provide unexpected coverage result.
-        coverageVar = '$$coverage$$',
-        instOpts = config.instrumentation.getInstrumenterOpts(),
-        sourceMapStore = libSourceMaps.createSourceMapStore({}),
-        instrumenter,
-        transformer,
-        runInContextTransformer,
-        runInThisContextTransformer,
-        fakeRequire,
-        requireTransformer,
-        reportInitFn,
-        hookFn,
-        unhookFn,
-        coverageFinderFn,
-        coverageSetterFn,
-        beforeReportFn,
-        exitFn;
+    const includePid = config.instrumentation.includePid();
+    const reportingDir = path.resolve(config.reporting.dir());
+    const reporter = new Reporter(config);
+    const excludes = config.instrumentation.excludes(true);
+    // The coverage variable below should have different value than
+    // that of the coverage variable actually used by the instrumenter (in this case: __coverage__).
+    // Otherwise if you run nyc to provide coverage on these files,
+    // both the actual instrumenter and this file will write to the global coverage variable,
+    // and provide unexpected coverage result.
+    const coverageVar = '$$coverage$$';
+    const instOpts = config.instrumentation.getInstrumenterOpts();
+    const sourceMapStore = libSourceMaps.createSourceMapStore({});
+    let fakeRequire;
 
     instOpts.coverageVariable = coverageVar;
     instOpts.sourceMapUrlCallback = function(file, url) {
         sourceMapStore.registerURL(file, url);
     };
-    coverageFinderFn = function() {
+    const coverageFinderFn = function() {
         return global[coverageVar];
     };
-    instrumenter = libInstrument.createInstrumenter(instOpts);
-    transformer = function(code, options) {
-        var filename = typeof options === 'string' ? options : options.filename;
+    const instrumenter = libInstrument.createInstrumenter(instOpts);
+    const transformer = function(code, options) {
+        const filename =
+            typeof options === 'string' ? options : options.filename;
         return instrumenter.instrumentSync(code, filename);
     };
-    runInContextTransformer = function(code, options) {
+    const runInContextTransformer = function(code, options) {
         return transformer(code, options);
     };
-    runInThisContextTransformer = function(code, options) {
+    const runInThisContextTransformer = function(code, options) {
         return transformer(code, options);
     };
-    requireTransformer = function(code, options) {
-        var cov,
-            ret = transformer(code, options),
-            filename = typeof options === 'string' ? options : options.filename;
+    const requireTransformer = function(code, options) {
+        let cov;
+        const ret = transformer(code, options);
+        const filename =
+            typeof options === 'string' ? options : options.filename;
         if (fakeRequire) {
             cov = coverageFinderFn();
             cov[filename] = instrumenter.lastFileCoverage();
@@ -75,11 +65,11 @@ function getCoverFunctions(config, includes, callback) {
         return ret;
     };
 
-    coverageSetterFn = function(cov) {
+    const coverageSetterFn = function(cov) {
         global[coverageVar] = cov;
     };
 
-    reportInitFn = function() {
+    const reportInitFn = function() {
         // set up reporter
         mkdirp.sync(reportingDir); //ensure we fail early if we cannot do this
         reporter.addAll(config.reporting.reports());
@@ -99,9 +89,9 @@ function getCoverFunctions(config, includes, callback) {
         }
     };
 
-    var disabler;
-    hookFn = function(matchFn) {
-        var hookOpts = {
+    let disabler;
+    const hookFn = function(matchFn) {
+        const hookOpts = {
             verbose: config.verbose,
             extensions: config.instrumentation.extensions(),
             coverageVariable: coverageVar
@@ -132,7 +122,7 @@ function getCoverFunctions(config, includes, callback) {
         }
     };
 
-    unhookFn = function(matchFn) {
+    const unhookFn = function(matchFn) {
         if (disabler) {
             disabler();
         }
@@ -141,14 +131,14 @@ function getCoverFunctions(config, includes, callback) {
         hook.unloadRequireCache(matchFn);
     };
 
-    beforeReportFn = function(matchFn, cov) {
-        var pidExt = includePid ? '-' + process.pid : '',
-            file = path.resolve(
-                reportingDir,
-                'coverage' + pidExt + '.raw.json'
-            ),
-            missingFiles,
-            finalCoverage = cov;
+    const beforeReportFn = function(matchFn, cov) {
+        const pidExt = includePid ? '-' + process.pid : '';
+        const file = path.resolve(
+            reportingDir,
+            'coverage' + pidExt + '.raw.json'
+        );
+        let missingFiles;
+        const finalCoverage = cov;
 
         if (config.instrumentation.includeAllSources()) {
             if (config.verbose) {
@@ -157,14 +147,14 @@ function getCoverFunctions(config, includes, callback) {
             missingFiles = [];
             // Files that are not touched by code ran by the test runner is manually instrumented, to
             // illustrate the missing coverage.
-            matchFn.files.forEach(function(file) {
+            matchFn.files.forEach(file => {
                 if (!cov[file]) {
                     missingFiles.push(file);
                 }
             });
 
             fakeRequire = true;
-            missingFiles.forEach(function(file) {
+            missingFiles.forEach(file => {
                 try {
                     require(file);
                 } catch (ex) {
@@ -190,8 +180,8 @@ function getCoverFunctions(config, includes, callback) {
         return finalCoverage;
     };
 
-    exitFn = function(matchFn, reporterOpts) {
-        var cov, coverageMap, transformed;
+    const exitFn = function(matchFn, reporterOpts) {
+        let cov;
 
         cov = coverageFinderFn() || {};
         cov = beforeReportFn(matchFn, cov);
@@ -207,8 +197,8 @@ function getCoverFunctions(config, includes, callback) {
             return;
         }
 
-        coverageMap = libCoverage.createCoverageMap(cov);
-        transformed = sourceMapStore.transformCoverage(coverageMap);
+        const coverageMap = libCoverage.createCoverageMap(cov);
+        const transformed = sourceMapStore.transformCoverage(coverageMap);
         reporterOpts.sourceFinder = transformed.sourceFinder;
         reporter.write(transformed.map, reporterOpts);
         sourceMapStore.dispose();
@@ -219,17 +209,15 @@ function getCoverFunctions(config, includes, callback) {
     );
     includes =
         includes ||
-        config.instrumentation.extensions().map(function(ext) {
-            return '**/*' + ext;
-        });
-    var matchConfig = {
+        config.instrumentation.extensions().map(ext => '**/*' + ext);
+    const matchConfig = {
         root:
             config.instrumentation.root() ||
             /* istanbul ignore next: untestable */ process.cwd(),
-        includes: includes,
-        excludes: excludes
+        includes,
+        excludes
     };
-    matcherFor(matchConfig, function(err, matchFn) {
+    matcherFor(matchConfig, (err, matchFn) => {
         /* istanbul ignore if: untestable */
         if (err) {
             return callback(err);
@@ -244,5 +232,5 @@ function getCoverFunctions(config, includes, callback) {
 }
 
 module.exports = {
-    getCoverFunctions: getCoverFunctions
+    getCoverFunctions
 };

@@ -47,14 +47,14 @@ const testDataBackslash = {
     })
 };
 
-describe('transformer', function() {
-    it('maps statement locations', function() {
+describe('transformer', () => {
+    it('maps statement locations', () => {
         const coverageMap = createMap({});
         coverageMap.addFileCoverage(testDataSlash.coverageData);
 
-        const mapped = createTransformer(function() {
-            return new SMC(testDataSlash.sourceMap);
-        }).transform(coverageMap);
+        const mapped = createTransformer(
+            () => new SMC(testDataSlash.sourceMap)
+        ).transform(coverageMap);
 
         assert.deepEqual(
             mapped.data[testDataSlash.coverageData.path].statementMap,
@@ -71,17 +71,17 @@ describe('transformer', function() {
         );
     });
 
-    it('maps each file only once, /path/to/file.js and \\path\\to\\file.js are the same file', function() {
+    it('maps each file only once, /path/to/file.js and \\path\\to\\file.js are the same file', () => {
         const coverageMap = createMap({});
 
         coverageMap.addFileCoverage(testDataSlash.coverageData);
         coverageMap.addFileCoverage(testDataBackslash.coverageData);
 
-        const mapped = createTransformer(function(file) {
-            return file === testDataSlash.coverageData.path
+        const mapped = createTransformer(file =>
+            file === testDataSlash.coverageData.path
                 ? new SMC(testDataSlash.sourceMap)
-                : undefined;
-        }).transform(coverageMap);
+                : undefined
+        ).transform(coverageMap);
 
         assert.equal(Object.keys(mapped.data).length, 1);
         assert.isDefined(mapped.data[testDataBackslash.coverageData.path]);

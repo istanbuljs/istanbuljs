@@ -4,16 +4,16 @@
  */
 'use strict';
 
-var InsertionText = require('./insertion-text'),
-    lt = '\u0001',
-    gt = '\u0002',
-    RE_LT = /</g,
-    RE_GT = />/g,
-    RE_AMP = /&/g,
-    // eslint-disable-next-line
-    RE_lt = /\u0001/g,
-    // eslint-disable-next-line
-    RE_gt = /\u0002/g;
+const InsertionText = require('./insertion-text');
+const lt = '\u0001';
+const gt = '\u0002';
+const RE_LT = /</g;
+const RE_GT = />/g;
+const RE_AMP = /&/g;
+// eslint-disable-next-line
+var RE_lt = /\u0001/g;
+// eslint-disable-next-line
+var RE_gt = /\u0002/g;
 
 function title(str) {
     return ' title="' + str + '" ';
@@ -30,12 +30,12 @@ function customEscape(text) {
 }
 
 function annotateLines(fileCoverage, structuredText) {
-    var lineStats = fileCoverage.getLineCoverage();
+    const lineStats = fileCoverage.getLineCoverage();
     if (!lineStats) {
         return;
     }
-    Object.keys(lineStats).forEach(function(lineNumber) {
-        var count = lineStats[lineNumber];
+    Object.keys(lineStats).forEach(lineNumber => {
+        const count = lineStats[lineNumber];
         if (structuredText[lineNumber]) {
             structuredText[lineNumber].covered = count > 0 ? 'yes' : 'no';
             structuredText[lineNumber].hits = count;
@@ -44,25 +44,25 @@ function annotateLines(fileCoverage, structuredText) {
 }
 
 function annotateStatements(fileCoverage, structuredText) {
-    var statementStats = fileCoverage.s,
-        statementMeta = fileCoverage.statementMap;
-    Object.keys(statementStats).forEach(function(stName) {
-        var count = statementStats[stName],
-            meta = statementMeta[stName],
-            type = count > 0 ? 'yes' : 'no',
-            startCol = meta.start.column,
-            endCol = meta.end.column + 1,
-            startLine = meta.start.line,
-            endLine = meta.end.line,
-            openSpan =
-                lt +
-                'span class="' +
-                (meta.skip ? 'cstat-skip' : 'cstat-no') +
-                '"' +
-                title('statement not covered') +
-                gt,
-            closeSpan = lt + '/span' + gt,
-            text;
+    const statementStats = fileCoverage.s;
+    const statementMeta = fileCoverage.statementMap;
+    Object.keys(statementStats).forEach(stName => {
+        const count = statementStats[stName];
+        const meta = statementMeta[stName];
+        const type = count > 0 ? 'yes' : 'no';
+        const startCol = meta.start.column;
+        let endCol = meta.end.column + 1;
+        const startLine = meta.start.line;
+        const endLine = meta.end.line;
+        const openSpan =
+            lt +
+            'span class="' +
+            (meta.skip ? 'cstat-skip' : 'cstat-no') +
+            '"' +
+            title('statement not covered') +
+            gt;
+        const closeSpan = lt + '/span' + gt;
+        let text;
 
         if (type === 'no' && structuredText[startLine]) {
             if (endLine !== startLine) {
@@ -80,28 +80,28 @@ function annotateStatements(fileCoverage, structuredText) {
 }
 
 function annotateFunctions(fileCoverage, structuredText) {
-    var fnStats = fileCoverage.f,
-        fnMeta = fileCoverage.fnMap;
+    const fnStats = fileCoverage.f;
+    const fnMeta = fileCoverage.fnMap;
     if (!fnStats) {
         return;
     }
-    Object.keys(fnStats).forEach(function(fName) {
-        var count = fnStats[fName],
-            meta = fnMeta[fName],
-            type = count > 0 ? 'yes' : 'no',
-            startCol = meta.decl.start.column,
-            endCol = meta.decl.end.column + 1,
-            startLine = meta.decl.start.line,
-            endLine = meta.decl.end.line,
-            openSpan =
-                lt +
-                'span class="' +
-                (meta.skip ? 'fstat-skip' : 'fstat-no') +
-                '"' +
-                title('function not covered') +
-                gt,
-            closeSpan = lt + '/span' + gt,
-            text;
+    Object.keys(fnStats).forEach(fName => {
+        const count = fnStats[fName];
+        const meta = fnMeta[fName];
+        const type = count > 0 ? 'yes' : 'no';
+        const startCol = meta.decl.start.column;
+        let endCol = meta.decl.end.column + 1;
+        const startLine = meta.decl.start.line;
+        const endLine = meta.decl.end.line;
+        const openSpan =
+            lt +
+            'span class="' +
+            (meta.skip ? 'fstat-skip' : 'fstat-no') +
+            '"' +
+            title('function not covered') +
+            gt;
+        const closeSpan = lt + '/span' + gt;
+        let text;
 
         if (type === 'no' && structuredText[startLine]) {
             if (endLine !== startLine) {
@@ -119,28 +119,26 @@ function annotateFunctions(fileCoverage, structuredText) {
 }
 
 function annotateBranches(fileCoverage, structuredText) {
-    var branchStats = fileCoverage.b,
-        branchMeta = fileCoverage.branchMap;
+    const branchStats = fileCoverage.b;
+    const branchMeta = fileCoverage.branchMap;
     if (!branchStats) {
         return;
     }
 
-    Object.keys(branchStats).forEach(function(branchName) {
-        var branchArray = branchStats[branchName],
-            sumCount = branchArray.reduce(function(p, n) {
-                return p + n;
-            }, 0),
-            metaArray = branchMeta[branchName].locations,
-            i,
-            count,
-            meta,
-            startCol,
-            endCol,
-            startLine,
-            endLine,
-            openSpan,
-            closeSpan,
-            text;
+    Object.keys(branchStats).forEach(branchName => {
+        const branchArray = branchStats[branchName];
+        const sumCount = branchArray.reduce((p, n) => p + n, 0);
+        const metaArray = branchMeta[branchName].locations;
+        let i;
+        let count;
+        let meta;
+        let startCol;
+        let endCol;
+        let startLine;
+        let endLine;
+        let openSpan;
+        let closeSpan;
+        let text;
 
         // only highlight if partial branches are missing or if there is a
         // single uncovered branch.
@@ -213,20 +211,21 @@ function annotateBranches(fileCoverage, structuredText) {
 }
 
 function annotateSourceCode(fileCoverage, sourceStore) {
-    var codeArray, lineCoverageArray;
+    let codeArray;
+    let lineCoverageArray;
     try {
-        var sourceText = sourceStore.getSource(fileCoverage.path),
-            code = sourceText.split(/(?:\r?\n)|\r/),
-            count = 0,
-            structured = code.map(function(str) {
-                count += 1;
-                return {
-                    line: count,
-                    covered: 'neutral',
-                    hits: 0,
-                    text: new InsertionText(str, true)
-                };
-            });
+        const sourceText = sourceStore.getSource(fileCoverage.path);
+        const code = sourceText.split(/(?:\r?\n)|\r/);
+        let count = 0;
+        const structured = code.map(str => {
+            count += 1;
+            return {
+                line: count,
+                covered: 'neutral',
+                hits: 0,
+                text: new InsertionText(str, true)
+            };
+        });
         structured.unshift({
             line: 0,
             covered: null,
@@ -240,16 +239,14 @@ function annotateSourceCode(fileCoverage, sourceStore) {
         annotateStatements(fileCoverage, structured);
         structured.shift();
 
-        codeArray = structured.map(function(item) {
-            return customEscape(item.text.toString()) || '&nbsp;';
-        });
+        codeArray = structured.map(
+            item => customEscape(item.text.toString()) || '&nbsp;'
+        );
 
-        lineCoverageArray = structured.map(function(item) {
-            return {
-                covered: item.covered,
-                hits: item.hits > 0 ? item.hits + 'x' : '&nbsp;'
-            };
-        });
+        lineCoverageArray = structured.map(item => ({
+            covered: item.covered,
+            hits: item.hits > 0 ? item.hits + 'x' : '&nbsp;'
+        }));
 
         return {
             annotatedCode: codeArray,
@@ -261,7 +258,7 @@ function annotateSourceCode(fileCoverage, sourceStore) {
         lineCoverageArray = [{ covered: 'no', hits: 0 }];
         String(ex.stack || '')
             .split(/\r?\n/)
-            .forEach(function(line) {
+            .forEach(line => {
                 codeArray.push(line);
                 lineCoverageArray.push({ covered: 'no', hits: 0 });
             });
@@ -274,5 +271,5 @@ function annotateSourceCode(fileCoverage, sourceStore) {
 }
 
 module.exports = {
-    annotateSourceCode: annotateSourceCode
+    annotateSourceCode
 };

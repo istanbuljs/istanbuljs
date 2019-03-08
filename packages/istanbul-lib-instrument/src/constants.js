@@ -1,6 +1,6 @@
+import { createHash } from 'crypto';
 import { major } from 'semver';
 import { name, version } from '../package.json';
-import { createHash } from 'crypto';
 
 // function to use for creating hashes
 export const SHA = 'sha1';

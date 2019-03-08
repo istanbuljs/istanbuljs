@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var Reporter = require('./lib/reporter');
+const Reporter = require('./lib/reporter');
 /**
  * @module Exports
  */
@@ -12,7 +12,7 @@ module.exports = {
     reports: require('./lib/run-reports'),
     instrument: require('./lib/run-instrument'),
     checkCoverage: require('./lib/run-check-coverage'),
-    createReporter: function(cfg, opts) {
+    createReporter(cfg, opts) {
         return new Reporter(cfg, opts);
     },
     /**
@@ -50,19 +50,15 @@ module.exports = {
 // export all the istanbul libraries as is so users don't have to take 5 deps
 // that are potentially inconsistent
 
-var DASH_PATTERN = /-([a-z])/g;
+const DASH_PATTERN = /-([a-z])/g;
 
 function camelize(word) {
-    return word.replace(DASH_PATTERN, function(match, lch) {
-        return lch.toUpperCase();
-    });
+    return word.replace(DASH_PATTERN, (match, lch) => lch.toUpperCase());
 }
 
-['coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(function(
-    k
-) {
-    var mod = 'lib-' + k,
-        prop = camelize(mod);
+['coverage', 'hook', 'instrument', 'report', 'source-maps'].forEach(k => {
+    const mod = 'lib-' + k;
+    const prop = camelize(mod);
     module.exports[prop] = require('istanbul-' + mod);
 });
 

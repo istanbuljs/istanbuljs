@@ -1,5 +1,5 @@
 module.exports = {
-    baz: function() {
+    baz() {
         return 'baz';
     }
 };

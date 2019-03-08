@@ -3,28 +3,28 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
+import { assert } from 'chai';
 import * as verifier from './util/verifier';
 import * as guards from './util/guards';
-import { assert } from 'chai';
 
 const clone = require('clone');
 
-const dir = path.resolve(__dirname, 'specs'),
-    files = fs.readdirSync(dir).filter(function(f) {
-        var match = true;
-        if (process.env.FILTER) {
-            match = new RegExp(`.*${process.env.FILTER}.*`).test(f);
-        }
-        return f.match(/\.yaml$/) && match;
-    });
+const dir = path.resolve(__dirname, 'specs');
+const files = fs.readdirSync(dir).filter(f => {
+    let match = true;
+    if (process.env.FILTER) {
+        match = new RegExp(`.*${process.env.FILTER}.*`).test(f);
+    }
+    return f.match(/\.yaml$/) && match;
+});
 
 function loadDocs() {
-    var docs = [];
-    files.forEach(function(f) {
-        var filePath = path.resolve(dir, f),
-            contents = fs.readFileSync(filePath, 'utf8');
+    const docs = [];
+    files.forEach(f => {
+        const filePath = path.resolve(dir, f);
+        const contents = fs.readFileSync(filePath, 'utf8');
         try {
-            yaml.safeLoadAll(contents, function(obj) {
+            yaml.safeLoadAll(contents, obj => {
                 obj.file = f;
                 docs.push(obj);
             });
@@ -46,10 +46,10 @@ function loadDocs() {
 }
 
 function generateTests(docs) {
-    docs.forEach(function(doc) {
-        var guard = doc.guard,
-            skip = false,
-            skipText = '';
+    docs.forEach(doc => {
+        const guard = doc.guard;
+        let skip = false;
+        let skipText = '';
 
         if (guard && guards[guard]) {
             if (!guards[guard]()) {
@@ -58,25 +58,25 @@ function generateTests(docs) {
             }
         }
 
-        describe(skipText + doc.file + '/' + (doc.name || 'suite'), function() {
+        describe(skipText + doc.file + '/' + (doc.name || 'suite'), () => {
             if (doc.err) {
-                it('has errors', function() {
+                it('has errors', () => {
                     assert.ok(false, doc.err);
                 });
             } else {
-                (doc.tests || []).forEach(function(t) {
-                    var fn = function() {
-                        var genOnly = (doc.opts || {}).generateOnly,
-                            noCoverage = (doc.opts || {}).noCoverage,
-                            v = verifier.create(
-                                doc.code,
-                                doc.opts || {},
-                                doc.instrumentOpts,
-                                doc.inputSourceMap
-                            ),
-                            test = clone(t),
-                            args = test.args,
-                            out = test.out;
+                (doc.tests || []).forEach(t => {
+                    const fn = function() {
+                        const genOnly = (doc.opts || {}).generateOnly;
+                        const noCoverage = (doc.opts || {}).noCoverage;
+                        const v = verifier.create(
+                            doc.code,
+                            doc.opts || {},
+                            doc.instrumentOpts,
+                            doc.inputSourceMap
+                        );
+                        const test = clone(t);
+                        const args = test.args;
+                        const out = test.out;
                         delete test.args;
                         delete test.out;
                         if (!genOnly && !noCoverage) {

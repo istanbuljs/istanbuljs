@@ -1,7 +1,7 @@
-import { SourceCoverage } from './source-coverage';
-import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 import { createHash } from 'crypto';
 import template from '@babel/template';
+import { SourceCoverage } from './source-coverage';
+import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 import { defaultOpts } from './instrumenter';
 
 // pattern for istanbul to ignore a section
@@ -13,7 +13,7 @@ const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
 
 // generate a variable name from hashing the supplied file path
 function genVar(filename) {
-    var hash = createHash(SHA);
+    const hash = createHash(SHA);
     hash.update(filename);
     return 'cov_' + parseInt(hash.digest('hex').substr(0, 12), 16).toString(36);
 }
@@ -50,7 +50,7 @@ class VisitState {
     hintFor(node) {
         let hint = null;
         if (node.leadingComments) {
-            node.leadingComments.forEach(function(c) {
+            node.leadingComments.forEach(c => {
                 const v = (
                     c.value || /* istanbul ignore next: paranoid check */ ''
                 ).trim();
@@ -65,18 +65,17 @@ class VisitState {
 
     // extract a source map URL from comments and keep track of it
     maybeAssignSourceMapURL(node) {
-        const that = this;
         const extractURL = comments => {
             if (!comments) {
                 return;
             }
-            comments.forEach(function(c) {
+            comments.forEach(c => {
                 const v = (
                     c.value || /* istanbul ignore next: paranoid check */ ''
                 ).trim();
                 const groups = v.match(SOURCE_MAP_RE);
                 if (groups) {
-                    that.sourceMappingURL = groups[1];
+                    this.sourceMappingURL = groups[1];
                 }
             });
         };
@@ -301,9 +300,9 @@ class VisitState {
             }
         } else {
             accumulator.push({
-                node: node,
-                parent: parent,
-                property: property
+                node,
+                parent,
+                property
             });
         }
     }
@@ -318,17 +317,15 @@ class VisitState {
 //   This relieves them from worrying about ignore states and generated nodes.
 // * standard exit processing is done
 //
-function entries() {
-    const enter = Array.prototype.slice.call(arguments);
+function entries(...enter) {
     // the enter function
     const wrappedEntry = function(path, node) {
         this.onEnter(path);
         if (this.shouldIgnore(path)) {
             return;
         }
-        const that = this;
-        enter.forEach(function(e) {
-            e.call(that, path, node);
+        enter.forEach(e => {
+            e.call(this, path, node);
         });
     };
     const exit = function(path, node) {
@@ -336,7 +333,7 @@ function entries() {
     };
     return {
         enter: wrappedEntry,
-        exit: exit
+        exit
     };
 }
 
@@ -377,7 +374,7 @@ function blockProp(prop) {
 }
 
 function makeParenthesizedExpressionForNonIdentifier(path) {
-    var T = this.types;
+    const T = this.types;
     if (path.node && !path.isIdentifier()) {
         path.replaceWith(T.parenthesizedExpression(path.node));
     }
@@ -407,11 +404,11 @@ function convertArrowExpression(path) {
 }
 
 function coverIfBranches(path) {
-    const n = path.node,
-        hint = this.hintFor(n),
-        ignoreIf = hint === 'if',
-        ignoreElse = hint === 'else',
-        branch = this.cov.newBranch('if', n.loc);
+    const n = path.node;
+    const hint = this.hintFor(n);
+    const ignoreIf = hint === 'if';
+    const ignoreElse = hint === 'else';
+    const branch = this.cov.newBranch('if', n.loc);
 
     if (ignoreIf) {
         this.setAttr(n.consequent, 'skip-all', true);
@@ -442,10 +439,10 @@ function coverSwitchCase(path) {
 }
 
 function coverTernary(path) {
-    const n = path.node,
-        branch = this.cov.newBranch('cond-expr', path.node.loc),
-        cHint = this.hintFor(n.consequent),
-        aHint = this.hintFor(n.alternate);
+    const n = path.node;
+    const branch = this.cov.newBranch('cond-expr', path.node.loc);
+    const cHint = this.hintFor(n.consequent);
+    const aHint = this.hintFor(n.alternate);
 
     if (cHint !== 'next') {
         this.insertBranchCounter(path.get('consequent'), branch);
@@ -460,7 +457,7 @@ function coverLogicalExpression(path) {
     if (path.parentPath.node.type === 'LogicalExpression') {
         return; // already processed
     }
-    let leaves = [];
+    const leaves = [];
     this.findLeaves(path.node, leaves);
     const b = this.cov.newBranch('binary-expr', path.node.loc);
     for (let i = 0; i < leaves.length; i += 1) {

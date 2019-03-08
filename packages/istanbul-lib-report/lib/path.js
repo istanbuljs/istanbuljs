@@ -4,19 +4,19 @@
  */
 'use strict';
 
-var path = require('path'),
-    parsePath = path.parse,
-    SEP = path.sep || /* istanbul ignore next */ '/',
-    origParser = parsePath,
-    origSep = SEP;
+const path = require('path');
+let parsePath = path.parse;
+let SEP = path.sep || /* istanbul ignore next */ '/';
+const origParser = parsePath;
+const origSep = SEP;
 
 function makeRelativeNormalizedPath(str, sep) {
-    var parsed = parsePath(str),
-        root = parsed.root,
-        dir,
-        file = parsed.base,
-        quoted,
-        pos;
+    const parsed = parsePath(str);
+    let root = parsed.root;
+    let dir;
+    let file = parsed.base;
+    let quoted;
+    let pos;
 
     // handle a weird windows case separately
     if (sep === '\\') {
@@ -73,7 +73,7 @@ Path.prototype.parent = function() {
     if (!this.hasParent()) {
         throw new Error('Unable to get parent for 0 elem path');
     }
-    var p = this.v.slice();
+    const p = this.v.slice();
     p.pop();
     return new Path(p);
 };
@@ -83,7 +83,7 @@ Path.prototype.elements = function() {
 };
 
 Path.prototype.contains = function(other) {
-    var i;
+    let i;
     if (other.length > this.length) {
         return false;
     }
@@ -104,9 +104,9 @@ Path.prototype.descendantOf = function(other) {
 };
 
 Path.prototype.commonPrefixPath = function(other) {
-    var len = this.length > other.length ? other.length : this.length,
-        i,
-        ret = [];
+    const len = this.length > other.length ? other.length : this.length;
+    let i;
+    const ret = [];
 
     for (i = 0; i < len; i += 1) {
         if (this.v[i] === other.v[i]) {
@@ -118,44 +118,41 @@ Path.prototype.commonPrefixPath = function(other) {
     return new Path(ret);
 };
 
-['push', 'pop', 'shift', 'unshift', 'splice'].forEach(function(f) {
-    Path.prototype[f] = function() {
-        var args = Array.prototype.slice.call(arguments),
-            v = this.v;
-        return v[f].apply(v, args);
+['push', 'pop', 'shift', 'unshift', 'splice'].forEach(f => {
+    Path.prototype[f] = function(...args) {
+        const v = this.v;
+        return v[f](...args);
     };
 });
 
 Path.compare = function(a, b) {
-    var al = a.length,
-        bl = b.length,
-        astr,
-        bstr;
+    const al = a.length;
+    const bl = b.length;
     if (al < bl) {
         return -1;
     }
     if (al > bl) {
         return 1;
     }
-    astr = a.toString();
-    bstr = b.toString();
+    const astr = a.toString();
+    const bstr = b.toString();
     return astr < bstr ? -1 : astr > bstr ? 1 : 0;
 };
 
 Object.defineProperty(Path.prototype, 'length', {
     enumerable: true,
-    get: function() {
+    get() {
         return this.v.length;
     }
 });
 
 module.exports = Path;
 Path.tester = {
-    setParserAndSep: function(p, sep) {
+    setParserAndSep(p, sep) {
         parsePath = p;
         SEP = sep;
     },
-    reset: function() {
+    reset() {
         parsePath = origParser;
         SEP = origSep;
     }

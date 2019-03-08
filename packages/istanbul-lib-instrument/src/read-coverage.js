@@ -1,7 +1,7 @@
-import { MAGIC_KEY, MAGIC_VALUE } from './constants';
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
+import { MAGIC_KEY, MAGIC_VALUE } from './constants';
 
 export default function readInitialCoverage(code) {
     if (typeof code !== 'string') {
@@ -26,7 +26,7 @@ export default function readInitialCoverage(code) {
 
     let covScope;
     traverse(ast, {
-        ObjectProperty: function(path) {
+        ObjectProperty(path) {
             const { node } = path;
             if (
                 !node.computed &&

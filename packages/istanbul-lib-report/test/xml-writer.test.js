@@ -1,7 +1,7 @@
 /* globals describe, it */
 
-var assert = require('chai').assert,
-    XMLWriter = require('../lib/xml-writer');
+const assert = require('chai').assert;
+const XMLWriter = require('../lib/xml-writer');
 
 function MockContentWriter() {
     this.str = '';
@@ -15,10 +15,10 @@ MockContentWriter.prototype.println = function(s) {
     this.write(s + '\n');
 };
 
-describe('xml writer', function() {
-    it('creates an XML document correctly', function() {
-        var cw = new MockContentWriter(),
-            xw = new XMLWriter(cw);
+describe('xml writer', () => {
+    it('creates an XML document correctly', () => {
+        const cw = new MockContentWriter();
+        const xw = new XMLWriter(cw);
         xw.openTag('foo');
         xw.inlineTag('bar', { baz: 'y' }, 'some text');
         xw.inlineTag('qux', {});
@@ -29,9 +29,9 @@ describe('xml writer', function() {
         );
     });
 
-    it('auto-closes open tags correctly', function() {
-        var cw = new MockContentWriter(),
-            xw = new XMLWriter(cw);
+    it('auto-closes open tags correctly', () => {
+        const cw = new MockContentWriter();
+        const xw = new XMLWriter(cw);
         xw.openTag('foo');
         xw.inlineTag('bar', { baz: 'y' }, 'some text');
         xw.inlineTag('qux');
@@ -42,19 +42,19 @@ describe('xml writer', function() {
         );
     });
 
-    it('throws when closing a tag when none open', function() {
-        var cw = new MockContentWriter(),
-            xw = new XMLWriter(cw);
-        assert.throws(function() {
+    it('throws when closing a tag when none open', () => {
+        const cw = new MockContentWriter();
+        const xw = new XMLWriter(cw);
+        assert.throws(() => {
             xw.closeTag('foo');
         });
     });
 
-    it('throws when closing a mismatched tag', function() {
-        var cw = new MockContentWriter(),
-            xw = new XMLWriter(cw);
+    it('throws when closing a mismatched tag', () => {
+        const cw = new MockContentWriter();
+        const xw = new XMLWriter(cw);
         xw.openTag('bar');
-        assert.throws(function() {
+        assert.throws(() => {
             xw.closeTag('foo');
         });
     });

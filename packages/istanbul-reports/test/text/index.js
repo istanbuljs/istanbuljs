@@ -1,27 +1,27 @@
 /* globals describe, it, beforeEach, before, after */
-var fs = require('fs'),
-    isWindows = require('is-windows'),
-    path = require('path'),
-    FileWriter = require('istanbul-lib-report/lib/file-writer'),
-    istanbulLibReport = require('istanbul-lib-report'),
-    istanbulLibCoverage = require('istanbul-lib-coverage'),
-    TextReport = require('../../lib/text/index');
+const fs = require('fs');
+const path = require('path');
+const isWindows = require('is-windows');
+const FileWriter = require('istanbul-lib-report/lib/file-writer');
+const istanbulLibReport = require('istanbul-lib-report');
+const istanbulLibCoverage = require('istanbul-lib-coverage');
+const TextReport = require('../../lib/text/index');
 
 require('chai').should();
 
-describe('TextReport', function() {
-    before(function() {
+describe('TextReport', () => {
+    before(() => {
         FileWriter.startCapture();
     });
-    after(function() {
+    after(() => {
         FileWriter.stopCapture();
     });
-    beforeEach(function() {
+    beforeEach(() => {
         FileWriter.resetOutput();
     });
 
     function createTest(file) {
-        var fixture = require(path.resolve(
+        const fixture = require(path.resolve(
             __dirname,
             '../fixtures/specs/' + file
         ));
@@ -33,19 +33,19 @@ describe('TextReport', function() {
                 // appveyor does not render console color.
                 return this.skip();
             }
-            var context = istanbulLibReport.createContext({
+            const context = istanbulLibReport.createContext({
                 dir: './'
             });
-            var tree = fixture.map;
-            var report = new TextReport(fixture.opts);
+            const tree = fixture.map;
+            const report = new TextReport(fixture.opts);
             tree.visit(report, context);
-            var output = FileWriter.getOutput();
+            const output = FileWriter.getOutput();
             output.should.equal(fixture.textReportExpected);
         });
     }
 
     fs.readdirSync(path.resolve(__dirname, '../fixtures/specs')).forEach(
-        function(file) {
+        file => {
             if (file.indexOf('.json') !== -1) {
                 createTest(file);
             }

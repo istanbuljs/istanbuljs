@@ -2,10 +2,10 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var Reporter = require('./reporter'),
-    fs = require('fs'),
-    filesFor = require('./file-matcher').filesFor,
-    libCoverage = require('istanbul-lib-coverage');
+const fs = require('fs');
+const libCoverage = require('istanbul-lib-coverage');
+const Reporter = require('./reporter');
+const filesFor = require('./file-matcher').filesFor;
 
 function run(formats, config, opts, callback) {
     if (!callback && typeof opts === 'function') {
@@ -13,10 +13,9 @@ function run(formats, config, opts, callback) {
         opts = {};
     }
     opts = opts || {};
-    var root,
-        coverageMap = libCoverage.createCoverageMap(),
-        includePattern = opts.include || '**/coverage*.raw.json',
-        reporter = new Reporter(config);
+    const coverageMap = libCoverage.createCoverageMap();
+    const includePattern = opts.include || '**/coverage*.raw.json';
+    const reporter = new Reporter(config);
 
     if (!formats || formats.length === 0) {
         formats = config.reporting.reports();
@@ -28,19 +27,21 @@ function run(formats, config, opts, callback) {
         return callback(ex);
     }
 
-    root = opts.root || process.cwd();
+    const root = opts.root || process.cwd();
     filesFor(
         {
-            root: root,
+            root,
             includes: [includePattern]
         },
-        function(err, files) {
+        (err, files) => {
             /* istanbul ignore if */
             if (err) {
                 return callback(err);
             }
-            files.forEach(function(file) {
-                var coverageObject = JSON.parse(fs.readFileSync(file, 'utf8'));
+            files.forEach(file => {
+                const coverageObject = JSON.parse(
+                    fs.readFileSync(file, 'utf8')
+                );
                 coverageMap.merge(coverageObject);
             });
             reporter.write(coverageMap, {});
@@ -50,5 +51,5 @@ function run(formats, config, opts, callback) {
 }
 
 module.exports = {
-    run: run
+    run
 };

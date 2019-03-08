@@ -1,7 +1,7 @@
 /* globals describe, it, context */
 
-import Instrumenter from '../src/instrumenter';
 import { assert } from 'chai';
+import Instrumenter from '../src/instrumenter';
 
 const codeNeedDecoratorPlugin = `
   @decorator
@@ -18,10 +18,10 @@ const generateCode = (code, plugins) => {
     return instrumenter.instrumentSync(code, __filename);
 };
 
-describe('plugins', function() {
-    context('when the code has a decorator', function() {
-        context('without decorator plugin', function() {
-            it('should fail', function(done) {
+describe('plugins', () => {
+    context('when the code has a decorator', () => {
+        context('without decorator plugin', () => {
+            it('should fail', done => {
                 try {
                     generateCode(codeNeedDecoratorPlugin);
                 } catch (e) {
@@ -32,8 +32,8 @@ describe('plugins', function() {
             });
         });
 
-        context('with decorator plugin', function() {
-            it('should success', function() {
+        context('with decorator plugin', () => {
+            it('should success', () => {
                 const generated = generateCode(codeNeedDecoratorPlugin, [
                     ['decorators', { decoratorsBeforeExport: false }]
                 ]);

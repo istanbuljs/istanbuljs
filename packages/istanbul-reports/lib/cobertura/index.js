@@ -2,7 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path');
+const path = require('path');
 function CoberturaReport(opts) {
     this.cw = null;
     this.xml = null;
@@ -34,7 +34,7 @@ CoberturaReport.prototype.onEnd = function() {
 };
 
 CoberturaReport.prototype.writeRootStats = function(node) {
-    var metrics = node.getCoverageSummary();
+    const metrics = node.getCoverageSummary();
     this.cw.println('<?xml version="1.0" ?>');
     this.cw.println(
         '<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">'
@@ -60,7 +60,7 @@ CoberturaReport.prototype.onSummary = function(node) {
     if (node.isRoot()) {
         return;
     }
-    var metrics = node.getCoverageSummary(true);
+    const metrics = node.getCoverageSummary(true);
     if (!metrics) {
         return;
     }
@@ -81,12 +81,9 @@ CoberturaReport.prototype.onSummaryEnd = function(node) {
 };
 
 CoberturaReport.prototype.onDetail = function(node) {
-    var that = this,
-        fileCoverage = node.getFileCoverage(),
-        metrics = node.getCoverageSummary(),
-        branchByLine = fileCoverage.getBranchCoverageByLine(),
-        fnMap,
-        lines;
+    const fileCoverage = node.getFileCoverage();
+    const metrics = node.getCoverageSummary();
+    const branchByLine = fileCoverage.getBranchCoverageByLine();
 
     this.xml.openTag('class', {
         name: asClassName(node),
@@ -96,35 +93,35 @@ CoberturaReport.prototype.onDetail = function(node) {
     });
 
     this.xml.openTag('methods');
-    fnMap = fileCoverage.fnMap;
-    Object.keys(fnMap).forEach(function(k) {
-        var name = fnMap[k].name,
-            hits = fileCoverage.f[k];
-        that.xml.openTag('method', {
-            name: name,
-            hits: hits,
+    const fnMap = fileCoverage.fnMap;
+    Object.keys(fnMap).forEach(k => {
+        const name = fnMap[k].name;
+        const hits = fileCoverage.f[k];
+        this.xml.openTag('method', {
+            name,
+            hits,
             signature: '()V' //fake out a no-args void return
         });
-        that.xml.openTag('lines');
+        this.xml.openTag('lines');
         //Add the function definition line and hits so that jenkins cobertura plugin records method hits
-        that.xml.inlineTag('line', {
+        this.xml.inlineTag('line', {
             number: fnMap[k].decl.start.line,
-            hits: hits
+            hits
         });
-        that.xml.closeTag('lines');
-        that.xml.closeTag('method');
+        this.xml.closeTag('lines');
+        this.xml.closeTag('method');
     });
     this.xml.closeTag('methods');
 
     this.xml.openTag('lines');
-    lines = fileCoverage.getLineCoverage();
-    Object.keys(lines).forEach(function(k) {
-        var attrs = {
-                number: k,
-                hits: lines[k],
-                branch: 'false'
-            },
-            branchDetail = branchByLine[k];
+    const lines = fileCoverage.getLineCoverage();
+    Object.keys(lines).forEach(k => {
+        const attrs = {
+            number: k,
+            hits: lines[k],
+            branch: 'false'
+        };
+        const branchDetail = branchByLine[k];
 
         if (branchDetail) {
             attrs.branch = true;
@@ -136,7 +133,7 @@ CoberturaReport.prototype.onDetail = function(node) {
                 branchDetail.total +
                 ')';
         }
-        that.xml.inlineTag('line', attrs);
+        this.xml.inlineTag('line', attrs);
     });
 
     this.xml.closeTag('lines');

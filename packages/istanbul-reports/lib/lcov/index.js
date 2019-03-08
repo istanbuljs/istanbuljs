@@ -2,26 +2,25 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var LcovOnlyReport = require('../lcovonly'),
-    HtmlReport = require('../html');
+const LcovOnlyReport = require('../lcovonly');
+const HtmlReport = require('../html');
 
 function LcovReport() {
     this.lcov = new LcovOnlyReport({ file: 'lcov.info' });
     this.html = new HtmlReport({ subdir: 'lcov-report' });
 }
 
-['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(function(what) {
-    var meth = 'on' + what;
-    LcovReport.prototype[meth] = function() {
-        var args = Array.prototype.slice.call(arguments),
-            lcov = this.lcov,
-            html = this.html;
+['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(what => {
+    const meth = 'on' + what;
+    LcovReport.prototype[meth] = function(...args) {
+        const lcov = this.lcov;
+        const html = this.html;
 
         if (lcov[meth]) {
-            lcov[meth].apply(lcov, args);
+            lcov[meth](...args);
         }
         if (html[meth]) {
-            html[meth].apply(html, args);
+            html[meth](...args);
         }
     };
 });

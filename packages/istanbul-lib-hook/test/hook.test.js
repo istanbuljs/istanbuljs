@@ -1,131 +1,132 @@
 /* globals describe, it, beforeEach, afterEach */
-var hook = require('../lib/hook'),
-    assert = require('chai').assert,
-    currentHook,
-    matcher = function(file) {
-        return file.indexOf('foo.js') > 0;
-    },
-    matcher2 = function(file) {
-        return file.indexOf('bar.es6') > 0;
-    },
-    transformer = function() {
-        return 'module.exports.bar = function () { return "bar"; };';
-    },
-    transformer2 = function() {
-        return 'module.exports.blah = function () { return "blah"; };';
-    },
-    badTransformer = function() {
-        throw 'Boo!';
-    },
-    scriptTransformer = function() {
-        return '(function () { return 42; }());';
-    },
-    disabler,
-    hookIt = function(m, t, o) {
-        if (disabler) {
-            disabler();
-        }
-        disabler = hook.hookRequire(m, t, o);
-    };
+const assert = require('chai').assert;
+const hook = require('../lib/hook');
 
-describe('hooks', function() {
-    describe('require', function() {
-        beforeEach(function() {
+let currentHook;
+const matcher = function(file) {
+    return file.indexOf('foo.js') > 0;
+};
+const matcher2 = function(file) {
+    return file.indexOf('bar.es6') > 0;
+};
+const transformer = function() {
+    return 'module.exports.bar = function () { return "bar"; };';
+};
+const transformer2 = function() {
+    return 'module.exports.blah = function () { return "blah"; };';
+};
+const badTransformer = function() {
+    throw 'Boo!';
+};
+const scriptTransformer = function() {
+    return '(function () { return 42; }());';
+};
+let disabler;
+const hookIt = function(m, t, o) {
+    if (disabler) {
+        disabler();
+    }
+    disabler = hook.hookRequire(m, t, o);
+};
+
+describe('hooks', () => {
+    describe('require', () => {
+        beforeEach(() => {
             hookIt(matcher, transformer, { verbose: true });
         });
 
-        afterEach(function() {
+        afterEach(() => {
             hook.unloadRequireCache(matcher);
         });
 
-        it('transforms foo', function() {
-            var foo = require('./data/foo');
+        it('transforms foo', () => {
+            const foo = require('./data/foo');
             assert.ok(foo.bar);
             assert.equal(foo.bar(), 'bar');
         });
 
-        it('skips baz', function() {
-            var foo = require('./data/baz');
+        it('skips baz', () => {
+            const foo = require('./data/baz');
             assert.ok(foo.baz);
             assert.equal(foo.baz(), 'baz');
         });
 
-        it('should require original code when unhooked', function() {
+        it('should require original code when unhooked', () => {
             hookIt(matcher, transformer, { verbose: true });
             disabler();
-            var foo = require('./data/foo');
+            const foo = require('./data/foo');
             assert.ok(foo.foo);
             assert.equal(foo.foo(), 'foo');
         });
 
-        it('calls post load hooks', function() {
-            var called = null,
-                opts = {
-                    postLoadHook: function(file) {
-                        called = file;
-                    }
-                };
+        it('calls post load hooks', () => {
+            let called = null;
+            const opts = {
+                postLoadHook(file) {
+                    called = file;
+                }
+            };
 
             hookIt(matcher, transformer, opts);
             require('./data/foo');
             assert.ok(called.match(/foo\.js/));
         });
 
-        it('unloads and reloads cache', function() {
+        it('unloads and reloads cache', () => {
             hookIt(matcher, transformer2);
-            var foo = require('./data/foo');
+            const foo = require('./data/foo');
             assert.ok(foo.blah);
             assert.equal(foo.blah(), 'blah');
         });
 
-        it('returns original code on bad transform', function() {
+        it('returns original code on bad transform', () => {
             hookIt(matcher, badTransformer);
-            var foo = require('./data/foo');
+            const foo = require('./data/foo');
             assert.ok(foo.foo);
             assert.equal(foo.foo(), 'foo');
         });
     });
-    describe('passing extensions to require', function() {
-        beforeEach(function() {
+    describe('passing extensions to require', () => {
+        beforeEach(() => {
             require.extensions['.es6'] = require.extensions['.js'];
             hookIt(matcher2, transformer2, {
                 verbose: true,
                 extensions: ['.es6']
             });
         });
-        afterEach(function() {
+        afterEach(() => {
             hook.unloadRequireCache(matcher2);
             delete require.extensions['.es6'];
         });
-        it('transforms bar', function() {
-            var bar = require('./data/bar');
+        it('transforms bar', () => {
+            const bar = require('./data/bar');
             assert.ok(bar.blah);
             assert.equal(bar.blah(), 'blah');
         });
-        it('skips foo', function() {
-            var foo = require('./data/foo');
+        it('skips foo', () => {
+            const foo = require('./data/foo');
             assert.ok(foo.foo);
             assert.equal(foo.foo(), 'foo');
         });
-        it('returns original code on bad transform', function() {
+        it('returns original code on bad transform', () => {
             hookIt(matcher2, badTransformer, {
                 verbose: true,
                 extensions: ['.es6']
             });
-            var bar = require('./data/bar');
+            const bar = require('./data/bar');
             assert.ok(bar.bar);
             assert.equal(bar.bar(), 'bar');
         });
     });
-    describe('createScript', function() {
-        beforeEach(function() {
+    describe('createScript', () => {
+        beforeEach(() => {
             currentHook = require('vm').createScript;
         });
-        afterEach(function() {
+        afterEach(() => {
             require('vm').createScript = currentHook;
         });
-        it('transforms foo (without any options)', function() {
-            var s;
+        it('transforms foo (without any options)', () => {
+            let s;
             hook.hookCreateScript(matcher, scriptTransformer);
             s = require('vm').createScript(
                 '(function () { return 10; }());',
@@ -140,15 +141,15 @@ describe('hooks', function() {
             assert.equal(s.runInThisContext(), 10);
         });
     });
-    describe('runInThisContext', function() {
-        beforeEach(function() {
+    describe('runInThisContext', () => {
+        beforeEach(() => {
             currentHook = require('vm').runInThisContext;
         });
-        afterEach(function() {
+        afterEach(() => {
             require('vm').runInThisContext = currentHook;
         });
-        it('transforms foo', function() {
-            var s;
+        it('transforms foo', () => {
+            let s;
             hook.hookRunInThisContext(matcher, scriptTransformer);
             s = require('vm').runInThisContext(
                 '(function () { return 10; }());',
@@ -162,19 +163,17 @@ describe('hooks', function() {
             );
             assert.equal(s, 10);
         });
-        it('does not transform code with no filename', function() {
-            var s;
+        it('does not transform code with no filename', () => {
             hook.hookRunInThisContext(matcher, scriptTransformer);
-            s = require('vm').runInThisContext(
+            const s = require('vm').runInThisContext(
                 '(function () { return 10; }());'
             );
             assert.equal(s, 10);
             hook.unhookRunInThisContext();
         });
-        it('does not transform code with non-string filename', function() {
-            var s;
+        it('does not transform code with non-string filename', () => {
             hook.hookRunInThisContext(matcher, scriptTransformer);
-            s = require('vm').runInThisContext(
+            const s = require('vm').runInThisContext(
                 '(function () { return 10; }());',
                 {}
             );
@@ -182,16 +181,16 @@ describe('hooks', function() {
             hook.unhookRunInThisContext();
         });
     });
-    describe('runInContext', function() {
-        beforeEach(function() {
+    describe('runInContext', () => {
+        beforeEach(() => {
             currentHook = require('vm').runInContext;
         });
-        afterEach(function() {
+        afterEach(() => {
             require('vm').runInContext = currentHook;
         });
-        it('transforms foo', function() {
-            var s;
-            var vm = require('vm');
+        it('transforms foo', () => {
+            let s;
+            const vm = require('vm');
             hook.hookRunInContext(matcher, scriptTransformer);
             s = vm.runInContext(
                 '(function () { return 10; }());',
@@ -207,22 +206,20 @@ describe('hooks', function() {
             );
             assert.equal(s, 10);
         });
-        it('does not transform code with no filename', function() {
-            var s;
-            var vm = require('vm');
+        it('does not transform code with no filename', () => {
+            const vm = require('vm');
             hook.hookRunInContext(matcher, scriptTransformer);
-            s = vm.runInContext(
+            const s = vm.runInContext(
                 '(function () { return 10; }());',
                 vm.createContext({})
             );
             assert.equal(s, 10);
             hook.unhookRunInContext();
         });
-        it('does not transform code with non-string filename', function() {
-            var s;
-            var vm = require('vm');
+        it('does not transform code with non-string filename', () => {
+            const vm = require('vm');
             hook.hookRunInContext(matcher, scriptTransformer);
-            s = vm.runInContext(
+            const s = vm.runInContext(
                 '(function () { return 10; }());',
                 vm.createContext({}),
                 {}

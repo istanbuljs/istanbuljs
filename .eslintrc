@@ -1,7 +1,9 @@
 {
   "extends": [
     "eslint:recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
   ],
   "parserOptions": {
     "ecmaVersion": 7,
@@ -12,13 +14,28 @@
     "node": true
   },
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "import/namespace": "off"
   },
   "overrides": [
     {
       "files": "packages/istanbul-reports/lib/html/assets/**/*",
       "env": {
         "browser": true
+      }
+    },
+    {
+      "files": "!packages/istanbul-reports/lib/html/assets/**",
+      "rules": {
+        "arrow-body-style": "error",
+        "consistent-this": ["error", "block_this_alias"],
+        "no-var": "error",
+        "object-shorthand": "error",
+        "one-var": ["error", "never"],
+        "prefer-arrow-callback": "error",
+        "prefer-const": "error",
+        "prefer-rest-params": "error",
+        "prefer-spread": "error"
       }
     }
   ]

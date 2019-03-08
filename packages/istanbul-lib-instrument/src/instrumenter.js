@@ -67,7 +67,7 @@ class Instrumenter {
             }
         };
         const defOpts = defaultOpts();
-        Object.keys(defOpts).forEach(function(k) {
+        Object.keys(defOpts).forEach(k => {
             normalize(k, defOpts[k]);
         });
         return opts;
@@ -101,13 +101,13 @@ class Instrumenter {
             coverageGlobalScope: opts.coverageGlobalScope,
             coverageGlobalScopeFunc: opts.coverageGlobalScopeFunc,
             ignoreClassMethods: opts.ignoreClassMethods,
-            inputSourceMap: inputSourceMap
+            inputSourceMap
         });
         let output = {};
         const visitor = {
             Program: {
                 enter: ee.enter,
-                exit: function(path) {
+                exit(path) {
                     output = ee.exit(path);
                 }
             }
@@ -147,7 +147,7 @@ class Instrumenter {
             filename = null;
         }
         try {
-            var out = this.instrumentSync(code, filename, inputSourceMap);
+            const out = this.instrumentSync(code, filename, inputSourceMap);
             callback(null, out);
         } catch (ex) {
             callback(ex);

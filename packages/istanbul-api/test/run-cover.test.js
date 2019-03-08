@@ -1,25 +1,25 @@
 /* globals describe, it, beforeEach, afterEach */
 
-var assert = require('chai').assert,
-    path = require('path'),
-    fs = require('fs'),
-    mkdirp = require('make-dir'),
-    rimraf = require('rimraf'),
-    codeRoot = path.resolve(__dirname, 'sample-code'),
-    outputDir = path.resolve(__dirname, 'coverage'),
-    configuration = require('../lib/config'),
-    cover = require('../lib/run-cover'),
-    hijack = require('./hijack-streams'),
-    wrap = hijack.wrap,
-    unhookFn;
+const path = require('path');
+const fs = require('fs');
+const assert = require('chai').assert;
+const mkdirp = require('make-dir');
+const rimraf = require('rimraf');
+const codeRoot = path.resolve(__dirname, 'sample-code');
+const outputDir = path.resolve(__dirname, 'coverage');
+const configuration = require('../lib/config');
+const cover = require('../lib/run-cover');
+const hijack = require('./hijack-streams');
+const wrap = hijack.wrap;
+let unhookFn;
 
-describe('run cover', function() {
-    beforeEach(function() {
+describe('run cover', () => {
+    beforeEach(() => {
         unhookFn = null;
         mkdirp.sync(outputDir);
         hijack.silent();
     });
-    afterEach(function() {
+    afterEach(() => {
         hijack.reset();
         rimraf.sync(outputDir);
         if (unhookFn) {
@@ -28,7 +28,7 @@ describe('run cover', function() {
     });
 
     function getConfig(overrides) {
-        var cfg = configuration.loadObject(
+        const cfg = configuration.loadObject(
             {
                 verbose: false,
                 instrumentation: {
@@ -43,20 +43,17 @@ describe('run cover', function() {
         return cfg;
     }
 
-    it('hooks require and provides coverage', function(cb) {
+    it('hooks require and provides coverage', cb => {
         cb = wrap(cb);
-        var config = getConfig({
+        const config = getConfig({
             verbose: true,
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                hookFn = data.hookFn,
-                exitFn = data.exitFn,
-                coverageMap,
-                coverage,
-                otherMap;
+            const fn = data.coverageFn;
+            const hookFn = data.hookFn;
+            const exitFn = data.exitFn;
             unhookFn = data.unhookFn;
             assert.isFunction(fn);
             assert.isFunction(unhookFn);
@@ -64,9 +61,9 @@ describe('run cover', function() {
             assert.isFunction(exitFn);
             hookFn();
             require('./sample-code/foo');
-            coverageMap = fn();
+            const coverageMap = fn();
             assert.ok(coverageMap);
-            coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
+            const coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
             assert.ok(coverage);
             assert.deepEqual(coverage.s, { 0: 1, 1: 0, 2: 1, 3: 1, 4: 1 });
             assert.deepEqual(coverage.f, { 0: 1, 1: 0 });
@@ -77,7 +74,7 @@ describe('run cover', function() {
             );
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov.info')));
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov-report')));
-            otherMap = JSON.parse(
+            const otherMap = JSON.parse(
                 fs.readFileSync(path.resolve(outputDir, 'coverage.raw.json'))
             );
             assert.deepEqual(otherMap, coverageMap);
@@ -85,26 +82,25 @@ describe('run cover', function() {
         });
     });
 
-    it('hooks runInContext and provides coverage', function(cb) {
+    it('hooks runInContext and provides coverage', cb => {
         cb = wrap(cb);
-        var config = getConfig({
+        const config = getConfig({
             hooks: { 'hook-run-in-context': true },
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                exitFn = data.exitFn,
-                hookFn = data.hookFn,
-                coverage,
-                coverageMap,
-                otherMap;
+            const fn = data.coverageFn;
+            const exitFn = data.exitFn;
+            const hookFn = data.hookFn;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/runInContext');
-            coverageMap = fn();
+
+            const coverageMap = fn();
             assert.ok(coverageMap);
-            coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
+
+            const coverage = coverageMap[path.resolve(codeRoot, 'foo.js')];
             assert.ok(coverage);
             exitFn();
             assert.ok(
@@ -112,7 +108,8 @@ describe('run cover', function() {
             );
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov.info')));
             assert.ok(fs.existsSync(path.resolve(outputDir, 'lcov-report')));
-            otherMap = JSON.parse(
+
+            const otherMap = JSON.parse(
                 fs.readFileSync(path.resolve(outputDir, 'coverage.raw.json'))
             );
             assert.deepEqual(otherMap, coverageMap);
@@ -120,21 +117,20 @@ describe('run cover', function() {
         });
     });
 
-    it('hooks runInThisContext and provides coverage', function(cb) {
+    it('hooks runInThisContext and provides coverage', cb => {
         cb = wrap(cb);
-        var config = getConfig({
+        const config = getConfig({
             hooks: { 'hook-run-in-this-context': true },
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                hookFn = data.hookFn,
-                coverageMap;
+            const fn = data.coverageFn;
+            const hookFn = data.hookFn;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/context');
-            coverageMap = fn();
+            const coverageMap = fn();
             assert.ok(coverageMap);
             assert.ok(coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
@@ -142,9 +138,9 @@ describe('run cover', function() {
         });
     });
 
-    it('includes all sources by default (ignoring bad code)', function(cb) {
+    it('includes all sources by default (ignoring bad code)', cb => {
         cb = wrap(cb);
-        var config = getConfig({
+        const config = getConfig({
             verbose: true,
             instrumentation: {
                 'default-excludes': false,
@@ -152,17 +148,16 @@ describe('run cover', function() {
                 extensions: ['.js', '.xjs']
             }
         });
-        cover.getCoverFunctions(config, function(err, data) {
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                hookFn = data.hookFn,
-                exitFn = data.exitFn,
-                coverageMap;
+            const fn = data.coverageFn;
+            const hookFn = data.hookFn;
+            const exitFn = data.exitFn;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/foo');
             exitFn();
-            coverageMap = fn();
+            const coverageMap = fn();
             assert.ok(coverageMap);
             assert.ok(coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
@@ -173,13 +168,13 @@ describe('run cover', function() {
         });
     });
 
-    it('includes pid in coverage JSON when requested', function(cb) {
+    it('includes pid in coverage JSON when requested', cb => {
         cb = wrap(cb);
-        var config = getConfig({ instrumentation: { 'include-pid': true } });
-        cover.getCoverFunctions(config, function(err, data) {
+        const config = getConfig({ instrumentation: { 'include-pid': true } });
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
-            var hookFn = data.hookFn,
-                exitFn = data.exitFn;
+            const hookFn = data.hookFn;
+            const exitFn = data.exitFn;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/foo');
@@ -196,23 +191,22 @@ describe('run cover', function() {
         });
     });
 
-    it('accepts specific includes', function(cb) {
+    it('accepts specific includes', cb => {
         cb = wrap(cb);
-        var config = getConfig({
+        const config = getConfig({
             hooks: { 'hook-run-in-this-context': true },
             instrumentation: { 'include-all-sources': false }
         });
-        cover.getCoverFunctions(config, ['**/foo.js'], function(err, data) {
+        cover.getCoverFunctions(config, ['**/foo.js'], (err, data) => {
             assert.ok(!err);
-            var fn = data.coverageFn,
-                hookFn = data.hookFn,
-                exitFn = data.exitFn,
-                coverageMap;
+            const fn = data.coverageFn;
+            const hookFn = data.hookFn;
+            const exitFn = data.exitFn;
             unhookFn = data.unhookFn;
             hookFn();
             require('./sample-code/context');
             exitFn();
-            coverageMap = fn();
+            const coverageMap = fn();
             assert.ok(coverageMap);
             assert.ok(!coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
@@ -223,10 +217,10 @@ describe('run cover', function() {
         });
     });
 
-    it('complains but does not throw when no coverage', function(cb) {
+    it('complains but does not throw when no coverage', cb => {
         cb = wrap(cb);
-        var config = getConfig();
-        cover.getCoverFunctions(config, function(err, data) {
+        const config = getConfig();
+        cover.getCoverFunctions(config, (err, data) => {
             assert.ok(!err);
             unhookFn = data.unhookFn;
             assert.doesNotThrow(data.exitFn);
@@ -234,8 +228,8 @@ describe('run cover', function() {
         });
     });
 
-    describe('text reports', function() {
-        var getTextReportConfig = function(type) {
+    describe('text reports', () => {
+        const getTextReportConfig = function(type) {
             return getConfig({
                 reporting: {
                     print: type,
@@ -246,13 +240,13 @@ describe('run cover', function() {
                 }
             });
         };
-        it('prints text summary by default', function(cb) {
+        it('prints text summary by default', cb => {
             cb = wrap(cb);
-            var config = getTextReportConfig();
-            cover.getCoverFunctions(config, function(err, data) {
+            const config = getTextReportConfig();
+            cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
-                var hookFn = data.hookFn,
-                    exitFn = data.exitFn;
+                const hookFn = data.hookFn;
+                const exitFn = data.exitFn;
                 unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
@@ -264,13 +258,13 @@ describe('run cover', function() {
                 cb();
             });
         });
-        it('prints detail only', function(cb) {
+        it('prints detail only', cb => {
             cb = wrap(cb);
-            var config = getTextReportConfig('detail');
-            cover.getCoverFunctions(config, function(err, data) {
+            const config = getTextReportConfig('detail');
+            cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
-                var hookFn = data.hookFn,
-                    exitFn = data.exitFn;
+                const hookFn = data.hookFn;
+                const exitFn = data.exitFn;
                 unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
@@ -282,13 +276,13 @@ describe('run cover', function() {
                 cb();
             });
         });
-        it('prints both', function(cb) {
+        it('prints both', cb => {
             cb = wrap(cb);
-            var config = getTextReportConfig('both');
-            cover.getCoverFunctions(config, function(err, data) {
+            const config = getTextReportConfig('both');
+            cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
-                var hookFn = data.hookFn,
-                    exitFn = data.exitFn;
+                const hookFn = data.hookFn;
+                const exitFn = data.exitFn;
                 unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');
@@ -300,13 +294,13 @@ describe('run cover', function() {
                 cb();
             });
         });
-        it('prints nothing', function(cb) {
+        it('prints nothing', cb => {
             cb = wrap(cb);
-            var config = getTextReportConfig('none');
-            cover.getCoverFunctions(config, function(err, data) {
+            const config = getTextReportConfig('none');
+            cover.getCoverFunctions(config, (err, data) => {
                 assert.ok(!err);
-                var hookFn = data.hookFn,
-                    exitFn = data.exitFn;
+                const hookFn = data.hookFn;
+                const exitFn = data.exitFn;
                 unhookFn = data.unhookFn;
                 hookFn();
                 require('./sample-code/foo');

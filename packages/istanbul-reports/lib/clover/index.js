@@ -33,49 +33,48 @@ CloverReport.prototype.onEnd = function() {
 };
 
 CloverReport.prototype.getTreeStats = function(node, context) {
-    var state = {
-            packages: 0,
-            files: 0,
-            classes: 0
-        },
-        visitor = {
-            onSummary: function(node, state) {
-                var metrics = node.getCoverageSummary(true);
-                if (metrics) {
-                    state.packages += 1;
-                }
-            },
-            onDetail: function(node, state) {
-                state.classes += 1;
-                state.files += 1;
+    const state = {
+        packages: 0,
+        files: 0,
+        classes: 0
+    };
+    const visitor = {
+        onSummary(node, state) {
+            const metrics = node.getCoverageSummary(true);
+            if (metrics) {
+                state.packages += 1;
             }
-        };
+        },
+        onDetail(node, state) {
+            state.classes += 1;
+            state.files += 1;
+        }
+    };
     node.visit(context.getVisitor(visitor), state);
     return state;
 };
 
 CloverReport.prototype.writeRootStats = function(node, context) {
-    var metrics = node.getCoverageSummary(),
-        attrs = {
-            statements: metrics.lines.total,
-            coveredstatements: metrics.lines.covered,
-            conditionals: metrics.branches.total,
-            coveredconditionals: metrics.branches.covered,
-            methods: metrics.functions.total,
-            coveredmethods: metrics.functions.covered,
-            elements:
-                metrics.lines.total +
-                metrics.branches.total +
-                metrics.functions.total,
-            coveredelements:
-                metrics.lines.covered +
-                metrics.branches.covered +
-                metrics.functions.covered,
-            complexity: 0,
-            loc: metrics.lines.total,
-            ncloc: metrics.lines.total // what? copied as-is from old report
-        },
-        treeStats;
+    const metrics = node.getCoverageSummary();
+    const attrs = {
+        statements: metrics.lines.total,
+        coveredstatements: metrics.lines.covered,
+        conditionals: metrics.branches.total,
+        coveredconditionals: metrics.branches.covered,
+        methods: metrics.functions.total,
+        coveredmethods: metrics.functions.covered,
+        elements:
+            metrics.lines.total +
+            metrics.branches.total +
+            metrics.functions.total,
+        coveredelements:
+            metrics.lines.covered +
+            metrics.branches.covered +
+            metrics.functions.covered,
+        complexity: 0,
+        loc: metrics.lines.total,
+        ncloc: metrics.lines.total // what? copied as-is from old report
+    };
 
     this.cw.println('<?xml version="1.0" encoding="UTF-8"?>');
     this.xml.openTag('coverage', {
@@ -88,8 +87,8 @@ CloverReport.prototype.writeRootStats = function(node, context) {
         name: 'All files'
     });
 
-    treeStats = this.getTreeStats(node, context);
-    Object.keys(treeStats).forEach(function(k) {
+    const treeStats = this.getTreeStats(node, context);
+    Object.keys(treeStats).forEach(k => {
         attrs[k] = treeStats[k];
     });
 
@@ -111,7 +110,7 @@ CloverReport.prototype.onSummary = function(node) {
     if (node.isRoot()) {
         return;
     }
-    var metrics = node.getCoverageSummary(true);
+    const metrics = node.getCoverageSummary(true);
     if (!metrics) {
         return;
     }
@@ -130,11 +129,9 @@ CloverReport.prototype.onSummaryEnd = function(node) {
 };
 
 CloverReport.prototype.onDetail = function(node) {
-    var that = this,
-        fileCoverage = node.getFileCoverage(),
-        metrics = node.getCoverageSummary(),
-        branchByLine = fileCoverage.getBranchCoverageByLine(),
-        lines;
+    const fileCoverage = node.getFileCoverage();
+    const metrics = node.getCoverageSummary();
+    const branchByLine = fileCoverage.getBranchCoverageByLine();
 
     this.xml.openTag('file', {
         name: asClassName(node),
@@ -143,21 +140,21 @@ CloverReport.prototype.onDetail = function(node) {
 
     this.writeMetrics(metrics);
 
-    lines = fileCoverage.getLineCoverage();
-    Object.keys(lines).forEach(function(k) {
-        var attrs = {
-                num: k,
-                count: lines[k],
-                type: 'stmt'
-            },
-            branchDetail = branchByLine[k];
+    const lines = fileCoverage.getLineCoverage();
+    Object.keys(lines).forEach(k => {
+        const attrs = {
+            num: k,
+            count: lines[k],
+            type: 'stmt'
+        };
+        const branchDetail = branchByLine[k];
 
         if (branchDetail) {
             attrs.type = 'cond';
             attrs.truecount = branchDetail.covered;
             attrs.falsecount = branchDetail.total - branchDetail.covered;
         }
-        that.xml.inlineTag('line', attrs);
+        this.xml.inlineTag('line', attrs);
     });
 
     this.xml.closeTag('file');

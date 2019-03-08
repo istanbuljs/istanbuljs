@@ -10,7 +10,7 @@ const assignTemplate = template(`
 // var foo = { s0: { start: { line: 0, column: 0}, end: {line 1, column:0} }
 // etc. where the number of keys is controlled by the items arg
 function toProgram(items) {
-    let obj = {};
+    const obj = {};
     for (let i = 0; i < items; i += 1) {
         const key = 's' + i;
         obj[key] = {
@@ -37,7 +37,7 @@ const parsed = nopt(opts, null, process.argv, 2);
 const compact = parsed.compact;
 
 const generateOptions = {
-    compact: compact
+    compact
 };
 
 for (let i = 1; i < 15; i += 1) {

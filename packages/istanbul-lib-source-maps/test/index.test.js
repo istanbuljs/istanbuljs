@@ -1,9 +1,9 @@
 /* globals describe, it */
-var assert = require('chai').assert,
-    index = require('../index');
+const assert = require('chai').assert;
+const index = require('../index');
 
-describe('exports', function() {
-    it('exports the correct interface', function() {
+describe('exports', () => {
+    it('exports the correct interface', () => {
         assert.isObject(index);
     });
 });

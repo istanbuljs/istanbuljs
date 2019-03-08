@@ -1,21 +1,21 @@
 /* globals describe, it, beforeEach */
 
-var assert = require('chai').assert,
-    coverage = require('istanbul-lib-coverage'),
-    summarizer = require('../lib/summarizer');
+const assert = require('chai').assert;
+const coverage = require('istanbul-lib-coverage');
+const summarizer = require('../lib/summarizer');
 
 function makeCoverage(filePath, numStatements, numCovered) {
-    var fc = {
-            path: filePath,
-            statementMap: {},
-            fnMap: {},
-            branchMap: {},
-            s: {},
-            f: {},
-            b: {}
-        },
-        i,
-        index;
+    const fc = {
+        path: filePath,
+        statementMap: {},
+        fnMap: {},
+        branchMap: {},
+        s: {},
+        f: {},
+        b: {}
+    };
+    let i;
+    let index;
 
     for (i = 0; i < numStatements; i += 1) {
         index = i + 1;
@@ -31,12 +31,12 @@ function makeCoverage(filePath, numStatements, numCovered) {
 }
 
 function protoDirMap(dir) {
-    var files = ['constructor.js', 'toString.js'],
-        count = 0,
-        map = {};
-    files.forEach(function(f) {
-        var filePath = dir ? dir + '/' + f : f,
-            fc = makeCoverage(filePath, 4, count);
+    const files = ['constructor.js', 'toString.js'];
+    let count = 0;
+    const map = {};
+    files.forEach(f => {
+        const filePath = dir ? dir + '/' + f : f;
+        const fc = makeCoverage(filePath, 4, count);
         count += 1;
         map[filePath] = fc;
     });
@@ -44,12 +44,12 @@ function protoDirMap(dir) {
 }
 
 function singleDirMap(dir) {
-    var files = ['file3.js', 'file4.js', 'file2.js', 'file1.js'],
-        count = 0,
-        map = {};
-    files.forEach(function(f) {
-        var filePath = dir ? dir + '/' + f : f,
-            fc = makeCoverage(filePath, 4, count);
+    const files = ['file3.js', 'file4.js', 'file2.js', 'file1.js'];
+    let count = 0;
+    const map = {};
+    files.forEach(f => {
+        const filePath = dir ? dir + '/' + f : f;
+        const fc = makeCoverage(filePath, 4, count);
         count += 1;
         map[filePath] = fc;
     });
@@ -57,24 +57,19 @@ function singleDirMap(dir) {
 }
 
 function twoDirMap(nested) {
-    var files = nested
-            ? [
-                  'lib1/file3.js',
-                  'lib1/lib2/file4.js',
-                  'lib1/file2.js',
-                  'lib1/lib2/file1.js'
-              ]
-            : [
-                  'lib1/file3.js',
-                  'lib2/file4.js',
-                  'lib1/file2.js',
-                  'lib2/file1.js'
-              ],
-        count = 0,
-        map = {};
-    files.forEach(function(f) {
-        var filePath = f,
-            fc = makeCoverage(filePath, 4, count);
+    const files = nested
+        ? [
+              'lib1/file3.js',
+              'lib1/lib2/file4.js',
+              'lib1/file2.js',
+              'lib1/lib2/file1.js'
+          ]
+        : ['lib1/file3.js', 'lib2/file4.js', 'lib1/file2.js', 'lib2/file1.js'];
+    let count = 0;
+    const map = {};
+    files.forEach(f => {
+        const filePath = f;
+        const fc = makeCoverage(filePath, 4, count);
         count += 1;
         map[filePath] = fc;
     });
@@ -82,17 +77,17 @@ function twoDirMap(nested) {
 }
 
 function threeDirMap() {
-    var files = [
-            'lib1/file3.js',
-            'lib2/file4.js',
-            'lib1/sub/dir/file2.js',
-            'file1.js'
-        ],
-        count = 0,
-        map = {};
-    files.forEach(function(f) {
-        var filePath = f,
-            fc = makeCoverage(filePath, 4, count);
+    const files = [
+        'lib1/file3.js',
+        'lib2/file4.js',
+        'lib1/sub/dir/file2.js',
+        'file1.js'
+    ];
+    let count = 0;
+    const map = {};
+    files.forEach(f => {
+        const filePath = f;
+        const fc = makeCoverage(filePath, 4, count);
         count += 1;
         map[filePath] = fc;
     });
@@ -100,38 +95,38 @@ function threeDirMap() {
 }
 
 function getStructure(tree, localNames) {
-    var meth = localNames ? 'getRelativeName' : 'getQualifiedName',
-        visitor = {
-            nodes: [],
-            onSummary: function(node) {
-                this.nodes.push('g:' + node[meth]());
-            },
-            onDetail: function(node) {
-                this.nodes.push('f:' + node[meth]());
-            }
-        };
+    const meth = localNames ? 'getRelativeName' : 'getQualifiedName';
+    const visitor = {
+        nodes: [],
+        onSummary(node) {
+            this.nodes.push('g:' + node[meth]());
+        },
+        onDetail(node) {
+            this.nodes.push('f:' + node[meth]());
+        }
+    };
     tree.visit(visitor);
     return visitor.nodes;
 }
 
-describe('summarizer', function() {
-    var fn;
-    describe('[flat strategy]', function() {
-        beforeEach(function() {
+describe('summarizer', () => {
+    let fn;
+    describe('[flat strategy]', () => {
+        beforeEach(() => {
             fn = summarizer.createFlatSummary;
         });
 
-        it('supports an empty coverage map', function() {
-            var map = coverage.createCoverageMap({}),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports an empty coverage map', () => {
+            const map = coverage.createCoverageMap({});
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, ['g:']);
         });
 
-        it('supports a list of files at top-level', function() {
-            var map = singleDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports a list of files at top-level', () => {
+            const map = singleDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file1.js',
@@ -141,10 +136,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports a list of files containing Object.prototype names', function() {
-            var map = protoDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports a list of files containing Object.prototype names', () => {
+            const map = protoDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:constructor.js',
@@ -152,10 +147,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports a list of files at the same nesting level', function() {
-            var map = singleDirMap('/lib/handlers'),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports a list of files at the same nesting level', () => {
+            const map = singleDirMap('/lib/handlers');
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file1.js',
@@ -165,11 +160,11 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 top-level dirs', function() {
-            var map = twoDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree),
-                localNodes = getStructure(tree, true);
+        it('supports 2 top-level dirs', () => {
+            const map = twoDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
+            const localNodes = getStructure(tree, true);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:lib1/file2.js',
@@ -186,10 +181,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 dirs one under another', function() {
-            var map = twoDirMap(true),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports 2 dirs one under another', () => {
+            const map = twoDirMap(true);
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file2.js',
@@ -199,10 +194,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 3 dirs, one nested 2 levels deep', function() {
-            var map = threeDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports 3 dirs, one nested 2 levels deep', () => {
+            const map = threeDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file1.js',
@@ -213,22 +208,22 @@ describe('summarizer', function() {
         });
     });
 
-    describe('[package strategy]', function() {
-        beforeEach(function() {
+    describe('[package strategy]', () => {
+        beforeEach(() => {
             fn = summarizer.createPackageSummary;
         });
 
-        it('supports an empty coverage map', function() {
-            var map = coverage.createCoverageMap({}),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports an empty coverage map', () => {
+            const map = coverage.createCoverageMap({});
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, ['g:']);
         });
 
-        it('supports a list of files at top-level', function() {
-            var map = singleDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports a list of files at top-level', () => {
+            const map = singleDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file1.js',
@@ -238,10 +233,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports a list of files at the same nesting level', function() {
-            var map = singleDirMap('/lib/handlers'),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports a list of files at the same nesting level', () => {
+            const map = singleDirMap('/lib/handlers');
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file1.js',
@@ -251,11 +246,11 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 top-level dirs', function() {
-            var map = twoDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree),
-                localNodes = getStructure(tree, true);
+        it('supports 2 top-level dirs', () => {
+            const map = twoDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
+            const localNodes = getStructure(tree, true);
             assert.deepEqual(nodes, [
                 'g:',
                 'g:lib1',
@@ -276,10 +271,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 dirs one under another', function() {
-            var map = twoDirMap(true),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports 2 dirs one under another', () => {
+            const map = twoDirMap(true);
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'g:lib1',
@@ -291,10 +286,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 3 dirs, one nested 2 levels deep', function() {
-            var map = threeDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports 3 dirs, one nested 2 levels deep', () => {
+            const map = threeDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'g:root',
@@ -309,30 +304,30 @@ describe('summarizer', function() {
         });
     });
 
-    describe('[nested strategy]', function() {
-        beforeEach(function() {
+    describe('[nested strategy]', () => {
+        beforeEach(() => {
             fn = summarizer.createNestedSummary;
         });
 
-        it('supports an empty coverage map', function() {
-            var map = coverage.createCoverageMap({}),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports an empty coverage map', () => {
+            const map = coverage.createCoverageMap({});
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, ['g:']);
         });
 
-        it('handles getting root node name without crashing when empty coverage map', function() {
-            var map = coverage.createCoverageMap({}),
-                tree = fn(map),
-                root = tree.getRoot(),
-                rootNodeName = root.getRelativeName();
+        it('handles getting root node name without crashing when empty coverage map', () => {
+            const map = coverage.createCoverageMap({});
+            const tree = fn(map);
+            const root = tree.getRoot();
+            const rootNodeName = root.getRelativeName();
             assert.equal(rootNodeName, '');
         });
 
-        it('supports a list of files at top-level', function() {
-            var map = singleDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports a list of files at top-level', () => {
+            const map = singleDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file1.js',
@@ -342,10 +337,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports a list of files at the same nesting level', function() {
-            var map = singleDirMap('/lib/handlers'),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports a list of files at the same nesting level', () => {
+            const map = singleDirMap('/lib/handlers');
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file1.js',
@@ -355,11 +350,11 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 top-level dirs', function() {
-            var map = twoDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree),
-                localNodes = getStructure(tree, true);
+        it('supports 2 top-level dirs', () => {
+            const map = twoDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
+            const localNodes = getStructure(tree, true);
             assert.deepEqual(nodes, [
                 'g:',
                 'g:lib1',
@@ -380,10 +375,10 @@ describe('summarizer', function() {
             ]);
         });
 
-        it('supports 2 dirs one under another', function() {
-            var map = twoDirMap(true),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports 2 dirs one under another', () => {
+            const map = twoDirMap(true);
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file2.js',
@@ -393,10 +388,10 @@ describe('summarizer', function() {
                 'f:lib2/file4.js'
             ]);
         });
-        it('supports 3 dirs, one nested 2 levels deep', function() {
-            var map = threeDirMap(),
-                tree = fn(map),
-                nodes = getStructure(tree);
+        it('supports 3 dirs, one nested 2 levels deep', () => {
+            const map = threeDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
             assert.deepEqual(nodes, [
                 'g:',
                 'f:file1.js',
@@ -410,20 +405,20 @@ describe('summarizer', function() {
         });
     });
 
-    describe('report node properties', function() {
-        beforeEach(function() {
+    describe('report node properties', () => {
+        beforeEach(() => {
             fn = summarizer.createPackageSummary;
         });
 
-        it('provides file coverage for leaf nodes', function() {
-            var map = threeDirMap(),
-                tree = fn(map),
-                node = null,
-                visitor = {
-                    onDetail: function(n) {
-                        node = n;
-                    }
-                };
+        it('provides file coverage for leaf nodes', () => {
+            const map = threeDirMap();
+            const tree = fn(map);
+            let node = null;
+            const visitor = {
+                onDetail(n) {
+                    node = n;
+                }
+            };
 
             tree.visit(visitor);
             assert.ok(!node.isSummary());
@@ -431,14 +426,14 @@ describe('summarizer', function() {
             assert.ok(node.getCoverageSummary());
         });
 
-        it('provides summary coverage for group nodes w and w/o files', function() {
-            var map = threeDirMap(),
-                tree = fn(map),
-                node = tree.getRoot(),
-                s;
+        it('provides summary coverage for group nodes w and w/o files', () => {
+            const map = threeDirMap();
+            const tree = fn(map);
+            const node = tree.getRoot();
 
             assert.ok(node.isSummary());
-            s = node.getCoverageSummary();
+
+            const s = node.getCoverageSummary();
             assert.ok(s);
             assert.isNull(node.getCoverageSummary(true));
             assert.ok(s === node.getCoverageSummary()); //caching

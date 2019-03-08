@@ -21,10 +21,9 @@ function lineForKey(value, teamcityVar) {
 }
 
 TeamcityReport.prototype.onStart = function(node, context) {
-    var metrics = node.getCoverageSummary(),
-        cw;
+    const metrics = node.getCoverageSummary();
+    const cw = context.writer.writeFile(this.file);
 
-    cw = context.writer.writeFile(this.file);
     cw.println('');
     cw.println("##teamcity[blockOpened name='" + this.blockName + "']");
 

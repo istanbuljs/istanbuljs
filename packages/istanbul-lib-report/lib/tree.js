@@ -4,7 +4,7 @@
  */
 'use strict';
 
-var util = require('util');
+const util = require('util');
 /**
  * An object with methods that are called during the traversal of the coverage tree.
  * A visitor has the following methods that are called during tree traversal.
@@ -27,8 +27,8 @@ function Visitor(delegate) {
     this.delegate = delegate;
 }
 
-['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(function(k) {
-    var f = 'on' + k;
+['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(k => {
+    const f = 'on' + k;
     Visitor.prototype[f] = function(node, state) {
         if (this.delegate[f] && typeof this.delegate[f] === 'function') {
             this.delegate[f].call(this.delegate, node, state);
@@ -40,7 +40,7 @@ function CompositeVisitor(visitors) {
     if (!Array.isArray(visitors)) {
         visitors = [visitors];
     }
-    this.visitors = visitors.map(function(v) {
+    this.visitors = visitors.map(v => {
         if (v instanceof Visitor) {
             return v;
         }
@@ -50,10 +50,10 @@ function CompositeVisitor(visitors) {
 
 util.inherits(CompositeVisitor, Visitor);
 
-['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].forEach(function(k) {
-    var f = 'on' + k;
+['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].forEach(k => {
+    const f = 'on' + k;
     CompositeVisitor.prototype[f] = function(node, state) {
-        this.visitors.forEach(function(v) {
+        this.visitors.forEach(v => {
             v[f](node, state);
         });
     };
@@ -108,20 +108,15 @@ Node.prototype.getFileCoverage = function() {
  * @param state optional state that is passed around
  */
 Node.prototype.visit = function(visitor, state) {
-    var that = this,
-        visitChildren = function() {
-            that.getChildren().forEach(function(child) {
-                child.visit(visitor, state);
-            });
-        };
-
     if (this.isSummary()) {
         visitor.onSummary(this, state);
     } else {
         visitor.onDetail(this, state);
     }
 
-    visitChildren();
+    this.getChildren().forEach(child => {
+        child.visit(visitor, state);
+    });
 
     if (this.isSummary()) {
         visitor.onSummaryEnd(this, state);
@@ -157,8 +152,8 @@ Tree.prototype.visit = function(visitor, state) {
 };
 
 module.exports = {
-    Tree: Tree,
-    Node: Node,
-    Visitor: Visitor,
-    CompositeVisitor: CompositeVisitor
+    Tree,
+    Node,
+    Visitor,
+    CompositeVisitor
 };

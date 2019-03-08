@@ -2,17 +2,17 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path'),
-    fs = require('fs'),
-    existsSync = fs.existsSync,
-    CAMEL_PATTERN = /([a-z])([A-Z])/g,
-    YML_PATTERN = /\.ya?ml$/,
-    yaml = require('js-yaml'),
-    libReport = require('istanbul-lib-report'),
-    inputError = require('./input-error');
+const path = require('path');
+const fs = require('fs');
+const existsSync = fs.existsSync;
+const CAMEL_PATTERN = /([a-z])([A-Z])/g;
+const YML_PATTERN = /\.ya?ml$/;
+const yaml = require('js-yaml');
+const libReport = require('istanbul-lib-report');
+const inputError = require('./input-error');
 
 function defaultConfig() {
-    var ret = {
+    const ret = {
         verbose: false,
         instrumentation: {
             root: '.',
@@ -67,9 +67,10 @@ function defaultConfig() {
 }
 
 function dasherize(word) {
-    return word.replace(CAMEL_PATTERN, function(match, lch, uch) {
-        return lch + '-' + uch.toLowerCase();
-    });
+    return word.replace(
+        CAMEL_PATTERN,
+        (match, lch, uch) => lch + '-' + uch.toLowerCase()
+    );
 }
 function isScalar(v) {
     if (v === null) {
@@ -83,15 +84,15 @@ function isObject(v) {
 }
 
 function mergeObjects(explicit, template, bothWays) {
-    var ret = {},
-        keys = Object.keys(template);
+    const ret = {};
+    const keys = Object.keys(template);
 
     if (bothWays) {
-        keys.push.apply(keys, Object.keys(explicit));
+        keys.push(...Object.keys(explicit));
     }
-    keys.forEach(function(k) {
-        var v1 = template[k],
-            v2 = explicit[k];
+    keys.forEach(k => {
+        const v1 = template[k];
+        let v2 = explicit[k];
 
         if (Array.isArray(v1)) {
             ret[k] = Array.isArray(v2) && v2.length > 0 ? v2 : v1;
@@ -109,10 +110,10 @@ function mergeObjects(explicit, template, bothWays) {
 
 function mergeDefaults(explicit, implicit) {
     explicit = explicit || {};
-    var initialMerge = mergeObjects(explicit || {}, implicit),
-        explicitReportConfig =
-            (explicit.reporting || {})['report-config'] || {},
-        implicitReportConfig = initialMerge.reporting['report-config'] || {};
+    const initialMerge = mergeObjects(explicit || {}, implicit);
+    const explicitReportConfig =
+        (explicit.reporting || {})['report-config'] || {};
+    const implicitReportConfig = initialMerge.reporting['report-config'] || {};
     initialMerge.reporting['report-config'] = mergeObjects(
         explicitReportConfig,
         implicitReportConfig,
@@ -121,12 +122,9 @@ function mergeDefaults(explicit, implicit) {
     return initialMerge;
 }
 
-function addMethods() {
-    var args = Array.prototype.slice.call(arguments),
-        cons = args.shift();
-
-    args.forEach(function(arg) {
-        var property = dasherize(arg);
+function addMethods(cons, ...args) {
+    args.forEach(arg => {
+        const property = dasherize(arg);
         cons.prototype[arg] = function() {
             return this.config[property];
         };
@@ -228,7 +226,7 @@ InstrumentOptions.prototype.root = function() {
  *  instrumentation.
  */
 InstrumentOptions.prototype.excludes = function(excludeTests) {
-    var defs;
+    let defs;
     if (this.defaultExcludes()) {
         defs = ['**/node_modules/**'];
         if (excludeTests) {
@@ -300,7 +298,7 @@ addMethods(
 );
 
 function isInvalidMark(v, key) {
-    var prefix = 'Watermark for [' + key + '] :';
+    const prefix = 'Watermark for [' + key + '] :';
 
     if (v.length !== 2) {
         return prefix + 'must be an array of length 2';
@@ -335,13 +333,14 @@ function isInvalidMark(v, key) {
  *  branches, functions and lines.
  */
 ReportingOptions.prototype.watermarks = function() {
-    var v = this.config.watermarks,
-        defs = libReport.getDefaultWatermarks(),
-        ret = {};
+    const v = this.config.watermarks;
+    const defs = libReport.getDefaultWatermarks();
+    const ret = {};
 
-    Object.keys(defs).forEach(function(k) {
-        var mark = v[k], //it will already be a non-zero length array because of the way the merge works
-            message = isInvalidMark(mark, k);
+    Object.keys(defs).forEach(k => {
+        const mark = v[k];
+        //it will already be a non-zero length array because of the way the merge works
+        const message = isInvalidMark(mark, k);
         if (message) {
             console.error(message);
             ret[k] = defs[k];
@@ -420,7 +419,7 @@ addMethods(
  * @constructor
  */
 function Configuration(obj, overrides) {
-    var config = mergeDefaults(obj, defaultConfig(true));
+    let config = mergeDefaults(obj, defaultConfig(true));
     if (isObject(overrides)) {
         config = mergeDefaults(overrides, config);
     }
@@ -459,8 +458,8 @@ function Configuration(obj, overrides) {
  */
 
 function loadFile(file, overrides) {
-    var defaultConfigFile = path.resolve('.istanbul.yml'),
-        configObject;
+    const defaultConfigFile = path.resolve('.istanbul.yml');
+    let configObject;
 
     if (file) {
         if (!existsSync(file)) {
@@ -516,7 +515,7 @@ module.exports = {
      *  config object loaded
      * @return {Configuration} the config object with overrides applied
      */
-    loadFile: loadFile,
+    loadFile,
     /**
      * loads the specified configuration object with optional overrides.
      * @method loadObject
@@ -526,7 +525,7 @@ module.exports = {
      *  config object
      * @return {Configuration} the config object with overrides applied
      */
-    loadObject: loadObject,
+    loadObject,
     /**
      * returns the default configuration object. Note that this is a plain object
      * and not a `Configuration` instance.
@@ -534,5 +533,5 @@ module.exports = {
      * @static
      * @return {Object} an object that represents the default config
      */
-    defaultConfig: defaultConfig
+    defaultConfig
 };

@@ -15,9 +15,9 @@ JsonReport.prototype.onStart = function(root, context) {
 };
 
 JsonReport.prototype.onDetail = function(node) {
-    var fc = node.getFileCoverage(),
-        key = fc.path,
-        cw = this.contentWriter;
+    const fc = node.getFileCoverage();
+    const key = fc.path;
+    const cw = this.contentWriter;
 
     if (this.first) {
         this.first = false;
@@ -31,7 +31,7 @@ JsonReport.prototype.onDetail = function(node) {
 };
 
 JsonReport.prototype.onEnd = function() {
-    var cw = this.contentWriter;
+    const cw = this.contentWriter;
     cw.println('}');
     cw.close();
 };

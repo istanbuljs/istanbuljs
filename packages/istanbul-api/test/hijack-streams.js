@@ -1,5 +1,5 @@
-var outWrite = process.stdout.write,
-    errWrite = process.stderr.write;
+const outWrite = process.stdout.write;
+const errWrite = process.stderr.write;
 
 function silent() {
     if (!process.env.DEBUG) {
@@ -14,14 +14,14 @@ function reset() {
 }
 
 function wrap(cb) {
-    return function() {
+    return function(...args) {
         reset();
-        cb.apply(null, Array.prototype.slice.call(arguments));
+        cb(...args);
     };
 }
 
 module.exports = {
-    silent: silent,
-    reset: reset,
-    wrap: wrap
+    silent,
+    reset,
+    wrap
 };

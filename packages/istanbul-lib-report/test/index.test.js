@@ -1,10 +1,10 @@
 /* globals describe, it */
 
-var assert = require('chai').assert,
-    index = require('../index');
+const assert = require('chai').assert;
+const index = require('../index');
 
-describe('report interface', function() {
-    it('exports the desired interface', function() {
+describe('report interface', () => {
+    it('exports the desired interface', () => {
         assert.isFunction(index.createContext);
         assert.isFunction(index.getDefaultWatermarks);
         assert.isObject(index.summarizers);
@@ -12,8 +12,8 @@ describe('report interface', function() {
         assert.isFunction(index.summarizers.nested);
         assert.isFunction(index.summarizers.pkg);
     });
-    it('exposes default watermarks', function() {
-        var w = index.getDefaultWatermarks();
+    it('exposes default watermarks', () => {
+        const w = index.getDefaultWatermarks();
         assert.deepEqual(
             {
                 statements: [50, 80],
@@ -24,7 +24,7 @@ describe('report interface', function() {
             w
         );
     });
-    it('creates a context without options', function() {
+    it('creates a context without options', () => {
         assert.ok(index.createContext());
     });
 });

@@ -8,9 +8,9 @@
  * @module Exports
  */
 
-var summarizer = require('./lib/summarizer'),
-    context = require('./lib/context'),
-    watermarks = require('./lib/watermarks');
+const summarizer = require('./lib/summarizer');
+const context = require('./lib/context');
+const watermarks = require('./lib/watermarks');
 
 module.exports = {
     /**
@@ -18,7 +18,7 @@ module.exports = {
      * @param {Object} [opts=null] opts
      * @returns {Context}
      */
-    createContext: function(opts) {
+    createContext(opts) {
         return context.create(opts);
     },
     /**
@@ -28,7 +28,7 @@ module.exports = {
      *  and `line` keys. Each value is a 2 element array that has the low and
      *  high watermark as percentages.
      */
-    getDefaultWatermarks: function() {
+    getDefaultWatermarks() {
         return watermarks.getDefault();
     }
 };

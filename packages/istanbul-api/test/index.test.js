@@ -1,10 +1,10 @@
 /* globals describe, it */
 
-var assert = require('chai').assert,
-    index = require('../index');
+const assert = require('chai').assert;
+const index = require('../index');
 
-describe('index', function() {
-    it('exports the correct interface', function() {
+describe('index', () => {
+    it('exports the correct interface', () => {
         assert.isObject(index.config);
         assert.isFunction(index.matcherFor);
         assert.isFunction(index.filesFor);
@@ -19,7 +19,7 @@ describe('index', function() {
         assert.isObject(index.libReport);
         assert.isObject(index.libSourceMaps);
         assert.isObject(index.reportsImpl);
-        assert.doesNotThrow(function() {
+        assert.doesNotThrow(() => {
             index.createReporter(index.config.loadObject({}));
         });
     });

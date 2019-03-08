@@ -2,11 +2,11 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var async = require('async'),
-    fileset = require('fileset'),
-    fs = require('fs'),
-    path = require('path'),
-    seq = 0;
+const fs = require('fs');
+const path = require('path');
+const async = require('async');
+const fileset = require('fileset');
+let seq = 0;
 
 function filesFor(options, callback) {
     if (!callback && typeof options === 'function') {
@@ -15,22 +15,21 @@ function filesFor(options, callback) {
     }
     options = options || {};
 
-    var root = options.root,
-        includes = options.includes,
-        excludes = options.excludes,
-        realpath = options.realpath,
-        relative = options.relative,
-        opts;
+    let root = options.root;
+    let includes = options.includes;
+    let excludes = options.excludes;
+    const realpath = options.realpath;
+    const relative = options.relative;
 
     root = root || process.cwd();
     includes = includes && Array.isArray(includes) ? includes : ['**/*.js'];
     excludes =
         excludes && Array.isArray(excludes) ? excludes : ['**/node_modules/**'];
 
-    opts = { cwd: root, nodir: true, ignore: excludes };
+    const opts = { cwd: root, nodir: true, ignore: excludes };
     seq += 1;
     opts['x' + seq + new Date().getTime()] = true; //cache buster for minimatch cache bug
-    fileset(includes.join(' '), excludes.join(' '), opts, function(err, files) {
+    fileset(includes.join(' '), excludes.join(' '), opts, (err, files) => {
         /* istanbul ignore if - untestable */
         if (err) {
             return callback(err);
@@ -40,18 +39,16 @@ function filesFor(options, callback) {
         }
 
         if (!realpath) {
-            files = files.map(function(file) {
-                return path.resolve(root, file);
-            });
+            files = files.map(file => path.resolve(root, file));
             return callback(err, files);
         }
 
-        var realPathCache =
+        const realPathCache =
             module.constructor._realpathCache || /* istanbul ignore next */ {};
 
         async.map(
             files,
-            function(file, done) {
+            (file, done) => {
                 fs.realpath(path.resolve(root, file), realPathCache, done);
             },
             callback
@@ -68,18 +65,17 @@ function matcherFor(options, callback) {
     options.relative = false; //force absolute paths
     options.realpath = true; //force real paths (to match Node.js module paths)
 
-    filesFor(options, function(err, files) {
-        var fileMap = Object.create(null),
-            matchFn;
+    filesFor(options, (err, files) => {
+        const fileMap = Object.create(null);
         /* istanbul ignore if - untestable */
         if (err) {
             return callback(err);
         }
-        files.forEach(function(file) {
+        files.forEach(file => {
             fileMap[file] = true;
         });
 
-        matchFn = function(file) {
+        const matchFn = function(file) {
             return fileMap[file];
         };
         matchFn.files = Object.keys(fileMap);
@@ -88,6 +84,6 @@ function matcherFor(options, callback) {
 }
 
 module.exports = {
-    filesFor: filesFor,
-    matcherFor: matcherFor
+    filesFor,
+    matcherFor
 };

@@ -2,12 +2,12 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-var path = require('path');
+const path = require('path');
 
 module.exports = {
-    create: function(name, cfg) {
+    create(name, cfg) {
         cfg = cfg || {};
-        var Cons;
+        let Cons;
         try {
             Cons = require(path.join(__dirname, 'lib', name));
         } catch (e) {
