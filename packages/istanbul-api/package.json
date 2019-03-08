@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "fast": "mocha --slow 1000",
-    "test": "mocha"
+    "test": "mocha test/run-cover.test.js"
   },
   "repository": {
     "type": "git",

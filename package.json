@@ -5,7 +5,7 @@
   "description": "monorepo containing the various nuts and bolts that facilitate istanbul.js test instrumentation",
   "scripts": {
     "posttest": "eslint .",
-    "test": "cross-env LERNA_TEST_RUN=1 NODE_ENV=test nyc lerna --ignore nyc exec npm test",
+    "test": "cross-env LERNA_TEST_RUN=1 NODE_ENV=test nyc --all=false lerna --scope istanbul-api exec npm test",
     "postinstall": "lerna bootstrap",
     "release": "lerna publish --conventional-commits --npm-tag=next"
   },

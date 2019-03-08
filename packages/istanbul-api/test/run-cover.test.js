@@ -13,7 +13,7 @@ var assert = require('chai').assert,
     wrap = hijack.wrap,
     unhookFn;
 
-describe('run cover', function() {
+describe.only('run cover', function() {
     beforeEach(function() {
         unhookFn = null;
         mkdirp.sync(outputDir);
@@ -120,7 +120,7 @@ describe('run cover', function() {
         });
     });
 
-    it('hooks runInThisContext and provides coverage', function(cb) {
+    it.only('hooks runInThisContext and provides coverage', function(cb) {
         cb = wrap(cb);
         var config = getConfig({
             hooks: { 'hook-run-in-this-context': true },
