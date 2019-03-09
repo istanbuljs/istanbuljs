@@ -4,7 +4,7 @@ os:
   - osx
   - linux
 node_js:
-  - '11.10.1'
+  - 'node'
   - 10
   - 8
   - 6
@@ -16,7 +16,7 @@ matrix:
 #      node_js: "latest"
   exclude:
     - os: windows
-      node_js: "11.10.1"
+      node_js: "node"
 
 env:
   global:
