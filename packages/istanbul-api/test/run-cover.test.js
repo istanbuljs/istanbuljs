@@ -5,6 +5,7 @@ const fs = require('fs');
 const assert = require('chai').assert;
 const mkdirp = require('make-dir');
 const rimraf = require('rimraf');
+const semver = require('semver');
 const codeRoot = path.resolve(__dirname, 'sample-code');
 const outputDir = path.resolve(__dirname, 'coverage');
 const configuration = require('../lib/config');
@@ -132,8 +133,17 @@ describe('run cover', () => {
             require('./sample-code/context');
             const coverageMap = fn();
             assert.ok(coverageMap);
-            assert.ok(coverageMap[path.resolve(codeRoot, 'context.js')]);
             assert.ok(coverageMap[path.resolve(codeRoot, 'foo.js')]);
+
+            const contextCovered =
+                coverageMap[path.resolve(codeRoot, 'context.js')];
+            /* `require` no longer uses vm.runInThisContext in node.js 11.11.0 */
+            if (semver.lt(process.version, '11.11.0')) {
+                assert.ok(contextCovered);
+            } else {
+                assert.ok(!contextCovered);
+            }
+
             cb();
         });
     });
