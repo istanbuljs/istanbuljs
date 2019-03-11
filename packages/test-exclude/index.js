@@ -172,6 +172,8 @@ function getExtensionPattern(extension) {
 
 const exportFunc = opts => new TestExclude(opts);
 
+const devConfigs = ['ava', 'babel', 'jest', 'nyc', 'rollup', 'webpack'];
+
 exportFunc.defaultExclude = [
     'coverage/**',
     'packages/*/test/**',
@@ -180,7 +182,7 @@ exportFunc.defaultExclude = [
     '**/*{.,-}test.js',
     '**/__tests__/**',
     '**/node_modules/**',
-    '**/babel.config.js'
+    `**/{${devConfigs.join()}}.config.js`
 ];
 
 module.exports = exportFunc;
