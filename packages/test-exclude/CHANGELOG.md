@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@5.1.0...test-exclude@5.2.0) (2019-03-12)
+
+
+### Features
+
+* Add TestExclude.globSync to find all files ([#309](https://github.com/istanbuljs/istanbuljs/issues/309)) ([2d7ea72](https://github.com/istanbuljs/istanbuljs/commit/2d7ea72))
+* Support turning of node_modules default exclude via flag ([#213](https://github.com/istanbuljs/istanbuljs/issues/213)) ([9b4b34c](https://github.com/istanbuljs/istanbuljs/commit/9b4b34c))
+
+
+
+
+
 # [5.1.0](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@5.0.1...test-exclude@5.1.0) (2019-01-26)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/istanbuljs/istanbuljs/compare/@istanbuljs/nyc-config-babel@2.0.1...@istanbuljs/nyc-config-babel@2.1.0) (2019-03-12)
+
+
+### Features
+
+* add nyc-config-typescript ([#282](https://github.com/istanbuljs/istanbuljs/issues/282)) ([f1fb688](https://github.com/istanbuljs/istanbuljs/commit/f1fb688))
+
+
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/istanbuljs/istanbuljs/compare/@istanbuljs/nyc-config-babel@2.0.0...@istanbuljs/nyc-config-babel@2.0.1) (2018-12-19)
 

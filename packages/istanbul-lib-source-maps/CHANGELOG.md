@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@3.0.2...istanbul-lib-source-maps@3.0.3) (2019-03-12)
+
+
+### Bug Fixes
+
+* Map unique files once, regardless of path separator ([#287](https://github.com/istanbuljs/istanbuljs/issues/287)) ([39a1e56](https://github.com/istanbuljs/istanbuljs/commit/39a1e56))
+
+
+
+
+
 ## [3.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@3.0.1...istanbul-lib-source-maps@3.0.2) (2019-01-26)
 
 **Note:** Version bump only for package istanbul-lib-source-maps

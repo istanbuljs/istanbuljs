@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.0...istanbul-lib-instrument@3.1.1) (2019-03-12)
+
+
+### Bug Fixes
+
+* Honor istanbul ignore next hints placed before export statement. ([#298](https://github.com/istanbuljs/istanbuljs/issues/298)) ([f24795d](https://github.com/istanbuljs/istanbuljs/commit/f24795d)), closes [#297](https://github.com/istanbuljs/istanbuljs/issues/297)
+
+
+
+
+
 # [3.1.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.0.1...istanbul-lib-instrument@3.1.0) (2019-01-26)
 
 
