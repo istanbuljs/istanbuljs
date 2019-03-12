@@ -1,0 +1,35 @@
+{
+  "name": "@istanbuljs/nyc-config-hook-run-in-this-context",
+  "version": "0.1.0",
+  "description": "nyc configuration for hook-run-in-this-context",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+  },
+  "keywords": [
+    "hook",
+    "config",
+    "nyc",
+    "test",
+    "coverage"
+  ],
+  "author": "Corey Farrell <git@cfware.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
+  },
+  "homepage": "https://istanbul.js.org/",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=6"
+  }
+}
