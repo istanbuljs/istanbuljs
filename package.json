@@ -7,7 +7,7 @@
     "posttest": "eslint .",
     "test": "cross-env LERNA_TEST_RUN=1 NODE_ENV=test nyc lerna --ignore nyc exec npm test",
     "postinstall": "lerna bootstrap",
-    "release": "lerna publish --conventional-commits --npm-tag=next"
+    "release": "lerna publish --conventional-commits --dist-tag=next"
   },
   "repository": {
     "type": "git",
