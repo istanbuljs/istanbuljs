@@ -4,11 +4,10 @@
  */
 'use strict';
 
-const PCT_COLS = 9;
-const MISSING_COL = 18;
+const PCT_COLS = 8;
+const MISSING_COL = 29;
 const TAB_SIZE = 1;
-const DELIM = ' |';
-const COL_DELIM = '-|';
+const DELIM = '|';
 
 function padding(num, ch) {
     let str = '';
@@ -37,7 +36,7 @@ function fill(str, width, right, tabs) {
             fmtStr = right ? fillStr + str : str + fillStr;
         } else {
             fmtStr = str.substring(strlen - remaining);
-            fmtStr = '... ' + fmtStr.substring(4);
+            fmtStr = '...' + fmtStr.substring(3);
         }
     }
 
@@ -98,7 +97,7 @@ function makeLine(nameWidth) {
     elements.push(pct);
     elements.push(pct);
     elements.push(padding(MISSING_COL, '-'));
-    return elements.join(COL_DELIM) + COL_DELIM;
+    return elements.join(DELIM);
 }
 
 function tableHeader(maxNameCols) {
@@ -109,7 +108,7 @@ function tableHeader(maxNameCols) {
     elements.push(formatPct('% Funcs'));
     elements.push(formatPct('% Lines'));
     elements.push(formatPct('Uncovered Line #s', MISSING_COL));
-    return elements.join(' |') + ' |';
+    return elements.join('|');
 }
 
 function missingLines(node, colorizer) {
@@ -182,7 +181,7 @@ function tableRow(
     } else {
         elements.push(missingLines(node, colorizer));
     }
-    return elements.join(DELIM) + DELIM;
+    return elements.join(DELIM);
 }
 
 function TextReport(opts) {
