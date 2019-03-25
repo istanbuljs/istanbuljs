@@ -4,8 +4,8 @@
  */
 'use strict';
 
-const PCT_COLS = 8;
-const MISSING_COL = 29;
+const PCT_COLS = 7;
+const MISSING_COL = 32;
 const TAB_SIZE = 1;
 const DELIM = '|';
 
@@ -93,7 +93,7 @@ function makeLine(nameWidth) {
 
     elements.push(name);
     elements.push(pct);
-    elements.push(pct);
+    elements.push(padding(PCT_COLS+1, '-'));
     elements.push(pct);
     elements.push(pct);
     elements.push(padding(MISSING_COL, '-'));
@@ -104,7 +104,7 @@ function tableHeader(maxNameCols) {
     const elements = [];
     elements.push(formatName('File', maxNameCols, 0));
     elements.push(formatPct('% Stmts'));
-    elements.push(formatPct('% Branch'));
+    elements.push(formatPct('% Branch', PCT_COLS+1));
     elements.push(formatPct('% Funcs'));
     elements.push(formatPct('% Lines'));
     elements.push(formatPct('Uncovered Line #s', MISSING_COL));
@@ -173,7 +173,7 @@ function tableRow(
 
     elements.push(colorize(formatName(name, maxNameCols, level), 'statements'));
     elements.push(colorize(formatPct(mm.statements), 'statements'));
-    elements.push(colorize(formatPct(mm.branches), 'branches'));
+    elements.push(colorize(formatPct(mm.branches, PCT_COLS+1), 'branches'));
     elements.push(colorize(formatPct(mm.functions), 'functions'));
     elements.push(colorize(formatPct(mm.lines), 'lines'));
     if (mm.lines === 100) {
@@ -194,7 +194,7 @@ function TextReport(opts) {
 }
 
 TextReport.prototype.onStart = function(root, context) {
-    const statsWidth = 4 * (PCT_COLS + 2) + MISSING_COL;
+    const statsWidth = 3 * (PCT_COLS + 2) + (PCT_COLS + 3) +MISSING_COL;
 
     this.cw = context.writer.writeFile(this.file);
     this.nameWidth = findNameWidth(root, context);
