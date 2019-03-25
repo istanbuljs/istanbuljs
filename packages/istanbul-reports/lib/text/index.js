@@ -5,7 +5,7 @@
 'use strict';
 
 const PCT_COLS = 7;
-const MISSING_COL = 32;
+const MISSING_COL = 17;
 const TAB_SIZE = 1;
 const DELIM = '|';
 
@@ -51,6 +51,28 @@ function formatPct(pct, width) {
     return fill(pct, width || PCT_COLS, true, 0);
 }
 
+function nodeMissing(node) {
+    const metrics = node.getCoverageSummary();
+    const isEmpty = metrics.isEmpty();
+    const lines = isEmpty ? 0 : metrics.lines.pct;
+
+    let missingLines;
+
+    if (lines === 100) {
+        const branches = node.isSummary()
+            ? {}
+            : node.getFileCoverage().getBranchCoverageByLine();
+        missingLines = Object.keys(branches)
+            .filter(key => branches[key].coverage < 100)
+            .map(key => key);
+    } else {
+        missingLines = node.isSummary()
+            ? []
+            : node.getFileCoverage().getUncoveredLines();
+    }
+    return missingLines.join(',');
+}
+
 function nodeName(node) {
     return node.getRelativeName() || 'All files';
 }
@@ -63,6 +85,22 @@ function depthFor(node) {
         node = node.getParent();
     }
     return ret;
+}
+
+function findMissingWidth(node, context) {
+    let last = 0;
+    function compareWidth(node) {
+        const idealWidth = nodeMissing(node).length;
+        if (idealWidth > last) {
+            last = idealWidth;
+        }
+    };
+    const visitor = {
+        onSummary: compareWidth,
+        onDetail: compareWidth
+    };
+    node.visit(context.getVisitor(visitor));
+    return last;
 }
 
 function findNameWidth(node, context) {
@@ -86,7 +124,7 @@ function findNameWidth(node, context) {
     return last;
 }
 
-function makeLine(nameWidth) {
+function makeLine(nameWidth, missingWidth) {
     const name = padding(nameWidth, '-');
     const pct = padding(PCT_COLS, '-');
     const elements = [];
@@ -96,36 +134,36 @@ function makeLine(nameWidth) {
     elements.push(padding(PCT_COLS+1, '-'));
     elements.push(pct);
     elements.push(pct);
-    elements.push(padding(MISSING_COL, '-'));
+    elements.push(padding(missingWidth, '-'));
     return elements.join(DELIM);
 }
 
-function tableHeader(maxNameCols) {
+function tableHeader(maxNameCols, missingWidth) {
     const elements = [];
     elements.push(formatName('File', maxNameCols, 0));
     elements.push(formatPct('% Stmts'));
     elements.push(formatPct('% Branch', PCT_COLS+1));
     elements.push(formatPct('% Funcs'));
     elements.push(formatPct('% Lines'));
-    elements.push(formatPct('Uncovered Line #s', MISSING_COL));
+    elements.push(formatPct('Uncovered Line #s', missingWidth));
     return elements.join('|');
 }
 
-function missingLines(node, colorizer) {
+function missingLines(node, colorizer, missingWidth) {
     const missingLines = node.isSummary()
         ? []
         : node.getFileCoverage().getUncoveredLines();
-    return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'low');
+    return colorizer(formatPct(missingLines.join(','), missingWidth), 'low');
 }
 
-function missingBranches(node, colorizer) {
+function missingBranches(node, colorizer, missingWidth) {
     const branches = node.isSummary()
         ? {}
         : node.getFileCoverage().getBranchCoverageByLine();
     const missingLines = Object.keys(branches)
         .filter(key => branches[key].coverage < 100)
         .map(key => key);
-    return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'medium');
+    return colorizer(formatPct(missingLines.join(','), missingWidth), 'medium');
 }
 
 function isFull(metrics) {
@@ -144,7 +182,8 @@ function tableRow(
     maxNameCols,
     level,
     skipEmpty,
-    skipFull
+    skipFull,
+    missingWidth
 ) {
     const name = nodeName(node);
     const metrics = node.getCoverageSummary();
@@ -177,9 +216,9 @@ function tableRow(
     elements.push(colorize(formatPct(mm.functions), 'functions'));
     elements.push(colorize(formatPct(mm.lines), 'lines'));
     if (mm.lines === 100) {
-        elements.push(missingBranches(node, colorizer));
+        elements.push(missingBranches(node, colorizer, missingWidth));
     } else {
-        elements.push(missingLines(node, colorizer));
+        elements.push(missingLines(node, colorizer, missingWidth));
     }
     return elements.join(DELIM);
 }
@@ -194,19 +233,27 @@ function TextReport(opts) {
 }
 
 TextReport.prototype.onStart = function(root, context) {
-    const statsWidth = 3 * (PCT_COLS + 2) + (PCT_COLS + 3) +MISSING_COL;
-
     this.cw = context.writer.writeFile(this.file);
     this.nameWidth = findNameWidth(root, context);
+    this.missingWidth = Math.max(MISSING_COL, findMissingWidth(root, context));
+
     if (this.maxCols > 0) {
-        const maxRemaining = this.maxCols - statsWidth - 2;
+        const pct_cols = 4 * (PCT_COLS + 2) + 1;
+
+        const maxRemaining = this.maxCols - (pct_cols + MISSING_COL);
         if (this.nameWidth > maxRemaining) {
             this.nameWidth = maxRemaining;
         }
+        else if (this.nameWidth < maxRemaining) {
+          const maxRemaining = this.maxCols - (this.nameWidth + pct_cols);
+          if (this.missingWidth > maxRemaining) {
+              this.missingWidth = maxRemaining;
+          }
+        }
     }
-    const line = makeLine(this.nameWidth);
+    const line = makeLine(this.nameWidth, this.missingWidth);
     this.cw.println(line);
-    this.cw.println(tableHeader(this.nameWidth));
+    this.cw.println(tableHeader(this.nameWidth, this.missingWidth));
     this.cw.println(line);
 };
 
@@ -219,7 +266,8 @@ TextReport.prototype.onSummary = function(node, context) {
         this.nameWidth,
         nodeDepth,
         this.skipEmpty,
-        this.skipFull
+        this.skipFull,
+        this.missingWidth
     );
     if (row) {
         this.cw.println(row);
@@ -231,7 +279,7 @@ TextReport.prototype.onDetail = function(node, context) {
 };
 
 TextReport.prototype.onEnd = function() {
-    this.cw.println(makeLine(this.nameWidth));
+    this.cw.println(makeLine(this.nameWidth, this.missingWidth));
     this.cw.close();
 };
 
