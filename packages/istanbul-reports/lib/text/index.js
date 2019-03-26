@@ -94,7 +94,7 @@ function findMissingWidth(node, context) {
         if (idealWidth > last) {
             last = idealWidth;
         }
-    };
+    }
     const visitor = {
         onSummary: compareWidth,
         onDetail: compareWidth
@@ -131,7 +131,7 @@ function makeLine(nameWidth, missingWidth) {
 
     elements.push(name);
     elements.push(pct);
-    elements.push(padding(PCT_COLS+1, '-'));
+    elements.push(padding(PCT_COLS + 1, '-'));
     elements.push(pct);
     elements.push(pct);
     elements.push(padding(missingWidth, '-'));
@@ -142,7 +142,7 @@ function tableHeader(maxNameCols, missingWidth) {
     const elements = [];
     elements.push(formatName('File', maxNameCols, 0));
     elements.push(formatPct('% Stmts'));
-    elements.push(formatPct('% Branch', PCT_COLS+1));
+    elements.push(formatPct('% Branch', PCT_COLS + 1));
     elements.push(formatPct('% Funcs'));
     elements.push(formatPct('% Lines'));
     elements.push(formatPct('Uncovered Line #s', missingWidth));
@@ -212,7 +212,7 @@ function tableRow(
 
     elements.push(colorize(formatName(name, maxNameCols, level), 'statements'));
     elements.push(colorize(formatPct(mm.statements), 'statements'));
-    elements.push(colorize(formatPct(mm.branches, PCT_COLS+1), 'branches'));
+    elements.push(colorize(formatPct(mm.branches, PCT_COLS + 1), 'branches'));
     elements.push(colorize(formatPct(mm.functions), 'functions'));
     elements.push(colorize(formatPct(mm.lines), 'lines'));
     if (mm.lines === 100) {
@@ -243,12 +243,11 @@ TextReport.prototype.onStart = function(root, context) {
         const maxRemaining = this.maxCols - (pct_cols + MISSING_COL);
         if (this.nameWidth > maxRemaining) {
             this.nameWidth = maxRemaining;
-        }
-        else if (this.nameWidth < maxRemaining) {
-          const maxRemaining = this.maxCols - (this.nameWidth + pct_cols);
-          if (this.missingWidth > maxRemaining) {
-              this.missingWidth = maxRemaining;
-          }
+        } else if (this.nameWidth < maxRemaining) {
+            const maxRemaining = this.maxCols - (this.nameWidth + pct_cols);
+            if (this.missingWidth > maxRemaining) {
+                this.missingWidth = maxRemaining;
+            }
         }
     }
     const line = makeLine(this.nameWidth, this.missingWidth);
