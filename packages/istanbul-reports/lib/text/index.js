@@ -243,6 +243,7 @@ TextReport.prototype.onStart = function(root, context) {
         const maxRemaining = this.maxCols - (pct_cols + MISSING_COL);
         if (this.nameWidth > maxRemaining) {
             this.nameWidth = maxRemaining;
+            this.missingWidth = MISSING_COL;
         } else if (this.nameWidth < maxRemaining) {
             const maxRemaining = this.maxCols - (this.nameWidth + pct_cols);
             if (this.missingWidth > maxRemaining) {
