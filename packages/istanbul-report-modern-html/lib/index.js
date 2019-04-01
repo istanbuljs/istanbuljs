@@ -53,33 +53,30 @@ ModernHtmlReport.prototype.getWriter = function(context) {
 
 ModernHtmlReport.prototype.onStart = function(root, context) {
     this.htmlReport.onStart(root, context);
-    // TODO
-    return;
+
     const assetHeaders = {
         '.js': '/* eslint-disable */\n'
     };
 
-    ['.', 'vendor'].forEach(subdir => {
-        const writer = this.getWriter(context);
-        const srcDir = path.resolve(__dirname, 'assets', subdir);
-        fs.readdirSync(srcDir).forEach(f => {
-            const resolvedSource = path.resolve(srcDir, f);
-            const resolvedDestination = '.';
-            const stat = fs.statSync(resolvedSource);
-            let dest;
+    const writer = this.getWriter(context);
+    const srcDir = path.resolve(__dirname, '../assets');
+    fs.readdirSync(srcDir).forEach(f => {
+        const resolvedSource = path.resolve(srcDir, f);
+        const resolvedDestination = '.';
+        const stat = fs.statSync(resolvedSource);
+        let dest;
 
-            if (stat.isFile()) {
-                dest = resolvedDestination + '/' + f;
-                if (this.verbose) {
-                    console.log('Write asset: ' + dest);
-                }
-                writer.copyFile(
-                    resolvedSource,
-                    dest,
-                    assetHeaders[path.extname(f)]
-                );
+        if (stat.isFile()) {
+            dest = resolvedDestination + '/' + f;
+            if (this.verbose) {
+                console.log('Write asset: ' + dest);
             }
-        });
+            writer.copyFile(
+                resolvedSource,
+                dest,
+                assetHeaders[path.extname(f)]
+            );
+        }
     });
 };
 
@@ -93,6 +90,8 @@ ModernHtmlReport.prototype.onDetail = function(node, context) {
 
 ModernHtmlReport.prototype.onEnd = function(rootNode, context) {
     // TODO - implement
+    // Turn the root node tree into static json structure/
+    // inject into the html
 };
 
 module.exports = ModernHtmlReport;
