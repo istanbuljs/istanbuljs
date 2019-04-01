@@ -1,0 +1,35 @@
+{
+  "name": "istanbul-report-modern-html",
+  "version": "2.2.0",
+  "description": "istanbul report - modern html",
+  "author": "Luke Page",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "dependencies": {
+    "istanbul-reports": "^2.2.0"
+  },
+  "devDependencies": {
+  },
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:istanbuljs/istanbuljs"
+  },
+  "keywords": [
+    "istanbul",
+    "reports"
+  ],
+  "bugs": {
+    "url": "https://github.com/istanbuljs/istanbuljs/issues"
+  },
+  "homepage": "https://istanbul.js.org/",
+  "engines": {
+    "node": ">=6"
+  }
+}
