@@ -6,7 +6,8 @@
   "main": "index.js",
   "files": [
     "index.js",
-    "lib"
+    "lib",
+    "assets"
   ],
   "scripts": {
     "test": "mocha --recursive"
@@ -15,6 +16,8 @@
     "istanbul-reports": "^2.2.0"
   },
   "devDependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
   },
   "license": "BSD-3-Clause",
   "repository": {
