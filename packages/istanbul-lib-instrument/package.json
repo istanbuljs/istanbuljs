@@ -19,7 +19,7 @@
     "@babel/traverse": "^7.0.0",
     "@babel/types": "^7.0.0",
     "istanbul-lib-coverage": "^2.0.4",
-    "semver": "^5.5.0"
+    "semver": "^6.0.0"
   },
   "license": "BSD-3-Clause",
   "bugs": {
