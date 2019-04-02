@@ -534,7 +534,6 @@ const coverageTemplate = template(`
         if (coverage[path] && coverage[path].hash === hash) {
             return coverage[path];
         }
-        coverageData.hash = hash;
         return coverage[path] = coverageData;
     })();
 `);
@@ -619,8 +618,10 @@ function programVisitor(
             const hash = createHash(SHA)
                 .update(JSON.stringify(coverageData))
                 .digest('hex');
+            coverageData.hash = hash;
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
+            delete coverageData.hash;
             let gvTemplate;
             if (opts.coverageGlobalScopeFunc) {
                 gvTemplate = globalTemplateFunction({
