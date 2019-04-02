@@ -3,7 +3,17 @@
     "default": {
       "packages": [
         "package.json",
-        "packages/*/package.json"
+        "packages/istanbul-api/package.json",
+        "packages/istanbul-lib-coverage/package.json",
+        "packages/istanbul-lib-hook/package.json",
+        "packages/istanbul-lib-instrument/package.json",
+        "packages/istanbul-lib-report/package.json",
+        "packages/istanbul-lib-source-maps/package.json",
+        "packages/istanbul-reports/package.json",
+        "packages/nyc-config-babel/package.json",
+        "packages/nyc-config-hook-run-in-this-context/package.json",
+        "packages/nyc-config-typescript/package.json",
+        "packages/test-exclude/package.json"
       ],
       "ignore": [
         "source-map",
