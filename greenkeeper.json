@@ -1,0 +1,15 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "packages/*/package.json"
+      ],
+      "ignore": [
+        "source-map",
+        "make-dir",
+        "read-pkg-up"
+      ]
+    }
+  }
+}
