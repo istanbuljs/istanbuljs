@@ -4,7 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const HtmlReport = require('instanbul-reports/lib/html');
+const HtmlReport = require('istanbul-reports/lib/html');
 
 const standardLinkMapper = {
     getPath(node) {

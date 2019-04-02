@@ -114,19 +114,14 @@ Reporter.prototype = {
             summarizerNameToReports[requiredSummarizer].push(report);
         });
 
-        Object.keys(summarizerNameToReports).forEach(name => {
-            const reports = summarizerNameToReports;
-            Object.keys(this.reports).forEach(name => {
-                const report = this.reports[name];
+        Object.keys(summarizerNameToReports).forEach(summarizerName => {
+            const reports = summarizerNameToReports[summarizerName];
+            const tree = (summarizerName === 'default'
+                ? this.summarizer
+                : libReport.summarizers[summarizerName])(coverageMap);
+            reports.forEach(report => {
                 tree.visit(report, context);
             });
-            tree.visit(report, context);
-        });
-
-        const tree = this.summarizer(coverageMap);
-        Object.keys(this.reports).forEach(name => {
-            const report = this.reports[name];
-            tree.visit(report, context);
         });
     }
 };

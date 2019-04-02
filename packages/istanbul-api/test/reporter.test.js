@@ -35,6 +35,8 @@ describe('Reporter', () => {
 
                 const reporter = new Reporter(config, opts);
 
+                reporter.reports = { test: {} };
+
                 reporter.write(coverageMap);
             });
         });
@@ -67,6 +69,7 @@ describe('Reporter', () => {
                     };
 
                     const reporter = new Reporter(config, opts);
+                    reporter.reports = { test: {} };
 
                     reporter.write(coverageMap);
                 });
@@ -97,6 +100,7 @@ describe('Reporter', () => {
                     };
 
                     const reporter = new Reporter(config, opts);
+                    reporter.reports = { test: {} };
 
                     reporter.write(coverageMap);
                 });
