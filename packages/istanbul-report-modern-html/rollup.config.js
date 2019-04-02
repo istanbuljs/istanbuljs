@@ -14,7 +14,12 @@ module.exports = {
             exclude: 'node_modules/**'
         }),
         resolve(),
-        commonjs(),
+        commonjs({
+            namedExports: {
+                'react/index.js': ['createElement'],
+                'react-dom/index.js': ['render']
+            }
+        }),
         // use fast minify mode https://github.com/terser-js/terser#terser-fast-minify-mode
         terser({ compress: false, mangle: true })
     ]
