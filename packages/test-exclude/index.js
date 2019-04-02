@@ -57,7 +57,7 @@ class TestExclude {
             this.excludeNodeModules &&
             !this.exclude.includes('**/node_modules/**')
         ) {
-            this.exclude.push('**/node_modules/**');
+            this.exclude = this.exclude.concat('**/node_modules/**');
         }
 
         this.exclude = prepGlobPatterns([].concat(arrify(this.exclude)));
@@ -181,7 +181,6 @@ exportFunc.defaultExclude = [
     'test{,-*}.js',
     '**/*{.,-}test.js',
     '**/__tests__/**',
-    '**/node_modules/**',
     `**/{${devConfigs.join()}}.config.js`
 ];
 
