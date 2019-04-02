@@ -10,14 +10,21 @@
     "assets"
   ],
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "prepublish": "rollup --config"
   },
   "dependencies": {
     "istanbul-reports": "^2.2.0"
   },
   "devDependencies": {
+    "@babel/core": "7.4.0",
     "react": "16.8.6",
-    "react-dom": "16.8.6"
+    "react-dom": "16.8.6",
+    "rollup": "1.8.0",
+    "rollup-plugin-babel": "4.3.2",
+    "rollup-plugin-commonjs": "9.2.3",
+    "rollup-plugin-node-resolve": "4.0.1",
+    "rollup-plugin-terser": "4.0.4"
   },
   "license": "BSD-3-Clause",
   "repository": {
