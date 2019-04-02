@@ -92,6 +92,22 @@ ModernHtmlReport.prototype.onEnd = function(rootNode, context) {
     // TODO - implement
     // Turn the root node tree into static json structure/
     // inject into the html
+    const cw = this.getWriter(context).writeFile(
+        this.linkMapper.getPath(rootNode)
+    );
+    cw.write(
+        `<html>
+            <head>
+                <link rel="stylesheet" href="modern.css" />
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body>
+                <div id="app"></div>
+                <script src="bundle.js"></script>
+            </body>
+        </html>`
+    );
+    cw.close();
 };
 
 module.exports = ModernHtmlReport;
