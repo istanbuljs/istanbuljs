@@ -165,7 +165,13 @@ FileWriter.prototype.copyFile = function(source, dest, header) {
     }
     dest = path.resolve(this.baseDir, dest);
     mkdirp.sync(path.dirname(dest));
-    fs.writeFileSync(dest, (header || '') + fs.readFileSync(source));
+    let contents;
+    if (header) {
+        contents = header + fs.readFileSync(source, 'utf8');
+    } else {
+        contents = fs.readFileSync(source);
+    }
+    fs.writeFileSync(dest, contents);
 };
 /**
  * returns a content writer for writing content to the supplied file.

@@ -47,6 +47,19 @@ describe('file-writer', () => {
         );
     });
 
+    it('copies binary files', () => {
+        const testBuffer = Buffer.from([195, 40]);
+        fs.writeFileSync(path.resolve(dataDir, 'in.bin'), testBuffer);
+        writer.copyFile(path.resolve(dataDir, 'in.bin'), 'out.bin');
+        assert.equal(
+            Buffer.compare(
+                fs.readFileSync(path.resolve(dataDir, 'out.bin')),
+                testBuffer
+            ),
+            0
+        );
+    });
+
     it('copies files while adding headers', () => {
         const header =
             '/* This is some header text, like a copyright or directive. */\n';
