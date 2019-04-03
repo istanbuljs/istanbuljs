@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.1...istanbul-lib-instrument@3.1.2) (2019-04-03)
+
+
+### Bug Fixes
+
+* Be more friendly to ts-node. ([#352](https://github.com/istanbuljs/istanbuljs/issues/352)) ([40d15f5](https://github.com/istanbuljs/istanbuljs/commit/40d15f5)), closes [#336](https://github.com/istanbuljs/istanbuljs/issues/336)
+
+
+
+
+
 ## [3.1.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.0...istanbul-lib-instrument@3.1.1) (2019-03-12)
 
 

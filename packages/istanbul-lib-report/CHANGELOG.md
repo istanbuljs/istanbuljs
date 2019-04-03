@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.6](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-report@2.0.5...istanbul-lib-report@2.0.6) (2019-04-03)
+
+
+### Bug Fixes
+
+* Avoid corrupting HTML report's arrow png during copy ([#343](https://github.com/istanbuljs/istanbuljs/issues/343)) ([ce664c7](https://github.com/istanbuljs/istanbuljs/commit/ce664c7))
+
+
+
+
+
 ## [2.0.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-report@2.0.4...istanbul-lib-report@2.0.5) (2019-03-12)
 
 **Note:** Version bump only for package istanbul-lib-report

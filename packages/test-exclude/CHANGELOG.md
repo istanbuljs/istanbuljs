@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.1](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@5.2.0...test-exclude@5.2.1) (2019-04-03)
+
+
+### Bug Fixes
+
+* Remove `**/node_modules/**` from defaultExclude. ([#351](https://github.com/istanbuljs/istanbuljs/issues/351)) ([deb3963](https://github.com/istanbuljs/istanbuljs/commit/deb3963)), closes [#347](https://github.com/istanbuljs/istanbuljs/issues/347)
+
+
+
+
+
 # [5.2.0](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@5.1.0...test-exclude@5.2.0) (2019-03-12)
 
 

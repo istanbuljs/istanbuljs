@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-source-maps",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Source maps support for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",

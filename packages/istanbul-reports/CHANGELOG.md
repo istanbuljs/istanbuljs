@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.0...istanbul-reports@2.2.1) (2019-04-03)
+
+**Note:** Version bump only for package istanbul-reports
+
+
+
+
+
 # [2.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.1.1...istanbul-reports@2.2.0) (2019-03-12)
 
 
