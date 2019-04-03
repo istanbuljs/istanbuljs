@@ -88,10 +88,22 @@ ModernHtmlReport.prototype.onDetail = function(node, context) {
     this.htmlReport.onDetail(node, context);
 };
 
+ModernHtmlReport.prototype.toDataStructure = function(node, parent) {
+    const metrics = node.getCoverageSummary();
+    return {
+        file: node.getRelativeName(),
+        output: parent && this.linkMapper.relativePath(parent, node),
+        isEmpty: metrics.isEmpty(),
+        metrics,
+        children:
+            node.isSummary() &&
+            node.getChildren().map(child => this.toDataStructure(child, node))
+    };
+};
+
 ModernHtmlReport.prototype.onEnd = function(rootNode, context) {
-    // TODO - implement
-    // Turn the root node tree into static json structure/
-    // inject into the html
+    const data = this.toDataStructure(rootNode);
+
     const cw = this.getWriter(context).writeFile(
         this.linkMapper.getPath(rootNode)
     );
@@ -103,6 +115,7 @@ ModernHtmlReport.prototype.onEnd = function(rootNode, context) {
             </head>
             <body>
                 <div id="app"></div>
+                <script>window.data=${JSON.stringify(data)};</script>
                 <script src="bundle.js"></script>
             </body>
         </html>`
