@@ -17,7 +17,12 @@ module.exports = {
         resolve(),
         commonjs({
             namedExports: {
-                'react/index.js': ['createElement'],
+                'react/index.js': [
+                    'createElement',
+                    'Fragment',
+                    'useState',
+                    'useMemo'
+                ],
                 'react-dom/index.js': ['render']
             }
         }),

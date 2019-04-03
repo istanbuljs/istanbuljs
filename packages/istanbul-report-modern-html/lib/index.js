@@ -88,8 +88,26 @@ ModernHtmlReport.prototype.onDetail = function(node, context) {
     this.htmlReport.onDetail(node, context);
 };
 
-ModernHtmlReport.prototype.toDataStructure = function(node, parent) {
+ModernHtmlReport.prototype.toDataStructure = function(node, parent, context) {
     const metrics = node.getCoverageSummary();
+
+    metrics.statements.classForPercent = context.classForPercent(
+        'statements',
+        metrics.statements.pct
+    );
+    metrics.branches.classForPercent = context.classForPercent(
+        'branches',
+        metrics.branches.pct
+    );
+    metrics.functions.classForPercent = context.classForPercent(
+        'functions',
+        metrics.functions.pct
+    );
+    metrics.lines.classForPercent = context.classForPercent(
+        'lines',
+        metrics.lines.pct
+    );
+
     return {
         file: node.getRelativeName(),
         output: parent && this.linkMapper.relativePath(parent, node),
@@ -97,25 +115,32 @@ ModernHtmlReport.prototype.toDataStructure = function(node, parent) {
         metrics,
         children:
             node.isSummary() &&
-            node.getChildren().map(child => this.toDataStructure(child, node))
+            node
+                .getChildren()
+                .map(child => this.toDataStructure(child, node, context))
     };
 };
 
 ModernHtmlReport.prototype.onEnd = function(rootNode, context) {
-    const data = this.toDataStructure(rootNode);
+    const data = this.toDataStructure(rootNode, null, context);
 
     const cw = this.getWriter(context).writeFile(
         this.linkMapper.getPath(rootNode)
     );
     cw.write(
-        `<html>
+        `<html lang="en">
             <head>
                 <link rel="stylesheet" href="modern.css" />
                 <meta name="viewport" content="width=device-width, initial-scale=1">
             </head>
             <body>
                 <div id="app"></div>
-                <script>window.data=${JSON.stringify(data)};</script>
+                <script>
+                    window.data=${JSON.stringify(data)};
+                    window.generatedDatetime = ${JSON.stringify(
+                        String(Date())
+                    )};
+                </script>
                 <script src="bundle.js"></script>
             </body>
         </html>`
