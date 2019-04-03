@@ -515,8 +515,11 @@ const codeVisitor = {
     ConditionalExpression: entries(coverTernary),
     LogicalExpression: entries(coverLogicalExpression)
 };
-const globalTemplateFunction = template(`
+const globalTemplateAlteredFunction = template(`
         var Function = (function(){}).constructor;
+        var global = (new Function(GLOBAL_COVERAGE_SCOPE))();
+`);
+const globalTemplateFunction = template(`
         var global = (new Function(GLOBAL_COVERAGE_SCOPE))();
 `);
 const globalTemplateVariable = template(`
@@ -534,7 +537,6 @@ const coverageTemplate = template(`
         if (coverage[path] && coverage[path].hash === hash) {
             return coverage[path];
         }
-        coverageData.hash = hash;
         return coverage[path] = coverageData;
     })();
 `);
@@ -619,15 +621,25 @@ function programVisitor(
             const hash = createHash(SHA)
                 .update(JSON.stringify(coverageData))
                 .digest('hex');
+            coverageData.hash = hash;
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
+            delete coverageData.hash;
             let gvTemplate;
             if (opts.coverageGlobalScopeFunc) {
-                gvTemplate = globalTemplateFunction({
-                    GLOBAL_COVERAGE_SCOPE: T.stringLiteral(
-                        'return ' + opts.coverageGlobalScope
-                    )
-                });
+                if (path.scope.getBinding('Function')) {
+                    gvTemplate = globalTemplateAlteredFunction({
+                        GLOBAL_COVERAGE_SCOPE: T.stringLiteral(
+                            'return ' + opts.coverageGlobalScope
+                        )
+                    });
+                } else {
+                    gvTemplate = globalTemplateFunction({
+                        GLOBAL_COVERAGE_SCOPE: T.stringLiteral(
+                            'return ' + opts.coverageGlobalScope
+                        )
+                    });
+                }
             } else {
                 gvTemplate = globalTemplateVariable({
                     GLOBAL_COVERAGE_SCOPE: opts.coverageGlobalScope
