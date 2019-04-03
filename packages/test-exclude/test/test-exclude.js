@@ -214,7 +214,6 @@ describe('testExclude', () => {
             'test{,-*}.js',
             '**/*{.,-}test.js',
             '**/__tests__/**',
-            '**/node_modules/**',
             '**/{ava,babel,jest,nyc,rollup,webpack}.config.js'
         ]);
     });
