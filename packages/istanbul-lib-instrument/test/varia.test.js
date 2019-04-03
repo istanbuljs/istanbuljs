@@ -202,6 +202,30 @@ describe('varia', () => {
         assert.ok(code.match(/cov_(.+);export class App extends/));
     });
 
+    it('declares Function when needed', () => {
+        const v = verifier.create(
+            'function Function() {}',
+            { generateOnly: true },
+            { esModules: true }
+        );
+        assert.ok(!v.err);
+
+        const code = v.getGeneratedCode();
+        assert.ok(code.match(/var Function\s*=/));
+    });
+
+    it('does not declare Function when not needed', () => {
+        const v = verifier.create(
+            'function differentFunction() {}',
+            { generateOnly: true },
+            { esModules: true }
+        );
+        assert.ok(!v.err);
+
+        const code = v.getGeneratedCode();
+        assert.ok(!code.match(/var Function\s*=/));
+    });
+
     it('does not add extra parenthesis when superclass is an identifier', () => {
         const v = verifier.create('class App extends Component {};', {
             generateOnly: true
