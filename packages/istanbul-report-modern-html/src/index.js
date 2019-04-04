@@ -102,7 +102,12 @@ function App() {
                 />
                 <div class="pad1">
                     <table class="coverage-summary">
-                        <SummaryTableHeader />
+                        <SummaryTableHeader
+                            onSort={newSortKey => {
+                                setSortKey(newSortKey);
+                            }}
+                            sortKey={sortKey}
+                        />
                         <tbody>
                             {sourceData.children.map(child => (
                                 <SummaryTableLine {...child} />

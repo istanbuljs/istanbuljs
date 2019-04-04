@@ -1,79 +1,41 @@
 import * as React from 'react';
 
-export default function SummaryTableHeader() {
+function SummaryTableHeaderCell({ name, onSort, sortKey }) {
+    return (
+        <>
+            <th class="pct" onClick={() => onSort(sortKey)}>
+                {name}
+            </th>
+            <th class="abs" onClick={() => onSort(sortKey)} />
+        </>
+    );
+}
+
+export default function SummaryTableHeader({ onSort }) {
     return (
         <thead>
             <tr>
-                <th
-                    data-col="file"
-                    data-fmt="html"
-                    data-html="true"
-                    class="file"
-                >
-                    File
-                </th>
-                <th
-                    data-col="pic"
-                    data-type="number"
-                    data-fmt="html"
-                    data-html="true"
-                    class="pic"
+                <th class="file">File</th>
+                <th class="pic" />
+                <SummaryTableHeaderCell
+                    name="Statements"
+                    onSort={onSort}
+                    sortKey="statements"
                 />
-                <th
-                    data-col="statements"
-                    data-type="number"
-                    data-fmt="pct"
-                    class="pct"
-                >
-                    Statements
-                </th>
-                <th
-                    data-col="statements_raw"
-                    data-type="number"
-                    data-fmt="html"
-                    class="abs"
+                <SummaryTableHeaderCell
+                    name="Branches"
+                    onSort={onSort}
+                    sortKey="branches"
                 />
-                <th
-                    data-col="branches"
-                    data-type="number"
-                    data-fmt="pct"
-                    class="pct"
-                >
-                    Branches
-                </th>
-                <th
-                    data-col="branches_raw"
-                    data-type="number"
-                    data-fmt="html"
-                    class="abs"
+                <SummaryTableHeaderCell
+                    name="Functions"
+                    onSort={onSort}
+                    sortKey="functions"
                 />
-                <th
-                    data-col="functions"
-                    data-type="number"
-                    data-fmt="pct"
-                    class="pct"
-                >
-                    Functions
-                </th>
-                <th
-                    data-col="functions_raw"
-                    data-type="number"
-                    data-fmt="html"
-                    class="abs"
-                />
-                <th
-                    data-col="lines"
-                    data-type="number"
-                    data-fmt="pct"
-                    class="pct"
-                >
-                    Lines
-                </th>
-                <th
-                    data-col="lines_raw"
-                    data-type="number"
-                    data-fmt="html"
-                    class="abs"
+                <SummaryTableHeaderCell
+                    name="Lines"
+                    onSort={onSort}
+                    sortKey="lines"
                 />
             </tr>
         </thead>
