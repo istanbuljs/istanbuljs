@@ -8,7 +8,8 @@ module.exports = {
     input: 'src/index.js',
     output: {
         file: 'assets/bundle.js',
-        format: 'iife'
+        format: 'iife',
+        banner: '/* eslint-disable */\n'
     },
     plugins: [
         babel({

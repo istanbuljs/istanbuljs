@@ -54,10 +54,6 @@ ModernHtmlReport.prototype.getWriter = function(context) {
 ModernHtmlReport.prototype.onStart = function(root, context) {
     this.htmlReport.onStart(root, context);
 
-    const assetHeaders = {
-        '.js': '/* eslint-disable */\n'
-    };
-
     const writer = this.getWriter(context);
     const srcDir = path.resolve(__dirname, '../assets');
     fs.readdirSync(srcDir).forEach(f => {
@@ -71,11 +67,7 @@ ModernHtmlReport.prototype.onStart = function(root, context) {
             if (this.verbose) {
                 console.log('Write asset: ' + dest);
             }
-            writer.copyFile(
-                resolvedSource,
-                dest,
-                assetHeaders[path.extname(f)]
-            );
+            writer.copyFile(resolvedSource, dest);
         }
     });
 };
@@ -88,30 +80,37 @@ ModernHtmlReport.prototype.onDetail = function(node, context) {
     this.htmlReport.onDetail(node, context);
 };
 
-ModernHtmlReport.prototype.toDataStructure = function(node, parent, context) {
-    const metrics = node.getCoverageSummary();
+ModernHtmlReport.prototype.getMetric = function(metric, type, context) {
+    return {
+        total: metric.total,
+        covered: metric.covered,
+        skipped: metric.skipped,
+        pct: metric.pct,
+        classForPercent: context.classForPercent(type, metric.pct)
+    };
+};
 
-    metrics.statements.classForPercent = context.classForPercent(
-        'statements',
-        metrics.statements.pct
-    );
-    metrics.branches.classForPercent = context.classForPercent(
-        'branches',
-        metrics.branches.pct
-    );
-    metrics.functions.classForPercent = context.classForPercent(
-        'functions',
-        metrics.functions.pct
-    );
-    metrics.lines.classForPercent = context.classForPercent(
-        'lines',
-        metrics.lines.pct
-    );
+ModernHtmlReport.prototype.toDataStructure = function(node, parent, context) {
+    const coverageSummary = node.getCoverageSummary();
+    const metrics = {
+        statements: this.getMetric(
+            coverageSummary.statements,
+            'statements',
+            context
+        ),
+        branches: this.getMetric(coverageSummary.branches, 'branches', context),
+        functions: this.getMetric(
+            coverageSummary.functions,
+            'functions',
+            context
+        ),
+        lines: this.getMetric(coverageSummary.lines, 'lines', context)
+    };
 
     return {
         file: node.getRelativeName(),
         output: parent && this.linkMapper.relativePath(parent, node),
-        isEmpty: metrics.isEmpty(),
+        isEmpty: coverageSummary.isEmpty(),
         metrics,
         children:
             node.isSummary() &&
