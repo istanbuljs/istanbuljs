@@ -61,8 +61,25 @@ function Ignores({ metrics }) {
     );
 }
 
-function getChildData(activeSort) {
+function flatten(node) {
+    if (node.children) {
+        let children = [];
+        for (var i = 0; i < node.children.length; i++) {
+            children = [...children, ...flatten(node.children[i])];
+        }
+        return children;
+    } else {
+        return [node];
+    }
+}
+
+function getChildData(activeSort, treeType) {
     let childData = sourceData.children.slice(0);
+
+    if (treeType === 'flat') {
+        childData = flatten({ children: childData });
+    }
+
     if (activeSort) {
         const top = activeSort.order === 'asc' ? 1 : -1;
         const bottom = activeSort.order === 'asc' ? -1 : 1;
@@ -92,8 +109,10 @@ function App() {
         sortKey: 'file',
         order: 'asc'
     });
-    const childData = React.useMemo(() => getChildData(activeSort), [
-        activeSort
+    const [treeType, setTreeType] = React.useState('flat');
+    const childData = React.useMemo(() => getChildData(activeSort, treeType), [
+        activeSort,
+        treeType
     ]);
 
     return (
