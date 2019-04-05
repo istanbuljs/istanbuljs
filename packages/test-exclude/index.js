@@ -1,5 +1,4 @@
 const path = require('path');
-const arrify = require('arrify');
 const glob = require('glob');
 const minimatch = require('minimatch');
 const readPkgUp = require('read-pkg-up');
@@ -48,7 +47,7 @@ class TestExclude {
         }
 
         if (this.include && this.include.length > 0) {
-            this.include = prepGlobPatterns(arrify(this.include));
+            this.include = prepGlobPatterns([].concat(this.include));
         } else {
             this.include = false;
         }
@@ -60,7 +59,7 @@ class TestExclude {
             this.exclude = this.exclude.concat('**/node_modules/**');
         }
 
-        this.exclude = prepGlobPatterns([].concat(arrify(this.exclude)));
+        this.exclude = prepGlobPatterns([].concat(this.exclude));
 
         this.handleNegation();
     }
