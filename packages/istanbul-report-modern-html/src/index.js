@@ -61,9 +61,28 @@ function Ignores({ metrics }) {
     );
 }
 
+function getChildData(activeSort) {
+    let childData = sourceData.children.slice(0);
+    if (activeSort) {
+        const top = activeSort.order === 'asc' ? 1 : -1;
+        const bottom = activeSort.order === 'asc' ? -1 : 1;
+        childData.sort((a, b) => {
+            const metricA = a.metrics[activeSort.sortKey].pct;
+            const metricB = b.metrics[activeSort.sortKey].pct;
+            if (metricA === metricB) {
+                return 0;
+            }
+            return metricA > metricB ? top : bottom;
+        });
+    }
+    return childData;
+}
+
 function App() {
-    const [sortKey, setSortKey] = React.useState(null);
-    const childData = React.useMemo(() => sourceData.children, [sortKey]);
+    const [activeSort, setSort] = React.useState(null);
+    const childData = React.useMemo(() => getChildData(activeSort), [
+        activeSort
+    ]);
 
     return (
         <>
@@ -103,13 +122,13 @@ function App() {
                 <div class="pad1">
                     <table class="coverage-summary">
                         <SummaryTableHeader
-                            onSort={newSortKey => {
-                                setSortKey(newSortKey);
+                            onSort={newSort => {
+                                setSort(newSort);
                             }}
-                            sortKey={sortKey}
+                            activeSort={activeSort}
                         />
                         <tbody>
-                            {sourceData.children.map(child => (
+                            {childData.map(child => (
                                 <SummaryTableLine {...child} />
                             ))}
                         </tbody>
