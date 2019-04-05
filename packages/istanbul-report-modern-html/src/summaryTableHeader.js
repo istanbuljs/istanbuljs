@@ -1,21 +1,45 @@
 import * as React from 'react';
 
-function SummaryTableHeaderCell({ name, onSort, sortKey, activeSort }) {
+function getSortDetails(sortKey, activeSort) {
     const newSort = { sortKey, order: 'asc' };
-    if (
-        activeSort &&
-        activeSort.sortKey === sortKey &&
-        activeSort.order === 'asc'
-    ) {
-        newSort.order = 'desc';
+    let sortClass = '';
+    if (activeSort && activeSort.sortKey === sortKey) {
+        sortClass = 'sorted';
+        if (activeSort.order === 'asc') {
+            newSort.order = 'desc';
+        } else {
+            sortClass += '-desc';
+        }
     }
+
+    return {
+        newSort,
+        sortClass
+    };
+}
+
+function SummaryTableHeaderCell({ name, onSort, sortKey, activeSort }) {
+    const { newSort, sortClass } = getSortDetails(sortKey, activeSort);
     return (
         <>
             <th class="pct" onClick={() => onSort(newSort)}>
                 {name}
             </th>
-            <th class="abs" onClick={() => onSort(newSort)} />
+            <th class={'abs ' + sortClass} onClick={() => onSort(newSort)}>
+                <span class="sorter" />
+            </th>
         </>
+    );
+}
+
+function FileHeaderCell({ onSort, activeSort }) {
+    const { newSort, sortClass } = getSortDetails('file', activeSort);
+
+    return (
+        <th class={'file ' + sortClass} onClick={() => onSort(newSort)}>
+            File
+            <span class="sorter" />
+        </th>
     );
 }
 
@@ -23,7 +47,7 @@ export default function SummaryTableHeader({ onSort, activeSort }) {
     return (
         <thead>
             <tr>
-                <th class="file">File</th>
+                <FileHeaderCell onSort={onSort} activeSort={activeSort} />
                 <th class="pic" />
                 <SummaryTableHeaderCell
                     name="Statements"

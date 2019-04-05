@@ -127,7 +127,8 @@ ModernHtmlReport.prototype.onEnd = function(rootNode, context) {
         this.linkMapper.getPath(rootNode)
     );
     cw.write(
-        `<html lang="en">
+        `<!doctype html>
+        <html lang="en">
             <head>
                 <link rel="stylesheet" href="modern.css" />
                 <meta name="viewport" content="width=device-width, initial-scale=1">

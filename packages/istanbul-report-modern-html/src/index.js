@@ -10,7 +10,7 @@ function StatusMetric({ data, name }) {
     return (
         <div class="fl pad1y space-right2">
             <span class="strong">{data.pct}% </span>
-            <span class="quiet">{name}</span>
+            <span class="quiet">{name}</span>{' '}
             <span class="fraction">
                 {data.covered}/{data.total}
             </span>
@@ -22,7 +22,7 @@ function ifHasIgnores(metrics) {
     return (
         metrics.statements.skipped +
             metrics.functions.skipped +
-            metrics.branches.skipped ===
+            metrics.branches.skipped >
         0
     );
 }
@@ -67,19 +67,31 @@ function getChildData(activeSort) {
         const top = activeSort.order === 'asc' ? 1 : -1;
         const bottom = activeSort.order === 'asc' ? -1 : 1;
         childData.sort((a, b) => {
-            const metricA = a.metrics[activeSort.sortKey].pct;
-            const metricB = b.metrics[activeSort.sortKey].pct;
-            if (metricA === metricB) {
+            let valueA;
+            let valueB;
+            if (activeSort.sortKey === 'file') {
+                // reverse to match original report ordering
+                valueB = a.file;
+                valueA = b.file;
+            } else {
+                valueA = a.metrics[activeSort.sortKey].pct;
+                valueB = b.metrics[activeSort.sortKey].pct;
+            }
+
+            if (valueA === valueB) {
                 return 0;
             }
-            return metricA > metricB ? top : bottom;
+            return valueA < valueB ? top : bottom;
         });
     }
     return childData;
 }
 
 function App() {
-    const [activeSort, setSort] = React.useState(null);
+    const [activeSort, setSort] = React.useState({
+        sortKey: 'file',
+        order: 'asc'
+    });
     const childData = React.useMemo(() => getChildData(activeSort), [
         activeSort
     ]);
@@ -88,7 +100,7 @@ function App() {
         <>
             <div class="wrapper">
                 <div class="pad1">
-                    <h1>TODO getRelativeName on rootNode?</h1>
+                    {/* TODO - <h1>All Files</h1> - this doesn't add useful info any more. if anything it should be the name of the project - coverage*/}
                     <div class="clearfix">
                         <StatusMetric
                             data={sourceData.metrics.statements}
