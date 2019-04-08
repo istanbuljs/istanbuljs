@@ -5,7 +5,6 @@
 const path = require('path');
 const libReport = require('istanbul-lib-report');
 const libReports = require('istanbul-reports');
-const ModernHtmlReport = require('istanbul-report-modern-html');
 const minimatch = require('minimatch');
 const inputError = require('./input-error');
 const configuration = require('./config');
@@ -51,15 +50,13 @@ Reporter.prototype = {
             if (this.config.verbose) {
                 console.error('Create report', fmt, ' with', rptConfig);
             }
-
-            // TODO: Not sure - other options are that a user can pass in 'istanbul-report-modern-html'
-            //       and it will be required in the catch inside libReports.create. This would remove the direct
-            //       dependency (at the cost of making it harder to specify/inconsistency)
+            let report;
             if (fmt === 'modern-html') {
-                this.reports[fmt] = new ModernHtmlReport(rptConfig);
+                report = require('istanbul-report-modern-html')(rptConfig);
             } else {
-                this.reports[fmt] = libReports.create(fmt, rptConfig);
+                report = libReports.create(fmt, rptConfig);
             }
+            this.reports[fmt] = report;
         } catch (ex) {
             throw inputError.create('Invalid report format [' + fmt + ']');
         }
@@ -97,31 +94,15 @@ Reporter.prototype = {
                 )
         );
 
-        // TODO:
-        // Other options were: a) just have a partly broken report if the summarizer isn't nested.
-        // This isn't nice since the summarizer option is across all reports b) hard-code modern-html to have
-        // nested. I could also make this code nicer with lodash, but it isn't currently a dependency
-        const summarizerNameToReports = {};
+        if (this.reports['modern-html']) {
+            this.reports['modern-html'](coverageMap, context);
+            delete this.reports['modern-html'];
+        }
+
+        const tree = this.summarizer(coverageMap);
         Object.keys(this.reports).forEach(name => {
             const report = this.reports[name];
-            let requiredSummarizer = 'default';
-            if (report.requiresSummarizer) {
-                requiredSummarizer = report.requiresSummarizer();
-            }
-            if (!summarizerNameToReports[requiredSummarizer]) {
-                summarizerNameToReports[requiredSummarizer] = [];
-            }
-            summarizerNameToReports[requiredSummarizer].push(report);
-        });
-
-        Object.keys(summarizerNameToReports).forEach(summarizerName => {
-            const reports = summarizerNameToReports[summarizerName];
-            const tree = (summarizerName === 'default'
-                ? this.summarizer
-                : libReport.summarizers[summarizerName])(coverageMap);
-            reports.forEach(report => {
-                tree.visit(report, context);
-            });
+            tree.visit(report, context);
         });
     }
 };

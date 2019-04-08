@@ -14,6 +14,7 @@
     "prepublish": "rollup --config"
   },
   "dependencies": {
+    "istanbul-lib-report": "^2.0.4",
     "istanbul-reports": "^2.2.0"
   },
   "devDependencies": {

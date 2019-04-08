@@ -61,23 +61,38 @@ function Ignores({ metrics }) {
     );
 }
 
-function flatten(node) {
-    if (node.children) {
-        let children = [];
-        for (var i = 0; i < node.children.length; i++) {
-            children = [...children, ...flatten(node.children[i])];
-        }
-        return children;
-    } else {
-        return [node];
+function addPath(node, parentPath) {
+    if (!parentPath) {
+        return node;
     }
+    return { ...node, file: parentPath + '/' + node.file };
+}
+
+function flatten(nodes, parentPath) {
+    let children = [];
+    for (var i = 0; i < nodes.length; i++) {
+        let child = nodes[i];
+        if (child.children) {
+            children = [
+                ...children.map(child => addPath(child, parentPath)),
+                ...flatten(
+                    child.children,
+                    (!parentPath ? '' : '/' + parentPath) + child.file
+                )
+            ];
+        } else {
+            children.push(addPath(child, parentPath));
+        }
+    }
+    return children;
 }
 
 function getChildData(activeSort, treeType) {
-    let childData = sourceData.children.slice(0);
+    const baseTree = treeType === 'nested' ? 'nested' : 'package';
+    let childData = sourceData[baseTree].children.slice(0);
 
     if (treeType === 'flat') {
-        childData = flatten({ children: childData });
+        childData = flatten(childData);
     }
 
     if (activeSort) {
@@ -109,11 +124,12 @@ function App() {
         sortKey: 'file',
         order: 'asc'
     });
-    const [treeType, setTreeType] = React.useState('flat');
+    const [treeType, setTreeType] = React.useState('package');
     const childData = React.useMemo(() => getChildData(activeSort, treeType), [
         activeSort,
         treeType
     ]);
+    const overallMetrics = sourceData.package.metrics;
 
     return (
         <>
@@ -122,24 +138,24 @@ function App() {
                     {/* TODO - <h1>All Files</h1> - this doesn't add useful info any more. if anything it should be the name of the project - coverage*/}
                     <div class="clearfix">
                         <StatusMetric
-                            data={sourceData.metrics.statements}
+                            data={overallMetrics.statements}
                             name="Statements"
                         />
                         <StatusMetric
-                            data={sourceData.metrics.branches}
+                            data={overallMetrics.branches}
                             name="Branches"
                         />
                         <StatusMetric
-                            data={sourceData.metrics.functions}
+                            data={overallMetrics.functions}
                             name="Functions"
                         />
                         <StatusMetric
-                            data={sourceData.metrics.lines}
+                            data={overallMetrics.lines}
                             name="Lines"
                         />
-                        {ifHasIgnores(sourceData.metrics) && (
+                        {ifHasIgnores(overallMetrics) && (
                             <div class="fl pad1y">
-                                <Ignores metrics={sourceData.metrics} />
+                                <Ignores metrics={overallMetrics} />
                             </div>
                         )}
                     </div>
@@ -147,10 +163,13 @@ function App() {
                 <div
                     class={
                         'status-line ' +
-                        sourceData.metrics.statements.classForPercent
+                        overallMetrics.statements.classForPercent
                     }
                 />
                 <div class="pad1">
+                    <a onClick={() => setTreeType('package')}>Package</a>
+                    <a onClick={() => setTreeType('nested')}>Nested</a>
+                    <a onClick={() => setTreeType('flat')}>Flat</a>
                     <table class="coverage-summary">
                         <SummaryTableHeader
                             onSort={newSort => {

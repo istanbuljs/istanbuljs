@@ -72,10 +72,6 @@ ModernHtmlReport.prototype.onStart = function(root, context) {
     });
 };
 
-ModernHtmlReport.prototype.requiresSummarizer = function() {
-    return 'nested';
-};
-
 ModernHtmlReport.prototype.onDetail = function(node, context) {
     this.htmlReport.onDetail(node, context);
 };
@@ -120,11 +116,18 @@ ModernHtmlReport.prototype.toDataStructure = function(node, parent, context) {
     };
 };
 
-ModernHtmlReport.prototype.onEnd = function(rootNode, context) {
-    const data = this.toDataStructure(rootNode, null, context);
+ModernHtmlReport.prototype.writeSummary = function(
+    nestedRootNode,
+    packageRootNode,
+    context
+) {
+    const data = {
+        package: this.toDataStructure(packageRootNode, null, context),
+        nested: this.toDataStructure(nestedRootNode, null, context)
+    };
 
     const cw = this.getWriter(context).writeFile(
-        this.linkMapper.getPath(rootNode)
+        this.linkMapper.getPath(packageRootNode)
     );
     cw.write(
         `<!doctype html>
