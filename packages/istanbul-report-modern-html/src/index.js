@@ -81,6 +81,25 @@ function getChildData(activeSort, summarizerType) {
     return childData;
 }
 
+function SummarizerButton({
+    summarizerType,
+    activeSummarizerType,
+    setSummarizerType,
+    children
+}) {
+    return (
+        <button
+            onClick={() => setSummarizerType(summarizerType)}
+            class={
+                'togglebutton ' +
+                (summarizerType === activeSummarizerType ? 'enabled' : '')
+            }
+        >
+            {children}
+        </button>
+    );
+}
+
 function App() {
     const [activeSort, setSort] = React.useState({
         sortKey: 'file',
@@ -104,9 +123,27 @@ function App() {
                     }
                 />
                 <div class="pad1">
-                    <a onClick={() => setSummarizerType('package')}>Package</a>
-                    <a onClick={() => setSummarizerType('nested')}>Nested</a>
-                    <a onClick={() => setSummarizerType('flat')}>Flat</a>
+                    <SummarizerButton
+                        setSummarizerType={setSummarizerType}
+                        summarizerType="package"
+                        activeSummarizerType={summarizerType}
+                    >
+                        Package
+                    </SummarizerButton>
+                    <SummarizerButton
+                        setSummarizerType={setSummarizerType}
+                        summarizerType="nested"
+                        activeSummarizerType={summarizerType}
+                    >
+                        Nested
+                    </SummarizerButton>
+                    <SummarizerButton
+                        setSummarizerType={setSummarizerType}
+                        summarizerType="flat"
+                        activeSummarizerType={summarizerType}
+                    >
+                        Flat
+                    </SummarizerButton>
                     <table class="coverage-summary">
                         <SummaryTableHeader
                             onSort={newSort => {
