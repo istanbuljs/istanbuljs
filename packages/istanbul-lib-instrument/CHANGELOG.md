@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.2...istanbul-lib-instrument@3.2.0) (2019-04-09)
+
+
+### Features
+
+* Add bigInt and importMeta to default parser plugins. ([#356](https://github.com/istanbuljs/istanbuljs/issues/356)) ([fb4d6ed](https://github.com/istanbuljs/istanbuljs/commit/fb4d6ed)), closes [#338](https://github.com/istanbuljs/istanbuljs/issues/338)
+
+
+
+
+
 ## [3.1.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.1...istanbul-lib-instrument@3.1.2) (2019-04-03)
 
 
