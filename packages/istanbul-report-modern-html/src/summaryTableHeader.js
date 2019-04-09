@@ -21,7 +21,7 @@ function getSortDetails(sortKey, activeSort) {
 function SummaryTableHeaderCell({ name, onSort, sortKey, activeSort }) {
     const { newSort, sortClass } = getSortDetails(sortKey, activeSort);
     return (
-        <th class={"headercell " + sortClass} onClick={() => onSort(newSort)}>
+        <th class={'headercell ' + sortClass} onClick={() => onSort(newSort)}>
             {name}
             <span class="sorter" />
         </th>
@@ -69,14 +69,12 @@ export default function SummaryTableHeader({ onSort, activeSort }) {
         <thead>
             <tr class="topheading">
                 <FileHeaderCell onSort={onSort} activeSort={activeSort} />
-                <th class="pic" />
                 <th colSpan={3}>Statements</th>
                 <th colSpan={3}>Branches</th>
                 <th colSpan={3}>Functions</th>
                 <th colSpan={3}>Lines</th>
             </tr>
             <tr class="subheading">
-                <th />
                 <th />
                 <SubHeadings
                     sortKeyPrefix="statements"

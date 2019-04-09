@@ -37,7 +37,10 @@ export default function SummaryTableLine({ metrics, file, children, tabSize }) {
     return (
         <>
             <tr>
-                <td class={'file ' + metrics.statements.classForPercent}>
+                <td
+                    class={'file ' + metrics.statements.classForPercent}
+                    rowSpan={2}
+                >
                     {Array.apply(null, { length: tabSize }).map(() => (
                         <span class="filetab" />
                     ))}
@@ -53,15 +56,41 @@ export default function SummaryTableLine({ metrics, file, children, tabSize }) {
                     )}
                     <a>{file}</a>
                 </td>
-                <td class={'pic ' + metrics.statements.classForPercent}>
-                    <div class="chart">
-                        <ShowPicture num={metrics.statements.pct} />
-                    </div>
-                </td>
                 <MetricCells metrics={metrics.statements} />
                 <MetricCells metrics={metrics.branches} />
                 <MetricCells metrics={metrics.functions} />
                 <MetricCells metrics={metrics.lines} />
+            </tr>
+            <tr>
+                <td
+                    class={'pic ' + metrics.statements.classForPercent}
+                    colSpan={3}
+                >
+                    <div class="chart">
+                        <ShowPicture num={metrics.statements.pct} />
+                    </div>
+                </td>
+                <td
+                    class={'pic ' + metrics.branches.classForPercent}
+                    colSpan={3}
+                >
+                    <div class="chart">
+                        <ShowPicture num={metrics.branches.pct} />
+                    </div>
+                </td>
+                <td
+                    class={'pic ' + metrics.functions.classForPercent}
+                    colSpan={3}
+                >
+                    <div class="chart">
+                        <ShowPicture num={metrics.functions.pct} />
+                    </div>
+                </td>
+                <td class={'pic ' + metrics.lines.classForPercent} colSpan={3}>
+                    <div class="chart">
+                        <ShowPicture num={metrics.lines.pct} />
+                    </div>
+                </td>
             </tr>
             {toggled &&
                 children &&

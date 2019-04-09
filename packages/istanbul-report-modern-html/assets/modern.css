@@ -155,7 +155,7 @@ table.coverage td span.cline-any {
 }
 .coverage-summary td,
 .coverage-summary th {
-    padding: 10px;
+    padding: 5px 7px;
 }
 .coverage-summary td,
 .coverage-summary th {
@@ -204,9 +204,6 @@ table.coverage td span.cline-any {
 .low .cover-fill {
     background: #c21f39;
 }
-.low .chart {
-    border: 1px solid #c21f39;
-}
 /* medium red */
 .cstat-no,
 .fstat-no,
@@ -233,16 +230,10 @@ table.coverage td span.cline-any {
 .high .cover-fill {
     background: rgb(77, 146, 33);
 }
-.high .chart {
-    border: 1px solid rgb(77, 146, 33);
-}
 /* dark yellow (gold) */
 .status-line.medium,
 .medium .cover-fill {
     background: #f9cd0b;
-}
-.medium .chart {
-    border: 1px solid #f9cd0b;
 }
 /* light yellow */
 .medium {
@@ -277,7 +268,7 @@ span.cline-neutral {
 .cover-fill,
 .cover-empty {
     display: inline-block;
-    height: 12px;
+    height: 4px;
 }
 .chart {
     line-height: 0;
@@ -335,7 +326,16 @@ span.cline-neutral {
 }
 .coverage-summary .headercell:nth-child(3n),
 .coverage-summary .headercell:nth-child(3n + 1),
-.coverage-summary td:nth-child(3n + 3),
-.coverage-summary td:nth-child(3n + 4) {
+.coverage-summary td:nth-child(3n + 2),
+.coverage-summary td:nth-child(3n + 3) {
     border-right: 1px solid #ddd;
+}
+.coverage-summary tbody tr:nth-child(2n) td {
+    padding: 0;
+}
+.coverage-summary tbody tr:nth-child(2n - 1) {
+    border-bottom: none;
+}
+.coverage-summary td.file {
+    border-bottom: 1px solid #bbb;
 }
