@@ -139,6 +139,8 @@ function App() {
                     >
                         Flat
                     </SummarizerButton>
+                </div>
+                <div class="pad1">
                     <table class="coverage-summary">
                         <SummaryTableHeader
                             onSort={newSort => {
