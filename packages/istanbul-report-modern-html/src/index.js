@@ -44,8 +44,9 @@ function sort(childData, activeSort) {
             valueB = a.file;
             valueA = b.file;
         } else {
-            valueA = a.metrics[activeSort.sortKey].pct;
-            valueB = b.metrics[activeSort.sortKey].pct;
+            const [metricType, valueType] = activeSort.sortKey.split('.');
+            valueA = a.metrics[metricType][valueType];
+            valueB = b.metrics[metricType][valueType];
         }
 
         if (valueA === valueB) {
@@ -116,12 +117,6 @@ function App() {
         <>
             <div class="wrapper">
                 <SummaryHeader metrics={overallMetrics} />
-                <div
-                    class={
-                        'status-line ' +
-                        overallMetrics.statements.classForPercent
-                    }
-                />
                 <div class="pad1">
                     <SummarizerButton
                         setSummarizerType={setSummarizerType}
@@ -153,7 +148,7 @@ function App() {
                         />
                         <tbody>
                             {childData.map(child => (
-                                <SummaryTableLine {...child} />
+                                <SummaryTableLine {...child} key={child.file} />
                             ))}
                         </tbody>
                     </table>

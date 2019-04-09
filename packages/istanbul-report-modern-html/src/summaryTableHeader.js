@@ -21,14 +21,10 @@ function getSortDetails(sortKey, activeSort) {
 function SummaryTableHeaderCell({ name, onSort, sortKey, activeSort }) {
     const { newSort, sortClass } = getSortDetails(sortKey, activeSort);
     return (
-        <>
-            <th class="pct" onClick={() => onSort(newSort)}>
-                {name}
-            </th>
-            <th class={'abs ' + sortClass} onClick={() => onSort(newSort)}>
-                <span class="sorter" />
-            </th>
-        </>
+        <th class={"headercell " + sortClass} onClick={() => onSort(newSort)}>
+            {name}
+            <span class="sorter" />
+        </th>
     );
 }
 
@@ -43,34 +39,63 @@ function FileHeaderCell({ onSort, activeSort }) {
     );
 }
 
+function SubHeadings({ sortKeyPrefix, onSort, activeSort }) {
+    return (
+        <>
+            <SummaryTableHeaderCell
+                name="%"
+                onSort={onSort}
+                sortKey={sortKeyPrefix + '.pct'}
+                activeSort={activeSort}
+            />
+            <SummaryTableHeaderCell
+                name="Covered"
+                onSort={onSort}
+                sortKey={sortKeyPrefix + '.covered'}
+                activeSort={activeSort}
+            />
+            <SummaryTableHeaderCell
+                name="Total"
+                onSort={onSort}
+                sortKey={sortKeyPrefix + '.total'}
+                activeSort={activeSort}
+            />
+        </>
+    );
+}
+
 export default function SummaryTableHeader({ onSort, activeSort }) {
     return (
         <thead>
-            <tr>
+            <tr class="topheading">
                 <FileHeaderCell onSort={onSort} activeSort={activeSort} />
                 <th class="pic" />
-                <SummaryTableHeaderCell
-                    name="Statements"
+                <th colSpan={3}>Statements</th>
+                <th colSpan={3}>Branches</th>
+                <th colSpan={3}>Functions</th>
+                <th colSpan={3}>Lines</th>
+            </tr>
+            <tr class="subheading">
+                <th />
+                <th />
+                <SubHeadings
+                    sortKeyPrefix="statements"
                     onSort={onSort}
-                    sortKey="statements"
                     activeSort={activeSort}
                 />
-                <SummaryTableHeaderCell
-                    name="Branches"
+                <SubHeadings
+                    sortKeyPrefix="branches"
                     onSort={onSort}
-                    sortKey="branches"
                     activeSort={activeSort}
                 />
-                <SummaryTableHeaderCell
-                    name="Functions"
+                <SubHeadings
+                    sortKeyPrefix="functions"
                     onSort={onSort}
-                    sortKey="functions"
                     activeSort={activeSort}
                 />
-                <SummaryTableHeaderCell
-                    name="Lines"
+                <SubHeadings
+                    sortKeyPrefix="lines"
                     onSort={onSort}
-                    sortKey="lines"
                     activeSort={activeSort}
                 />
             </tr>

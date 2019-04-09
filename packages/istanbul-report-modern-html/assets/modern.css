@@ -144,6 +144,7 @@ table.coverage td span.cline-any {
 }
 .coverage-summary {
     border-collapse: collapse;
+    border: 1px solid #bbb;
     width: 100%;
 }
 .coverage-summary tr {
@@ -156,24 +157,18 @@ table.coverage td span.cline-any {
 .coverage-summary th {
     padding: 10px;
 }
-.coverage-summary tbody {
-    border: 1px solid #bbb;
-}
-.coverage-summary td {
+.coverage-summary td,
+.coverage-summary th {
     border-right: 1px solid #bbb;
 }
-.coverage-summary td:last-child {
+.coverage-summary td:last-child,
+.coverage-summary th:last-child {
     border-right: none;
 }
 .coverage-summary th {
     text-align: left;
     font-weight: normal;
     white-space: nowrap;
-}
-.coverage-summary th.file {
-    border-right: none !important;
-}
-.coverage-summary th.pct {
 }
 .coverage-summary th.pic,
 .coverage-summary th.abs,
@@ -187,9 +182,6 @@ table.coverage td span.cline-any {
 .coverage-summary td.pic {
     min-width: 120px !important;
 }
-.coverage-summary tfoot td {
-}
-
 .coverage-summary .sorter {
     height: 10px;
     width: 7px;
@@ -328,4 +320,22 @@ span.cline-neutral {
 }
 .expandbutton:hover {
     text-decoration: none;
+}
+.filetab {
+    display: inline-block;
+    width: 1.4em;
+}
+.coverage-summary .topheading {
+    border-bottom: none;
+}
+.coverage-summary .headercell {
+    border-top: 1px solid #eee;
+    text-align: right;
+    font-size: 11px;
+}
+.coverage-summary .headercell:nth-child(3n),
+.coverage-summary .headercell:nth-child(3n + 1),
+.coverage-summary td:nth-child(3n + 3),
+.coverage-summary td:nth-child(3n + 4) {
+    border-right: 1px solid #ddd;
 }

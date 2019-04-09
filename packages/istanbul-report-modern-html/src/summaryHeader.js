@@ -48,7 +48,7 @@ function StatusMetric({ data, name }) {
         <div class="fl pad1y space-right2">
             <span class="strong">{data.pct}% </span>
             <span class="quiet">{name}</span>{' '}
-            <span class="fraction">
+            <span class={'fraction ' + data.classForPercent}>
                 {data.covered}/{data.total}
             </span>
         </div>
