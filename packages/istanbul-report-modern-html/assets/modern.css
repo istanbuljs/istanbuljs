@@ -314,7 +314,18 @@ span.cline-neutral {
 .push {
     height: 48px;
 }
-
 .togglebutton.enabled {
     border-style: inset;
+}
+.expandbutton {
+    color: black;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-right: 4px;
+    padding: 2px;
+    width: 0.8em;
+    display: inline-block;
+}
+.expandbutton:hover {
+    text-decoration: none;
 }

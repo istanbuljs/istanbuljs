@@ -28,8 +28,11 @@ export default function SummaryTableLine({ metrics, file, children }) {
             <tr>
                 <td class={'file ' + metrics.statements.classForPercent}>
                     {children ? (
-                        <a onClick={() => setToggled(!toggled)}>
-                            {toggled ? '-' : '+'}
+                        <a
+                            onClick={() => setToggled(!toggled)}
+                            class="expandbutton"
+                        >
+                            {toggled ? '—' : '+'}
                         </a>
                     ) : (
                         false
