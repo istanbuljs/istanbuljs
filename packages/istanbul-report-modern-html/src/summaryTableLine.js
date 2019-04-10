@@ -33,6 +33,9 @@ function MetricCells({ metrics }) {
 export default function SummaryTableLine({ metrics, file, children, tabSize }) {
     const [toggled, setToggled] = React.useState(false);
     tabSize = tabSize || 0;
+    if (children && tabSize > 0) {
+        tabSize--;
+    }
 
     return (
         <>
@@ -97,7 +100,7 @@ export default function SummaryTableLine({ metrics, file, children, tabSize }) {
                 children.map(child => (
                     <SummaryTableLine
                         {...child}
-                        tabSize={tabSize + 1}
+                        tabSize={tabSize + 2}
                         key={child.file}
                     />
                 ))}
