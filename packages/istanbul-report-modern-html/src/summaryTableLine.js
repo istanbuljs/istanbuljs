@@ -30,12 +30,19 @@ function MetricCells({ metrics }) {
     );
 }
 
-export default function SummaryTableLine({ metrics, file, children, tabSize }) {
+export default function SummaryTableLine({
+    prefix,
+    metrics,
+    file,
+    children,
+    tabSize
+}) {
     const [toggled, setToggled] = React.useState(false);
     tabSize = tabSize || 0;
     if (children && tabSize > 0) {
         tabSize--;
     }
+    prefix = prefix || '';
 
     return (
         <>
@@ -48,16 +55,18 @@ export default function SummaryTableLine({ metrics, file, children, tabSize }) {
                         <span class="filetab" />
                     ))}
                     {children ? (
-                        <a
-                            onClick={() => setToggled(!toggled)}
-                            class="expandbutton"
-                        >
-                            {toggled ? String.fromCharCode(0x2013) : '+'}
-                        </a>
+                        <>
+                            <a
+                                onClick={() => setToggled(!toggled)}
+                                class="expandbutton"
+                            >
+                                {toggled ? String.fromCharCode(0x2013) : '+'}
+                            </a>
+                            <a onClick={() => setToggled(!toggled)}>{file}</a>
+                        </>
                     ) : (
-                        false
+                        <a href={`./${prefix}${file}.html`}>{file}</a>
                     )}
-                    <a>{file}</a>
                 </td>
                 <MetricCells metrics={metrics.statements} />
                 <MetricCells metrics={metrics.branches} />
@@ -102,6 +111,7 @@ export default function SummaryTableLine({ metrics, file, children, tabSize }) {
                         {...child}
                         tabSize={tabSize + 2}
                         key={child.file}
+                        prefix={prefix + file + '/'}
                     />
                 ))}
         </>
