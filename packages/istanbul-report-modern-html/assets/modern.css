@@ -339,3 +339,10 @@ span.cline-neutral {
 .coverage-summary td.file {
     border-bottom: 1px solid #bbb;
 }
+.buttongroup {
+    display: inline-block;
+    margin-right: 40px;
+}
+.buttongroup label {
+    margin-right: 15px;
+}

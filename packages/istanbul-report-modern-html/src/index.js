@@ -67,7 +67,31 @@ function sort(childData, activeSort) {
     return childData;
 }
 
-function getChildData(activeSort, summarizerType) {
+function filter(nodes, activeFilters) {
+    let children = [];
+    for (var i = 0; i < nodes.length; i++) {
+        let child = nodes[i];
+        if (child.children) {
+            const newSubChildren = filter(child.children, activeFilters);
+            if (newSubChildren.length) {
+                child = { ...child, children: newSubChildren };
+                children.push(child);
+            }
+        } else {
+            if (
+                activeFilters[child.metrics.statements.classForPercent] ||
+                activeFilters[child.metrics.branches.classForPercent] ||
+                activeFilters[child.metrics.functions.classForPercent] ||
+                activeFilters[child.metrics.lines.classForPercent]
+            ) {
+                children.push(child);
+            }
+        }
+    }
+    return children;
+}
+
+function getChildData(activeSort, summarizerType, activeFilters) {
     let childData;
 
     if (summarizerType === 'flat') {
@@ -75,6 +99,8 @@ function getChildData(activeSort, summarizerType) {
     } else {
         childData = sourceData[summarizerType].children;
     }
+
+    childData = filter(childData, activeFilters);
 
     if (activeSort) {
         childData = sort(childData, activeSort);
@@ -101,15 +127,36 @@ function SummarizerButton({
     );
 }
 
+function FilterButton({ children, filter, activeFilters, setFilters }) {
+    return (
+        <button
+            class={'togglebutton ' + (activeFilters[filter] ? 'enabled' : '')}
+            onClick={() =>
+                setFilters({
+                    ...activeFilters,
+                    [filter]: !activeFilters[filter]
+                })
+            }
+        >
+            {children}
+        </button>
+    );
+}
+
 function App() {
     const [activeSort, setSort] = React.useState({
         sortKey: 'file',
         order: 'asc'
     });
     const [summarizerType, setSummarizerType] = React.useState('package');
+    const [activeFilters, setFilters] = React.useState({
+        low: true,
+        medium: true,
+        high: true
+    });
     const childData = React.useMemo(
-        () => getChildData(activeSort, summarizerType),
-        [activeSort, summarizerType]
+        () => getChildData(activeSort, summarizerType, activeFilters),
+        [activeSort, summarizerType, activeFilters]
     );
     const overallMetrics = sourceData.package.metrics;
 
@@ -118,27 +165,54 @@ function App() {
             <div class="wrapper">
                 <SummaryHeader metrics={overallMetrics} />
                 <div class="pad1">
-                    <SummarizerButton
-                        setSummarizerType={setSummarizerType}
-                        summarizerType="package"
-                        activeSummarizerType={summarizerType}
-                    >
-                        Package
-                    </SummarizerButton>
-                    <SummarizerButton
-                        setSummarizerType={setSummarizerType}
-                        summarizerType="nested"
-                        activeSummarizerType={summarizerType}
-                    >
-                        Nested
-                    </SummarizerButton>
-                    <SummarizerButton
-                        setSummarizerType={setSummarizerType}
-                        summarizerType="flat"
-                        activeSummarizerType={summarizerType}
-                    >
-                        Flat
-                    </SummarizerButton>
+                    <div class="buttongroup">
+                        <label>Summarizer:</label>
+                        <SummarizerButton
+                            setSummarizerType={setSummarizerType}
+                            summarizerType="package"
+                            activeSummarizerType={summarizerType}
+                        >
+                            Package
+                        </SummarizerButton>
+                        <SummarizerButton
+                            setSummarizerType={setSummarizerType}
+                            summarizerType="nested"
+                            activeSummarizerType={summarizerType}
+                        >
+                            Nested
+                        </SummarizerButton>
+                        <SummarizerButton
+                            setSummarizerType={setSummarizerType}
+                            summarizerType="flat"
+                            activeSummarizerType={summarizerType}
+                        >
+                            Flat
+                        </SummarizerButton>
+                    </div>
+                    <div class="buttongroup">
+                        <label>Coverage:</label>
+                        <FilterButton
+                            filter="low"
+                            activeFilters={activeFilters}
+                            setFilters={setFilters}
+                        >
+                            Low
+                        </FilterButton>
+                        <FilterButton
+                            filter="medium"
+                            activeFilters={activeFilters}
+                            setFilters={setFilters}
+                        >
+                            Medium
+                        </FilterButton>
+                        <FilterButton
+                            filter="high"
+                            activeFilters={activeFilters}
+                            setFilters={setFilters}
+                        >
+                            High
+                        </FilterButton>
+                    </div>
                 </div>
                 <div class="pad1">
                     <table class="coverage-summary">
