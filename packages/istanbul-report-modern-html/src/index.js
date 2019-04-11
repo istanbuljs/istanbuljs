@@ -7,26 +7,52 @@ import SummaryHeader from './summaryHeader';
 import getChildData from './getChildData';
 import SummarizerButtons from './summarizerButtons';
 import FilterButtons from './filterButtons';
+import { setLocation, decodeLocation } from './routing';
 
 const sourceData = window.data;
 
 function App() {
-    const [activeSort, setSort] = React.useState({
-        sortKey: 'file',
-        order: 'asc'
-    });
-    const [summarizerType, setSummarizerType] = React.useState('package');
-    const [activeFilters, setFilters] = React.useState({
-        low: true,
-        medium: true,
-        high: true
-    });
+    const routingDefaults = decodeLocation();
+
+    const [activeSort, setSort] = React.useState(
+        (routingDefaults && routingDefaults.activeSort) || {
+            sortKey: 'file',
+            order: 'asc'
+        }
+    );
+    const [summarizerType, setSummarizerType] = React.useState(
+        (routingDefaults && routingDefaults.summarizerType) || 'package'
+    );
+    const [activeFilters, setFilters] = React.useState(
+        (routingDefaults && routingDefaults.activeFilters) || {
+            low: true,
+            medium: true,
+            high: true
+        }
+    );
     const childData = React.useMemo(
         () =>
             getChildData(sourceData, activeSort, summarizerType, activeFilters),
         [activeSort, summarizerType, activeFilters]
     );
     const overallMetrics = sourceData.package.metrics;
+
+    let firstMount = true;
+    React.useEffect(() => {
+        setLocation(firstMount, activeSort, summarizerType, activeFilters);
+        firstMount = false;
+    }, [activeSort, summarizerType, activeFilters]);
+
+    React.useEffect(() => {
+        window.onpopstate = () => {
+            const routingState = decodeLocation();
+            if (routingState) {
+                setFilters(routingState.activeFilters);
+                setSort(routingState.activeSort);
+                setSummarizerType(routingState.summarizerType);
+            }
+        };
+    }, []);
 
     return (
         <>

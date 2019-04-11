@@ -22,7 +22,8 @@ module.exports = {
                     'createElement',
                     'Fragment',
                     'useState',
-                    'useMemo'
+                    'useMemo',
+                    'useEffect'
                 ],
                 'react-dom/index.js': ['render']
             }
