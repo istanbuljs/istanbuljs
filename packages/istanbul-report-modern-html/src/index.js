@@ -10,6 +10,7 @@ import FilterButtons from './filterButtons';
 import { setLocation, decodeLocation } from './routing';
 
 const sourceData = window.data;
+let firstMount = true;
 
 function App() {
     const routingDefaults = decodeLocation();
@@ -37,7 +38,6 @@ function App() {
     );
     const overallMetrics = sourceData.package.metrics;
 
-    let firstMount = true;
     React.useEffect(() => {
         setLocation(firstMount, activeSort, summarizerType, activeFilters);
         firstMount = false;
