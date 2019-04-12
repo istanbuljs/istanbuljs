@@ -9,7 +9,7 @@ function SummarizerButton({
     return (
         <button
             onClick={() => setSummarizerType(summarizerType)}
-            class={
+            className={
                 'togglebutton ' +
                 (summarizerType === activeSummarizerType ? 'enabled' : '')
             }
@@ -24,7 +24,7 @@ export default function SummarizerButtons({
     summarizerType
 }) {
     return (
-        <div class="buttongroup">
+        <div className="buttongroup">
             <label>Summarizer:</label>
             <SummarizerButton
                 setSummarizerType={setSummarizerType}

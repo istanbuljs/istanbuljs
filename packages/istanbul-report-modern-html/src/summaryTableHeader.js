@@ -21,9 +21,12 @@ function getSortDetails(sortKey, activeSort) {
 function SummaryTableHeaderCell({ name, onSort, sortKey, activeSort }) {
     const { newSort, sortClass } = getSortDetails(sortKey, activeSort);
     return (
-        <th class={'headercell ' + sortClass} onClick={() => onSort(newSort)}>
+        <th
+            className={'headercell ' + sortClass}
+            onClick={() => onSort(newSort)}
+        >
             {name}
-            <span class="sorter" />
+            <span className="sorter" />
         </th>
     );
 }
@@ -32,9 +35,9 @@ function FileHeaderCell({ onSort, activeSort }) {
     const { newSort, sortClass } = getSortDetails('file', activeSort);
 
     return (
-        <th class={'file ' + sortClass} onClick={() => onSort(newSort)}>
+        <th className={'file ' + sortClass} onClick={() => onSort(newSort)}>
             File
-            <span class="sorter" />
+            <span className="sorter" />
         </th>
     );
 }
@@ -67,14 +70,14 @@ function SubHeadings({ sortKeyPrefix, onSort, activeSort }) {
 export default function SummaryTableHeader({ onSort, activeSort }) {
     return (
         <thead>
-            <tr class="topheading">
+            <tr className="topheading">
                 <FileHeaderCell onSort={onSort} activeSort={activeSort} />
                 <th colSpan={3}>Statements</th>
                 <th colSpan={3}>Branches</th>
                 <th colSpan={3}>Functions</th>
                 <th colSpan={3}>Lines</th>
             </tr>
-            <tr class="subheading">
+            <tr className="subheading">
                 <th />
                 <SubHeadings
                     sortKeyPrefix="statements"

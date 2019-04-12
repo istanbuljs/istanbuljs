@@ -8,8 +8,7 @@ module.exports = {
     input: 'src/index.js',
     output: {
         file: 'assets/bundle.js',
-        format: 'iife',
-        banner: '/* eslint-disable */\n'
+        format: 'iife'
     },
     plugins: [
         babel({
@@ -32,6 +31,12 @@ module.exports = {
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
         // use fast minify mode https://github.com/terser-js/terser#terser-fast-minify-mode
-        terser({ compress: false, mangle: true })
+        terser({
+            compress: false,
+            mangle: true,
+            output: {
+                preamble: '/* eslint-disable */\n'
+            }
+        })
     ]
 };

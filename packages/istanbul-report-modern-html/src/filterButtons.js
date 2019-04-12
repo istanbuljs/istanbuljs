@@ -3,7 +3,9 @@ import * as React from 'react';
 function FilterButton({ children, filter, activeFilters, setFilters }) {
     return (
         <button
-            class={'togglebutton ' + (activeFilters[filter] ? 'enabled' : '')}
+            className={
+                'togglebutton ' + (activeFilters[filter] ? 'enabled' : '')
+            }
             onClick={() =>
                 setFilters({
                     ...activeFilters,
@@ -18,7 +20,7 @@ function FilterButton({ children, filter, activeFilters, setFilters }) {
 
 export default function FilterButtons({ activeFilters, setFilters }) {
     return (
-        <div class="buttongroup">
+        <div className="buttongroup">
             <label>Coverage:</label>
             <FilterButton
                 filter="low"

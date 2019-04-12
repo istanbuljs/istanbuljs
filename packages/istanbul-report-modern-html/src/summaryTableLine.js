@@ -11,8 +11,11 @@ function ShowPicture({ num }) {
         rest = 100 - num;
         return (
             <>
-                <div class={'cover-fill' + cls} style={{ width: num + '%' }} />
-                <div class="cover-empty" style={{ width: rest + '%' }} />
+                <div
+                    className={'cover-fill' + cls}
+                    style={{ width: num + '%' }}
+                />
+                <div className="cover-empty" style={{ width: rest + '%' }} />
             </>
         );
     } else {
@@ -23,9 +26,13 @@ function ShowPicture({ num }) {
 function MetricCells({ metrics }) {
     return (
         <>
-            <td class={'pct ' + metrics.classForPercent}>{metrics.pct}%</td>
-            <td class={'abs ' + metrics.classForPercent}>{metrics.covered}</td>
-            <td class={'abs ' + metrics.classForPercent}>{metrics.total}</td>
+            <td className={'pct ' + metrics.classForPercent}>{metrics.pct}%</td>
+            <td className={'abs ' + metrics.classForPercent}>
+                {metrics.covered}
+            </td>
+            <td className={'abs ' + metrics.classForPercent}>
+                {metrics.total}
+            </td>
         </>
     );
 }
@@ -48,17 +55,19 @@ export default function SummaryTableLine({
         <>
             <tr>
                 <td
-                    class={'file ' + metrics.statements.classForPercent}
+                    className={'file ' + metrics.statements.classForPercent}
                     rowSpan={2}
                 >
-                    {Array.apply(null, { length: tabSize }).map(() => (
-                        <span class="filetab" />
+                    {/* eslint-disable-line prefer-spread */ Array.apply(null, {
+                        length: tabSize
+                    }).map((nothing, index) => (
+                        <span className="filetab" key={index} />
                     ))}
                     {children ? (
                         <>
                             <a
                                 onClick={() => setToggled(!toggled)}
-                                class="expandbutton"
+                                className="expandbutton"
                             >
                                 {toggled ? String.fromCharCode(0x2013) : '+'}
                             </a>
@@ -75,31 +84,34 @@ export default function SummaryTableLine({
             </tr>
             <tr>
                 <td
-                    class={'pic ' + metrics.statements.classForPercent}
+                    className={'pic ' + metrics.statements.classForPercent}
                     colSpan={3}
                 >
-                    <div class="chart">
+                    <div className="chart">
                         <ShowPicture num={metrics.statements.pct} />
                     </div>
                 </td>
                 <td
-                    class={'pic ' + metrics.branches.classForPercent}
+                    className={'pic ' + metrics.branches.classForPercent}
                     colSpan={3}
                 >
-                    <div class="chart">
+                    <div className="chart">
                         <ShowPicture num={metrics.branches.pct} />
                     </div>
                 </td>
                 <td
-                    class={'pic ' + metrics.functions.classForPercent}
+                    className={'pic ' + metrics.functions.classForPercent}
                     colSpan={3}
                 >
-                    <div class="chart">
+                    <div className="chart">
                         <ShowPicture num={metrics.functions.pct} />
                     </div>
                 </td>
-                <td class={'pic ' + metrics.lines.classForPercent} colSpan={3}>
-                    <div class="chart">
+                <td
+                    className={'pic ' + metrics.lines.classForPercent}
+                    colSpan={3}
+                >
+                    <div className="chart">
                         <ShowPicture num={metrics.lines.pct} />
                     </div>
                 </td>

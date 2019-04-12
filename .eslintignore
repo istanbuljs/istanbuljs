@@ -1,5 +1,6 @@
 node_modules/
 vendor/
 packages/istanbul-api/test/sample-code/bad.js
+packages/istanbul-report-modern-html/assets/bundle.js
 coverage
 dist

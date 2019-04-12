@@ -29,6 +29,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
+    "babel-eslint": "^10.0.1",
     "chai": "^4.1.2",
     "clone": "^2.1.1",
     "coveralls": "^3.0.2",
@@ -39,6 +40,7 @@
     "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.12.4",
     "is-windows": "^1.0.2",
     "js-yaml": "^3.13.0",
     "lerna": "^3.11.1",
@@ -56,6 +58,9 @@
       "**/coverage/**",
       "**/dist/**",
       "**/html/assets/**",
+      "**/istanbul-report-modern-html/assets/**",
+      "**/istanbul-report-modern-html/src/**",
+      "**/istanbul-report-modern-html/rollup.config.js",
       "**/test/**"
     ],
     "reporter": [

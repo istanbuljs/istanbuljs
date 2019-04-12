@@ -16,8 +16,8 @@ function Ignores({ metrics }) {
 
     if (statements === 0 && functions === 0 && branches === 0) {
         return (
-            <span class="strong">
-                <span class="ignore-none">none</span>
+            <span className="strong">
+                <span className="ignore-none">none</span>
             </span>
         );
     }
@@ -37,18 +37,18 @@ function Ignores({ metrics }) {
 
     return (
         <>
-            <span class="strong">{result.join(', ')}</span>
-            <span class="quiet">Ignored</span>
+            <span className="strong">{result.join(', ')}</span>
+            <span className="quiet">Ignored</span>
         </>
     );
 }
 
 function StatusMetric({ data, name }) {
     return (
-        <div class="fl pad1y space-right2">
-            <span class="strong">{data.pct}% </span>
-            <span class="quiet">{name}</span>{' '}
-            <span class={'fraction ' + data.classForPercent}>
+        <div className="fl pad1y space-right2">
+            <span className="strong">{data.pct}% </span>
+            <span className="quiet">{name}</span>{' '}
+            <span className={'fraction ' + data.classForPercent}>
                 {data.covered}/{data.total}
             </span>
         </div>
@@ -57,15 +57,15 @@ function StatusMetric({ data, name }) {
 
 export default function SummaryHeader({ metrics }) {
     return (
-        <div class="pad1">
+        <div className="pad1">
             {/* TODO - <h1>All Files</h1> - this doesn't add useful info any more. if anything it should be the name of the project - coverage*/}
-            <div class="clearfix">
+            <div className="clearfix">
                 <StatusMetric data={metrics.statements} name="Statements" />
                 <StatusMetric data={metrics.branches} name="Branches" />
                 <StatusMetric data={metrics.functions} name="Functions" />
                 <StatusMetric data={metrics.lines} name="Lines" />
                 {ifHasIgnores(metrics) && (
-                    <div class="fl pad1y">
+                    <div className="fl pad1y">
                         <Ignores metrics={metrics} />
                     </div>
                 )}

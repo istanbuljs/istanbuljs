@@ -7,8 +7,8 @@ function addPath(node, parentPath) {
 
 function flatten(nodes, parentPath) {
     let children = [];
-    for (var i = 0; i < nodes.length; i++) {
-        let child = nodes[i];
+    for (let i = 0; i < nodes.length; i++) {
+        const child = nodes[i];
         if (child.children) {
             children = [
                 ...children.map(child => addPath(child, parentPath)),
@@ -47,7 +47,7 @@ function sort(childData, activeSort) {
     });
 
     for (let i = 0; i < childData.length; i++) {
-        let child = childData[i];
+        const child = childData[i];
         if (child.children) {
             childData[i] = {
                 ...child,
@@ -59,8 +59,8 @@ function sort(childData, activeSort) {
 }
 
 function filter(nodes, activeFilters) {
-    let children = [];
-    for (var i = 0; i < nodes.length; i++) {
+    const children = [];
+    for (let i = 0; i < nodes.length; i++) {
         let child = nodes[i];
         if (child.children) {
             const newSubChildren = filter(child.children, activeFilters);
