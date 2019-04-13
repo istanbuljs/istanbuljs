@@ -22,7 +22,7 @@ function App() {
         }
     );
     const [summarizerType, setSummarizerType] = React.useState(
-        (routingDefaults && routingDefaults.summarizerType) || 'package'
+        (routingDefaults && routingDefaults.summarizerType) || 'nested'
     );
     const [activeFilters, setFilters] = React.useState(
         (routingDefaults && routingDefaults.activeFilters) || {
