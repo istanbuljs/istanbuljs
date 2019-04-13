@@ -66,12 +66,18 @@ export default function SummaryTableLine({
                     {children ? (
                         <>
                             <a
+                                href="javascript:void(0)"
                                 onClick={() => setToggled(!toggled)}
                                 className="expandbutton"
                             >
                                 {toggled ? String.fromCharCode(0x2013) : '+'}
                             </a>
-                            <a onClick={() => setToggled(!toggled)}>{file}</a>
+                            <a
+                                href="javascript:void(0)"
+                                onClick={() => setToggled(!toggled)}
+                            >
+                                {file}
+                            </a>
                         </>
                     ) : (
                         <a href={`./${prefix}${file}.html`}>{file}</a>

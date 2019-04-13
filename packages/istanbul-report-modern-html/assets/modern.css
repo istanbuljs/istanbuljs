@@ -346,3 +346,6 @@ span.cline-neutral {
 .buttongroup label {
     margin-right: 15px;
 }
+th.sortable {
+    cursor: pointer;
+}

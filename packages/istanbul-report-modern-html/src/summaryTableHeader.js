@@ -25,7 +25,7 @@ function SummaryTableHeaderCell({ name, onSort, sortKey, activeSort }) {
     const { newSort, sortClass } = getSortDetails(sortKey, activeSort);
     return (
         <th
-            className={'headercell ' + sortClass}
+            className={'sortable headercell ' + sortClass}
             onClick={() => onSort(newSort)}
         >
             {name}
@@ -38,7 +38,10 @@ function FileHeaderCell({ onSort, activeSort }) {
     const { newSort, sortClass } = getSortDetails('file', activeSort);
 
     return (
-        <th className={'file ' + sortClass} onClick={() => onSort(newSort)}>
+        <th
+            className={'sortable file ' + sortClass}
+            onClick={() => onSort(newSort)}
+        >
             File
             <span className="sorter" />
         </th>
