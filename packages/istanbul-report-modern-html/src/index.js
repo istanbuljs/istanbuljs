@@ -18,7 +18,7 @@ function App() {
     const [activeSort, setSort] = React.useState(
         (routingDefaults && routingDefaults.activeSort) || {
             sortKey: 'file',
-            order: 'asc'
+            order: 'desc'
         }
     );
     const [summarizerType, setSummarizerType] = React.useState(

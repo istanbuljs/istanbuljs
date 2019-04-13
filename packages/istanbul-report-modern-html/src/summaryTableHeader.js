@@ -1,14 +1,17 @@
 import * as React from 'react';
 
 function getSortDetails(sortKey, activeSort) {
-    const newSort = { sortKey, order: 'asc' };
+    let newSort = { sortKey, order: 'desc' };
     let sortClass = '';
     if (activeSort && activeSort.sortKey === sortKey) {
         sortClass = 'sorted';
-        if (activeSort.order === 'asc') {
-            newSort.order = 'desc';
-        } else {
+        if (activeSort.order === 'desc') {
             sortClass += '-desc';
+            newSort.order = 'asc';
+        } else {
+            if (sortKey !== 'file') {
+                newSort = { sortKey: 'file', order: 'desc' };
+            }
         }
     }
 

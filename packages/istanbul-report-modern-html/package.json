@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "test-disabled": "mocha --recursive",
-    "prepublish": "rollup --config"
+    "prepare": "rollup --config"
   },
   "dependencies": {
     "istanbul-lib-report": "^2.0.4",

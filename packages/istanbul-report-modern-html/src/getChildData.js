@@ -31,9 +31,8 @@ function sort(childData, activeSort) {
         let valueA;
         let valueB;
         if (activeSort.sortKey === 'file') {
-            // reverse to match original report ordering
-            valueB = a.file;
-            valueA = b.file;
+            valueA = a.file;
+            valueB = b.file;
         } else {
             const [metricType, valueType] = activeSort.sortKey.split('.');
             valueA = a.metrics[metricType][valueType];
