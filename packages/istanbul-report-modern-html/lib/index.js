@@ -42,6 +42,11 @@ function ModernHtmlReport(opts) {
     this.date = Date();
     this.skipEmpty = opts.skipEmpty;
     this.htmlReport = new HtmlReport(opts);
+    this.metricsToShow = opts.metricsToShow || [
+        'lines',
+        'branches',
+        'functions'
+    ];
 }
 
 ModernHtmlReport.prototype.getWriter = function(context) {
@@ -129,6 +134,7 @@ ModernHtmlReport.prototype.writeSummary = function(
     const cw = this.getWriter(context).writeFile(
         this.linkMapper.getPath(packageRootNode)
     );
+
     cw.write(
         `<!doctype html>
         <html lang="en">
@@ -139,9 +145,12 @@ ModernHtmlReport.prototype.writeSummary = function(
             <body>
                 <div id="app"></div>
                 <script>
-                    window.data=${JSON.stringify(data)};
+                    window.data = ${JSON.stringify(data)};
                     window.generatedDatetime = ${JSON.stringify(
                         String(Date())
+                    )};
+                    window.metricsToShow = ${JSON.stringify(
+                        this.metricsToShow
                     )};
                 </script>
                 <script src="bundle.js"></script>

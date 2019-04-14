@@ -42,7 +42,8 @@ export default function SummaryTableLine({
     metrics,
     file,
     children,
-    tabSize
+    tabSize,
+    metricsToShow
 }) {
     const [toggled, setToggled] = React.useState(false);
     tabSize = tabSize || 0;
@@ -83,44 +84,58 @@ export default function SummaryTableLine({
                         <a href={`./${prefix}${file}.html`}>{file}</a>
                     )}
                 </td>
-                <MetricCells metrics={metrics.statements} />
-                <MetricCells metrics={metrics.branches} />
-                <MetricCells metrics={metrics.functions} />
-                <MetricCells metrics={metrics.lines} />
+                {metricsToShow.statements && (
+                    <MetricCells metrics={metrics.statements} />
+                )}
+                {metricsToShow.branches && (
+                    <MetricCells metrics={metrics.branches} />
+                )}
+                {metricsToShow.functions && (
+                    <MetricCells metrics={metrics.functions} />
+                )}
+                {metricsToShow.lines && <MetricCells metrics={metrics.lines} />}
             </tr>
             <tr>
-                <td
-                    className={'pic ' + metrics.statements.classForPercent}
-                    colSpan={3}
-                >
-                    <div className="chart">
-                        <ShowPicture num={metrics.statements.pct} />
-                    </div>
-                </td>
-                <td
-                    className={'pic ' + metrics.branches.classForPercent}
-                    colSpan={3}
-                >
-                    <div className="chart">
-                        <ShowPicture num={metrics.branches.pct} />
-                    </div>
-                </td>
-                <td
-                    className={'pic ' + metrics.functions.classForPercent}
-                    colSpan={3}
-                >
-                    <div className="chart">
-                        <ShowPicture num={metrics.functions.pct} />
-                    </div>
-                </td>
-                <td
-                    className={'pic ' + metrics.lines.classForPercent}
-                    colSpan={3}
-                >
-                    <div className="chart">
-                        <ShowPicture num={metrics.lines.pct} />
-                    </div>
-                </td>
+                {metricsToShow.statements && (
+                    <td
+                        className={'pic ' + metrics.statements.classForPercent}
+                        colSpan={3}
+                    >
+                        <div className="chart">
+                            <ShowPicture num={metrics.statements.pct} />
+                        </div>
+                    </td>
+                )}
+                {metricsToShow.branches && (
+                    <td
+                        className={'pic ' + metrics.branches.classForPercent}
+                        colSpan={3}
+                    >
+                        <div className="chart">
+                            <ShowPicture num={metrics.branches.pct} />
+                        </div>
+                    </td>
+                )}
+                {metricsToShow.functions && (
+                    <td
+                        className={'pic ' + metrics.functions.classForPercent}
+                        colSpan={3}
+                    >
+                        <div className="chart">
+                            <ShowPicture num={metrics.functions.pct} />
+                        </div>
+                    </td>
+                )}
+                {metricsToShow.lines && (
+                    <td
+                        className={'pic ' + metrics.lines.classForPercent}
+                        colSpan={3}
+                    >
+                        <div className="chart">
+                            <ShowPicture num={metrics.lines.pct} />
+                        </div>
+                    </td>
+                )}
             </tr>
             {toggled &&
                 children &&
@@ -130,6 +145,7 @@ export default function SummaryTableLine({
                         tabSize={tabSize + 2}
                         key={child.file}
                         prefix={prefix + file + '/'}
+                        metricsToShow={metricsToShow}
                     />
                 ))}
         </>

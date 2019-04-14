@@ -1,45 +1,32 @@
 import * as React from 'react';
 
-function ifHasIgnores(metrics) {
-    return (
-        metrics.statements.skipped +
-            metrics.functions.skipped +
-            metrics.branches.skipped >
-        0
-    );
-}
-
-function Ignores({ metrics }) {
-    const statements = metrics.statements.skipped;
-    const functions = metrics.functions.skipped;
-    const branches = metrics.branches.skipped;
-
-    if (statements === 0 && functions === 0 && branches === 0) {
-        return (
-            <span className="strong">
-                <span className="ignore-none">none</span>
-            </span>
-        );
-    }
-
+function Ignores({ metrics, metricsToShow }) {
+    const metricKeys = Object.keys(metricsToShow);
     const result = [];
-    if (statements > 0) {
-        result.push(
-            statements === 1 ? '1 statement' : statements + ' statements'
-        );
+
+    for (let i = 0; i < metricKeys.length; i++) {
+        const metricKey = metricKeys[i];
+        if (metricsToShow[metricKey]) {
+            const skipped = metrics[metricKey].skipped;
+            if (skipped > 0) {
+                result.push(
+                    `${skipped} ${metricKey}${
+                        skipped === 1 ? '' : metricKey === 'branch' ? 'es' : 's'
+                    }`
+                );
+            }
+        }
     }
-    if (functions > 0) {
-        result.push(functions === 1 ? '1 function' : functions + ' functions');
-    }
-    if (branches > 0) {
-        result.push(branches === 1 ? '1 branch' : branches + ' branches');
+
+    if (result.length === 0) {
+        return false;
     }
 
     return (
-        <>
+        <div className="fl pad1y">
             <span className="strong">{result.join(', ')}</span>
             <span className="quiet">Ignored</span>
-        </>
+        </div>
     );
 }
 
@@ -55,20 +42,25 @@ function StatusMetric({ data, name }) {
     );
 }
 
-export default function SummaryHeader({ metrics }) {
+export default function SummaryHeader({ metrics, metricsToShow }) {
     return (
         <div className="pad1">
             {/* TODO - <h1>All Files</h1> - this doesn't add useful info any more. if anything it should be the name of the project - coverage*/}
             <div className="clearfix">
-                <StatusMetric data={metrics.statements} name="Statements" />
-                <StatusMetric data={metrics.branches} name="Branches" />
-                <StatusMetric data={metrics.functions} name="Functions" />
-                <StatusMetric data={metrics.lines} name="Lines" />
-                {ifHasIgnores(metrics) && (
-                    <div className="fl pad1y">
-                        <Ignores metrics={metrics} />
-                    </div>
+                {metricsToShow.statements && (
+                    <StatusMetric data={metrics.statements} name="Statements" />
                 )}
+                {metricsToShow.branches && (
+                    <StatusMetric data={metrics.branches} name="Branches" />
+                )}
+                {metricsToShow.functions && (
+                    <StatusMetric data={metrics.functions} name="Functions" />
+                )}
+                {metricsToShow.lines && (
+                    <StatusMetric data={metrics.lines} name="Lines" />
+                )}
+
+                <Ignores metrics={metrics} metricsToShow={metricsToShow} />
             </div>
         </div>
     );

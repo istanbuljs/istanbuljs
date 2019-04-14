@@ -282,10 +282,6 @@ span.cline-neutral {
 .com {
     color: #999 !important;
 }
-.ignore-none {
-    color: #999;
-    font-weight: normal;
-}
 
 .wrapper {
     min-height: 100%;

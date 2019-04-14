@@ -57,22 +57,30 @@ function sort(childData, activeSort) {
     return childData;
 }
 
-function filter(nodes, activeFilters) {
+function filter(nodes, metricsMap, activeFilters) {
     const children = [];
     for (let i = 0; i < nodes.length; i++) {
         let child = nodes[i];
         if (child.children) {
-            const newSubChildren = filter(child.children, activeFilters);
+            const newSubChildren = filter(
+                child.children,
+                metricsMap,
+                activeFilters
+            );
             if (newSubChildren.length) {
                 child = { ...child, children: newSubChildren };
                 children.push(child);
             }
         } else {
             if (
-                activeFilters[child.metrics.statements.classForPercent] ||
-                activeFilters[child.metrics.branches.classForPercent] ||
-                activeFilters[child.metrics.functions.classForPercent] ||
-                activeFilters[child.metrics.lines.classForPercent]
+                (metricsMap.statements &&
+                    activeFilters[child.metrics.statements.classForPercent]) ||
+                (metricsMap.branches &&
+                    activeFilters[child.metrics.branches.classForPercent]) ||
+                (metricsMap.functions &&
+                    activeFilters[child.metrics.functions.classForPercent]) ||
+                (metricsMap.lines &&
+                    activeFilters[child.metrics.lines.classForPercent])
             ) {
                 children.push(child);
             }
@@ -83,6 +91,7 @@ function filter(nodes, activeFilters) {
 
 export default function getChildData(
     sourceData,
+    metricsToShow,
     activeSort,
     summarizerType,
     activeFilters
@@ -95,7 +104,7 @@ export default function getChildData(
         childData = sourceData[summarizerType].children;
     }
 
-    childData = filter(childData, activeFilters);
+    childData = filter(childData, metricsToShow, activeFilters);
 
     if (activeSort) {
         childData = sort(childData, activeSort);

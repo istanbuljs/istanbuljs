@@ -73,38 +73,50 @@ function SubHeadings({ sortKeyPrefix, onSort, activeSort }) {
     );
 }
 
-export default function SummaryTableHeader({ onSort, activeSort }) {
+export default function SummaryTableHeader({
+    onSort,
+    activeSort,
+    metricsToShow
+}) {
     return (
         <thead>
             <tr className="topheading">
                 <FileHeaderCell onSort={onSort} activeSort={activeSort} />
-                <th colSpan={3}>Statements</th>
-                <th colSpan={3}>Branches</th>
-                <th colSpan={3}>Functions</th>
-                <th colSpan={3}>Lines</th>
+                {metricsToShow.statements && <th colSpan={3}>Statements</th>}
+                {metricsToShow.branches && <th colSpan={3}>Branches</th>}
+                {metricsToShow.functions && <th colSpan={3}>Functions</th>}
+                {metricsToShow.lines && <th colSpan={3}>Lines</th>}
             </tr>
             <tr className="subheading">
                 <th />
-                <SubHeadings
-                    sortKeyPrefix="statements"
-                    onSort={onSort}
-                    activeSort={activeSort}
-                />
-                <SubHeadings
-                    sortKeyPrefix="branches"
-                    onSort={onSort}
-                    activeSort={activeSort}
-                />
-                <SubHeadings
-                    sortKeyPrefix="functions"
-                    onSort={onSort}
-                    activeSort={activeSort}
-                />
-                <SubHeadings
-                    sortKeyPrefix="lines"
-                    onSort={onSort}
-                    activeSort={activeSort}
-                />
+                {metricsToShow.statements && (
+                    <SubHeadings
+                        sortKeyPrefix="statements"
+                        onSort={onSort}
+                        activeSort={activeSort}
+                    />
+                )}
+                {metricsToShow.branches && (
+                    <SubHeadings
+                        sortKeyPrefix="branches"
+                        onSort={onSort}
+                        activeSort={activeSort}
+                    />
+                )}
+                {metricsToShow.functions && (
+                    <SubHeadings
+                        sortKeyPrefix="functions"
+                        onSort={onSort}
+                        activeSort={activeSort}
+                    />
+                )}
+                {metricsToShow.lines && (
+                    <SubHeadings
+                        sortKeyPrefix="lines"
+                        onSort={onSort}
+                        activeSort={activeSort}
+                    />
+                )}
             </tr>
         </thead>
     );

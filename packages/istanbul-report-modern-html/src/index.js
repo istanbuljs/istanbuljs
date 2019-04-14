@@ -10,6 +10,11 @@ import FilterButtons from './filterButtons';
 import { setLocation, decodeLocation } from './routing';
 
 const sourceData = window.data;
+const metricsToShow = {};
+for (let i = 0; i < window.metricsToShow.length; i++) {
+    metricsToShow[window.metricsToShow[i]] = true;
+}
+
 let firstMount = true;
 
 function App() {
@@ -33,7 +38,13 @@ function App() {
     );
     const childData = React.useMemo(
         () =>
-            getChildData(sourceData, activeSort, summarizerType, activeFilters),
+            getChildData(
+                sourceData,
+                metricsToShow,
+                activeSort,
+                summarizerType,
+                activeFilters
+            ),
         [activeSort, summarizerType, activeFilters]
     );
     const overallMetrics = sourceData.package.metrics;
@@ -57,7 +68,10 @@ function App() {
     return (
         <>
             <div className="wrapper">
-                <SummaryHeader metrics={overallMetrics} />
+                <SummaryHeader
+                    metrics={overallMetrics}
+                    metricsToShow={metricsToShow}
+                />
                 <div className="pad1">
                     <SummarizerButtons
                         setSummarizerType={setSummarizerType}
@@ -75,10 +89,15 @@ function App() {
                                 setSort(newSort);
                             }}
                             activeSort={activeSort}
+                            metricsToShow={metricsToShow}
                         />
                         <tbody>
                             {childData.map(child => (
-                                <SummaryTableLine {...child} key={child.file} />
+                                <SummaryTableLine
+                                    {...child}
+                                    key={child.file}
+                                    metricsToShow={metricsToShow}
+                                />
                             ))}
                         </tbody>
                     </table>
