@@ -42,6 +42,10 @@ function ModernHtmlReport(opts) {
     this.date = Date();
     this.skipEmpty = opts.skipEmpty;
     this.htmlReport = new HtmlReport(opts);
+    this.htmlReport.getBreadcrumbHtml = function() {
+        return '<a href="javascript:history.back()">Back</a>';
+    };
+
     this.metricsToShow = opts.metricsToShow || [
         'lines',
         'branches',

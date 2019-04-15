@@ -100,7 +100,7 @@ const standardLinkMapper = {
     }
 };
 
-function getBreadcrumbHtml(node, linkMapper) {
+HtmlReport.prototype.getBreadcrumbHtml = function(node, linkMapper) {
     let parent = node.getParent();
     const nodePath = [];
 
@@ -119,9 +119,14 @@ function getBreadcrumbHtml(node, linkMapper) {
     return linkPath.length > 0
         ? linkPath.join(' / ') + ' ' + node.getRelativeName()
         : 'All files';
-}
+};
 
-function fillTemplate(node, templateData, linkMapper, context) {
+HtmlReport.prototype.fillTemplate = function(
+    node,
+    templateData,
+    linkMapper,
+    context
+) {
     const summary = node.getCoverageSummary();
     templateData.entity = node.getQualifiedName() || 'All files';
     templateData.metrics = summary;
@@ -129,7 +134,7 @@ function fillTemplate(node, templateData, linkMapper, context) {
         'statements',
         summary.statements.pct
     );
-    templateData.pathHtml = getBreadcrumbHtml(node, linkMapper);
+    templateData.pathHtml = this.getBreadcrumbHtml(node, linkMapper);
     templateData.base = {
         css: linkMapper.assetPath(node, 'base.css')
     };
@@ -144,7 +149,7 @@ function fillTemplate(node, templateData, linkMapper, context) {
         js: linkMapper.assetPath(node, 'prettify.js'),
         css: linkMapper.assetPath(node, 'prettify.css')
     };
-}
+};
 
 function HtmlReport(opts) {
     this.verbose = opts.verbose;
@@ -207,7 +212,7 @@ HtmlReport.prototype.onSummary = function(node, context) {
     const children = node.getChildren();
     const skipEmpty = this.skipEmpty;
 
-    fillTemplate(node, templateData, linkMapper, context);
+    this.fillTemplate(node, templateData, linkMapper, context);
     const cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
     cw.write(headerTemplate(templateData));
     cw.write(summaryTableHeader);
@@ -251,7 +256,7 @@ HtmlReport.prototype.onDetail = function(node, context) {
     const linkMapper = this.linkMapper;
     const templateData = this.getTemplateData();
 
-    fillTemplate(node, templateData, linkMapper, context);
+    this.fillTemplate(node, templateData, linkMapper, context);
     const cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
     cw.write(headerTemplate(templateData));
     cw.write('<pre><table class="coverage">\n');
