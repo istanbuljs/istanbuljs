@@ -1,6 +1,6 @@
 {
   "name": "istanbul-report-modern-html",
-  "version": "2.2.0",
+  "version": "1.0.0",
   "description": "istanbul report - modern html",
   "author": "Luke Page",
   "main": "index.js",
@@ -30,7 +30,7 @@
     "rollup-plugin-replace": "2.1.1",
     "rollup-plugin-terser": "4.0.4"
   },
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:istanbuljs/istanbuljs"
