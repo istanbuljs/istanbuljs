@@ -36,6 +36,9 @@ function App() {
             high: true
         }
     );
+    const [expandedLines, setExpandedLines] = React.useState(
+        (routingDefaults && routingDefaults.expandedLines) || []
+    );
     const childData = React.useMemo(
         () =>
             getChildData(
@@ -50,9 +53,15 @@ function App() {
     const overallMetrics = sourceData.package.metrics;
 
     React.useEffect(() => {
-        setLocation(firstMount, activeSort, summarizerType, activeFilters);
+        setLocation(
+            firstMount,
+            activeSort,
+            summarizerType,
+            activeFilters,
+            expandedLines
+        );
         firstMount = false;
-    }, [activeSort, summarizerType, activeFilters]);
+    }, [activeSort, summarizerType, activeFilters, expandedLines]);
 
     React.useEffect(() => {
         window.onpopstate = () => {
@@ -61,6 +70,7 @@ function App() {
                 setFilters(routingState.activeFilters);
                 setSort(routingState.activeSort);
                 setSummarizerType(routingState.summarizerType);
+                setExpandedLines(routingState.expandedLines);
             }
         };
     }, []);
@@ -97,6 +107,8 @@ function App() {
                                     {...child}
                                     key={child.file}
                                     metricsToShow={metricsToShow}
+                                    expandedLines={expandedLines}
+                                    setExpandedLines={setExpandedLines}
                                 />
                             ))}
                         </tbody>

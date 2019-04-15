@@ -2,7 +2,8 @@ export function setLocation(
     isReplace,
     activeSort,
     summarizerType,
-    activeFilters
+    activeFilters,
+    expandedLines
 ) {
     const pushFn = isReplace
         ? window.history.replaceState.bind(window.history)
@@ -13,13 +14,15 @@ export function setLocation(
         '',
         `#${activeSort.sortKey}/${activeSort.order}/${summarizerType}/${
             activeFilters.low
-        }/${activeFilters.medium}/${activeFilters.high}`
+        }/${activeFilters.medium}/${activeFilters.high}/${expandedLines
+            .map(encodeURIComponent)
+            .join(',')}`
     );
 }
 
 export function decodeLocation() {
     const items = location.hash.substr(1).split('/');
-    if (items.length !== 6) {
+    if (items.length !== 7) {
         return null;
     }
     return {
@@ -32,6 +35,7 @@ export function decodeLocation() {
             low: JSON.parse(items[3]),
             medium: JSON.parse(items[4]),
             high: JSON.parse(items[5])
-        }
+        },
+        expandedLines: items[6].split(',').map(decodeURIComponent)
     };
 }

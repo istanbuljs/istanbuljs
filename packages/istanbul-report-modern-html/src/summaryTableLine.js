@@ -37,15 +37,55 @@ function MetricCells({ metrics }) {
     );
 }
 
+function FileCell({
+    file,
+    prefix,
+    expandedLines,
+    setExpandedLines,
+    hasChildren
+}) {
+    if (hasChildren) {
+        const expandedIndex = expandedLines.indexOf(prefix + file);
+        const isExpanded = expandedIndex >= 0;
+        const newExpandedLines = isExpanded
+            ? [
+                  ...expandedLines.slice(0, expandedIndex),
+                  ...expandedLines.slice(expandedIndex + 1)
+              ]
+            : [...expandedLines, prefix + file];
+
+        return (
+            <>
+                <a
+                    href="javascript:void(0)"
+                    onClick={() => setExpandedLines(newExpandedLines)}
+                    className="expandbutton"
+                >
+                    {isExpanded ? String.fromCharCode(0x2013) : '+'}
+                </a>
+                <a
+                    href="javascript:void(0)"
+                    onClick={() => setExpandedLines(newExpandedLines)}
+                >
+                    {file}
+                </a>
+            </>
+        );
+    } else {
+        return <a href={`./${prefix}${file}.html`}>{file}</a>;
+    }
+}
+
 export default function SummaryTableLine({
     prefix,
     metrics,
     file,
     children,
     tabSize,
-    metricsToShow
+    metricsToShow,
+    expandedLines,
+    setExpandedLines
 }) {
-    const [toggled, setToggled] = React.useState(false);
     tabSize = tabSize || 0;
     if (children && tabSize > 0) {
         tabSize--;
@@ -64,25 +104,13 @@ export default function SummaryTableLine({
                     }).map((nothing, index) => (
                         <span className="filetab" key={index} />
                     ))}
-                    {children ? (
-                        <>
-                            <a
-                                href="javascript:void(0)"
-                                onClick={() => setToggled(!toggled)}
-                                className="expandbutton"
-                            >
-                                {toggled ? String.fromCharCode(0x2013) : '+'}
-                            </a>
-                            <a
-                                href="javascript:void(0)"
-                                onClick={() => setToggled(!toggled)}
-                            >
-                                {file}
-                            </a>
-                        </>
-                    ) : (
-                        <a href={`./${prefix}${file}.html`}>{file}</a>
-                    )}
+                    <FileCell
+                        file={file}
+                        prefix={prefix}
+                        expandedLines={expandedLines}
+                        setExpandedLines={setExpandedLines}
+                        hasChildren={Boolean(children)}
+                    />
                 </td>
                 {metricsToShow.statements && (
                     <MetricCells metrics={metrics.statements} />
@@ -137,8 +165,8 @@ export default function SummaryTableLine({
                     </td>
                 )}
             </tr>
-            {toggled &&
-                children &&
+            {children &&
+                expandedLines.indexOf(prefix + file) >= 0 &&
                 children.map(child => (
                     <SummaryTableLine
                         {...child}
@@ -146,6 +174,8 @@ export default function SummaryTableLine({
                         key={child.file}
                         prefix={prefix + file + '/'}
                         metricsToShow={metricsToShow}
+                        expandedLines={expandedLines}
+                        setExpandedLines={setExpandedLines}
                     />
                 ))}
         </>
