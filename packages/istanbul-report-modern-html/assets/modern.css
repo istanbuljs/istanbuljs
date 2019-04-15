@@ -300,8 +300,8 @@ span.cline-neutral {
     color: black;
     font-weight: bold;
     font-size: 1.2em;
-    margin-right: 4px;
-    padding: 2px;
+    margin-right: 0.1em;
+    padding: 0.1em;
     width: 0.8em;
     display: inline-block;
 }
@@ -310,7 +310,7 @@ span.cline-neutral {
 }
 .filetab {
     display: inline-block;
-    width: 1.4em;
+    width: 1.1em;
 }
 .coverage-summary .topheading {
     border-bottom: none;
