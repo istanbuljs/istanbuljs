@@ -42,7 +42,8 @@ function FileCell({
     prefix,
     expandedLines,
     setExpandedLines,
-    hasChildren
+    hasChildren,
+    setFileFilter
 }) {
     if (hasChildren) {
         const expandedIndex = expandedLines.indexOf(prefix + file);
@@ -65,7 +66,7 @@ function FileCell({
                 </a>
                 <a
                     href="javascript:void(0)"
-                    onClick={() => setExpandedLines(newExpandedLines)}
+                    onClick={() => setFileFilter(prefix + file)}
                 >
                     {file}
                 </a>
@@ -84,13 +85,15 @@ export default function SummaryTableLine({
     tabSize,
     metricsToShow,
     expandedLines,
-    setExpandedLines
+    setExpandedLines,
+    fileFilter,
+    setFileFilter
 }) {
     tabSize = tabSize || 0;
     if (children && tabSize > 0) {
         tabSize--;
     }
-    prefix = prefix || '';
+    prefix = (fileFilter ? fileFilter + '/' : '') + (prefix || '');
 
     return (
         <>
@@ -110,6 +113,7 @@ export default function SummaryTableLine({
                         expandedLines={expandedLines}
                         setExpandedLines={setExpandedLines}
                         hasChildren={Boolean(children)}
+                        setFileFilter={setFileFilter}
                     />
                 </td>
                 {metricsToShow.statements && (
@@ -176,6 +180,7 @@ export default function SummaryTableLine({
                         metricsToShow={metricsToShow}
                         expandedLines={expandedLines}
                         setExpandedLines={setExpandedLines}
+                        setFileFilter={setFileFilter}
                     />
                 ))}
         </>

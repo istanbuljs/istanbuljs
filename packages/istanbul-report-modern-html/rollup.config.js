@@ -24,7 +24,7 @@ module.exports = {
                     'useMemo',
                     'useEffect'
                 ],
-                'react-dom/index.js': ['render']
+                'react-dom/index.js': ['render', 'unstable_batchedUpdates']
             }
         }),
         replace({

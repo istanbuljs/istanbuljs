@@ -39,6 +39,9 @@ function App() {
     const [expandedLines, setExpandedLines] = React.useState(
         (routingDefaults && routingDefaults.expandedLines) || []
     );
+    const [fileFilter, setFileFilter] = React.useState(
+        (routingDefaults && routingDefaults.fileFilter) || ''
+    );
     const childData = React.useMemo(
         () =>
             getChildData(
@@ -46,9 +49,10 @@ function App() {
                 metricsToShow,
                 activeSort,
                 summarizerType,
-                activeFilters
+                activeFilters,
+                fileFilter
             ),
-        [activeSort, summarizerType, activeFilters]
+        [activeSort, summarizerType, activeFilters, fileFilter]
     );
     const overallMetrics = sourceData.package.metrics;
 
@@ -58,19 +62,26 @@ function App() {
             activeSort,
             summarizerType,
             activeFilters,
+            fileFilter,
             expandedLines
         );
         firstMount = false;
-    }, [activeSort, summarizerType, activeFilters, expandedLines]);
+    }, [activeSort, summarizerType, activeFilters, fileFilter, expandedLines]);
 
     React.useEffect(() => {
         window.onpopstate = () => {
             const routingState = decodeLocation();
             if (routingState) {
-                setFilters(routingState.activeFilters);
-                setSort(routingState.activeSort);
-                setSummarizerType(routingState.summarizerType);
-                setExpandedLines(routingState.expandedLines);
+                // make sure all the state is set before rendering to avoid url updates
+                // alternative is to merge all the states into one so it can be set in one go
+                // https://github.com/facebook/react/issues/14259
+                ReactDOM.unstable_batchedUpdates(() => {
+                    setFilters(routingState.activeFilters);
+                    setSort(routingState.activeSort);
+                    setSummarizerType(routingState.summarizerType);
+                    setExpandedLines(routingState.expandedLines);
+                    setFileFilter(routingState.fileFilter);
+                });
             }
         };
     }, []);
@@ -82,6 +93,20 @@ function App() {
                     metrics={overallMetrics}
                     metricsToShow={metricsToShow}
                 />
+                {Boolean(fileFilter) && (
+                    <div className="pad1">
+                        <h1>
+                            {fileFilter}&nbsp;(
+                            <a
+                                href="javascript:void()"
+                                onClick={() => setFileFilter('')}
+                            >
+                                Clear
+                            </a>
+                            )
+                        </h1>
+                    </div>
+                )}
                 <div className="pad1">
                     <SummarizerButtons
                         setSummarizerType={setSummarizerType}
@@ -109,6 +134,8 @@ function App() {
                                     metricsToShow={metricsToShow}
                                     expandedLines={expandedLines}
                                     setExpandedLines={setExpandedLines}
+                                    fileFilter={fileFilter}
+                                    setFileFilter={setFileFilter}
                                 />
                             ))}
                         </tbody>

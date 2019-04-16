@@ -11,7 +11,7 @@ function flatten(nodes, parentPath) {
         const child = nodes[i];
         if (child.children) {
             children = [
-                ...children.map(child => addPath(child, parentPath)),
+                ...children,
                 ...flatten(
                     child.children,
                     (!parentPath ? '' : '/' + parentPath) + child.file
@@ -19,6 +19,39 @@ function flatten(nodes, parentPath) {
             ];
         } else {
             children.push(addPath(child, parentPath));
+        }
+    }
+    return children;
+}
+
+function filterByFile(nodes, fileFilter, parentPath) {
+    let children = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+        const child = nodes[i];
+        const childFullPath = (parentPath ? parentPath + '/' : '') + child.file;
+        if (
+            childFullPath === fileFilter ||
+            childFullPath.indexOf(fileFilter) < 0
+        ) {
+            if (fileFilter.indexOf(childFullPath) === 0) {
+                // flatten
+                children = [
+                    ...children,
+                    ...filterByFile(child.children, fileFilter, childFullPath)
+                ];
+            }
+        } else {
+            const charsToRemoveFromFile =
+                fileFilter.length - (parentPath ? parentPath.length : 0);
+            let childFilename = child.file.slice(charsToRemoveFromFile);
+            if (childFilename[0] === '/') {
+                childFilename = childFilename.slice(1);
+            }
+            children.push({
+                ...child,
+                file: childFilename
+            });
         }
     }
     return children;
@@ -94,7 +127,8 @@ export default function getChildData(
     metricsToShow,
     activeSort,
     summarizerType,
-    activeFilters
+    activeFilters,
+    fileFilter
 ) {
     let childData;
 
@@ -102,6 +136,10 @@ export default function getChildData(
         childData = flatten(sourceData['package'].children.slice(0));
     } else {
         childData = sourceData[summarizerType].children;
+    }
+
+    if (fileFilter) {
+        childData = filterByFile(childData, fileFilter);
     }
 
     childData = filter(childData, metricsToShow, activeFilters);

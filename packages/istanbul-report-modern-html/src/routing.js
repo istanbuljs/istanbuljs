@@ -3,26 +3,31 @@ export function setLocation(
     activeSort,
     summarizerType,
     activeFilters,
+    fileFilter,
     expandedLines
 ) {
-    const pushFn = isReplace
-        ? window.history.replaceState.bind(window.history)
-        : window.history.pushState.bind(window.history);
+    const params = [
+        activeSort.sortKey,
+        activeSort.order,
+        summarizerType,
+        activeFilters.low,
+        activeFilters.medium,
+        activeFilters.high,
+        encodeURIComponent(fileFilter),
+        expandedLines.map(encodeURIComponent).join(',')
+    ];
+    const newUrl = `#${params.join('/')}`;
 
-    pushFn(
-        null,
-        '',
-        `#${activeSort.sortKey}/${activeSort.order}/${summarizerType}/${
-            activeFilters.low
-        }/${activeFilters.medium}/${activeFilters.high}/${expandedLines
-            .map(encodeURIComponent)
-            .join(',')}`
-    );
+    if (newUrl === location.hash) {
+        return;
+    }
+
+    window.history[isReplace ? 'replaceState' : 'pushState'](null, '', newUrl);
 }
 
 export function decodeLocation() {
     const items = location.hash.substr(1).split('/');
-    if (items.length !== 7) {
+    if (items.length !== 8) {
         return null;
     }
     return {
@@ -36,6 +41,7 @@ export function decodeLocation() {
             medium: JSON.parse(items[4]),
             high: JSON.parse(items[5])
         },
-        expandedLines: items[6].split(',').map(decodeURIComponent)
+        fileFilter: decodeURIComponent(items[6]),
+        expandedLines: items[7].split(',').map(decodeURIComponent)
     };
 }
