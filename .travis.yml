@@ -7,7 +7,6 @@ node_js:
     - 'node'
     - 10
     - 8
-    - 6
 matrix:
     ## An ENOMEM error occurs with 11.x.x under Travis-CI for Windows.
     ## Disable until https://github.com/nodejs/node/issues/25484 is resolved.

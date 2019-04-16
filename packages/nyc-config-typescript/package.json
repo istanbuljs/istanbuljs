@@ -30,7 +30,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "peerDependencies": {
     "source-map-support": "*",
