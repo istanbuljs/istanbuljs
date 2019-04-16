@@ -147,7 +147,7 @@ ModernHtmlReport.prototype.writeSummary = function(
                 <meta name="viewport" content="width=device-width, initial-scale=1">
             </head>
             <body>
-                <div id="app"></div>
+                <div id="app" class="app"></div>
                 <script>
                     window.data = ${JSON.stringify(data)};
                     window.generatedDatetime = ${JSON.stringify(

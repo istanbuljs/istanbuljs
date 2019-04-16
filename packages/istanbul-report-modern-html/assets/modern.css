@@ -283,15 +283,17 @@ span.cline-neutral {
     color: #999 !important;
 }
 
-.wrapper {
+.app {
     min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    margin: 0 auto -48px;
+    display: flex;
+    flex-direction: column;
 }
-.footer,
-.push {
+.body {
+    flex-grow: 1;
+}
+.footer {
     height: 48px;
+    flex-shrink: 0;
 }
 .togglebutton.enabled {
     border-style: inset;
