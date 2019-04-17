@@ -85,43 +85,57 @@ ModernHtmlReport.prototype.onDetail = function(node, context) {
     this.htmlReport.onDetail(node, context);
 };
 
-ModernHtmlReport.prototype.getMetric = function(metric, type, context) {
+ModernHtmlReport.prototype.getMetric = function(
+    metric,
+    type,
+    isEmpty,
+    context
+) {
     return {
         total: metric.total,
         covered: metric.covered,
         skipped: metric.skipped,
-        pct: metric.pct,
-        classForPercent: context.classForPercent(type, metric.pct)
+        pct: isEmpty ? 0 : metric.pct,
+        classForPercent: isEmpty
+            ? 'empty'
+            : context.classForPercent(type, metric.pct)
     };
 };
 
-ModernHtmlReport.prototype.toDataStructure = function(node, parent, context) {
+ModernHtmlReport.prototype.toDataStructure = function(node, context) {
     const coverageSummary = node.getCoverageSummary();
+    const isEmpty = coverageSummary.isEmpty();
     const metrics = {
         statements: this.getMetric(
             coverageSummary.statements,
             'statements',
+            isEmpty,
             context
         ),
-        branches: this.getMetric(coverageSummary.branches, 'branches', context),
+        branches: this.getMetric(
+            coverageSummary.branches,
+            'branches',
+            isEmpty,
+            context
+        ),
         functions: this.getMetric(
             coverageSummary.functions,
             'functions',
+            isEmpty,
             context
         ),
-        lines: this.getMetric(coverageSummary.lines, 'lines', context)
+        lines: this.getMetric(coverageSummary.lines, 'lines', isEmpty, context)
     };
 
     return {
         file: node.getRelativeName(),
-        output: parent && this.linkMapper.relativePath(parent, node),
-        isEmpty: coverageSummary.isEmpty(),
+        isEmpty,
         metrics,
         children:
             node.isSummary() &&
             node
                 .getChildren()
-                .map(child => this.toDataStructure(child, node, context))
+                .map(child => this.toDataStructure(child, context))
     };
 };
 
@@ -131,8 +145,8 @@ ModernHtmlReport.prototype.writeSummary = function(
     context
 ) {
     const data = {
-        package: this.toDataStructure(packageRootNode, null, context),
-        nested: this.toDataStructure(nestedRootNode, null, context)
+        package: this.toDataStructure(packageRootNode, context),
+        nested: this.toDataStructure(nestedRootNode, context)
     };
 
     const cw = this.getWriter(context).writeFile(

@@ -142,6 +142,9 @@ export default function getChildData(
         childData = filterByFile(childData, fileFilter);
     }
 
+    if (activeFilters.low) {
+        activeFilters = { ...activeFilters, empty: true };
+    }
     childData = filter(childData, metricsToShow, activeFilters);
 
     if (activeSort) {
