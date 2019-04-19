@@ -34,7 +34,7 @@
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
     "debug": "^4.1.1",
-    "documentation": "^9.3.0",
+    "documentation": "^10.0.0",
     "eslint": "^5.10.0",
     "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-import": "^2.16.0",
