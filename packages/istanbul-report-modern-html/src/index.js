@@ -1,6 +1,6 @@
 // The index file for the spa running on the summary page
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import SummaryTableHeader from './summaryTableHeader';
 import SummaryTableLine from './summaryTableLine';
 import SummaryHeader from './summaryHeader';
@@ -20,29 +20,29 @@ let firstMount = true;
 function App() {
     const routingDefaults = decodeLocation();
 
-    const [activeSort, setSort] = React.useState(
+    const [activeSort, setSort] = useState(
         (routingDefaults && routingDefaults.activeSort) || {
             sortKey: 'file',
             order: 'desc'
         }
     );
-    const [summarizerType, setSummarizerType] = React.useState(
+    const [summarizerType, setSummarizerType] = useState(
         (routingDefaults && routingDefaults.summarizerType) || 'nested'
     );
-    const [activeFilters, setFilters] = React.useState(
+    const [activeFilters, setFilters] = useState(
         (routingDefaults && routingDefaults.activeFilters) || {
             low: true,
             medium: true,
             high: true
         }
     );
-    const [expandedLines, setExpandedLines] = React.useState(
+    const [expandedLines, setExpandedLines] = useState(
         (routingDefaults && routingDefaults.expandedLines) || []
     );
-    const [fileFilter, setFileFilter] = React.useState(
+    const [fileFilter, setFileFilter] = useState(
         (routingDefaults && routingDefaults.fileFilter) || ''
     );
-    const childData = React.useMemo(
+    const childData = useMemo(
         () =>
             getChildData(
                 sourceData,
@@ -56,7 +56,7 @@ function App() {
     );
     const overallMetrics = sourceData.package.metrics;
 
-    React.useEffect(() => {
+    useEffect(() => {
         setLocation(
             firstMount,
             activeSort,
@@ -68,7 +68,7 @@ function App() {
         firstMount = false;
     }, [activeSort, summarizerType, activeFilters, fileFilter, expandedLines]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         window.onpopstate = () => {
             const routingState = decodeLocation();
             if (routingState) {
