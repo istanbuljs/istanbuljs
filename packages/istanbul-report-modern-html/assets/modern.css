@@ -214,9 +214,8 @@ a:hover {
     padding: 0.1em;
     width: 0.8em;
     display: inline-block;
-}
-.expandbutton:hover {
-    text-decoration: none;
+    background-color: transparent;
+    border: none;
 }
 .filetab {
     display: inline-block;

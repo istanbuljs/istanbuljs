@@ -57,13 +57,13 @@ function FileCell({
 
         return (
             <>
-                <a
-                    href="javascript:void(0)"
+                <button
+                    type="button"
                     onClick={() => setExpandedLines(newExpandedLines)}
                     className="expandbutton"
                 >
                     {isExpanded ? String.fromCharCode(0x2013) : '+'}
-                </a>
+                </button>
                 <a
                     href="javascript:void(0)"
                     onClick={() => setFileFilter(prefix + file)}
