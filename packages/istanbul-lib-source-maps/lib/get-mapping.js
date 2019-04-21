@@ -5,6 +5,7 @@
 'use strict';
 
 const pathutils = require('./pathutils');
+const {GREATEST_LOWER_BOUND, LEAST_UPPER_BOUND} = require('source-map').SourceMapConsumer;
 
 /**
  * AST ranges are inclusive for start positions and exclusive for end positions.
@@ -30,12 +31,13 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
     // generated file end location. Note however that this position on its
     // own is not useful because it is the position of the _start_ of the range
     // on the original file, and we want the _end_ of the range.
-    const beforeEndMapping = sourceMap.originalPositionFor({
-        line: generatedEnd.line,
-        column: generatedEnd.column - 1
-    });
+    let beforeEndMapping = originalPositionTryBoth(
+      sourceMap,
+      generatedEnd.line,
+      generatedEnd.column - 1
+    );
     if (beforeEndMapping.source === null) {
-        return null;
+      return null;
     }
 
     // Convert that original position back to a generated one, with a bump
@@ -47,7 +49,7 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
         source: beforeEndMapping.source,
         line: beforeEndMapping.line,
         column: beforeEndMapping.column + 1,
-        bias: 2
+        bias: LEAST_UPPER_BOUND
     });
     if (
         // If this is null, it means that we've hit the end of the file,
@@ -68,6 +70,29 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
 
     // Convert the end mapping into the real original position.
     return sourceMap.originalPositionFor(afterEndMapping);
+}
+
+/**
+* Attempts to determine the original source position, first
+* trying LEAST_UPPER_BOUND which returns the closest
+* element larger than the element we were searching for. If this fails, we next
+* try GREATEST_LOWER_BOUND, which returns the closest element smaller than
+* the element being searched for.
+*/
+function originalPositionTryBoth (sourceMap, line, column) {
+  let mapping = sourceMap.originalPositionFor({
+      line: line,
+      column: column,
+      bias: LEAST_UPPER_BOUND
+  });
+  if (mapping.source === null) {
+    mapping = sourceMap.originalPositionFor({
+        line: line,
+        column: column,
+        bias: GREATEST_LOWER_BOUND
+    });
+  }
+  return mapping;
 }
 
 function isInvalidPosition(pos) {
@@ -98,7 +123,11 @@ function getMapping(sourceMap, generatedLocation, origFile) {
         return null;
     }
 
-    const start = sourceMap.originalPositionFor(generatedLocation.start);
+    const start = originalPositionTryBoth(
+      sourceMap,
+      generatedLocation.start.line,
+      generatedLocation.start.column
+    );
     let end = originalEndPositionFor(sourceMap, generatedLocation.end);
 
     /* istanbul ignore if: edge case too hard to test for */
@@ -128,7 +157,7 @@ function getMapping(sourceMap, generatedLocation, origFile) {
         end = sourceMap.originalPositionFor({
             line: generatedLocation.end.line,
             column: generatedLocation.end.column,
-            bias: 2
+            bias: LEAST_UPPER_BOUND
         });
         end.column -= 1;
     }
