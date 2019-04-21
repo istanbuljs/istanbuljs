@@ -10,9 +10,9 @@ The file include/exclude logic used by [nyc](https://github.com/istanbuljs/nyc).
 ## Usage
 
 ```js
-const exclude = require('test-exclude')
+const exclude = require('test-exclude');
 if (exclude().shouldInstrument('./foo.js')) {
-  // let's instrument this file for test coverage!
+    // let's instrument this file for test coverage!
 }
 ```
 
@@ -22,19 +22,19 @@ _package.json_
 
 ```json
 {
-  "name": "awesome-module",
-  "test": {
-    "include": ["**/index.js"]
-  }
+    "name": "awesome-module",
+    "test": {
+        "include": ["**/index.js"]
+    }
 }
 ```
 
 _app.js_
 
 ```js
-const exclude = require('test-exclude')
-if (exclude({configKey: 'test'}).shouldInstrument('./index.js')) {
-  // let's instrument this file for test coverage!
+const exclude = require('test-exclude');
+if (exclude({ configKey: 'test' }).shouldInstrument('./index.js')) {
+    // let's instrument this file for test coverage!
 }
 ```
 
@@ -45,10 +45,10 @@ exclude rules. In the rare case that you wish to instrument files
 stored in `node_modules`, a negative glob can be used:
 
 ```js
-const exclude = require('test-exclude')
+const exclude = require('test-exclude');
 const e = exclude({
-  exclude: ['!**/node_modules/**']
-})
+    exclude: ['!**/node_modules/**']
+});
 ```
 
 ## License
