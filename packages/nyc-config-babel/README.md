@@ -14,8 +14,8 @@ Then write a `.babelrc` that looks something like this:
 
 ```json
 {
-  "presets": ["@babel/env", "..., etc."],
-  "plugins": ["istanbul"]
+    "presets": ["@babel/env", "..., etc."],
+    "plugins": ["istanbul"]
 }
 ```
 
@@ -25,7 +25,7 @@ And write a `.nycrc` that looks something like this:
 
 ```json
 {
-  "extends": "@istanbuljs/nyc-config-babel"
+    "extends": "@istanbuljs/nyc-config-babel"
 }
 ```
 
@@ -35,7 +35,7 @@ Now setup the test scripts in your package.json like so:
 
 ```json
 {
-  "test": "nyc mocha test.js"
+    "test": "nyc mocha test.js"
 }
 ```
 

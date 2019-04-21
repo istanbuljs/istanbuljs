@@ -13,9 +13,9 @@ Then write a `tsconfig.json` that looks something like this:
 
 ```json
 {
-  "sourceMap": "inline",
-  // OR
-  "sourceMap": true
+    "sourceMap": "inline",
+    // OR
+    "sourceMap": true
 }
 ```
 
@@ -25,9 +25,9 @@ And write a `.nycrc` that looks like this:
 
 ```json
 {
-  "extends": "@istanbuljs/nyc-config-typescript",
-  // OPTIONAL if you want coverage reported on every file, including those that aren't tested:
-  "all": true
+    "extends": "@istanbuljs/nyc-config-typescript",
+    // OPTIONAL if you want coverage reported on every file, including those that aren't tested:
+    "all": true
 }
 ```
 
@@ -48,7 +48,7 @@ Now setup the test scripts in your package.json like so (with the equivalent for
 
 ```json
 {
-  "test": "nyc mocha"
+    "test": "nyc mocha"
 }
 ```
 

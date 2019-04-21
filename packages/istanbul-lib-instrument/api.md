@@ -43,7 +43,7 @@ instead.
     -   `opts.produceSourceMap` **[boolean][15]** set to true to produce a source map for the instrumented code. (optional, default `false`)
     -   `opts.ignoreClassMethods` **[Array][16]** set to array of class method names to ignore for coverage. (optional, default `[]`)
     -   `opts.sourceMapUrlCallback` **[Function][17]** a callback function that is called when a source map URL
-            is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
+        is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
     -   `opts.debug` **[boolean][15]** turn debugging on (optional, default `false`)
     -   `opts.plugins` **[array][16]** set plugins (optional, default `['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']`)
 
@@ -118,35 +118,19 @@ The exit function returns an object that currently has the following keys:
         original code. (optional, default `undefined`)
 
 [1]: #createinstrumenter
-
 [2]: #parameters
-
 [3]: #instrumenter
-
 [4]: #parameters-1
-
 [5]: #instrumentsync
-
 [6]: #parameters-2
-
 [7]: #instrument
-
 [8]: #parameters-3
-
 [9]: #lastfilecoverage
-
 [10]: #lastsourcemap
-
 [11]: #programvisitor
-
 [12]: #parameters-4
-
 [13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
 [15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
-
 [16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-
 [17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
