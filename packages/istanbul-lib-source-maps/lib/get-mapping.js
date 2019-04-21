@@ -74,22 +74,20 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
 
 /**
 * Attempts to determine the original source position, first
-* trying LEAST_UPPER_BOUND which returns the closest
-* element larger than the element we were searching for. If this fails, we next
-* try GREATEST_LOWER_BOUND, which returns the closest element smaller than
-* the element being searched for.
+* returning the closest element to the left (GREATEST_LOWER_BOUND),
+* and next returning the closest element to the right (LEAST_UPPER_BOUND).
 */
 function originalPositionTryBoth (sourceMap, line, column) {
   let mapping = sourceMap.originalPositionFor({
       line: line,
       column: column,
-      bias: LEAST_UPPER_BOUND
+      bias: GREATEST_LOWER_BOUND
   });
   if (mapping.source === null) {
     mapping = sourceMap.originalPositionFor({
         line: line,
         column: column,
-        bias: GREATEST_LOWER_BOUND
+        bias: LEAST_UPPER_BOUND
     });
   }
   return mapping;
