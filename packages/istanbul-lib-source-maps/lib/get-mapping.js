@@ -81,19 +81,20 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
  * and next returning the closest element to the right (LEAST_UPPER_BOUND).
  */
 function originalPositionTryBoth(sourceMap, line, column) {
-    let mapping = sourceMap.originalPositionFor({
+    const mapping = sourceMap.originalPositionFor({
         line,
         column,
         bias: GREATEST_LOWER_BOUND
     });
     if (mapping.source === null) {
-        mapping = sourceMap.originalPositionFor({
+        return sourceMap.originalPositionFor({
             line,
             column,
             bias: LEAST_UPPER_BOUND
         });
+    } else {
+        return mapping;
     }
-    return mapping;
 }
 
 function isInvalidPosition(pos) {
