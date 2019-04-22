@@ -35,135 +35,142 @@ const standardLinkMapper = {
     }
 };
 
-function HtmlSpaReport(opts) {
-    this.verbose = opts.verbose;
-    this.linkMapper = opts.linkMapper || standardLinkMapper;
-    this.subdir = opts.subdir || '';
-    this.date = Date();
-    this.skipEmpty = opts.skipEmpty;
-    this.htmlReport = new HtmlReport(opts);
-    this.htmlReport.getBreadcrumbHtml = function() {
-        return '<a href="javascript:history.back()">Back</a>';
-    };
+class HtmlSpaReport {
+    constructor() {
+        this.verbose = opts.verbose;
+        this.linkMapper = opts.linkMapper || standardLinkMapper;
+        this.subdir = opts.subdir || '';
+        this.date = Date();
+        this.skipEmpty = opts.skipEmpty;
+        this.htmlReport = new HtmlReport(opts);
+        this.htmlReport.getBreadcrumbHtml = function() {
+            return '<a href="javascript:history.back()">Back</a>';
+        };
 
-    this.metricsToShow = opts.metricsToShow || [
-        'lines',
-        'branches',
-        'functions'
-    ];
-}
-
-HtmlSpaReport.prototype.getWriter = function(context) {
-    if (!this.subdir) {
-        return context.writer;
-    }
-    return context.writer.writerForDir(this.subdir);
-};
-
-HtmlSpaReport.prototype.onStart = function(root, context) {
-    this.htmlReport.onStart(root, context);
-
-    const writer = this.getWriter(context);
-    const srcDir = path.resolve(__dirname, './assets');
-    fs.readdirSync(srcDir).forEach(f => {
-        const resolvedSource = path.resolve(srcDir, f);
-        const resolvedDestination = '.';
-        const stat = fs.statSync(resolvedSource);
-        let dest;
-
-        if (stat.isFile()) {
-            dest = resolvedDestination + '/' + f;
-            if (this.verbose) {
-                console.log('Write asset: ' + dest);
-            }
-            writer.copyFile(resolvedSource, dest);
-        }
-    });
-};
-
-HtmlSpaReport.prototype.onDetail = function(node, context) {
-    this.htmlReport.onDetail(node, context);
-};
-
-HtmlSpaReport.prototype.getMetric = function(metric, type, isEmpty, context) {
-    return {
-        total: metric.total,
-        covered: metric.covered,
-        skipped: metric.skipped,
-        pct: isEmpty ? 0 : metric.pct,
-        classForPercent: isEmpty
-            ? 'empty'
-            : context.classForPercent(type, metric.pct)
-    };
-};
-
-HtmlSpaReport.prototype.toDataStructure = function(node, context) {
-    const coverageSummary = node.getCoverageSummary();
-    const isEmpty = coverageSummary.isEmpty();
-    const metrics = {
-        statements: this.getMetric(
-            coverageSummary.statements,
-            'statements',
-            isEmpty,
-            context
-        ),
-        branches: this.getMetric(
-            coverageSummary.branches,
+        this.metricsToShow = opts.metricsToShow || [
+            'lines',
             'branches',
+            'functions'
+        ];
+    }
+
+    getWriter(context) {
+        if (!this.subdir) {
+            return context.writer;
+        }
+        return context.writer.writerForDir(this.subdir);
+    }
+
+    onStart(root, context) {
+        this.htmlReport.onStart(root, context);
+
+        const writer = this.getWriter(context);
+        const srcDir = path.resolve(__dirname, './assets');
+        fs.readdirSync(srcDir).forEach(f => {
+            const resolvedSource = path.resolve(srcDir, f);
+            const resolvedDestination = '.';
+            const stat = fs.statSync(resolvedSource);
+            let dest;
+
+            if (stat.isFile()) {
+                dest = resolvedDestination + '/' + f;
+                if (this.verbose) {
+                    console.log('Write asset: ' + dest);
+                }
+                writer.copyFile(resolvedSource, dest);
+            }
+        });
+    }
+
+    onDetail(node, context) {
+        this.htmlReport.onDetail(node, context);
+    }
+
+    getMetric(metric, type, isEmpty, context) {
+        return {
+            total: metric.total,
+            covered: metric.covered,
+            skipped: metric.skipped,
+            pct: isEmpty ? 0 : metric.pct,
+            classForPercent: isEmpty
+                ? 'empty'
+                : context.classForPercent(type, metric.pct)
+        };
+    }
+
+    toDataStructure(node, context) {
+        const coverageSummary = node.getCoverageSummary();
+        const isEmpty = coverageSummary.isEmpty();
+        const metrics = {
+            statements: this.getMetric(
+                coverageSummary.statements,
+                'statements',
+                isEmpty,
+                context
+            ),
+            branches: this.getMetric(
+                coverageSummary.branches,
+                'branches',
+                isEmpty,
+                context
+            ),
+            functions: this.getMetric(
+                coverageSummary.functions,
+                'functions',
+                isEmpty,
+                context
+            ),
+            lines: this.getMetric(
+                coverageSummary.lines,
+                'lines',
+                isEmpty,
+                context
+            )
+        };
+
+        return {
+            file: node.getRelativeName(),
             isEmpty,
-            context
-        ),
-        functions: this.getMetric(
-            coverageSummary.functions,
-            'functions',
-            isEmpty,
-            context
-        ),
-        lines: this.getMetric(coverageSummary.lines, 'lines', isEmpty, context)
-    };
+            metrics,
+            children:
+                node.isSummary() &&
+                node
+                    .getChildren()
+                    .map(child => this.toDataStructure(child, context))
+        };
+    }
 
-    return {
-        file: node.getRelativeName(),
-        isEmpty,
-        metrics,
-        children:
-            node.isSummary() &&
-            node
-                .getChildren()
-                .map(child => this.toDataStructure(child, context))
-    };
-};
+    onEnd(rootNode, context) {
+        const data = this.toDataStructure(rootNode, context);
 
-HtmlSpaReport.prototype.onEnd = function(rootNode, context) {
-    const data = this.toDataStructure(rootNode, context);
+        const cw = this.getWriter(context).writeFile(
+            this.linkMapper.getPath(rootNode)
+        );
 
-    const cw = this.getWriter(context).writeFile(
-        this.linkMapper.getPath(rootNode)
-    );
-
-    cw.write(
-        `<!doctype html>
-        <html lang="en">
-            <head>
-                <link rel="stylesheet" href="modern.css" />
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-            </head>
-            <body>
-                <div id="app" class="app"></div>
-                <script>
-                    window.data = ${JSON.stringify(data)};
-                    window.generatedDatetime = ${JSON.stringify(
-                        String(Date())
-                    )};
-                    window.metricsToShow = ${JSON.stringify(
-                        this.metricsToShow
-                    )};
-                </script>
-                <script src="bundle.js"></script>
-            </body>
-        </html>`
-    );
-    cw.close();
-};
+        cw.write(
+            `<!doctype html>
+            <html lang="en">
+                <head>
+                    <link rel="stylesheet" href="modern.css" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                </head>
+                <body>
+                    <div id="app" class="app"></div>
+                    <script>
+                        window.data = ${JSON.stringify(data)};
+                        window.generatedDatetime = ${JSON.stringify(
+                            String(Date())
+                        )};
+                        window.metricsToShow = ${JSON.stringify(
+                            this.metricsToShow
+                        )};
+                    </script>
+                    <script src="bundle.js"></script>
+                </body>
+            </html>`
+        );
+        cw.close();
+    }
+}
 
 module.exports = HtmlSpaReport;
