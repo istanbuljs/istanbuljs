@@ -67,6 +67,7 @@ describe('Reporter', () => {
                     };
 
                     const reporter = new Reporter(config, opts);
+
                     reporter.write(coverageMap);
                 });
             });

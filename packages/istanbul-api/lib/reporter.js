@@ -50,12 +50,7 @@ Reporter.prototype = {
             if (this.config.verbose) {
                 console.error('Create report', fmt, ' with', rptConfig);
             }
-            let report;
-            if (fmt === 'modern-html') {
-                report = require('istanbul-report-modern-html')(rptConfig);
-            } else {
-                report = libReports.create(fmt, rptConfig);
-            }
+            const report = libReports.create(fmt, rptConfig);
             this.reports[fmt] = report;
         } catch (ex) {
             throw inputError.create('Invalid report format [' + fmt + ']');
@@ -94,15 +89,15 @@ Reporter.prototype = {
                 )
         );
 
-        if (this.reports['modern-html']) {
-            this.reports['modern-html'](coverageMap, context);
-            delete this.reports['modern-html'];
-        }
-
         const tree = this.summarizer(coverageMap);
         Object.keys(this.reports).forEach(name => {
             const report = this.reports[name];
-            tree.visit(report, context);
+            if (name === 'html-spa') {
+                const nestedTree = libReport.summarizers.nested(coverageMap);
+                nestedTree.visit(report, context);
+            } else {
+                tree.visit(report, context);
+            }
         });
     }
 };

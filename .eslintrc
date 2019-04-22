@@ -31,7 +31,7 @@
             }
         },
         {
-            "files": "packages/istanbul-report-modern-html/src/**",
+            "files": "packages/istanbul-reports/lib/html-spa/src/**",
             "parser": "babel-eslint",
             "parserOptions": {
                 "ecmaVersion": 2019,

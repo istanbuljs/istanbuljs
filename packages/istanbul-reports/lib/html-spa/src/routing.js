@@ -1,7 +1,7 @@
 export function setLocation(
     isReplace,
     activeSort,
-    summarizerType,
+    isFlat,
     activeFilters,
     fileFilter,
     expandedLines
@@ -9,7 +9,7 @@ export function setLocation(
     const params = [
         activeSort.sortKey,
         activeSort.order,
-        summarizerType,
+        isFlat,
         activeFilters.low,
         activeFilters.medium,
         activeFilters.high,
@@ -30,18 +30,23 @@ export function decodeLocation() {
     if (items.length !== 8) {
         return null;
     }
-    return {
-        activeSort: {
-            sortKey: items[0],
-            order: items[1]
-        },
-        summarizerType: items[2],
-        activeFilters: {
-            low: JSON.parse(items[3]),
-            medium: JSON.parse(items[4]),
-            high: JSON.parse(items[5])
-        },
-        fileFilter: decodeURIComponent(items[6]),
-        expandedLines: items[7].split(',').map(decodeURIComponent)
-    };
+
+    try {
+        return {
+            activeSort: {
+                sortKey: items[0],
+                order: items[1]
+            },
+            isFlat: JSON.parse(items[2]),
+            activeFilters: {
+                low: JSON.parse(items[3]),
+                medium: JSON.parse(items[4]),
+                high: JSON.parse(items[5])
+            },
+            fileFilter: decodeURIComponent(items[6]),
+            expandedLines: items[7].split(',').map(decodeURIComponent)
+        };
+    } catch (e) {
+        return null;
+    }
 }

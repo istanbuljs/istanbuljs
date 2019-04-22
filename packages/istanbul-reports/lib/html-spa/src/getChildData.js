@@ -14,7 +14,7 @@ function flatten(nodes, parentPath) {
                 ...children,
                 ...flatten(
                     child.children,
-                    (!parentPath ? '' : '/' + parentPath) + child.file
+                    (parentPath ? parentPath + '/' : '') + child.file
                 )
             ];
         } else {
@@ -126,16 +126,14 @@ export default function getChildData(
     sourceData,
     metricsToShow,
     activeSort,
-    summarizerType,
+    isFlat,
     activeFilters,
     fileFilter
 ) {
-    let childData;
+    let childData = sourceData.children;
 
-    if (summarizerType === 'flat') {
-        childData = flatten(sourceData['package'].children.slice(0));
-    } else {
-        childData = sourceData[summarizerType].children;
+    if (isFlat) {
+        childData = flatten(childData.slice(0));
     }
 
     if (fileFilter) {

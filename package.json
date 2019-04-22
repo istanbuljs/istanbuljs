@@ -58,9 +58,9 @@
       "**/coverage/**",
       "**/dist/**",
       "**/html/assets/**",
-      "**/istanbul-report-modern-html/assets/**",
-      "**/istanbul-report-modern-html/src/**",
-      "**/istanbul-report-modern-html/rollup.config.js",
+      "**/html-spa/assets/**",
+      "**/html-spa/src/**",
+      "**/html-spa/rollup.config.js",
       "**/test/**"
     ],
     "reporter": [

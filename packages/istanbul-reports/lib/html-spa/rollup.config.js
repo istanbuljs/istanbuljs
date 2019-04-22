@@ -5,9 +5,9 @@ import { terser } from 'rollup-plugin-terser';
 import replace from 'rollup-plugin-replace';
 
 module.exports = {
-    input: 'src/index.js',
+    input: 'lib/html-spa/src/index.js',
     output: {
-        file: 'assets/bundle.js',
+        file: 'lib/html-spa/assets/bundle.js',
         format: 'iife'
     },
     plugins: [

@@ -4,7 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const HtmlReport = require('istanbul-reports/lib/html');
+const HtmlReport = require('../html');
 
 const standardLinkMapper = {
     getPath(node) {
@@ -35,7 +35,7 @@ const standardLinkMapper = {
     }
 };
 
-function ModernHtmlReport(opts) {
+function HtmlSpaReport(opts) {
     this.verbose = opts.verbose;
     this.linkMapper = opts.linkMapper || standardLinkMapper;
     this.subdir = opts.subdir || '';
@@ -53,18 +53,18 @@ function ModernHtmlReport(opts) {
     ];
 }
 
-ModernHtmlReport.prototype.getWriter = function(context) {
+HtmlSpaReport.prototype.getWriter = function(context) {
     if (!this.subdir) {
         return context.writer;
     }
     return context.writer.writerForDir(this.subdir);
 };
 
-ModernHtmlReport.prototype.onStart = function(root, context) {
+HtmlSpaReport.prototype.onStart = function(root, context) {
     this.htmlReport.onStart(root, context);
 
     const writer = this.getWriter(context);
-    const srcDir = path.resolve(__dirname, '../assets');
+    const srcDir = path.resolve(__dirname, './assets');
     fs.readdirSync(srcDir).forEach(f => {
         const resolvedSource = path.resolve(srcDir, f);
         const resolvedDestination = '.';
@@ -81,16 +81,11 @@ ModernHtmlReport.prototype.onStart = function(root, context) {
     });
 };
 
-ModernHtmlReport.prototype.onDetail = function(node, context) {
+HtmlSpaReport.prototype.onDetail = function(node, context) {
     this.htmlReport.onDetail(node, context);
 };
 
-ModernHtmlReport.prototype.getMetric = function(
-    metric,
-    type,
-    isEmpty,
-    context
-) {
+HtmlSpaReport.prototype.getMetric = function(metric, type, isEmpty, context) {
     return {
         total: metric.total,
         covered: metric.covered,
@@ -102,7 +97,7 @@ ModernHtmlReport.prototype.getMetric = function(
     };
 };
 
-ModernHtmlReport.prototype.toDataStructure = function(node, context) {
+HtmlSpaReport.prototype.toDataStructure = function(node, context) {
     const coverageSummary = node.getCoverageSummary();
     const isEmpty = coverageSummary.isEmpty();
     const metrics = {
@@ -139,18 +134,11 @@ ModernHtmlReport.prototype.toDataStructure = function(node, context) {
     };
 };
 
-ModernHtmlReport.prototype.writeSummary = function(
-    nestedRootNode,
-    packageRootNode,
-    context
-) {
-    const data = {
-        package: this.toDataStructure(packageRootNode, context),
-        nested: this.toDataStructure(nestedRootNode, context)
-    };
+HtmlSpaReport.prototype.onEnd = function(rootNode, context) {
+    const data = this.toDataStructure(rootNode, context);
 
     const cw = this.getWriter(context).writeFile(
-        this.linkMapper.getPath(packageRootNode)
+        this.linkMapper.getPath(rootNode)
     );
 
     cw.write(
@@ -178,4 +166,4 @@ ModernHtmlReport.prototype.writeSummary = function(
     cw.close();
 };
 
-module.exports = ModernHtmlReport;
+module.exports = HtmlSpaReport;

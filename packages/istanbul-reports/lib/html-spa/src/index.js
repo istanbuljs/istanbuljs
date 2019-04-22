@@ -5,7 +5,7 @@ import SummaryTableHeader from './summaryTableHeader';
 import SummaryTableLine from './summaryTableLine';
 import SummaryHeader from './summaryHeader';
 import getChildData from './getChildData';
-import SummarizerButtons from './summarizerButtons';
+import FlattenButton from './flattenButton';
 import FilterButtons from './filterButtons';
 import { setLocation, decodeLocation } from './routing';
 
@@ -26,8 +26,8 @@ function App() {
             order: 'desc'
         }
     );
-    const [summarizerType, setSummarizerType] = useState(
-        (routingDefaults && routingDefaults.summarizerType) || 'nested'
+    const [isFlat, setIsFlat] = useState(
+        (routingDefaults && routingDefaults.isFlat) || false
     );
     const [activeFilters, setFilters] = useState(
         (routingDefaults && routingDefaults.activeFilters) || {
@@ -48,25 +48,25 @@ function App() {
                 sourceData,
                 metricsToShow,
                 activeSort,
-                summarizerType,
+                isFlat,
                 activeFilters,
                 fileFilter
             ),
-        [activeSort, summarizerType, activeFilters, fileFilter]
+        [activeSort, isFlat, activeFilters, fileFilter]
     );
-    const overallMetrics = sourceData.package.metrics;
+    const overallMetrics = sourceData.metrics;
 
     useEffect(() => {
         setLocation(
             firstMount,
             activeSort,
-            summarizerType,
+            isFlat,
             activeFilters,
             fileFilter,
             expandedLines
         );
         firstMount = false;
-    }, [activeSort, summarizerType, activeFilters, fileFilter, expandedLines]);
+    }, [activeSort, isFlat, activeFilters, fileFilter, expandedLines]);
 
     useEffect(() => {
         window.onpopstate = () => {
@@ -78,7 +78,7 @@ function App() {
                 ReactDOM.unstable_batchedUpdates(() => {
                     setFilters(routingState.activeFilters);
                     setSort(routingState.activeSort);
-                    setSummarizerType(routingState.summarizerType);
+                    setIsFlat(routingState.isFlat);
                     setExpandedLines(routingState.expandedLines);
                     setFileFilter(routingState.fileFilter);
                 });
@@ -108,10 +108,7 @@ function App() {
                     </div>
                 )}
                 <div className="pad1">
-                    <SummarizerButtons
-                        setSummarizerType={setSummarizerType}
-                        summarizerType={summarizerType}
-                    />
+                    <FlattenButton setIsFlat={setIsFlat} isFlat={isFlat} />
                     <FilterButtons
                         activeFilters={activeFilters}
                         setFilters={setFilters}
