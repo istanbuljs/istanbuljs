@@ -1,25 +1,25 @@
 language: node_js
 os:
-  - windows
-  - osx
-  - linux
+    - windows
+    - osx
+    - linux
 node_js:
-  - 'node'
-  - 10
-  - 8
-  - 6
+    - 'node'
+    - 10
+    - 8
+    - 6
 matrix:
-## An ENOMEM error occurs with 11.x.x under Travis-CI for Windows.
-## Disable until https://github.com/nodejs/node/issues/25484 is resolved.
-#  include:
-#    - os: windows
-#      node_js: "latest"
-  exclude:
-    - os: windows
-      node_js: "node"
+    ## An ENOMEM error occurs with 11.x.x under Travis-CI for Windows.
+    ## Disable until https://github.com/nodejs/node/issues/25484 is resolved.
+    #  include:
+    #    - os: windows
+    #      node_js: "latest"
+    exclude:
+        - os: windows
+          node_js: 'node'
 
 env:
-  global:
-    COVERALLS_PARALLEL: true
+    global:
+        COVERALLS_PARALLEL: true
 
 after_success: nyc report --reporter=text-lcov | coveralls
