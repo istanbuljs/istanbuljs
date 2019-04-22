@@ -36,7 +36,7 @@ const standardLinkMapper = {
 };
 
 class HtmlSpaReport {
-    constructor() {
+    constructor(opts) {
         this.verbose = opts.verbose;
         this.linkMapper = opts.linkMapper || standardLinkMapper;
         this.subdir = opts.subdir || '';
