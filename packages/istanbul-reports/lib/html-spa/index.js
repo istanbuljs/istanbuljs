@@ -36,8 +36,8 @@ const standardLinkMapper = {
 };
 
 class HtmlSpaReport {
-    constructor(opts) {
-        this.verbose = opts.verbose;
+    constructor(opts = {}) {
+        this.verbose = opts.verbose || false;
         this.linkMapper = opts.linkMapper || standardLinkMapper;
         this.subdir = opts.subdir || '';
         this.date = Date();
@@ -151,7 +151,7 @@ class HtmlSpaReport {
             `<!doctype html>
             <html lang="en">
                 <head>
-                    <link rel="stylesheet" href="modern.css" />
+                    <link rel="stylesheet" href="spa.css" />
                     <meta name="viewport" content="width=device-width, initial-scale=1">
                 </head>
                 <body>
