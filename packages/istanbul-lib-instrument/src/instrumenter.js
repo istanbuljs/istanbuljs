@@ -26,11 +26,8 @@ export function defaultOpts() {
         plugins: [
             'asyncGenerators',
             'bigInt',
-            /* Verify and add upon release of node.js 12:
-             * classProperties
-             * classPrivateProperties
-             * classPrivateMethods
-             */
+            'classProperties',
+            'classPrivateProperties',
             'dynamicImport',
             'importMeta',
             'objectRestSpread',

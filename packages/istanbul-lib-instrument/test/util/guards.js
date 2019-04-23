@@ -18,6 +18,14 @@ export function isYieldAvailable() {
     return tryThis('function *foo() { yield 1; }', 'yield');
 }
 
+export function isClassPropAvailable() {
+    return tryThis('class Foo { a = 1; }', 'class property');
+}
+
+export function isClassPrivatePropAvailable() {
+    return tryThis('class Foo { #a = 1; }', 'class private property');
+}
+
 export function isForOfAvailable() {
     return tryThis(
         'function *foo() { yield 1; }\n' + 'for (var k of foo()) {}',
