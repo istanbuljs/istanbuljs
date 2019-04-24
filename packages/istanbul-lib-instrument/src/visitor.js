@@ -356,6 +356,10 @@ function coverVariableDeclarator(path) {
     this.insertStatementCounter(path.get('init'));
 }
 
+function coverClassPropDeclarator(path) {
+    this.insertStatementCounter(path.get('value'));
+}
+
 function makeBlock(path) {
     const T = this.types;
     if (!path.node) {
@@ -485,6 +489,8 @@ const codeVisitor = {
     ExportNamedDeclaration: entries(), // ignore processing only
     ClassMethod: entries(coverFunction),
     ClassDeclaration: entries(parenthesizedExpressionProp('superClass')),
+    ClassProperty: entries(coverClassPropDeclarator),
+    ClassPrivateProperty: entries(coverClassPropDeclarator),
     ObjectMethod: entries(coverFunction),
     ExpressionStatement: entries(coverStatement),
     BreakStatement: entries(coverStatement),
