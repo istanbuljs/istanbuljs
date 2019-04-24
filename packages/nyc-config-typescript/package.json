@@ -1,6 +1,6 @@
 {
   "name": "@istanbuljs/nyc-config-typescript",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "nyc configuration that works with typescript",
   "main": "index.json",
   "files": [

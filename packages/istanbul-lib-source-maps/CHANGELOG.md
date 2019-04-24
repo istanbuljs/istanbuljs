@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@3.0.5...istanbul-lib-source-maps@3.0.6) (2019-04-24)
+
+
+### Bug Fixes
+
+* if LEAST_UPPER_BOUND returns null, try GREATEST_LOWER_BOUND ([#375](https://github.com/istanbuljs/istanbuljs/issues/375)) ([72b0f05](https://github.com/istanbuljs/istanbuljs/commit/72b0f05))
+
+
+
+
+
 ## [3.0.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@3.0.4...istanbul-lib-source-maps@3.0.5) (2019-04-09)
 
 **Note:** Version bump only for package istanbul-lib-source-maps

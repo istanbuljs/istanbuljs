@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.2.0...istanbul-lib-instrument@3.3.0) (2019-04-24)
+
+
+### Features
+
+* Enable classProperties and classPrivateProperties parsers and coverage. ([#379](https://github.com/istanbuljs/istanbuljs/issues/379)) ([c09dc38](https://github.com/istanbuljs/istanbuljs/commit/c09dc38))
+
+
+
+
+
 # [3.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.2...istanbul-lib-instrument@3.2.0) (2019-04-09)
 
 
