@@ -2,6 +2,7 @@ import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
 import { MAGIC_KEY, MAGIC_VALUE } from './constants';
+import { defaultOpts } from './instrumenter';
 
 export default function readInitialCoverage(code) {
     if (typeof code !== 'string') {
@@ -14,14 +15,7 @@ export default function readInitialCoverage(code) {
         allowReturnOutsideFunction: true,
         allowSuperOutsideMethod: true,
         sourceType: 'script',
-        plugins: [
-            'asyncGenerators',
-            'dynamicImport',
-            'objectRestSpread',
-            'optionalCatchBinding',
-            'flow',
-            'jsx'
-        ]
+        plugins: defaultOpts().plugins
     });
 
     let covScope;
