@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.6](https://github.com/istanbuljs/istanbuljs/compare/istanbul-api@2.1.5...istanbul-api@2.1.6) (2019-04-24)
+
+**Note:** Version bump only for package istanbul-api
+
+
+
+
+
 ## [2.1.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-api@2.1.4...istanbul-api@2.1.5) (2019-04-17)
 
 **Note:** Version bump only for package istanbul-api

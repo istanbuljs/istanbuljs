@@ -1,6 +1,6 @@
 {
   "name": "istanbul-reports",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "istanbul reports",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -13,11 +13,11 @@
     "prepare": "rollup --config lib/html-spa/rollup.config.js"
   },
   "dependencies": {
-    "handlebars": "^4.1.0"
+    "handlebars": "^4.1.2"
   },
   "devDependencies": {
-    "istanbul-lib-coverage": "^2.0.4",
-    "istanbul-lib-report": "^2.0.7",
+    "istanbul-lib-coverage": "^2.0.5",
+    "istanbul-lib-report": "^2.0.8",
     "@babel/core": "7.4.0",
     "@babel/preset-env": "7.4.2",
     "@babel/preset-react": "7.0.0",

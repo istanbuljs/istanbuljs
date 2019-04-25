@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-report",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Base reporting library for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -12,9 +12,9 @@
     "test": "mocha"
   },
   "dependencies": {
-    "istanbul-lib-coverage": "^2.0.4",
+    "istanbul-lib-coverage": "^2.0.5",
     "make-dir": "^2.1.0",
-    "supports-color": "^6.0.0"
+    "supports-color": "^6.1.0"
   },
   "license": "BSD-3-Clause",
   "bugs": {
