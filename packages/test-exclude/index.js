@@ -177,10 +177,10 @@ exportFunc.defaultExclude = [
     'coverage/**',
     'packages/*/test/**',
     'test/**',
-    'test{,-*}.js',
-    '**/*{.,-}test.js',
+    'test{,-*}.{,c,m}js',
+    '**/*{.,-}test.{,c,m}js',
     '**/__tests__/**',
-    `**/{${devConfigs.join()}}.config.js`
+    `**/{${devConfigs.join()}}.config.{,c,m}js`
 ];
 
 module.exports = exportFunc;
