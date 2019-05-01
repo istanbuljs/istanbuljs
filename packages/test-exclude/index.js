@@ -180,7 +180,7 @@ exportFunc.defaultExclude = [
     'test{,-*}.{,c,m}js',
     '**/*{.,-}test.{,c,m}js',
     '**/__tests__/**',
-    `**/{${devConfigs.join()}}.config.{,c,m}js`
+    `**/{${devConfigs.join()}}.config.js`
 ];
 
 module.exports = exportFunc;

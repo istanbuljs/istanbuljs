@@ -226,7 +226,7 @@ describe('testExclude', () => {
             'test{,-*}.{,c,m}js',
             '**/*{.,-}test.{,c,m}js',
             '**/__tests__/**',
-            '**/{ava,babel,jest,nyc,rollup,webpack}.config.{,c,m}js'
+            '**/{ava,babel,jest,nyc,rollup,webpack}.config.js'
         ]);
     });
 
