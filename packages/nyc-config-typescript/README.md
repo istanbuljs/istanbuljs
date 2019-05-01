@@ -1,35 +1,29 @@
 # nyc-config-typescript
 
-Handy default configuration for instrumenting your babel-backed
+Handy default configuration for instrumenting your TypeScript-backed
 project with test coverage using [nyc](https://github.com/istanbuljs/nyc).
 
 First install the dependencies:
 
-`npm i nyc source-map-support ts-node @istanbuljs/nyc-config-typescript --save-dev`
-
-Then write a `tsconfig.json` that looks something like this:
-
-## tsconfig.json
-
-```json
-{
-    "sourceMap": "inline",
-    // OR
-    "sourceMap": true
-}
 ```
+npm i -D nyc source-map-support ts-node @istanbuljs/nyc-config-typescript
+```
+
+**Your `tsconfig.json` must be configured to produce source maps, either inline or as sibling files.**
 
 ## .nycrc
 
 And write a `.nycrc` that looks like this:
 
-```json
+```js
 {
     "extends": "@istanbuljs/nyc-config-typescript",
     // OPTIONAL if you want coverage reported on every file, including those that aren't tested:
     "all": true
 }
 ```
+
+This package specifies the `cache`, `exclude`, and `extension` options for you - only override those if you absolutely must.
 
 ## Running Tests
 
@@ -48,7 +42,7 @@ Now setup the test scripts in your package.json like so (with the equivalent for
 
 ```json
 {
-    "test": "nyc mocha"
+    "test": "tsc && nyc mocha"
 }
 ```
 
