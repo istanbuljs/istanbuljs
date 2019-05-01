@@ -223,8 +223,8 @@ describe('testExclude', () => {
             'coverage/**',
             'packages/*/test/**',
             'test/**',
-            'test{,-*}.{,c,m}js',
-            '**/*{.,-}test.{,c,m}js',
+            'test{,-*}.{js,cjs,mjs}',
+            '**/*{.,-}test.{js,cjs,mjs}',
             '**/__tests__/**',
             '**/{ava,babel,jest,nyc,rollup,webpack}.config.js'
         ]);
