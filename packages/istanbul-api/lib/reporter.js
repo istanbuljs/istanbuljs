@@ -50,8 +50,7 @@ Reporter.prototype = {
             if (this.config.verbose) {
                 console.error('Create report', fmt, ' with', rptConfig);
             }
-            const report = libReports.create(fmt, rptConfig);
-            this.reports[fmt] = report;
+            this.reports[fmt] = libReports.create(fmt, rptConfig);
         } catch (ex) {
             throw inputError.create('Invalid report format [' + fmt + ']');
         }
@@ -92,12 +91,7 @@ Reporter.prototype = {
         const tree = this.summarizer(coverageMap);
         Object.keys(this.reports).forEach(name => {
             const report = this.reports[name];
-            if (name === 'html-spa') {
-                const nestedTree = libReport.summarizers.nested(coverageMap);
-                nestedTree.visit(report, context);
-            } else {
-                tree.visit(report, context);
-            }
+            tree.visit(report, context);
         });
     }
 };
