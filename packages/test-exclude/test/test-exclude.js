@@ -27,6 +27,9 @@ describe('testExclude', () => {
             .shouldInstrument('./test.mjs')
             .should.equal(false);
         exclude()
+            .shouldInstrument('./test.ts')
+            .should.equal(false);
+        exclude()
             .shouldInstrument('./foo.test.js')
             .should.equal(false);
         exclude()
@@ -34,6 +37,9 @@ describe('testExclude', () => {
             .should.equal(false);
         exclude()
             .shouldInstrument('./foo.test.mjs')
+            .should.equal(false);
+        exclude()
+            .shouldInstrument('./foo.test.ts')
             .should.equal(false);
     });
 
@@ -223,8 +229,8 @@ describe('testExclude', () => {
             'coverage/**',
             'packages/*/test/**',
             'test/**',
-            'test{,-*}.{js,cjs,mjs}',
-            '**/*{.,-}test.{js,cjs,mjs}',
+            'test{,-*}.{js,cjs,mjs,ts}',
+            '**/*{.,-}test.{js,cjs,mjs,ts}',
             '**/__tests__/**',
             '**/{ava,babel,jest,nyc,rollup,webpack}.config.js'
         ]);
