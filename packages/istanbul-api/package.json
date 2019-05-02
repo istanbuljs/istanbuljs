@@ -1,6 +1,6 @@
 {
   "name": "istanbul-api",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "High level API for istanbul features",
   "main": "index.js",
   "files": [
@@ -34,7 +34,7 @@
     "istanbul-lib-instrument": "^3.3.0",
     "istanbul-lib-report": "^2.0.8",
     "istanbul-lib-source-maps": "^3.0.6",
-    "istanbul-reports": "^2.2.4",
+    "istanbul-reports": "^2.2.5",
     "js-yaml": "^3.13.1",
     "make-dir": "^2.1.0",
     "minimatch": "^3.0.4",
