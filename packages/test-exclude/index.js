@@ -177,8 +177,8 @@ exportFunc.defaultExclude = [
     'coverage/**',
     'packages/*/test/**',
     'test/**',
-    'test{,-*}.js',
-    '**/*{.,-}test.js',
+    'test{,-*}.{js,cjs,mjs,ts}',
+    '**/*{.,-}test.{js,cjs,mjs,ts}',
     '**/__tests__/**',
     `**/{${devConfigs.join()}}.config.js`
 ];
