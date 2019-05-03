@@ -16,11 +16,14 @@
     "handlebars": "^4.1.2"
   },
   "devDependencies": {
-    "istanbul-lib-coverage": "^2.0.5",
-    "istanbul-lib-report": "^2.0.8",
     "@babel/core": "7.4.0",
     "@babel/preset-env": "7.4.2",
     "@babel/preset-react": "7.0.0",
+    "chai": "^4.2.0",
+    "istanbul-lib-coverage": "^2.0.5",
+    "istanbul-lib-report": "^2.0.8",
+    "is-windows": "^1.0.2",
+    "mocha": "^6.1.4",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "rollup": "1.8.0",
