@@ -57,6 +57,9 @@ CoberturaReport.prototype.writeRootStats = function(node) {
 };
 
 CoberturaReport.prototype.onSummary = function(node) {
+    if (node.isRoot()) {
+        return;
+    }
     const metrics = node.getCoverageSummary(true);
     if (!metrics) {
         return;
@@ -69,7 +72,10 @@ CoberturaReport.prototype.onSummary = function(node) {
     this.xml.openTag('classes');
 };
 
-CoberturaReport.prototype.onSummaryEnd = function() {
+CoberturaReport.prototype.onSummaryEnd = function(node) {
+    if (node.isRoot()) {
+        return;
+    }
     this.xml.closeTag('classes');
     this.xml.closeTag('package');
 };
