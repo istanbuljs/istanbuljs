@@ -186,32 +186,48 @@ function toDirParents(list) {
     return parentNodeList;
 }
 
-function foldIntoParents(nodeList) {
-    const ret = [];
-    let i;
-    let j;
+function addAllPaths(topPaths, nodeMap, path, node) {
+    const parentPath = path.parent();
+    let parent = nodeMap[parentPath.toString()];
 
-    // sort by longest length first
-    nodeList.sort((a, b) => -1 * Path.compare(a.path, b.path));
+    if (!parent) {
+        parent = new ReportNode(parentPath);
+        nodeMap[parentPath.toString()] = parent;
 
-    for (i = 0; i < nodeList.length; i += 1) {
-        const first = nodeList[i];
-        let inserted = false;
-
-        for (j = i + 1; j < nodeList.length; j += 1) {
-            const second = nodeList[j];
-            if (second.path.ancestorOf(first.path)) {
-                second.addChild(first);
-                inserted = true;
-                break;
-            }
-        }
-
-        if (!inserted) {
-            ret.push(first);
+        if (parentPath.hasParent()) {
+            addAllPaths(topPaths, nodeMap, parentPath, parent);
+        } else {
+            topPaths.push(parent);
         }
     }
-    return ret;
+    parent.addChild(node);
+}
+
+function toNested(list) {
+    const nodeMap = Object.create(null);
+    const topNodes = [];
+    list.forEach(o => {
+        const node = new ReportNode(o.path, o.fileCoverage);
+
+        addAllPaths(topNodes, nodeMap, o.path, node);
+    });
+    return topNodes;
+}
+
+function foldIntoOneDir(node, parent) {
+    const children = node.children;
+    if (children.length === 1 && !children[0].fileCoverage) {
+        children[0].parent = parent;
+        return foldIntoOneDir(children[0], parent);
+    }
+    for (let i = 0; i < children.length; i++) {
+        children[i] = foldIntoOneDir(children[i], node);
+    }
+    return node;
+}
+
+function foldInOneDirNodes(list) {
+    return list.map(node => foldIntoOneDir(node));
 }
 
 function createRoot() {
@@ -220,8 +236,7 @@ function createRoot() {
 
 function createNestedSummary(coverageMap) {
     const flattened = toInitialList(coverageMap);
-    const dirParents = toDirParents(flattened.list);
-    const topNodes = foldIntoParents(dirParents);
+    const topNodes = foldInOneDirNodes(toNested(flattened.list));
 
     if (topNodes.length === 0) {
         return treeFor(new ReportNode(new Path([])));

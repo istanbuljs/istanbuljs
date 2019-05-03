@@ -94,6 +94,24 @@ function threeDirMap() {
     return coverage.createCoverageMap(map);
 }
 
+function multiDirMap() {
+    const files = [
+        'lib1/sub/file3.js',
+        'lib1/file4.js',
+        'lib2/sub1/file2.js',
+        'lib2/sub2/file1.js'
+    ];
+    let count = 0;
+    const map = {};
+    files.forEach(f => {
+        const filePath = f;
+        const fc = makeCoverage(filePath, 4, count);
+        count += 1;
+        map[filePath] = fc;
+    });
+    return coverage.createCoverageMap(map);
+}
+
 function getStructure(tree, localNames) {
     const meth = localNames ? 'getRelativeName' : 'getQualifiedName';
     const visitor = {
@@ -401,6 +419,23 @@ describe('summarizer', () => {
                 'f:lib1/sub/dir/file2.js',
                 'g:lib2',
                 'f:lib2/file4.js'
+            ]);
+        });
+        it('supports directory in directory', () => {
+            const map = multiDirMap();
+            const tree = fn(map);
+            const nodes = getStructure(tree);
+            assert.deepEqual(nodes, [
+                'g:',
+                'g:lib1',
+                'f:lib1/file4.js',
+                'g:lib1/sub',
+                'f:lib1/sub/file3.js',
+                'g:lib2',
+                'g:lib2/sub1',
+                'f:lib2/sub1/file2.js',
+                'g:lib2/sub2',
+                'f:lib2/sub2/file1.js'
             ]);
         });
     });
