@@ -29,12 +29,12 @@
     "coveralls": "^3.0.3",
     "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
-    "eslint-config-prettier": "^4.1.0",
+    "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.0.1",
-    "eslint-plugin-react": "^7.12.4",
-    "lerna": "^3.13.3",
-    "nyc": "^14.0.0",
+    "eslint-plugin-react": "^7.13.0",
+    "lerna": "^3.13.4",
+    "nyc": "^14.1.0",
     "prettier": "^1.17.0"
   },
   "nyc": {
