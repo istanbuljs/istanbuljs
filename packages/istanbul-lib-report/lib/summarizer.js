@@ -26,7 +26,6 @@ class ReportNode extends BaseNode {
     }
 
     asRelative(p) {
-        /* istanbul ignore if */
         if (p.substring(0, 1) === '/') {
             return p.substring(1);
         }
