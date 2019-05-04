@@ -23,7 +23,7 @@
     "@babel/preset-react": "7.0.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "rollup": "1.8.0",
+    "rollup": "1.11.1",
     "rollup-plugin-babel": "4.3.2",
     "rollup-plugin-commonjs": "9.2.3",
     "rollup-plugin-node-resolve": "4.0.1",
