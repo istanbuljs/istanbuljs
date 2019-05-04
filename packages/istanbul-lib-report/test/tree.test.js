@@ -1,12 +1,12 @@
 /* globals describe, it, beforeEach */
 
 const assert = require('chai').assert;
-const t = require('../lib/tree');
-
-const BaseTree = t.Tree;
-const BaseNode = t.Node;
-const Visitor = t.Visitor;
-const CompositeVisitor = t.CompositeVisitor;
+const {
+    BaseTree,
+    BaseNode,
+    Visitor,
+    CompositeVisitor
+} = require('../lib/tree');
 
 class TestNode extends BaseNode {
     constructor(name) {
@@ -63,10 +63,7 @@ describe('tree', () => {
         const root = new TestNode('root');
         root.addChild(groups[0]);
         root.addChild(groups[2]);
-        tree = new BaseTree();
-        tree.getRoot = function() {
-            return root;
-        };
+        tree = new BaseTree(root);
     });
 
     describe('single visitor', () => {

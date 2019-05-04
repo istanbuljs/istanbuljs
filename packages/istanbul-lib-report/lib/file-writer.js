@@ -8,20 +8,11 @@ const mkdirp = require('make-dir');
 const supportsColor = require('supports-color');
 
 /**
- * abstract interface for writing content
+ * Base class for writing content
  * @class ContentWriter
  * @constructor
  */
 class ContentWriter {
-    /**
-     * writes a string as-is to the destination
-     * @param {String} str the string to write
-     */
-    /* istanbul ignore next: abstract class */
-    write() {
-        throw new Error('write: must be overridden');
-    }
-
     /**
      * returns the colorized version of a string. Typically,
      * content writers that write to files will return the
