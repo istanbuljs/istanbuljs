@@ -28,13 +28,15 @@ class Visitor {
     }
 }
 
-['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].forEach(k => {
-    const f = 'on' + k;
-    Visitor.prototype[f] = function(node, state) {
-        if (this.delegate[f] && typeof this.delegate[f] === 'function') {
-            this.delegate[f].call(this.delegate, node, state);
+['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].map(k => `on${k}`).forEach(fn => {
+    Object.defineProperty(Visitor.prototype, fn, {
+        writable: true,
+        value(node, state) {
+            if (typeof this.delegate[fn] === 'function') {
+                this.delegate[fn](node, state);
+            }
         }
-    };
+    });
 });
 
 class CompositeVisitor extends Visitor {
@@ -53,13 +55,14 @@ class CompositeVisitor extends Visitor {
     }
 }
 
-['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].forEach(k => {
-    const f = 'on' + k;
-    CompositeVisitor.prototype[f] = function(node, state) {
-        this.visitors.forEach(v => {
-            v[f](node, state);
-        });
-    };
+['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].map(k => `on${k}`).forEach(fn => {
+    Object.defineProperty(CompositeVisitor.prototype, fn, {
+        value(node, state) {
+            this.visitors.forEach(v => {
+                v[fn](node, state);
+            });
+        }
+    });
 });
 
 class Node {
@@ -104,9 +107,11 @@ const nodeAbstracts = [
 
 nodeAbstracts.forEach(fn => {
     /* istanbul ignore next: abstract method */
-    Node.prototype[fn] = function() {
-        throw new Error(`${fn} must be overridden`);
-    };
+    Object.defineProperty(Node.prototype, fn, {
+        value() {
+            throw new Error(`${fn} must be overridden`);
+        }
+    });
 });
 
 /**

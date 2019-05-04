@@ -138,9 +138,11 @@ class Path {
 }
 
 ['push', 'pop', 'shift', 'unshift', 'splice'].forEach(fn => {
-    Path.prototype[fn] = function(...args) {
-        return this.v[fn](...args);
-    };
+    Object.defineProperty(Path.prototype, fn, {
+        value(...args) {
+            return this.v[fn](...args);
+        }
+    });
 });
 
 Object.defineProperty(Path.prototype, 'length', {
