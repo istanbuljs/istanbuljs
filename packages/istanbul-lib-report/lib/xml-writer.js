@@ -5,14 +5,7 @@
 const INDENT = '  ';
 
 function attrString(attrs) {
-    if (!attrs) {
-        return '';
-    }
-    const ret = [];
-    Object.keys(attrs).forEach(k => {
-        const v = attrs[k];
-        ret.push(k + '="' + v + '"');
-    });
+    const ret = Object.entries(attrs || {}).map(([k, v]) => `${k}="${v}"`);
     return ret.length === 0 ? '' : ' ' + ret.join(' ');
 }
 
@@ -37,7 +30,7 @@ class XMLWriter {
      * @param {Object} [attrs=null] attrs attributes for the tag
      */
     openTag(name, attrs) {
-        const str = this.indent('<' + name + attrString(attrs) + '>');
+        const str = this.indent(`<${name + attrString(attrs)}>`);
         this.cw.println(str);
         this.stack.push(name);
     }
@@ -52,15 +45,11 @@ class XMLWriter {
             throw new Error(`Attempt to close tag ${name} when not opened`);
         }
         const stashed = this.stack.pop();
-        const str = '</' + name + '>';
+        const str = `</${name}>`;
 
         if (stashed !== name) {
             throw new Error(
-                'Attempt to close tag ' +
-                    name +
-                    ' when ' +
-                    stashed +
-                    ' was the one open'
+                `Attempt to close tag ${name} when ${stashed} was the one open`
             );
         }
         this.cw.println(this.indent(str));
@@ -75,7 +64,7 @@ class XMLWriter {
     inlineTag(name, attrs, content) {
         let str = '<' + name + attrString(attrs);
         if (content) {
-            str += '>' + content + '</' + name + '>';
+            str += `>${content}</${name}>`;
         } else {
             str += '/>';
         }

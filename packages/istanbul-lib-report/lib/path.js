@@ -38,7 +38,7 @@ function makeRelativeNormalizedPath(str, sep) {
     }
 
     if (dir !== '') {
-        dir = dir + '/' + file;
+        dir = `${dir}/${file}`;
     } else {
         dir = file;
     }
@@ -57,7 +57,7 @@ class Path {
             this.v = makeRelativeNormalizedPath(strOrArray, SEP);
         } else {
             throw new Error(
-                'Invalid Path argument must be string or array:' + strOrArray
+                `Invalid Path argument must be string or array:${strOrArray}`
             );
         }
     }

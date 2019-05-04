@@ -69,7 +69,7 @@ class ReportNode extends BaseNode {
     }
 
     getCoverageSummary(filesOnly) {
-        const cacheProp = 'c_' + (filesOnly ? 'files' : 'full');
+        const cacheProp = `c_${filesOnly ? 'files' : 'full'}`;
         let summary;
 
         if (this.hasOwnProperty(cacheProp)) {

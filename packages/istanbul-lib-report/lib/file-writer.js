@@ -40,7 +40,7 @@ class ContentWriter {
      * @param {String} str the string to write
      */
     println(str) {
-        this.write(str + '\n');
+        this.write(`${str}\n`);
     }
 
     /**
@@ -98,7 +98,7 @@ class ConsoleWriter extends ContentWriter {
 
         /* istanbul ignore next: different modes for CI and local */
         if (supportsColor.stdout && colors[clazz]) {
-            return '\u001b[' + colors[clazz] + 'm' + str + '\u001b[0m';
+            return `\u001b[${colors[clazz]}m${str}\u001b[0m`;
         }
         return str;
     }
@@ -147,10 +147,10 @@ class FileWriter {
     writerForDir(subdir) {
         if (path.isAbsolute(subdir)) {
             throw new Error(
-                'Cannot create subdir writer for absolute path: ' + subdir
+                `Cannot create subdir writer for absolute path: ${subdir}`
             );
         }
-        return new FileWriter(this.baseDir + '/' + subdir);
+        return new FileWriter(`${this.baseDir}/${subdir}`);
     }
 
     /**
@@ -162,7 +162,7 @@ class FileWriter {
      */
     copyFile(source, dest, header) {
         if (path.isAbsolute(dest)) {
-            throw new Error('Cannot write to absolute path: ' + dest);
+            throw new Error(`Cannot write to absolute path: ${dest}`);
         }
         dest = path.resolve(this.baseDir, dest);
         mkdirp.sync(path.dirname(dest));
@@ -186,7 +186,7 @@ class FileWriter {
             return new ConsoleWriter();
         }
         if (path.isAbsolute(file)) {
-            throw new Error('Cannot write to absolute path: ' + file);
+            throw new Error(`Cannot write to absolute path: ${file}`);
         }
         file = path.resolve(this.baseDir, file);
         mkdirp.sync(path.dirname(file));

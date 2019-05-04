@@ -28,16 +28,18 @@ class Visitor {
     }
 }
 
-['Start', 'End', 'Summary', 'SummaryEnd', 'Detail'].map(k => `on${k}`).forEach(fn => {
-    Object.defineProperty(Visitor.prototype, fn, {
-        writable: true,
-        value(node, state) {
-            if (typeof this.delegate[fn] === 'function') {
-                this.delegate[fn](node, state);
+['Start', 'End', 'Summary', 'SummaryEnd', 'Detail']
+    .map(k => `on${k}`)
+    .forEach(fn => {
+        Object.defineProperty(Visitor.prototype, fn, {
+            writable: true,
+            value(node, state) {
+                if (typeof this.delegate[fn] === 'function') {
+                    this.delegate[fn](node, state);
+                }
             }
-        }
+        });
     });
-});
 
 class CompositeVisitor extends Visitor {
     constructor(visitors) {
@@ -55,15 +57,17 @@ class CompositeVisitor extends Visitor {
     }
 }
 
-['Start', 'Summary', 'SummaryEnd', 'Detail', 'End'].map(k => `on${k}`).forEach(fn => {
-    Object.defineProperty(CompositeVisitor.prototype, fn, {
-        value(node, state) {
-            this.visitors.forEach(v => {
-                v[fn](node, state);
-            });
-        }
+['Start', 'Summary', 'SummaryEnd', 'Detail', 'End']
+    .map(k => `on${k}`)
+    .forEach(fn => {
+        Object.defineProperty(CompositeVisitor.prototype, fn, {
+            value(node, state) {
+                this.visitors.forEach(v => {
+                    v[fn](node, state);
+                });
+            }
+        });
     });
-});
 
 class Node {
     /* istanbul ignore next: abstract method */
