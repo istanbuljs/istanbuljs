@@ -11,6 +11,10 @@
   "scripts": {
     "test": "mocha"
   },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
+  },
   "karmaDeps": {
     "browserify-istanbul": "^0.2.1",
     "karma": "^0.13.10",

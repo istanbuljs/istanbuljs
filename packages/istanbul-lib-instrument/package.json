@@ -13,13 +13,26 @@
     "prepublish": "npm run release"
   },
   "dependencies": {
-    "@babel/generator": "^7.4.0",
-    "@babel/parser": "^7.4.3",
-    "@babel/template": "^7.4.0",
-    "@babel/traverse": "^7.4.3",
-    "@babel/types": "^7.4.0",
+    "@babel/generator": "^7.4.4",
+    "@babel/parser": "^7.4.4",
+    "@babel/template": "^7.4.4",
+    "@babel/traverse": "^7.4.4",
+    "@babel/types": "^7.4.4",
     "istanbul-lib-coverage": "^2.0.5",
     "semver": "^6.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
+    "chai": "^4.2.0",
+    "clone": "^2.1.2",
+    "debug": "^4.1.1",
+    "documentation": "^10.1.0",
+    "js-yaml": "^3.13.1",
+    "mocha": "^6.1.4",
+    "nopt": "^4.0.1"
   },
   "license": "BSD-3-Clause",
   "bugs": {
