@@ -4,98 +4,98 @@
  */
 'use strict';
 
-const util = require('util');
 const coverage = require('istanbul-lib-coverage');
 const Path = require('./path');
 const tree = require('./tree');
 const BaseNode = tree.Node;
 const BaseTree = tree.Tree;
 
-function ReportNode(path, fileCoverage) {
-    this.path = path;
-    this.parent = null;
-    this.fileCoverage = fileCoverage;
-    this.children = [];
-}
+class ReportNode extends BaseNode {
+    constructor(path, fileCoverage) {
+        super();
 
-util.inherits(ReportNode, BaseNode);
-
-ReportNode.prototype.addChild = function(child) {
-    child.parent = this;
-    this.children.push(child);
-};
-
-ReportNode.prototype.asRelative = function(p) {
-    /* istanbul ignore if */
-    if (p.substring(0, 1) === '/') {
-        return p.substring(1);
+        this.path = path;
+        this.parent = null;
+        this.fileCoverage = fileCoverage;
+        this.children = [];
     }
-    return p;
-};
 
-ReportNode.prototype.getQualifiedName = function() {
-    return this.asRelative(this.path.toString());
-};
+    addChild(child) {
+        child.parent = this;
+        this.children.push(child);
+    }
 
-ReportNode.prototype.getRelativeName = function() {
-    const parent = this.getParent();
-    const myPath = this.path;
-    let relPath;
-    let i;
-    const parentPath = parent ? parent.path : new Path([]);
-    if (parentPath.ancestorOf(myPath)) {
-        relPath = new Path(myPath.elements());
-        for (i = 0; i < parentPath.length; i += 1) {
-            relPath.shift();
+    asRelative(p) {
+        if (p.substring(0, 1) === '/') {
+            return p.substring(1);
         }
-        return this.asRelative(relPath.toString());
-    }
-    return this.asRelative(this.path.toString());
-};
-
-ReportNode.prototype.getParent = function() {
-    return this.parent;
-};
-
-ReportNode.prototype.getChildren = function() {
-    return this.children;
-};
-
-ReportNode.prototype.isSummary = function() {
-    return !this.fileCoverage;
-};
-
-ReportNode.prototype.getFileCoverage = function() {
-    return this.fileCoverage;
-};
-
-ReportNode.prototype.getCoverageSummary = function(filesOnly) {
-    const cacheProp = 'c_' + (filesOnly ? 'files' : 'full');
-    let summary;
-
-    if (this.hasOwnProperty(cacheProp)) {
-        return this[cacheProp];
+        return p;
     }
 
-    if (!this.isSummary()) {
-        summary = this.getFileCoverage().toSummary();
-    } else {
-        let count = 0;
-        summary = coverage.createCoverageSummary();
-        this.getChildren().forEach(child => {
-            if (filesOnly && child.isSummary()) {
-                return;
+    getQualifiedName() {
+        return this.asRelative(this.path.toString());
+    }
+
+    getRelativeName() {
+        const parent = this.getParent();
+        const myPath = this.path;
+        let relPath;
+        let i;
+        const parentPath = parent ? parent.path : new Path([]);
+        if (parentPath.ancestorOf(myPath)) {
+            relPath = new Path(myPath.elements());
+            for (i = 0; i < parentPath.length; i += 1) {
+                relPath.shift();
             }
-            count += 1;
-            summary.merge(child.getCoverageSummary(filesOnly));
-        });
-        if (count === 0 && filesOnly) {
-            summary = null;
+            return this.asRelative(relPath.toString());
         }
+        return this.asRelative(this.path.toString());
     }
-    this[cacheProp] = summary;
-    return summary;
-};
+
+    getParent() {
+        return this.parent;
+    }
+
+    getChildren() {
+        return this.children;
+    }
+
+    isSummary() {
+        return !this.fileCoverage;
+    }
+
+    getFileCoverage() {
+        return this.fileCoverage;
+    }
+
+    getCoverageSummary(filesOnly) {
+        const cacheProp = `c_${filesOnly ? 'files' : 'full'}`;
+        let summary;
+
+        if (this.hasOwnProperty(cacheProp)) {
+            return this[cacheProp];
+        }
+
+        if (!this.isSummary()) {
+            summary = this.getFileCoverage().toSummary();
+        } else {
+            let count = 0;
+            summary = coverage.createCoverageSummary();
+            this.getChildren().forEach(child => {
+                if (filesOnly && child.isSummary()) {
+                    return;
+                }
+                count += 1;
+                summary.merge(child.getCoverageSummary(filesOnly));
+            });
+            if (count === 0 && filesOnly) {
+                summary = null;
+            }
+        }
+        this[cacheProp] = summary;
+        return summary;
+    }
+}
 
 function treeFor(root, childPrefix) {
     const tree = new BaseTree();
