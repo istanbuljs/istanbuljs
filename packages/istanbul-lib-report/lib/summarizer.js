@@ -6,9 +6,7 @@
 
 const coverage = require('istanbul-lib-coverage');
 const Path = require('./path');
-const tree = require('./tree');
-const BaseNode = tree.Node;
-const BaseTree = tree.Tree;
+const { BaseNode, BaseTree } = require('./tree');
 
 class ReportNode extends BaseNode {
     constructor(path, fileCoverage) {
@@ -18,6 +16,16 @@ class ReportNode extends BaseNode {
         this.parent = null;
         this.fileCoverage = fileCoverage;
         this.children = [];
+    }
+
+    static createRoot(children) {
+        const root = new ReportNode(new Path([]));
+
+        children.forEach(child => {
+            root.addChild(child);
+        });
+
+        return root;
     }
 
     addChild(child) {
@@ -97,200 +105,159 @@ class ReportNode extends BaseNode {
     }
 }
 
-function treeFor(root, childPrefix) {
-    const tree = new BaseTree();
-    const maybePrefix = function(node) {
-        if (childPrefix && !node.isRoot()) {
-            node.path.unshift(childPrefix);
-        }
-    };
-    tree.getRoot = function() {
-        return root;
-    };
-    const visitor = {
-        onDetail(node) {
-            maybePrefix(node);
-        },
-        onSummary(node) {
-            maybePrefix(node);
-            node.children.sort((a, b) => {
-                const astr = a.path.toString();
-                const bstr = b.path.toString();
-                return astr < bstr
-                    ? -1
-                    : astr > bstr
-                    ? 1
-                    : /* istanbul ignore next */ 0;
-            });
-        }
-    };
-    tree.visit(visitor);
-    return tree;
+class ReportTree extends BaseTree {
+    constructor(root, childPrefix) {
+        super(root);
+
+        const maybePrefix = node => {
+            if (childPrefix && !node.isRoot()) {
+                node.path.unshift(childPrefix);
+            }
+        };
+        this.visit({
+            onDetail: maybePrefix,
+            onSummary(node) {
+                maybePrefix(node);
+                node.children.sort((a, b) => {
+                    const astr = a.path.toString();
+                    const bstr = b.path.toString();
+                    return astr < bstr
+                        ? -1
+                        : astr > bstr
+                        ? 1
+                        : /* istanbul ignore next */ 0;
+                });
+            }
+        });
+    }
 }
 
 function findCommonParent(paths) {
-    if (paths.length === 0) {
-        return new Path([]);
-    }
-    let common = paths[0];
-    let i;
-
-    for (i = 1; i < paths.length; i += 1) {
-        common = common.commonPrefixPath(paths[i]);
-        if (common.length === 0) {
-            break;
-        }
-    }
-    return common;
+    return paths.reduce(
+        (common, path) => common.commonPrefixPath(path),
+        paths[0] || new Path([])
+    );
 }
 
 function toInitialList(coverageMap) {
-    const ret = [];
-    coverageMap.files().forEach(filePath => {
-        const p = new Path(filePath);
-        const coverage = coverageMap.fileCoverageFor(filePath);
-        ret.push({
-            filePath,
-            path: p,
-            fileCoverage: coverage
-        });
-    });
+    const list = coverageMap.files().map(filePath => ({
+        filePath,
+        path: new Path(filePath),
+        fileCoverage: coverageMap.fileCoverageFor(filePath)
+    }));
 
-    const commonParent = findCommonParent(ret.map(o => o.path.parent()));
+    const commonParent = findCommonParent(list.map(o => o.path.parent()));
     if (commonParent.length > 0) {
-        ret.forEach(o => {
+        list.forEach(o => {
             o.path.splice(0, commonParent.length);
         });
     }
     return {
-        list: ret,
+        list,
         commonParent
     };
 }
 
-function toDirParents(list) {
-    const nodeMap = Object.create(null);
-    const parentNodeList = [];
-    list.forEach(o => {
-        const node = new ReportNode(o.path, o.fileCoverage);
-        const parentPath = o.path.parent();
-        let parent = nodeMap[parentPath.toString()];
-
-        if (!parent) {
-            parent = new ReportNode(parentPath);
-            nodeMap[parentPath.toString()] = parent;
-            parentNodeList.push(parent);
-        }
-        parent.addChild(node);
-    });
-    return parentNodeList;
-}
-
-function addAllPaths(topPaths, nodeMap, path, node) {
-    const parentPath = path.parent();
+function findOrCreateParent(parentPath, nodeMap, created = () => {}) {
     let parent = nodeMap[parentPath.toString()];
 
     if (!parent) {
         parent = new ReportNode(parentPath);
         nodeMap[parentPath.toString()] = parent;
-
-        if (parentPath.hasParent()) {
-            addAllPaths(topPaths, nodeMap, parentPath, parent);
-        } else {
-            topPaths.push(parent);
-        }
+        created(parentPath, parent);
     }
+
+    return parent;
+}
+
+function toDirParents(list) {
+    const nodeMap = Object.create(null);
+    list.forEach(o => {
+        const parent = findOrCreateParent(o.path.parent(), nodeMap);
+        parent.addChild(new ReportNode(o.path, o.fileCoverage));
+    });
+
+    return Object.keys(nodeMap).map(k => nodeMap[k]);
+}
+
+function addAllPaths(topPaths, nodeMap, path, node) {
+    const parent = findOrCreateParent(
+        path.parent(),
+        nodeMap,
+        (parentPath, parent) => {
+            if (parentPath.hasParent()) {
+                addAllPaths(topPaths, nodeMap, parentPath, parent);
+            } else {
+                topPaths.push(parent);
+            }
+        }
+    );
+
     parent.addChild(node);
 }
 
-function toNested(list) {
+function toNested(coverageMap) {
     const nodeMap = Object.create(null);
-    const topNodes = [];
-    list.forEach(o => {
+    const topPaths = [];
+    toInitialList(coverageMap).list.forEach(o => {
         const node = new ReportNode(o.path, o.fileCoverage);
-
-        addAllPaths(topNodes, nodeMap, o.path, node);
+        addAllPaths(topPaths, nodeMap, o.path, node);
     });
-    return topNodes;
+    return topPaths;
 }
 
 function foldIntoOneDir(node, parent) {
-    const children = node.children;
+    const { children } = node;
     if (children.length === 1 && !children[0].fileCoverage) {
         children[0].parent = parent;
         return foldIntoOneDir(children[0], parent);
     }
-    for (let i = 0; i < children.length; i++) {
-        children[i] = foldIntoOneDir(children[i], node);
-    }
+    node.children = children.map(child => foldIntoOneDir(child, node));
     return node;
 }
 
-function foldInOneDirNodes(list) {
-    return list.map(node => foldIntoOneDir(node));
-}
-
-function createRoot() {
-    return new ReportNode(new Path([]));
-}
-
 function createNestedSummary(coverageMap) {
-    const flattened = toInitialList(coverageMap);
-    const topNodes = foldInOneDirNodes(toNested(flattened.list));
-
-    if (topNodes.length === 0) {
-        return treeFor(new ReportNode(new Path([])));
-    }
+    const topNodes = toNested(coverageMap).map(node => foldIntoOneDir(node));
 
     if (topNodes.length === 1) {
-        return treeFor(topNodes[0]);
+        return new ReportTree(topNodes[0]);
     }
 
-    const root = createRoot();
-    topNodes.forEach(node => {
-        root.addChild(node);
-    });
-    return treeFor(root);
+    return new ReportTree(ReportNode.createRoot(topNodes));
+}
+
+function packageSummaryPrefix(dirParents, { commonParent }) {
+    if (!dirParents.some(dp => dp.path.length === 0)) {
+        return;
+    }
+
+    if (commonParent.length === 0) {
+        return 'root';
+    }
+
+    return commonParent.name();
 }
 
 function createPackageSummary(coverageMap) {
     const flattened = toInitialList(coverageMap);
     const dirParents = toDirParents(flattened.list);
-    const common = flattened.commonParent;
-    let prefix;
-    let root;
 
     if (dirParents.length === 1) {
-        root = dirParents[0];
-    } else {
-        root = createRoot();
-        // if one of the dirs is itself the root,
-        // then we need to create a top-level dir
-        dirParents.forEach(dp => {
-            if (dp.path.length === 0) {
-                prefix = 'root';
-            }
-        });
-        if (prefix && common.length > 0) {
-            prefix = common.elements()[common.elements().length - 1];
-        }
-        dirParents.forEach(node => {
-            root.addChild(node);
-        });
+        return new ReportTree(dirParents[0]);
     }
-    return treeFor(root, prefix);
+
+    return new ReportTree(
+        ReportNode.createRoot(dirParents),
+        packageSummaryPrefix(dirParents, flattened)
+    );
 }
 
 function createFlatSummary(coverageMap) {
-    const flattened = toInitialList(coverageMap);
-    const list = flattened.list;
-    const root = createRoot();
+    const list = toInitialList(coverageMap).list.map(
+        node => new ReportNode(node.path, node.fileCoverage)
+    );
 
-    list.forEach(o => {
-        const node = new ReportNode(o.path, o.fileCoverage);
-        root.addChild(node);
-    });
-    return treeFor(root);
+    return new ReportTree(ReportNode.createRoot(list));
 }
 
 module.exports = {

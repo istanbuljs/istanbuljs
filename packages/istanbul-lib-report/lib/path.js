@@ -83,6 +83,10 @@ class Path {
         return this.v.slice();
     }
 
+    name() {
+        return this.v.slice(-1)[0];
+    }
+
     contains(other) {
         let i;
         if (other.length > this.length) {

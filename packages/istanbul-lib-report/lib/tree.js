@@ -69,8 +69,7 @@ class CompositeVisitor extends Visitor {
         });
     });
 
-class Node {
-    /* istanbul ignore next: abstract method */
+class BaseNode {
     isRoot() {
         return !this.getParent();
     }
@@ -99,36 +98,20 @@ class Node {
     }
 }
 
-const nodeAbstracts = [
-    'getQualifiedName',
-    'getRelativeName',
-    'getParent',
-    'getChildren',
-    'isSummary',
-    'getCoverageSummary',
-    'getFileCoverage'
-];
-
-nodeAbstracts.forEach(fn => {
-    /* istanbul ignore next: abstract method */
-    Object.defineProperty(Node.prototype, fn, {
-        value() {
-            throw new Error(`${fn} must be overridden`);
-        }
-    });
-});
-
 /**
  * abstract base class for a coverage tree.
  * @constructor
  */
-class Tree {
+class BaseTree {
+    constructor(root) {
+        this.root = root;
+    }
+
     /**
      * returns the root node of the tree
      */
-    /* istanbul ignore next: abstract method */
     getRoot() {
-        throw new Error('getRoot must be overridden');
+        return this.root;
     }
 
     /**
@@ -147,8 +130,8 @@ class Tree {
 }
 
 module.exports = {
-    Tree,
-    Node,
+    BaseTree,
+    BaseNode,
     Visitor,
     CompositeVisitor
 };
