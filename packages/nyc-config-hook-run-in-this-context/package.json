@@ -29,6 +29,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "semver": "^6.0.0"
+  },
   "engines": {
     "node": ">=6"
   }
