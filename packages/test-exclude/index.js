@@ -1,8 +1,11 @@
+'use strict';
+
 const path = require('path');
 const glob = require('glob');
 const minimatch = require('minimatch');
 const readPkgUp = require('read-pkg-up');
 const requireMainFilename = require('require-main-filename');
+const defaultExclude = require('./default-exclude');
 
 class TestExclude {
     constructor(opts) {
@@ -43,7 +46,7 @@ class TestExclude {
         }
 
         if (!this.exclude || !Array.isArray(this.exclude)) {
-            this.exclude = exportFunc.defaultExclude;
+            this.exclude = defaultExclude;
         }
 
         if (this.include && this.include.length > 0) {
@@ -171,16 +174,6 @@ function getExtensionPattern(extension) {
 
 const exportFunc = opts => new TestExclude(opts);
 
-const devConfigs = ['ava', 'babel', 'jest', 'nyc', 'rollup', 'webpack'];
-
-exportFunc.defaultExclude = [
-    'coverage/**',
-    'packages/*/test/**',
-    'test/**',
-    'test{,-*}.{js,cjs,mjs,ts}',
-    '**/*{.,-}test.{js,cjs,mjs,ts}',
-    '**/__tests__/**',
-    `**/{${devConfigs.join()}}.config.js`
-];
+exportFunc.defaultExclude = defaultExclude;
 
 module.exports = exportFunc;

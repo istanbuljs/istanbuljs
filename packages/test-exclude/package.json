@@ -4,7 +4,7 @@
   "description": "test for inclusion or exclusion of paths using pkg-conf and globs",
   "main": "index.js",
   "files": [
-    "index.js"
+    "*.js"
   ],
   "scripts": {
     "test": "mocha"
