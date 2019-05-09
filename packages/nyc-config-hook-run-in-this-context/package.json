@@ -7,7 +7,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha"
+    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,11 @@
   },
   "dependencies": {
     "semver": "^6.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.0"
   },
   "engines": {
     "node": ">=6"

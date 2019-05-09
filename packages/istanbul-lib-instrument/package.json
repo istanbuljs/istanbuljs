@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "release": "babel src --out-dir dist && documentation build -f md -o api.md src",
-    "test": "mocha --require=@babel/register",
+    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json --require=@babel/register --include=src mocha",
     "prepublish": "npm run release"
   },
   "dependencies": {
@@ -32,7 +32,8 @@
     "documentation": "^11.0.0",
     "js-yaml": "^3.13.1",
     "mocha": "^6.1.4",
-    "nopt": "^4.0.1"
+    "nopt": "^4.0.1",
+    "nyc": "^14.1.0"
   },
   "license": "BSD-3-Clause",
   "bugs": {
