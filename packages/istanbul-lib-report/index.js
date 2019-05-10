@@ -8,7 +8,6 @@
  * @module Exports
  */
 
-const summarizer = require('./lib/summarizer');
 const Context = require('./lib/context');
 const watermarks = require('./lib/watermarks');
 
@@ -31,26 +30,4 @@ module.exports = {
     getDefaultWatermarks() {
         return watermarks.getDefault();
     }
-};
-/**
- * standard summary functions
- */
-module.exports.summarizers = {
-    /**
-     * a summarizer that creates a flat tree with one root node and bunch of
-     * files directly under it
-     */
-    flat: summarizer.createFlatSummary,
-    /**
-     * a summarizer that creates a hierarchical tree where the coverage summaries
-     * of each directly reflect the summaries of all subdirectories and files in it
-     */
-    nested: summarizer.createNestedSummary,
-    /**
-     * a summarizer that creates a tree in which directories are not nested.
-     * Every subdirectory is a child of the root node and only reflects the
-     * coverage numbers for the files in it (i.e. excludes subdirectories).
-     * This is the default summarizer.
-     */
-    pkg: summarizer.createPackageSummary
 };

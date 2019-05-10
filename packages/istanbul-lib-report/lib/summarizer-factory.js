@@ -139,25 +139,6 @@ function findCommonParent(paths) {
     );
 }
 
-function toInitialList(coverageMap) {
-    const list = coverageMap.files().map(filePath => ({
-        filePath,
-        path: new Path(filePath),
-        fileCoverage: coverageMap.fileCoverageFor(filePath)
-    }));
-
-    const commonParent = findCommonParent(list.map(o => o.path.parent()));
-    if (commonParent.length > 0) {
-        list.forEach(o => {
-            o.path.splice(0, commonParent.length);
-        });
-    }
-    return {
-        list,
-        commonParent
-    };
-}
-
 function findOrCreateParent(parentPath, nodeMap, created = () => {}) {
     let parent = nodeMap[parentPath.toString()];
 
@@ -196,16 +177,6 @@ function addAllPaths(topPaths, nodeMap, path, node) {
     parent.addChild(node);
 }
 
-function toNested(coverageMap) {
-    const nodeMap = Object.create(null);
-    const topPaths = [];
-    toInitialList(coverageMap).list.forEach(o => {
-        const node = new ReportNode(o.path, o.fileCoverage);
-        addAllPaths(topPaths, nodeMap, o.path, node);
-    });
-    return topPaths;
-}
-
 function foldIntoOneDir(node, parent) {
     const { children } = node;
     if (children.length === 1 && !children[0].fileCoverage) {
@@ -216,17 +187,7 @@ function foldIntoOneDir(node, parent) {
     return node;
 }
 
-function createNestedSummary(coverageMap) {
-    const topNodes = toNested(coverageMap).map(node => foldIntoOneDir(node));
-
-    if (topNodes.length === 1) {
-        return new ReportTree(topNodes[0]);
-    }
-
-    return new ReportTree(ReportNode.createRoot(topNodes));
-}
-
-function packageSummaryPrefix(dirParents, { commonParent }) {
+function pkgSummaryPrefix(dirParents, commonParent) {
     if (!dirParents.some(dp => dp.path.length === 0)) {
         return;
     }
@@ -238,30 +199,86 @@ function packageSummaryPrefix(dirParents, { commonParent }) {
     return commonParent.name();
 }
 
-function createPackageSummary(coverageMap) {
-    const flattened = toInitialList(coverageMap);
-    const dirParents = toDirParents(flattened.list);
-
-    if (dirParents.length === 1) {
-        return new ReportTree(dirParents[0]);
+class SummarizerFactory {
+    constructor(coverageMap, defaultSummarizer = 'pkg') {
+        this._coverageMap = coverageMap;
+        this._defaultSummarizer = defaultSummarizer;
+        this._initialList = coverageMap.files().map(filePath => ({
+            filePath,
+            path: new Path(filePath),
+            fileCoverage: coverageMap.fileCoverageFor(filePath)
+        }));
+        this._commonParent = findCommonParent(
+            this._initialList.map(o => o.path.parent())
+        );
+        if (this._commonParent.length > 0) {
+            this._initialList.forEach(o => {
+                o.path.splice(0, this._commonParent.length);
+            });
+        }
     }
 
-    return new ReportTree(
-        ReportNode.createRoot(dirParents),
-        packageSummaryPrefix(dirParents, flattened)
-    );
+    get defaultSummarizer() {
+        return this[this._defaultSummarizer];
+    }
+
+    get flat() {
+        if (!this._flat) {
+            this._flat = new ReportTree(
+                ReportNode.createRoot(
+                    this._initialList.map(
+                        node => new ReportNode(node.path, node.fileCoverage)
+                    )
+                )
+            );
+        }
+
+        return this._flat;
+    }
+
+    _createPkg() {
+        const dirParents = toDirParents(this._initialList);
+        if (dirParents.length === 1) {
+            return new ReportTree(dirParents[0]);
+        }
+
+        return new ReportTree(
+            ReportNode.createRoot(dirParents),
+            pkgSummaryPrefix(dirParents, this._commonParent)
+        );
+    }
+
+    get pkg() {
+        if (!this._pkg) {
+            this._pkg = this._createPkg();
+        }
+
+        return this._pkg;
+    }
+
+    _createNested() {
+        const nodeMap = Object.create(null);
+        const topPaths = [];
+        this._initialList.forEach(o => {
+            const node = new ReportNode(o.path, o.fileCoverage);
+            addAllPaths(topPaths, nodeMap, o.path, node);
+        });
+
+        const topNodes = topPaths.map(node => foldIntoOneDir(node));
+        if (topNodes.length === 1) {
+            return new ReportTree(topNodes[0]);
+        }
+
+        return new ReportTree(ReportNode.createRoot(topNodes));
+    }
+
+    get nested() {
+        if (!this._nested) {
+            this._nested = this._createNested();
+        }
+
+        return this._nested;
+    }
 }
 
-function createFlatSummary(coverageMap) {
-    const list = toInitialList(coverageMap).list.map(
-        node => new ReportNode(node.path, node.fileCoverage)
-    );
-
-    return new ReportTree(ReportNode.createRoot(list));
-}
-
-module.exports = {
-    createNestedSummary,
-    createPackageSummary,
-    createFlatSummary
-};
+module.exports = SummarizerFactory;

@@ -54,13 +54,12 @@ describe('html-spa', () => {
             __dirname,
             '../fixtures/specs/' + file
         ));
-        const tree = istanbulLibReport.summarizers.nested(
-            istanbulLibCoverage.createCoverageMap(fixture.map)
-        );
         it(fixture.title, () => {
             const context = istanbulLibReport.createContext({
-                dir: './'
+                dir: './',
+                coverageMap: istanbulLibCoverage.createCoverageMap(fixture.map)
             });
+            const tree = context.getTree('nested');
             const report = new HtmlSpaReport(fixture.opts);
             tree.visit(report, context);
 
