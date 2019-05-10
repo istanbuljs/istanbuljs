@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0] (2019-05-10)
+
+### BREAKING CHANGES
+
+* This module is now deprecated.  See README.md for more information.
+
+
+
+
+
 ## [2.1.7](https://github.com/istanbuljs/istanbuljs/compare/istanbul-api@2.1.6...istanbul-api@2.1.7) (2019-05-02)
 
 **Note:** Version bump only for package istanbul-api
