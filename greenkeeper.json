@@ -3,7 +3,6 @@
         "default": {
             "packages": [
                 "package.json",
-                "packages/istanbul-api/package.json",
                 "packages/istanbul-lib-coverage/package.json",
                 "packages/istanbul-lib-hook/package.json",
                 "packages/istanbul-lib-instrument/package.json",
