@@ -12,7 +12,7 @@
         }
     },
     "parserOptions": {
-        "ecmaVersion": 7,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },
     "env": {

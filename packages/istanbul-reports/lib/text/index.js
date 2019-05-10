@@ -123,9 +123,9 @@ function missingBranches(node, colorizer) {
     const branches = node.isSummary()
         ? {}
         : node.getFileCoverage().getBranchCoverageByLine();
-    const missingLines = Object.keys(branches)
-        .filter(key => branches[key].coverage < 100)
-        .map(key => key);
+    const missingLines = Object.keys(branches).filter(
+        key => branches[key].coverage < 100
+    );
     return colorizer(formatPct(missingLines.join(','), MISSING_COL), 'medium');
 }
 

@@ -34,7 +34,7 @@ instead.
 
 ### Parameters
 
--   `opts` **[Object][13]** optional. (optional, default `defaultOpts()`)
+-   `opts` **[Object][13]** optional. (optional, default `{}`)
     -   `opts.coverageVariable` **[string][14]** name of global coverage variable. (optional, default `__coverage__`)
     -   `opts.preserveComments` **[boolean][15]** preserve comments in output (optional, default `false`)
     -   `opts.compact` **[boolean][15]** generate compact code. (optional, default `true`)

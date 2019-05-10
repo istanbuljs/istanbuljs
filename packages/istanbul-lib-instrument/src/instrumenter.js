@@ -56,27 +56,13 @@ export function defaultOpts() {
  * @param {array} [opts.plugins=['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']] - set plugins
  */
 class Instrumenter {
-    constructor(opts = defaultOpts()) {
-        this.opts = this.normalizeOpts(opts);
+    constructor(opts = {}) {
+        this.opts = {
+            ...defaultOpts(),
+            ...opts
+        };
         this.fileCoverage = null;
         this.sourceMap = null;
-    }
-    /**
-     * normalize options passed in and assign defaults.
-     * @param opts
-     * @private
-     */
-    normalizeOpts(opts) {
-        const normalize = (name, defaultValue) => {
-            if (!opts.hasOwnProperty(name)) {
-                opts[name] = defaultValue;
-            }
-        };
-        const defOpts = defaultOpts();
-        Object.keys(defOpts).forEach(k => {
-            normalize(k, defOpts[k]);
-        });
-        return opts;
     }
     /**
      * instrument the supplied code and track coverage against the supplied

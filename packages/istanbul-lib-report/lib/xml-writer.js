@@ -4,9 +4,10 @@
  */
 const INDENT = '  ';
 
-function attrString(attrs) {
-    const ret = Object.keys(attrs || {}).map(k => `${k}="${attrs[k]}"`);
-    return ret.length === 0 ? '' : ' ' + ret.join(' ');
+function attrString(attrs = {}) {
+    return Object.entries(attrs)
+        .map(([k, v]) => ` ${k}="${v}"`)
+        .join('');
 }
 
 /**

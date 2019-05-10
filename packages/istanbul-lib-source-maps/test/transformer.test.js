@@ -36,15 +36,17 @@ const testDataSlash = {
         sources: [sourceFileSlash],
         mappings: ';AAAa,mBAAW,GAAG,MAAM,CAAC;AACrB,kBAAU,GAAG,yBAAyB,CAAC'
     },
-    coverageData: Object.assign({}, coverageData, {
+    coverageData: {
+        ...coverageData,
         path: sourceFileSlash
-    })
+    }
 };
 
 const testDataBackslash = {
-    coverageData: Object.assign({}, coverageData, {
+    coverageData: {
+        ...coverageData,
         path: sourceFileBackslash
-    })
+    }
 };
 
 describe('transformer', () => {

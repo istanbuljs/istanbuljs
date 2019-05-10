@@ -9,8 +9,7 @@ const CoverageSummary = require('./file').CoverageSummary;
 
 function loadMap(source) {
     const data = Object.create(null);
-    Object.keys(source).forEach(k => {
-        const cov = source[k];
+    Object.entries(source).forEach(([k, cov]) => {
         if (cov instanceof FileCoverage) {
             data[k] = cov;
         } else {
@@ -47,8 +46,7 @@ CoverageMap.prototype.merge = function(obj) {
     } else {
         other = new CoverageMap(obj);
     }
-    Object.keys(other.data).forEach(k => {
-        const fc = other.data[k];
+    Object.entries(other.data).forEach(([k, fc]) => {
         if (this.data[k]) {
             this.data[k].merge(fc);
         } else {

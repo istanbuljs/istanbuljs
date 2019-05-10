@@ -177,7 +177,7 @@ function toDirParents(list) {
         parent.addChild(new ReportNode(o.path, o.fileCoverage));
     });
 
-    return Object.keys(nodeMap).map(k => nodeMap[k]);
+    return Object.values(nodeMap);
 }
 
 function addAllPaths(topPaths, nodeMap, path, node) {
