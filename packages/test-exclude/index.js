@@ -3,8 +3,6 @@
 const path = require('path');
 const glob = require('glob');
 const minimatch = require('minimatch');
-const readPkgUp = require('read-pkg-up');
-const requireMainFilename = require('require-main-filename');
 const defaultExclude = require('./default-exclude');
 
 class TestExclude {
@@ -15,9 +13,6 @@ class TestExclude {
                 cwd: process.cwd(),
                 include: false,
                 relativePath: true,
-                configKey: null, // the key to load config from in package.json.
-                configPath: null, // optionally override requireMainFilename.
-                configFound: false,
                 excludeNodeModules: true,
                 extension: false
             },
@@ -39,10 +34,6 @@ class TestExclude {
             this.extension.length === 0
         ) {
             this.extension = false;
-        }
-
-        if (!this.include && !this.exclude && this.configKey) {
-            Object.assign(this, this.pkgConf(this.configKey, this.configPath));
         }
 
         if (!this.exclude || !Array.isArray(this.exclude)) {
@@ -115,19 +106,6 @@ class TestExclude {
             (!this.include || this.include.some(matches)) &&
             (!this.exclude.some(matches) || this.excludeNegated.some(matches))
         );
-    }
-
-    pkgConf(key, path) {
-        const cwd = path || requireMainFilename(require);
-        const obj = readPkgUp.sync({ cwd });
-
-        if (obj.pkg && obj.pkg[key] && typeof obj.pkg[key] === 'object') {
-            this.configFound = true;
-
-            return obj.pkg[key];
-        }
-
-        return {};
     }
 
     globSync(cwd = this.cwd) {

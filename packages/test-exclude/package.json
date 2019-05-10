@@ -1,7 +1,7 @@
 {
   "name": "test-exclude",
   "version": "5.2.3",
-  "description": "test for inclusion or exclusion of paths using pkg-conf and globs",
+  "description": "test for inclusion or exclusion of paths using globs",
   "main": "index.js",
   "files": [
     "*.js"
@@ -28,9 +28,7 @@
   "homepage": "https://istanbul.js.org/",
   "dependencies": {
     "glob": "^7.1.3",
-    "minimatch": "^3.0.4",
-    "read-pkg-up": "^4.0.0",
-    "require-main-filename": "^2.0.0"
+    "minimatch": "^3.0.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
