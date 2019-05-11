@@ -1,6 +1,6 @@
 {
   "name": "@istanbuljs/nyc-config-hook-run-in-this-context",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "nyc configuration for hook-run-in-this-context",
   "main": "index.js",
   "files": [
@@ -28,6 +28,9 @@
   "homepage": "https://istanbul.js.org/",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "semver": "^6.0.0"
   },
   "engines": {
     "node": ">=6"

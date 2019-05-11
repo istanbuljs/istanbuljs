@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage@2.0.4...istanbul-lib-coverage@2.0.5) (2019-04-24)
+
+**Note:** Version bump only for package istanbul-lib-coverage
+
+
+
+
+
 ## [2.0.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage@2.0.3...istanbul-lib-coverage@2.0.4) (2019-03-12)
 
 **Note:** Version bump only for package istanbul-lib-coverage

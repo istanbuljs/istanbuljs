@@ -1,9 +1,9 @@
+'use strict';
+
 const path = require('path');
-const arrify = require('arrify');
 const glob = require('glob');
 const minimatch = require('minimatch');
-const readPkgUp = require('read-pkg-up');
-const requireMainFilename = require('require-main-filename');
+const defaultExclude = require('./default-exclude');
 
 class TestExclude {
     constructor(opts) {
@@ -13,9 +13,6 @@ class TestExclude {
                 cwd: process.cwd(),
                 include: false,
                 relativePath: true,
-                configKey: null, // the key to load config from in package.json.
-                configPath: null, // optionally override requireMainFilename.
-                configFound: false,
                 excludeNodeModules: true,
                 extension: false
             },
@@ -39,16 +36,12 @@ class TestExclude {
             this.extension = false;
         }
 
-        if (!this.include && !this.exclude && this.configKey) {
-            Object.assign(this, this.pkgConf(this.configKey, this.configPath));
-        }
-
         if (!this.exclude || !Array.isArray(this.exclude)) {
-            this.exclude = exportFunc.defaultExclude;
+            this.exclude = defaultExclude;
         }
 
         if (this.include && this.include.length > 0) {
-            this.include = prepGlobPatterns(arrify(this.include));
+            this.include = prepGlobPatterns([].concat(this.include));
         } else {
             this.include = false;
         }
@@ -57,10 +50,10 @@ class TestExclude {
             this.excludeNodeModules &&
             !this.exclude.includes('**/node_modules/**')
         ) {
-            this.exclude.push('**/node_modules/**');
+            this.exclude = this.exclude.concat('**/node_modules/**');
         }
 
-        this.exclude = prepGlobPatterns([].concat(arrify(this.exclude)));
+        this.exclude = prepGlobPatterns([].concat(this.exclude));
 
         this.handleNegation();
     }
@@ -115,19 +108,6 @@ class TestExclude {
         );
     }
 
-    pkgConf(key, path) {
-        const cwd = path || requireMainFilename(require);
-        const obj = readPkgUp.sync({ cwd });
-
-        if (obj.pkg && obj.pkg[key] && typeof obj.pkg[key] === 'object') {
-            this.configFound = true;
-
-            return obj.pkg[key];
-        }
-
-        return {};
-    }
-
     globSync(cwd = this.cwd) {
         const globPatterns = getExtensionPattern(this.extension || []);
         const globOptions = { cwd, nodir: true, dot: true };
@@ -172,17 +152,6 @@ function getExtensionPattern(extension) {
 
 const exportFunc = opts => new TestExclude(opts);
 
-const devConfigs = ['ava', 'babel', 'jest', 'nyc', 'rollup', 'webpack'];
-
-exportFunc.defaultExclude = [
-    'coverage/**',
-    'packages/*/test/**',
-    'test/**',
-    'test{,-*}.js',
-    '**/*{.,-}test.js',
-    '**/__tests__/**',
-    '**/node_modules/**',
-    `**/{${devConfigs.join()}}.config.js`
-];
+exportFunc.defaultExclude = defaultExclude;
 
 module.exports = exportFunc;

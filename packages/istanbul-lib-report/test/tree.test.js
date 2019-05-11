@@ -1,39 +1,39 @@
 /* globals describe, it, beforeEach */
 
-const util = require('util');
 const assert = require('chai').assert;
-const t = require('../lib/tree');
+const {
+    BaseTree,
+    BaseNode,
+    Visitor,
+    CompositeVisitor
+} = require('../lib/tree');
 
-const BaseTree = t.Tree;
-const BaseNode = t.Node;
-const Visitor = t.Visitor;
-const CompositeVisitor = t.CompositeVisitor;
+class TestNode extends BaseNode {
+    constructor(name) {
+        super();
 
-function TestNode(name) {
-    BaseNode.call(this);
-    this.name = name;
-    this.parent = null;
-    this.children = [];
+        this.name = name;
+        this.parent = null;
+        this.children = [];
+    }
+
+    addChild(child) {
+        child.parent = this;
+        this.children.push(child);
+    }
+
+    getChildren() {
+        return this.children;
+    }
+
+    isRoot() {
+        return this.parent === null;
+    }
+
+    isSummary() {
+        return this.children.length > 0;
+    }
 }
-
-util.inherits(TestNode, BaseNode);
-
-TestNode.prototype.addChild = function(child) {
-    child.parent = this;
-    this.children.push(child);
-};
-
-TestNode.prototype.getChildren = function() {
-    return this.children;
-};
-
-TestNode.prototype.isRoot = function() {
-    return this.parent === null;
-};
-
-TestNode.prototype.isSummary = function() {
-    return this.children.length > 0;
-};
 
 describe('tree', () => {
     let leaves;
@@ -63,10 +63,7 @@ describe('tree', () => {
         const root = new TestNode('root');
         root.addChild(groups[0]);
         root.addChild(groups[2]);
-        tree = new BaseTree();
-        tree.getRoot = function() {
-            return root;
-        };
+        tree = new BaseTree(root);
     });
 
     describe('single visitor', () => {

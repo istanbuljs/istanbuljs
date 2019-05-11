@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.2.0...istanbul-lib-instrument@3.3.0) (2019-04-24)
+
+
+### Features
+
+* Enable classProperties and classPrivateProperties parsers and coverage. ([#379](https://github.com/istanbuljs/istanbuljs/issues/379)) ([c09dc38](https://github.com/istanbuljs/istanbuljs/commit/c09dc38))
+
+
+
+
+
+# [3.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.2...istanbul-lib-instrument@3.2.0) (2019-04-09)
+
+
+### Features
+
+* Add bigInt and importMeta to default parser plugins. ([#356](https://github.com/istanbuljs/istanbuljs/issues/356)) ([fb4d6ed](https://github.com/istanbuljs/istanbuljs/commit/fb4d6ed)), closes [#338](https://github.com/istanbuljs/istanbuljs/issues/338)
+
+
+
+
+
+## [3.1.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.1...istanbul-lib-instrument@3.1.2) (2019-04-03)
+
+
+### Bug Fixes
+
+* Be more friendly to ts-node. ([#352](https://github.com/istanbuljs/istanbuljs/issues/352)) ([40d15f5](https://github.com/istanbuljs/istanbuljs/commit/40d15f5)), closes [#336](https://github.com/istanbuljs/istanbuljs/issues/336)
+
+
+
+
+
 ## [3.1.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@3.1.0...istanbul-lib-instrument@3.1.1) (2019-03-12)
 
 

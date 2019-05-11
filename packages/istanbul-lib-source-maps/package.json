@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-source-maps",
-  "version": "3.0.3",
+  "version": "3.0.6",
   "description": "Source maps support for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -13,13 +13,15 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "istanbul-lib-coverage": "^2.0.4",
+    "istanbul-lib-coverage": "^2.0.5",
     "make-dir": "^2.1.0",
-    "rimraf": "^2.6.2",
+    "rimraf": "^2.6.3",
     "source-map": "^0.6.1"
   },
   "devDependencies": {
-    "ts-node": "^8.0.2"
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "ts-node": "^8.1.0"
   },
   "license": "BSD-3-Clause",
   "bugs": {

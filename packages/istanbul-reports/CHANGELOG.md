@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.4...istanbul-reports@2.2.5) (2019-05-02)
+
+
+### Bug Fixes
+
+* **istanbul-reports:** Remove isRoot check causing incorrect report formatting ([#66](https://github.com/istanbuljs/istanbuljs/issues/66)). ([#382](https://github.com/istanbuljs/istanbuljs/issues/382)) ([df6e994](https://github.com/istanbuljs/istanbuljs/commit/df6e994))
+
+
+
+
+
+## [2.2.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.3...istanbul-reports@2.2.4) (2019-04-24)
+
+**Note:** Version bump only for package istanbul-reports
+
+
+
+
+
+## [2.2.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.2...istanbul-reports@2.2.3) (2019-04-17)
+
+
+### Bug Fixes
+
+* Initialize cols for HTML report sorting ([#369](https://github.com/istanbuljs/istanbuljs/issues/369)) ([28f61de](https://github.com/istanbuljs/istanbuljs/commit/28f61de))
+
+
+
+
+
+## [2.2.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.1...istanbul-reports@2.2.2) (2019-04-09)
+
+**Note:** Version bump only for package istanbul-reports
+
+
+
+
+
+## [2.2.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.0...istanbul-reports@2.2.1) (2019-04-03)
+
+**Note:** Version bump only for package istanbul-reports
+
+
+
+
+
 # [2.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.1.1...istanbul-reports@2.2.0) (2019-03-12)
 
 

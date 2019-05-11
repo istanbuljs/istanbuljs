@@ -1,6 +1,5 @@
-/* global describe, it, context */
+/* global describe, it */
 
-const { spawnSync } = require('child_process');
 const path = require('path');
 const exclude = require('../');
 
@@ -21,7 +20,25 @@ describe('testExclude', () => {
             .shouldInstrument('./test.js')
             .should.equal(false);
         exclude()
+            .shouldInstrument('./test.cjs')
+            .should.equal(false);
+        exclude()
+            .shouldInstrument('./test.mjs')
+            .should.equal(false);
+        exclude()
+            .shouldInstrument('./test.ts')
+            .should.equal(false);
+        exclude()
             .shouldInstrument('./foo.test.js')
+            .should.equal(false);
+        exclude()
+            .shouldInstrument('./foo.test.cjs')
+            .should.equal(false);
+        exclude()
+            .shouldInstrument('./foo.test.mjs')
+            .should.equal(false);
+        exclude()
+            .shouldInstrument('./foo.test.ts')
             .should.equal(false);
     });
 
@@ -211,123 +228,11 @@ describe('testExclude', () => {
             'coverage/**',
             'packages/*/test/**',
             'test/**',
-            'test{,-*}.js',
-            '**/*{.,-}test.js',
+            'test{,-*}.{js,cjs,mjs,ts}',
+            '**/*{.,-}test.{js,cjs,mjs,ts}',
             '**/__tests__/**',
-            '**/node_modules/**',
             '**/{ava,babel,jest,nyc,rollup,webpack}.config.js'
         ]);
-    });
-
-    describe('pkgConf', () => {
-        it('should load exclude rules from config key', () => {
-            const e = exclude({
-                configPath: './test/fixtures/exclude',
-                configKey: 'a'
-            });
-
-            e.shouldInstrument('foo.js').should.equal(true);
-            e.shouldInstrument('batman.js').should.equal(false);
-            e.configFound.should.equal(true);
-        });
-
-        it('should load exclude rules from config key using process location', () => {
-            /* This needs to be a separate process so we resolve
-             * the correct package.json instead of trying to look
-             * at the package.json provided by mocha */
-            spawnSync(process.argv0, [
-                path.resolve(__dirname, 'fixtures/subprocess/bin/subprocess.js')
-            ]).status.should.equal(0);
-        });
-
-        it('should load include rules from config key', () => {
-            const e = exclude({
-                configPath: './test/fixtures/include',
-                configKey: 'b'
-            });
-
-            e.shouldInstrument('foo.js').should.equal(false);
-            e.shouldInstrument('batman.js').should.equal(true);
-            e.configFound.should.equal(true);
-        });
-
-        it('should only instrument files that are included in subdirs', () => {
-            const e = exclude({
-                configPath: './test/fixtures/include-src-only',
-                configKey: 'c'
-            });
-            e.shouldInstrument('bar/baz.js').should.equal(false);
-            e.shouldInstrument('bad/file.js').should.equal(false);
-            e.shouldInstrument('foo.js').should.equal(false);
-
-            e.shouldInstrument('src/app.test.js').should.equal(false);
-            e.shouldInstrument('src/app.js').should.equal(true);
-        });
-
-        it('should respect defaultExcludes if no config is given', () => {
-            const e = exclude({
-                configPath: './test/fixtures/defaults',
-                configKey: 'd'
-            });
-
-            e.shouldInstrument('test.js').should.equal(false);
-            e.shouldInstrument('src/app.test.js').should.equal(false);
-            e.shouldInstrument('src/app-test.js').should.equal(false);
-
-            e.shouldInstrument(
-                'packages/package-name/test/test-utils.js'
-            ).should.equal(false);
-
-            e.shouldInstrument('bar/baz.js').should.equal(true);
-            e.shouldInstrument('bad/file.js').should.equal(true);
-            e.shouldInstrument('foo.js').should.equal(true);
-            e.shouldInstrument('index.js').should.equal(true);
-        });
-
-        it('should not throw if a key is missing', () => {
-            const e = exclude({
-                configPath: './test/fixtures/include',
-                configKey: 'c'
-            });
-            e.configFound.should.equal(false);
-        });
-
-        context('when given an object', () => {
-            it('should use the defaultExcludes if the object is empty', () => {
-                const e = exclude({
-                    configPath: './test/fixtures/exclude-empty-object',
-                    configKey: 'e'
-                });
-
-                e.shouldInstrument('test.js').should.equal(false);
-                e.shouldInstrument('src/app.test.js').should.equal(false);
-
-                e.shouldInstrument('bar/baz.js').should.equal(true);
-                e.shouldInstrument('bad/file.js').should.equal(true);
-                e.shouldInstrument('foo.js').should.equal(true);
-                e.shouldInstrument('index.js').should.equal(true);
-            });
-
-            it('should use the defaultExcludes if the object is not empty', () => {
-                const e = exclude({
-                    configPath: './test/fixtures/exclude-object',
-                    configKey: 'e'
-                });
-
-                e.shouldInstrument('test.js').should.equal(false);
-                e.shouldInstrument('src/app.test.js').should.equal(false);
-                e.shouldInstrument('src/app-test.js').should.equal(false);
-
-                e.shouldInstrument(
-                    'packages/package-name/test/test-utils.js'
-                ).should.equal(false);
-
-                e.shouldInstrument('bar/baz.js').should.equal(true);
-                e.shouldInstrument('bad/file.js').should.equal(true);
-                e.shouldInstrument('foo.js').should.equal(true);
-                e.shouldInstrument('index.js').should.equal(true);
-            });
-        });
     });
 
     describe('globSync', () => {
