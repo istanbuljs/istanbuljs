@@ -4,8 +4,9 @@
   "private": true,
   "description": "monorepo containing the various nuts and bolts that facilitate istanbul.js test instrumentation",
   "scripts": {
-    "posttest": "eslint .",
-    "test": "cross-env LERNA_TEST_RUN=1 NODE_ENV=test nyc lerna --ignore nyc exec npm test",
+    "pretest": "eslint .",
+    "test": "cross-env LERNA_TEST_RUN=1 NODE_ENV=test lerna --ignore nyc exec npm test",
+    "posttest": "node ./monorepo-merge-reports.js && nyc report",
     "postinstall": "lerna bootstrap --hoist",
     "release": "lerna publish --conventional-commits --dist-tag=next"
   },
@@ -33,26 +34,16 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.13.0",
+    "glob": "^7.1.3",
     "lerna": "^3.13.4",
     "nyc": "^14.1.0",
     "prettier": "^1.17.0"
   },
   "nyc": {
-    "exclude": [
-      "**/bin/**",
-      "**/coverage/**",
-      "**/dist/**",
-      "**/html/assets/**",
-      "**/html-spa/assets/**",
-      "**/html-spa/src/**",
-      "**/html-spa/rollup.config.js",
-      "**/test/**"
-    ],
     "reporter": [
       "text",
       "lcov"
-    ],
-    "all": true
+    ]
   },
   "engines": {
     "node": ">=6"
