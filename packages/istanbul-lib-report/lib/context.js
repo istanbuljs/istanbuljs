@@ -125,8 +125,4 @@ Object.defineProperty(Context.prototype, 'writer', {
     }
 });
 
-module.exports = {
-    create(opts) {
-        return new Context(opts);
-    }
-};
+module.exports = Context;
