@@ -224,9 +224,10 @@ function tableRow(
 }
 
 function TextReport(opts) {
+    opts = opts || {};
+
     const {maxCols} = opts
 
-    opts = opts || {};
     this.file = opts.file || null;
     this.maxCols = maxCols != null ? maxCols : (process.stdout.columns || 80);
     this.cw = null;
