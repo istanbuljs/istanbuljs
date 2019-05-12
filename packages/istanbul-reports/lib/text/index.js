@@ -7,7 +7,7 @@
 const PCT_COLS = 7;
 const MISSING_COL = 17;
 const TAB_SIZE = 1;
-const DELIM = '|';
+const DELIM = ' | ';
 
 function padding(num, ch) {
     let str = '';
@@ -135,7 +135,7 @@ function makeLine(nameWidth, missingWidth) {
     elements.push(pct);
     elements.push(pct);
     elements.push(padding(missingWidth, '-'));
-    return elements.join(DELIM);
+    return elements.join(DELIM.replace(/ /g, '-'));
 }
 
 function tableHeader(maxNameCols, missingWidth) {
@@ -146,7 +146,7 @@ function tableHeader(maxNameCols, missingWidth) {
     elements.push(formatPct('% Funcs'));
     elements.push(formatPct('% Lines'));
     elements.push(formatPct('Uncovered Line #s', missingWidth));
-    return elements.join('|');
+    return elements.join(DELIM);
 }
 
 function missingLines(node, colorizer, missingWidth) {
@@ -238,7 +238,7 @@ TextReport.prototype.onStart = function(root, context) {
     this.missingWidth = Math.max(MISSING_COL, findMissingWidth(root, context));
 
     if (this.maxCols > 0) {
-        const pct_cols = 4 * (PCT_COLS + 2) + 1;
+        const pct_cols = DELIM.length + 4 * (PCT_COLS + DELIM.length) + 1;
 
         const maxRemaining = this.maxCols - (pct_cols + MISSING_COL);
         if (this.nameWidth > maxRemaining) {
