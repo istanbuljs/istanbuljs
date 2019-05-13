@@ -52,6 +52,10 @@ function formatPct(pct, width) {
 }
 
 function nodeMissing(node) {
+    if (node.isSummary()) {
+      return '';
+    }
+
     const metrics = node.getCoverageSummary();
     const isEmpty = metrics.isEmpty();
     const lines = isEmpty ? 0 : metrics.lines.pct;
@@ -59,16 +63,12 @@ function nodeMissing(node) {
     let missingLines;
 
     if (lines === 100) {
-        const branches = node.isSummary()
-            ? {}
-            : node.getFileCoverage().getBranchCoverageByLine();
+        const branches = node.getFileCoverage().getBranchCoverageByLine();
         missingLines = Object.keys(branches)
             .filter(key => branches[key].coverage < 100)
             .map(key => key);
     } else {
-        missingLines = node.isSummary()
-            ? []
-            : node.getFileCoverage().getUncoveredLines();
+        missingLines = node.getFileCoverage().getUncoveredLines();
     }
     return missingLines.join(',');
 }
