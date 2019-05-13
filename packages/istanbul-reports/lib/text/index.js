@@ -1,6 +1,7 @@
 /*
  Copyright 2012-2015, Yahoo Inc.
- Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ Copyrights licensed under the New BSD License. See the accompanying LICENSE
+ file for terms.
  */
 'use strict';
 
@@ -54,7 +55,7 @@ function formatPct(pct, width) {
 
 function nodeMissing(node) {
     if (node.isSummary()) {
-      return '';
+        return '';
     }
 
     const metrics = node.getCoverageSummary();
@@ -95,8 +96,11 @@ function nullDepthFor() {
 function findWidth(node, context, nodeExtractor, depthFor = nullDepthFor) {
     let last = 0;
     function compareWidth(node) {
-        last = Math.max(last, TAB_SIZE * depthFor(node) + nodeExtractor(node).length)
-    };
+        last = Math.max(
+            last,
+            TAB_SIZE * depthFor(node) + nodeExtractor(node).length
+        );
+    }
     const visitor = {
         onSummary: compareWidth,
         onDetail: compareWidth
@@ -179,8 +183,12 @@ function tableRow(
     elements.push(colorize(formatPct(mm.branches, PCT_COLS + 1), 'branches'));
     elements.push(colorize(formatPct(mm.functions), 'functions'));
     elements.push(colorize(formatPct(mm.lines), 'lines'));
-    elements.push(colorizer(formatPct(nodeMissing(node), missingWidth),
-      mm.lines === 100 ? 'medium' : 'low'));
+    elements.push(
+        colorizer(
+            formatPct(nodeMissing(node), missingWidth),
+            mm.lines === 100 ? 'medium' : 'low'
+        )
+    );
 
     return elements.join(DELIM);
 }
@@ -188,10 +196,10 @@ function tableRow(
 function TextReport(opts) {
     opts = opts || {};
 
-    const {maxCols} = opts
+    const { maxCols } = opts;
 
     this.file = opts.file || null;
-    this.maxCols = maxCols != null ? maxCols : (process.stdout.columns || 80);
+    this.maxCols = maxCols != null ? maxCols : process.stdout.columns || 80;
     this.cw = null;
     this.skipEmpty = opts.skipEmpty;
     this.skipFull = opts.skipFull;
@@ -199,8 +207,14 @@ function TextReport(opts) {
 
 TextReport.prototype.onStart = function(root, context) {
     this.cw = context.writer.writeFile(this.file);
-    this.nameWidth = Math.max(NAME_COL, findWidth(root, context, nodeName, depthFor));
-    this.missingWidth = Math.max(MISSING_COL, findWidth(root, context, nodeMissing));
+    this.nameWidth = Math.max(
+        NAME_COL,
+        findWidth(root, context, nodeName, depthFor)
+    );
+    this.missingWidth = Math.max(
+        MISSING_COL,
+        findWidth(root, context, nodeMissing)
+    );
 
     if (this.maxCols > 0) {
         const pct_cols = DELIM.length + 4 * (PCT_COLS + DELIM.length) + 1;
