@@ -4,6 +4,7 @@
  */
 'use strict';
 
+const NAME_COL = 4;
 const PCT_COLS = 7;
 const MISSING_COL = 17;
 const TAB_SIZE = 1;
@@ -87,38 +88,18 @@ function depthFor(node) {
     return ret;
 }
 
-function findMissingWidth(node, context) {
+function nullDepthFor() {
+    return 0;
+}
+
+function findWidth(node, context, nodeExtractor, depthFor = nullDepthFor) {
     let last = 0;
     function compareWidth(node) {
-        const idealWidth = nodeMissing(node).length;
-        if (idealWidth > last) {
-            last = idealWidth;
-        }
-    }
+        last = Math.max(last, TAB_SIZE * depthFor(node) + nodeExtractor(node).length)
+    };
     const visitor = {
         onSummary: compareWidth,
         onDetail: compareWidth
-    };
-    node.visit(context.getVisitor(visitor));
-    return last;
-}
-
-function findNameWidth(node, context) {
-    let last = 0;
-    const compareWidth = function(node) {
-        const depth = depthFor(node);
-        const idealWidth = TAB_SIZE * depth + nodeName(node).length;
-        if (idealWidth > last) {
-            last = idealWidth;
-        }
-    };
-    const visitor = {
-        onSummary(node) {
-            compareWidth(node);
-        },
-        onDetail(node) {
-            compareWidth(node);
-        }
     };
     node.visit(context.getVisitor(visitor));
     return last;
@@ -218,8 +199,8 @@ function TextReport(opts) {
 
 TextReport.prototype.onStart = function(root, context) {
     this.cw = context.writer.writeFile(this.file);
-    this.nameWidth = findNameWidth(root, context);
-    this.missingWidth = Math.max(MISSING_COL, findMissingWidth(root, context));
+    this.nameWidth = Math.max(NAME_COL, findWidth(root, context, nodeName, depthFor));
+    this.missingWidth = Math.max(MISSING_COL, findWidth(root, context, nodeMissing));
 
     if (this.maxCols > 0) {
         const pct_cols = DELIM.length + 4 * (PCT_COLS + DELIM.length) + 1;
