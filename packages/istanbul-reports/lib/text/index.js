@@ -130,7 +130,7 @@ function tableHeader(maxNameCols, missingWidth) {
     elements.push(formatPct('% Branch', PCT_COLS + 1));
     elements.push(formatPct('% Funcs'));
     elements.push(formatPct('% Lines'));
-    elements.push(formatPct('Uncovered Line #s', missingWidth));
+    elements.push(formatName('Uncovered Line #s', missingWidth));
     return elements.join(DELIM);
 }
 
@@ -185,7 +185,7 @@ function tableRow(
     elements.push(colorize(formatPct(mm.lines), 'lines'));
     elements.push(
         colorizer(
-            formatPct(nodeMissing(node), missingWidth),
+            formatName(nodeMissing(node), missingWidth),
             mm.lines === 100 ? 'medium' : 'low'
         )
     );
