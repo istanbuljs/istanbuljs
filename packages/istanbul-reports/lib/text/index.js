@@ -29,17 +29,22 @@ function fill(str, width, right, tabs) {
     const remaining = width - leadingSpaces;
     const leader = padding(leadingSpaces);
     let fmtStr = '';
-    let fillStr;
-    const strlen = str.length;
 
     if (remaining > 0) {
+        const strlen = str.length;
+        let fillStr;
+
         if (remaining >= strlen) {
             fillStr = padding(remaining - strlen);
-            fmtStr = right ? fillStr + str : str + fillStr;
         } else {
-            fmtStr = str.substring(strlen - remaining);
-            fmtStr = '...' + fmtStr.substring(3);
+            fillStr = '...';
+            const length = remaining - fillStr.length;
+
+            str = right
+                ? str.substring(strlen - length)
+                : str.substring(0, length);
         }
+        fmtStr = right ? fillStr + str : str + fillStr;
     }
 
     return leader + fmtStr;
