@@ -1,3 +1,4 @@
+'use strict';
 /* global describe, it */
 
 const assert = require('chai').assert;

@@ -9,7 +9,7 @@
  */
 
 const summarizer = require('./lib/summarizer');
-const context = require('./lib/context');
+const Context = require('./lib/context');
 const watermarks = require('./lib/watermarks');
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
      * @returns {Context}
      */
     createContext(opts) {
-        return context.create(opts);
+        return new Context(opts);
     },
     /**
      * returns the default watermarks that would be used when not
