@@ -42,7 +42,6 @@ export function isObjectSpreadAvailable() {
 }
 
 export function isObjectFreezeAvailable() {
-    'use strict';
     if (!Object.freeze) {
         return false;
     }
