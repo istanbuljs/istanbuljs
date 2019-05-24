@@ -5,8 +5,8 @@
  */
 const INDENT = '  ';
 
-function attrString(attrs = {}) {
-    return Object.entries(attrs)
+function attrString(attrs) {
+    return Object.entries(attrs || {})
         .map(([k, v]) => ` ${k}="${v}"`)
         .join('');
 }
