@@ -10,6 +10,7 @@
 
 const Context = require('./lib/context');
 const watermarks = require('./lib/watermarks');
+const ReportBase = require('./lib/report-base');
 
 module.exports = {
     /**
@@ -20,6 +21,7 @@ module.exports = {
     createContext(opts) {
         return new Context(opts);
     },
+
     /**
      * returns the default watermarks that would be used when not
      * overridden
@@ -29,5 +31,10 @@ module.exports = {
      */
     getDefaultWatermarks() {
         return watermarks.getDefault();
-    }
+    },
+
+    /**
+     * Base class for all reports
+     */
+    ReportBase
 };

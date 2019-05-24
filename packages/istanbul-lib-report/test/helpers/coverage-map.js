@@ -1,3 +1,5 @@
+'use strict';
+
 const coverage = require('istanbul-lib-coverage');
 
 function makeCoverage(filePath, numStatements, numCovered) {

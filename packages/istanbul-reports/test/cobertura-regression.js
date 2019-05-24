@@ -6,11 +6,11 @@ const istanbulLibCoverage = require('istanbul-lib-coverage');
 const Report = require('../lib/cobertura');
 
 it('issue 384', () => {
-    const coverageMap = istanbulLibCoverage.createCoverageMap({});
-    const tree = istanbulLibReport.summarizers.pkg(coverageMap);
     const context = istanbulLibReport.createContext({
-        dir: './'
+        dir: './',
+        coverageMap: istanbulLibCoverage.createCoverageMap({})
     });
+    const tree = context.getTree('pkg');
     const report = new Report({ file: '-' });
 
     FileWriter.startCapture();
