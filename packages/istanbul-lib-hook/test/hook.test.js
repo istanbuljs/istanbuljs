@@ -1,3 +1,4 @@
+'use strict';
 /* globals describe, it, beforeEach, afterEach */
 const assert = require('chai').assert;
 const hook = require('../lib/hook');

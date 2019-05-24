@@ -1,3 +1,4 @@
+'use strict';
 /* globals describe, it, beforeEach, afterEach */
 
 const path = require('path');

@@ -1,3 +1,4 @@
+'use strict';
 /* globals it */
 const FileWriter = require('istanbul-lib-report/lib/file-writer');
 const istanbulLibReport = require('istanbul-lib-report');

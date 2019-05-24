@@ -1,3 +1,4 @@
+'use strict';
 /* globals describe, it */
 const fs = require('fs');
 const istanbulLibCoverage = require('istanbul-lib-coverage');
