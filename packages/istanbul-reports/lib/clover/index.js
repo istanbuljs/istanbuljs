@@ -56,8 +56,19 @@ CloverReport.prototype.getTreeStats = function(node, context) {
 };
 
 CloverReport.prototype.writeRootStats = function(node, context) {
+    this.cw.println('<?xml version="1.0" encoding="UTF-8"?>');
+    this.xml.openTag('coverage', {
+        generated: Date.now().toString(),
+        clover: '3.2.0'
+    });
+
+    this.xml.openTag('project', {
+        timestamp: Date.now().toString(),
+        name: 'All files'
+    });
+
     const metrics = node.getCoverageSummary();
-    const attrs = {
+    this.xml.inlineTag('metrics', {
         statements: metrics.lines.total,
         coveredstatements: metrics.lines.covered,
         conditionals: metrics.branches.total,
@@ -74,26 +85,9 @@ CloverReport.prototype.writeRootStats = function(node, context) {
             metrics.functions.covered,
         complexity: 0,
         loc: metrics.lines.total,
-        ncloc: metrics.lines.total // what? copied as-is from old report
-    };
-
-    this.cw.println('<?xml version="1.0" encoding="UTF-8"?>');
-    this.xml.openTag('coverage', {
-        generated: Date.now().toString(),
-        clover: '3.2.0'
+        ncloc: metrics.lines.total, // what? copied as-is from old report
+        ...this.getTreeStats(node, context)
     });
-
-    this.xml.openTag('project', {
-        timestamp: Date.now().toString(),
-        name: 'All files'
-    });
-
-    const treeStats = this.getTreeStats(node, context);
-    Object.keys(treeStats).forEach(k => {
-        attrs[k] = treeStats[k];
-    });
-
-    this.xml.inlineTag('metrics', attrs);
 };
 
 CloverReport.prototype.writeMetrics = function(metrics) {
@@ -142,10 +136,10 @@ CloverReport.prototype.onDetail = function(node) {
     this.writeMetrics(metrics);
 
     const lines = fileCoverage.getLineCoverage();
-    Object.keys(lines).forEach(k => {
+    Object.entries(lines).forEach(([k, count]) => {
         const attrs = {
             num: k,
-            count: lines[k],
+            count,
             type: 'stmt'
         };
         const branchDetail = branchByLine[k];

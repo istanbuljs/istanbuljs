@@ -24,7 +24,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
     "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
     "clone": "^2.1.2",
@@ -51,6 +51,6 @@
     "instrumentation"
   ],
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   }
 }

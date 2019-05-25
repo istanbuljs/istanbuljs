@@ -17,16 +17,14 @@ function defaultSourceLookup(path) {
     }
 }
 
-function mergeWatermarks(specified, defaults) {
-    specified = specified || {};
-    Object.keys(defaults).forEach(k => {
+function normalizeWatermarks(specified = {}) {
+    Object.entries(watermarks.getDefault()).forEach(([k, value]) => {
         const specValue = specified[k];
-        if (
-            !(specValue && Array.isArray(specValue) && specValue.length === 2)
-        ) {
-            specified[k] = defaults[k];
+        if (!Array.isArray(specValue) || specValue.length !== 2) {
+            specified[k] = value;
         }
     });
+
     return specified;
 }
 
@@ -45,10 +43,7 @@ class Context {
     constructor(opts) {
         opts = opts || {};
         this.dir = opts.dir || 'coverage';
-        this.watermarks = mergeWatermarks(
-            opts.watermarks,
-            watermarks.getDefault()
-        );
+        this.watermarks = normalizeWatermarks(opts.watermarks);
         this.sourceFinder = opts.sourceFinder || defaultSourceLookup;
         this.data = {};
     }

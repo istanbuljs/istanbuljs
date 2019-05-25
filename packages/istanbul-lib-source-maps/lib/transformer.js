@@ -19,8 +19,7 @@ class SourceMapTransformer {
     processFile(fc, sourceMap, coverageMapper) {
         let changes = 0;
 
-        Object.keys(fc.statementMap).forEach(s => {
-            const loc = fc.statementMap[s];
+        Object.entries(fc.statementMap).forEach(([s, loc]) => {
             const hits = fc.s[s];
             const mapping = getMapping(sourceMap, loc, fc.path);
 
@@ -31,8 +30,7 @@ class SourceMapTransformer {
             }
         });
 
-        Object.keys(fc.fnMap).forEach(f => {
-            const fnMeta = fc.fnMap[f];
+        Object.entries(fc.fnMap).forEach(([f, fnMeta]) => {
             const hits = fc.f[f];
             const mapping = getMapping(sourceMap, fnMeta.decl, fc.path);
             const spanMapping = getMapping(sourceMap, fnMeta.loc, fc.path);
@@ -53,8 +51,7 @@ class SourceMapTransformer {
             }
         });
 
-        Object.keys(fc.branchMap).forEach(b => {
-            const branchMeta = fc.branchMap[b];
+        Object.entries(fc.branchMap).forEach(([b, branchMeta]) => {
             const hits = fc.b[b];
             const locs = [];
             const mappedHits = [];

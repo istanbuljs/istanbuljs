@@ -14,7 +14,9 @@
                 "packages/nyc-config-typescript/package.json",
                 "packages/test-exclude/package.json"
             ],
-            "ignore": ["source-map", "make-dir", "read-pkg-up"]
+            "ignore": [
+                "source-map"
+            ]
         }
     }
 }

@@ -6,8 +6,9 @@
 const INDENT = '  ';
 
 function attrString(attrs) {
-    const ret = Object.keys(attrs || {}).map(k => `${k}="${attrs[k]}"`);
-    return ret.length === 0 ? '' : ' ' + ret.join(' ');
+    return Object.entries(attrs || {})
+        .map(([k, v]) => ` ${k}="${v}"`)
+        .join('');
 }
 
 /**

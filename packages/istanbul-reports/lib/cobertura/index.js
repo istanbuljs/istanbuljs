@@ -95,8 +95,7 @@ CoberturaReport.prototype.onDetail = function(node) {
 
     this.xml.openTag('methods');
     const fnMap = fileCoverage.fnMap;
-    Object.keys(fnMap).forEach(k => {
-        const name = fnMap[k].name;
+    Object.entries(fnMap).forEach(([k, { name, decl }]) => {
         const hits = fileCoverage.f[k];
         this.xml.openTag('method', {
             name,
@@ -106,7 +105,7 @@ CoberturaReport.prototype.onDetail = function(node) {
         this.xml.openTag('lines');
         //Add the function definition line and hits so that jenkins cobertura plugin records method hits
         this.xml.inlineTag('line', {
-            number: fnMap[k].decl.start.line,
+            number: decl.start.line,
             hits
         });
         this.xml.closeTag('lines');
@@ -116,10 +115,10 @@ CoberturaReport.prototype.onDetail = function(node) {
 
     this.xml.openTag('lines');
     const lines = fileCoverage.getLineCoverage();
-    Object.keys(lines).forEach(k => {
+    Object.entries(lines).forEach(([k, hits]) => {
         const attrs = {
             number: k,
-            hits: lines[k],
+            hits,
             branch: 'false'
         };
         const branchDetail = branchByLine[k];
