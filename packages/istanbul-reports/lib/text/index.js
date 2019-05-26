@@ -125,7 +125,7 @@ function makeLine(nameWidth, missingWidth) {
     elements.push(pct);
     elements.push(pct);
     elements.push(padding(missingWidth, '-'));
-    return elements.join(DELIM.replace(/ /g, '-'));
+    return elements.join(DELIM.replace(/ /g, '-')) + '-';
 }
 
 function tableHeader(maxNameCols, missingWidth) {
@@ -136,7 +136,7 @@ function tableHeader(maxNameCols, missingWidth) {
     elements.push(formatPct('% Funcs'));
     elements.push(formatPct('% Lines'));
     elements.push(formatName('Uncovered Line #s', missingWidth));
-    return elements.join(DELIM);
+    return elements.join(DELIM) + ' ';
 }
 
 function isFull(metrics) {
@@ -195,7 +195,7 @@ function tableRow(
         )
     );
 
-    return elements.join(DELIM);
+    return elements.join(DELIM) + ' ';
 }
 
 function TextReport(opts) {
@@ -222,7 +222,7 @@ TextReport.prototype.onStart = function(root, context) {
     );
 
     if (this.maxCols > 0) {
-        const pct_cols = DELIM.length + 4 * (PCT_COLS + DELIM.length) + 1;
+        const pct_cols = DELIM.length + 4 * (PCT_COLS + DELIM.length) + 2;
 
         const maxRemaining = this.maxCols - (pct_cols + MISSING_COL);
         if (this.nameWidth > maxRemaining) {
