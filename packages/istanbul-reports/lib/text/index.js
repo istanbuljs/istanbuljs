@@ -68,13 +68,14 @@ function nodeMissing(node) {
 
     let missingLines;
 
+    const fileCoverage = node.getFileCoverage();
     if (lines === 100) {
-        const branches = node.getFileCoverage().getBranchCoverageByLine();
-        missingLines = Object.keys(branches)
-            .filter(key => branches[key].coverage < 100)
-            .map(key => key);
+        const branches = fileCoverage.getBranchCoverageByLine();
+        missingLines = Object.keys(branches).filter(
+            key => branches[key].coverage < 100
+        );
     } else {
-        missingLines = node.getFileCoverage().getUncoveredLines();
+        missingLines = fileCoverage.getUncoveredLines();
     }
     return missingLines.join(',');
 }
