@@ -9,16 +9,17 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha"
+    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha"
   },
   "dependencies": {
     "istanbul-lib-coverage": "^2.0.5",
-    "make-dir": "^2.1.0",
+    "make-dir": "^3.0.0",
     "supports-color": "^6.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.0",
     "rimraf": "^2.6.3"
   },
   "license": "BSD-3-Clause",
@@ -37,6 +38,6 @@
     "lib"
   ],
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   }
 }

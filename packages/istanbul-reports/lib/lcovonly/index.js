@@ -26,34 +26,28 @@ LcovOnlyReport.prototype.onDetail = function(node) {
     writer.println('TN:'); //no test name
     writer.println('SF:' + fc.path);
 
-    Object.keys(functionMap).forEach(key => {
-        const meta = functionMap[key];
+    Object.values(functionMap).forEach(meta => {
         writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
     });
     writer.println('FNF:' + summary.functions.total);
     writer.println('FNH:' + summary.functions.covered);
 
-    Object.keys(functionMap).forEach(key => {
+    Object.entries(functionMap).forEach(([key, meta]) => {
         const stats = functions[key];
-        const meta = functionMap[key];
         writer.println('FNDA:' + [stats, meta.name].join(','));
     });
 
-    Object.keys(lines).forEach(key => {
-        const stat = lines[key];
-        writer.println('DA:' + [key, stat].join(','));
+    Object.entries(lines).forEach(entry => {
+        writer.println('DA:' + entry.join(','));
     });
     writer.println('LF:' + summary.lines.total);
     writer.println('LH:' + summary.lines.covered);
 
-    Object.keys(branches).forEach(key => {
-        const branchArray = branches[key];
+    Object.entries(branches).forEach(([key, branchArray]) => {
         const meta = branchMap[key];
-        const line = meta.loc.start.line;
-        let i = 0;
-        branchArray.forEach(b => {
+        const { line } = meta.loc.start;
+        branchArray.forEach((b, i) => {
             writer.println('BRDA:' + [line, key, i, b].join(','));
-            i += 1;
         });
     });
     writer.println('BRF:' + summary.branches.total);

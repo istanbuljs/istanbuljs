@@ -1,3 +1,4 @@
+'use strict';
 /*
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
@@ -5,8 +6,9 @@
 const INDENT = '  ';
 
 function attrString(attrs) {
-    const ret = Object.keys(attrs || {}).map(k => `${k}="${attrs[k]}"`);
-    return ret.length === 0 ? '' : ' ' + ret.join(' ');
+    return Object.entries(attrs || {})
+        .map(([k, v]) => ` ${k}="${v}"`)
+        .join('');
 }
 
 /**

@@ -594,7 +594,11 @@ function programVisitor(
 ) {
     const T = types;
     // This sets some unused options but ensures all required options are initialized
-    opts = Object.assign({}, defaultOpts(), defaultProgramVisitorOpts, opts);
+    opts = {
+        ...defaultOpts(),
+        ...defaultProgramVisitorOpts,
+        ...opts
+    };
     const visitState = new VisitState(
         types,
         sourceFilePath,

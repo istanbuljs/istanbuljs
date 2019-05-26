@@ -12,8 +12,7 @@
         }
     },
     "parserOptions": {
-        "ecmaVersion": 7,
-        "sourceType": "module"
+        "ecmaVersion": 2018
     },
     "env": {
         "es6": true,
@@ -25,6 +24,15 @@
     },
     "overrides": [
         {
+            "files": [
+                "packages/istanbul-lib-instrument/{bin,src,test}/**",
+                "packages/istanbul-reports/lib/html-spa/rollup.config.js"
+            ],
+            "parserOptions": {
+                "sourceType": "module"
+            }
+        },
+        {
             "files": "packages/istanbul-reports/lib/html/assets/**/*",
             "env": {
                 "browser": true
@@ -35,7 +43,6 @@
             "parser": "babel-eslint",
             "parserOptions": {
                 "ecmaVersion": 2019,
-                "sourceType": "module",
                 "ecmaFeatures": {
                     "jsx": true
                 }
@@ -59,7 +66,8 @@
                 "prefer-arrow-callback": "error",
                 "prefer-const": "error",
                 "prefer-rest-params": "error",
-                "prefer-spread": "error"
+                "prefer-spread": "error",
+                "strict": "error"
             }
         }
     ]
