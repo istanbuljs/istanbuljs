@@ -40,9 +40,8 @@ function fill(str, width, right, tabs) {
             fillStr = '...';
             const length = remaining - fillStr.length;
 
-            str = right
-                ? str.substring(strlen - length)
-                : str.substring(0, length);
+            str = str.substring(strlen - length);
+            right = true;
         }
         fmtStr = right ? fillStr + str : str + fillStr;
     }
