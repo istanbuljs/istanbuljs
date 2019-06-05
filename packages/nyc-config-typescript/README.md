@@ -18,6 +18,7 @@ And write a `.nycrc` that looks like this:
 ```js
 {
     "extends": "@istanbuljs/nyc-config-typescript",
+
     // OPTIONAL if you want coverage reported on every file, including those that aren't tested:
     "all": true
 }
@@ -36,6 +37,17 @@ If you're using `mocha`:
 --require source-map-support/register
 --recursive
 <glob for your test files>
+```
+
+### .nycrc
+
+```
+{
+    ...,
+    "require": [
+        "ts-node/register" // or "ts-node/register/transpile-only"
+    ]
+}
 ```
 
 Now setup the test scripts in your package.json like so (with the equivalent for your test runner):
