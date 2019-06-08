@@ -43,6 +43,16 @@ describe('testExclude', () => {
             .should.equal(false);
     });
 
+    it('ignores ./test and ./tests', () => {
+        exclude()
+            .shouldInstrument('./test/index.js')
+            .should.equal(false);
+
+        exclude()
+            .shouldInstrument('./tests/index.js')
+            .should.equal(false);
+    });
+
     it('matches files in root with **/', () => {
         exclude()
             .shouldInstrument('__tests__/**')
@@ -227,8 +237,8 @@ describe('testExclude', () => {
     it('exports defaultExclude', () => {
         exclude.defaultExclude.should.deep.equal([
             'coverage/**',
-            'packages/*/test/**',
-            'test/**',
+            'packages/*/test{,s}/**',
+            'test{,s}/**',
             'test{,-*}.{js,cjs,mjs,ts}',
             '**/*{.,-}test.{js,cjs,mjs,ts}',
             '**/__tests__/**',
