@@ -14,7 +14,7 @@
   "dependencies": {
     "istanbul-lib-coverage": "^2.0.5",
     "make-dir": "^3.0.0",
-    "supports-color": "^6.1.0"
+    "supports-color": "^7.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
