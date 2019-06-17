@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const handlebars = require('handlebars').create();
+const { ReportBase } = require('istanbul-lib-report');
 const annotator = require('./annotator');
 const helpers = require('./helpers');
 const templateFor = function(name) {
@@ -108,8 +109,10 @@ function fixPct(metrics) {
     return metrics;
 }
 
-class HtmlReport {
+class HtmlReport extends ReportBase {
     constructor(opts) {
+        super();
+
         this.verbose = opts.verbose;
         this.linkMapper = opts.linkMapper || standardLinkMapper;
         this.subdir = opts.subdir || '';

@@ -3,13 +3,14 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-const util = require('util');
 const LcovOnly = require('../lcovonly');
 
-function TextLcov(opts) {
-    opts.file = '-';
-    LcovOnly.call(this, opts);
+class TextLcov extends LcovOnly {
+    constructor(opts) {
+        super(opts);
+
+        opts.file = '-';
+    }
 }
 
-util.inherits(TextLcov, LcovOnly);
 module.exports = TextLcov;

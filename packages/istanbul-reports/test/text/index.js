@@ -26,18 +26,16 @@ describe('TextReport', () => {
             __dirname,
             '../fixtures/specs/' + file
         ));
-        fixture.map = istanbulLibReport.summarizers.pkg(
-            istanbulLibCoverage.createCoverageMap(fixture.map)
-        );
         it(fixture.title, function() {
             if (isWindows()) {
                 // appveyor does not render console color.
                 return this.skip();
             }
             const context = istanbulLibReport.createContext({
-                dir: './'
+                dir: './',
+                coverageMap: istanbulLibCoverage.createCoverageMap(fixture.map)
             });
-            const tree = fixture.map;
+            const tree = context.getTree('pkg');
             const report = new TextReport(fixture.opts);
             tree.visit(report, context);
             const output = FileWriter.getOutput();

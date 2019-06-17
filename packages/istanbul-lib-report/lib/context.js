@@ -8,6 +8,7 @@ const FileWriter = require('./file-writer');
 const XMLWriter = require('./xml-writer');
 const tree = require('./tree');
 const watermarks = require('./watermarks');
+const SummarizerFactory = require('./summarizer-factory');
 
 function defaultSourceLookup(path) {
     try {
@@ -41,10 +42,13 @@ function normalizeWatermarks(specified = {}) {
  */
 class Context {
     constructor(opts) {
-        opts = opts || {};
         this.dir = opts.dir || 'coverage';
         this.watermarks = normalizeWatermarks(opts.watermarks);
         this.sourceFinder = opts.sourceFinder || defaultSourceLookup;
+        this._summarizerFactory = new SummarizerFactory(
+            opts.coverageMap,
+            opts.defaultSummarizer
+        );
         this.data = {};
     }
 
@@ -108,6 +112,10 @@ class Context {
      */
     getVisitor(partialVisitor) {
         return new tree.Visitor(partialVisitor);
+    }
+
+    getTree(name = 'defaultSummarizer') {
+        return this._summarizerFactory[name];
     }
 }
 

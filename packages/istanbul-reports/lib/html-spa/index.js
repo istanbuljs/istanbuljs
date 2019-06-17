@@ -5,6 +5,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { ReportBase } = require('istanbul-lib-report');
 const HtmlReport = require('../html');
 
 const standardLinkMapper = {
@@ -36,8 +37,10 @@ const standardLinkMapper = {
     }
 };
 
-class HtmlSpaReport {
+class HtmlSpaReport extends ReportBase {
     constructor(opts = {}) {
+        super();
+
         this.verbose = opts.verbose || false;
         this.linkMapper = opts.linkMapper || standardLinkMapper;
         this.subdir = opts.subdir || '';
