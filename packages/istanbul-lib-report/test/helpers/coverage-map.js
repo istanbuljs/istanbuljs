@@ -28,86 +28,55 @@ function makeCoverage(filePath, numStatements, numCovered) {
     return fc;
 }
 
-function protoDir(dir) {
-    const files = ['constructor.js', 'toString.js'];
+function filesMap(dir, files) {
+    dir = dir ? dir + '/' : '';
+
     let count = 0;
-    const map = {};
-    files.forEach(f => {
-        const filePath = dir ? dir + '/' + f : f;
-        const fc = makeCoverage(filePath, 4, count);
-        count += 1;
-        map[filePath] = fc;
-    });
-    return coverage.createCoverageMap(map);
+
+    return coverage.createCoverageMap(
+        files.reduce((map, file) => {
+            const filePath = dir + file;
+            map[filePath] = makeCoverage(filePath, 4, count);
+            count += 1;
+
+            return map;
+        }, {})
+    );
+}
+
+function protoDir(dir) {
+    return filesMap(dir, ['constructor.js', 'toString.js']);
 }
 
 function singleDir(dir) {
-    const files = ['file3.js', 'file4.js', 'file2.js', 'file1.js'];
-    let count = 0;
-    const map = {};
-    files.forEach(f => {
-        const filePath = dir ? dir + '/' + f : f;
-        const fc = makeCoverage(filePath, 4, count);
-        count += 1;
-        map[filePath] = fc;
-    });
-    return coverage.createCoverageMap(map);
+    return filesMap(dir, ['file3.js', 'file4.js', 'file2.js', 'file1.js']);
 }
 
 function twoDir(nested) {
-    const files = nested
-        ? [
-              'lib1/file3.js',
-              'lib1/lib2/file4.js',
-              'lib1/file2.js',
-              'lib1/lib2/file1.js'
-          ]
-        : ['lib1/file3.js', 'lib2/file4.js', 'lib1/file2.js', 'lib2/file1.js'];
-    let count = 0;
-    const map = {};
-    files.forEach(f => {
-        const filePath = f;
-        const fc = makeCoverage(filePath, 4, count);
-        count += 1;
-        map[filePath] = fc;
-    });
-    return coverage.createCoverageMap(map);
+    return filesMap('', [
+        'lib1/file3.js',
+        nested ? 'lib1/lib2/file4.js' : 'lib2/file4.js',
+        'lib1/file2.js',
+        nested ? 'lib1/lib2/file1.js' : 'lib2/file1.js'
+    ]);
 }
 
 function threeDir() {
-    const files = [
+    return filesMap('', [
         'lib1/file3.js',
         'lib2/file4.js',
         'lib1/sub/dir/file2.js',
         'file1.js'
-    ];
-    let count = 0;
-    const map = {};
-    files.forEach(f => {
-        const filePath = f;
-        const fc = makeCoverage(filePath, 4, count);
-        count += 1;
-        map[filePath] = fc;
-    });
-    return coverage.createCoverageMap(map);
+    ]);
 }
 
 function multiDir() {
-    const files = [
+    return filesMap('', [
         'lib1/sub/file3.js',
         'lib1/file4.js',
         'lib2/sub1/file2.js',
         'lib2/sub2/file1.js'
-    ];
-    let count = 0;
-    const map = {};
-    files.forEach(f => {
-        const filePath = f;
-        const fc = makeCoverage(filePath, 4, count);
-        count += 1;
-        map[filePath] = fc;
-    });
-    return coverage.createCoverageMap(map);
+    ]);
 }
 
 module.exports = {
