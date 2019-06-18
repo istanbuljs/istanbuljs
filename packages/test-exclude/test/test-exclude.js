@@ -63,6 +63,11 @@ describe('testExclude', () => {
         exclude({ include: ['../foo.js'] })
             .shouldInstrument('../foo.js')
             .should.equal(false);
+        if (process.platform === 'win32') {
+            exclude({ cwd: 'C:\\project' })
+                .shouldInstrument('D:\\project\\foo.js')
+                .should.equal(false);
+        }
     });
 
     it('can instrument files outside cwd if relativePath=false', () => {
