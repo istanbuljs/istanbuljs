@@ -4,10 +4,11 @@
   "description": "test for inclusion or exclusion of paths using globs",
   "main": "index.js",
   "files": [
-    "*.js"
+    "*.js",
+    "!nyc.config.js"
   ],
   "scripts": {
-    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha"
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",

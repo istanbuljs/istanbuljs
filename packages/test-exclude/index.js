@@ -4,6 +4,7 @@ const path = require('path');
 const glob = require('glob');
 const minimatch = require('minimatch');
 const defaultExclude = require('./default-exclude');
+const isOutsideDir = require('./is-outside-dir');
 
 class TestExclude {
     constructor(opts) {
@@ -93,7 +94,7 @@ class TestExclude {
             relFile = relFile || path.relative(this.cwd, filename);
 
             // Don't instrument files that are outside of the current working directory.
-            if (/^\.\./.test(path.relative(this.cwd, filename))) {
+            if (isOutsideDir(this.cwd, filename)) {
                 return false;
             }
 
