@@ -9,6 +9,7 @@ module.exports = {
     ...base,
     exclude: [
         ...defaultExclude,
+        'is-outside-dir.js',
         isWindows ? 'is-outside-dir-posix.js' : 'is-outside-dir-win32.js'
     ]
 };

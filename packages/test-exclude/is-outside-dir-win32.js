@@ -6,9 +6,5 @@ const minimatch = require('minimatch');
 const dot = { dot: true };
 
 module.exports = function(dir, filename) {
-    return !minimatch(
-        path.resolve(dir, filename),
-        path.join(dir, '**'),
-        dot
-    );
+    return !minimatch(path.resolve(dir, filename), path.join(dir, '**'), dot);
 };
