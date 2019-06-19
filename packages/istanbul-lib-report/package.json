@@ -19,7 +19,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
-    "nyc": "^14.1.0",
+    "nyc": "^14.1.1",
     "rimraf": "^2.6.3"
   },
   "license": "BSD-3-Clause",

@@ -14,26 +14,26 @@
   },
   "dependencies": {
     "@babel/generator": "^7.4.4",
-    "@babel/parser": "^7.4.4",
+    "@babel/parser": "^7.4.5",
     "@babel/template": "^7.4.4",
-    "@babel/traverse": "^7.4.4",
+    "@babel/traverse": "^7.4.5",
     "@babel/types": "^7.4.4",
     "istanbul-lib-coverage": "^2.0.5",
-    "semver": "^6.0.0"
+    "semver": "^6.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.4.5",
     "@babel/plugin-transform-modules-commonjs": "^7.4.4",
     "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
     "clone": "^2.1.2",
     "debug": "^4.1.1",
-    "documentation": "^11.0.0",
+    "documentation": "^11.0.1",
     "js-yaml": "^3.13.1",
     "mocha": "^6.1.4",
     "nopt": "^4.0.1",
-    "nyc": "^14.1.0"
+    "nyc": "^14.1.1"
   },
   "license": "BSD-3-Clause",
   "bugs": {

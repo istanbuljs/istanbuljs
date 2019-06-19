@@ -28,13 +28,13 @@
   },
   "homepage": "https://istanbul.js.org/",
   "dependencies": {
-    "glob": "^7.1.3",
+    "glob": "^7.1.4",
     "minimatch": "^3.0.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
-    "nyc": "^14.1.0"
+    "nyc": "^14.1.1"
   },
   "engines": {
     "node": ">=8"
