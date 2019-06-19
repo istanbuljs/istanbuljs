@@ -7,9 +7,10 @@ const LcovOnly = require('../lcovonly');
 
 class TextLcov extends LcovOnly {
     constructor(opts) {
-        super(opts);
-
-        opts.file = '-';
+        super({
+            ...opts,
+            file: '-'
+        });
     }
 }
 
