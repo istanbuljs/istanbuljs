@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@2.0.7...istanbul-lib-hook@3.0.0-alpha.0) (2019-06-19)
+
+
+### Features
+
+* Update dependencies, require Node.js 8 ([#401](https://github.com/istanbuljs/istanbuljs/issues/401)) ([bf3a539](https://github.com/istanbuljs/istanbuljs/commit/bf3a539))
+
+
+### BREAKING CHANGES
+
+* Node.js 8 is now required
+
+
+
+
+
 ## [2.0.7](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@2.0.6...istanbul-lib-hook@2.0.7) (2019-04-24)
 
 **Note:** Version bump only for package istanbul-lib-hook

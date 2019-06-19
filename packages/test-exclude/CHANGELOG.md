@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-alpha.0](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@5.2.3...test-exclude@6.0.0-alpha.0) (2019-06-19)
+
+
+### Bug Fixes
+
+* **win32:** Detect files on different drive as outside project ([#422](https://github.com/istanbuljs/istanbuljs/issues/422)) ([5b4ee88](https://github.com/istanbuljs/istanbuljs/commit/5b4ee88)), closes [#418](https://github.com/istanbuljs/istanbuljs/issues/418)
+* Ignore tests matching *.cjs, *.mjs and *.ts by default ([#381](https://github.com/istanbuljs/istanbuljs/issues/381)) ([0f077c2](https://github.com/istanbuljs/istanbuljs/commit/0f077c2))
+
+
+### Features
+
+* ignore files under test**s** directories by default ([#419](https://github.com/istanbuljs/istanbuljs/issues/419)) ([8ad5fd2](https://github.com/istanbuljs/istanbuljs/commit/8ad5fd2))
+* Remove configuration loading functionality ([#398](https://github.com/istanbuljs/istanbuljs/issues/398)) ([f5c93c3](https://github.com/istanbuljs/istanbuljs/commit/f5c93c3)), closes [#392](https://github.com/istanbuljs/istanbuljs/issues/392)
+* Update dependencies, require Node.js 8 ([#401](https://github.com/istanbuljs/istanbuljs/issues/401)) ([bf3a539](https://github.com/istanbuljs/istanbuljs/commit/bf3a539))
+
+
+### BREAKING CHANGES
+
+* Node.js 8 is now required
+* Remove configuration loading functionality
+
+
+
+
+
 ## [5.2.3](https://github.com/istanbuljs/istanbuljs/compare/test-exclude@5.2.2...test-exclude@5.2.3) (2019-04-24)
 
 **Note:** Version bump only for package test-exclude

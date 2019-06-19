@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-report",
-  "version": "2.0.8",
+  "version": "3.0.0-alpha.0",
   "description": "Base reporting library for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -12,7 +12,7 @@
     "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha"
   },
   "dependencies": {
-    "istanbul-lib-coverage": "^2.0.5",
+    "istanbul-lib-coverage": "^3.0.0-alpha.0",
     "make-dir": "^3.0.0",
     "supports-color": "^7.0.0"
   },

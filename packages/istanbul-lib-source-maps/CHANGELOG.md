@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@3.0.6...istanbul-lib-source-maps@4.0.0-alpha.0) (2019-06-19)
+
+
+### Features
+
+* Update dependencies, require Node.js 8 ([#401](https://github.com/istanbuljs/istanbuljs/issues/401)) ([bf3a539](https://github.com/istanbuljs/istanbuljs/commit/bf3a539))
+
+
+### BREAKING CHANGES
+
+* Node.js 8 is now required
+
+
+
+
+
 ## [3.0.6](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@3.0.5...istanbul-lib-source-maps@3.0.6) (2019-04-24)
 
 

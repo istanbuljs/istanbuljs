@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.5...istanbul-reports@3.0.0-alpha.0) (2019-06-19)
+
+
+### Features
+
+* Refactor istanbul-lib-report so report can choose summarizer ([#408](https://github.com/istanbuljs/istanbuljs/issues/408)) ([0f328fd](https://github.com/istanbuljs/istanbuljs/commit/0f328fd))
+* **text report:** Optimize output to show more missing lines ([#341](https://github.com/istanbuljs/istanbuljs/issues/341)) ([c4e8b8e](https://github.com/istanbuljs/istanbuljs/commit/c4e8b8e))
+* Modern html report ([#345](https://github.com/istanbuljs/istanbuljs/issues/345)) ([95ebaf1](https://github.com/istanbuljs/istanbuljs/commit/95ebaf1))
+* Update dependencies, require Node.js 8 ([#401](https://github.com/istanbuljs/istanbuljs/issues/401)) ([bf3a539](https://github.com/istanbuljs/istanbuljs/commit/bf3a539))
+
+
+### BREAKING CHANGES
+
+* Existing istanbul-lib-report API's have been changed
+* Node.js 8 is now required
+
+
+
+
+
 ## [2.2.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.4...istanbul-reports@2.2.5) (2019-05-02)
 
 
