@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.0...istanbul-reports@3.0.0-alpha.1) (2019-06-20)
+
+
+### Bug Fixes
+
+* Set `opts.file = '-'` on text-lcov ([#424](https://github.com/istanbuljs/istanbuljs/issues/424)) ([4be56b2](https://github.com/istanbuljs/istanbuljs/commit/4be56b2))
+
+
+
+
+
 # [3.0.0-alpha.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.5...istanbul-reports@3.0.0-alpha.0) (2019-06-19)
 
 
