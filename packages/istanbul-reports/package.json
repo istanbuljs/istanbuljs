@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha --recursive",
-    "prepare": "rollup --config lib/html-spa/rollup.config.js"
+    "prepare": "rollup --config lib/html-spa/rollup.config.js",
+    "prepare:watch": "rollup -w --config lib/html-spa/rollup.config.js"
   },
   "dependencies": {
     "handlebars": "^4.1.2"
