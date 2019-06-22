@@ -5,21 +5,26 @@
 
 Core reporting utilities for istanbul.
 
-## example usage
+## Example usage
 
-```
+```js
 const libReport = require('istanbul-lib-report');
+const reports = require('istanbul-reports');
 
+// create a context for report generation
 const context = libReport.createContext({
-  dir: 'source/dir',
+  dir: 'report/output/dir',
   defaultSummarizer: 'summarizer name e.g. nested/flat/pkg',
   watermarks: configWatermarks,
   coverageMap,
 })
 
+// create an instance of the relevant report class
 const report = reports.create('report/name e.g. json/html/html-spa/text', {
   skipEmpty: configSkipEmpty,
   skipFull: configSkipFull
 })
+
+// call execute to synchronously create and write the report to disk
 report.execute(context)
 ```
