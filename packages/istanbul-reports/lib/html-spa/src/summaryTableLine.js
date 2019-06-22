@@ -1,38 +1,21 @@
 import React from 'react';
 
-function ShowPicture({ num }) {
-    let rest;
-    let cls = '';
-    if (isFinite(num)) {
-        if (num === 100) {
-            cls = ' cover-full';
-        }
-        num = Math.floor(num);
-        rest = 100 - num;
-        return (
-            <>
-                <div
-                    className={'cover-fill' + cls}
-                    style={{ width: num + '%' }}
-                />
-                <div className="cover-empty" style={{ width: rest + '%' }} />
-            </>
-        );
-    } else {
-        return false;
-    }
-}
-
 function MetricCells({ metrics }) {
+    const { classForPercent, pct, covered, total } = metrics;
+
     return (
         <>
-            <td className={'pct ' + metrics.classForPercent}>{metrics.pct}%</td>
-            <td className={'abs ' + metrics.classForPercent}>
-                {metrics.covered}
+            <td className={'pct ' + classForPercent}>{Math.round(pct)}% </td>
+            <td className={classForPercent}>
+                <div className="bar">
+                    <div
+                        className={`bar__data ${classForPercent} ${classForPercent}--dark`}
+                        style={{ width: pct + '%' }}
+                    ></div>
+                </div>
             </td>
-            <td className={'abs ' + metrics.classForPercent}>
-                {metrics.total}
-            </td>
+            <td className={'abs ' + classForPercent}>{covered}</td>
+            <td className={'abs ' + classForPercent}>{total}</td>
         </>
     );
 }
@@ -98,10 +81,7 @@ export default function SummaryTableLine({
     return (
         <>
             <tr>
-                <td
-                    className={'file ' + metrics.statements.classForPercent}
-                    rowSpan={2}
-                >
+                <td className={'file ' + metrics.statements.classForPercent}>
                     {/* eslint-disable-line prefer-spread */ Array.apply(null, {
                         length: tabSize
                     }).map((nothing, index) => (
@@ -126,48 +106,6 @@ export default function SummaryTableLine({
                     <MetricCells metrics={metrics.functions} />
                 )}
                 {metricsToShow.lines && <MetricCells metrics={metrics.lines} />}
-            </tr>
-            <tr>
-                {metricsToShow.statements && (
-                    <td
-                        className={'pic ' + metrics.statements.classForPercent}
-                        colSpan={3}
-                    >
-                        <div className="chart">
-                            <ShowPicture num={metrics.statements.pct} />
-                        </div>
-                    </td>
-                )}
-                {metricsToShow.branches && (
-                    <td
-                        className={'pic ' + metrics.branches.classForPercent}
-                        colSpan={3}
-                    >
-                        <div className="chart">
-                            <ShowPicture num={metrics.branches.pct} />
-                        </div>
-                    </td>
-                )}
-                {metricsToShow.functions && (
-                    <td
-                        className={'pic ' + metrics.functions.classForPercent}
-                        colSpan={3}
-                    >
-                        <div className="chart">
-                            <ShowPicture num={metrics.functions.pct} />
-                        </div>
-                    </td>
-                )}
-                {metricsToShow.lines && (
-                    <td
-                        className={'pic ' + metrics.lines.classForPercent}
-                        colSpan={3}
-                    >
-                        <div className="chart">
-                            <ShowPicture num={metrics.lines.pct} />
-                        </div>
-                    </td>
-                )}
             </tr>
             {children &&
                 expandedLines.indexOf(prefix + file) >= 0 &&
