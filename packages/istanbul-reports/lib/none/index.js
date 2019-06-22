@@ -5,6 +5,10 @@
  */
 const { ReportBase } = require('istanbul-lib-report');
 
-class NoneReport extends ReportBase {}
+class NoneReport extends ReportBase {
+    constructor() {
+        super();
+    }
+}
 
 module.exports = NoneReport;
