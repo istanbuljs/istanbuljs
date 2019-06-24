@@ -9,7 +9,9 @@
     "lib"
   ],
   "scripts": {
-    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha --recursive",
+    "test-node": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha --recursive --exclude test/html-spa/src/**",
+    "test-web": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha --recursive --require @babel/register ./test/html-spa/src",
+    "test": "npm run test-node && cross-env NYC_CWD=1 npm run test-web",
     "prepare": "rollup --config lib/html-spa/rollup.config.js",
     "prepare:watch": "rollup -w --config lib/html-spa/rollup.config.js"
   },
@@ -20,7 +22,9 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
     "is-windows": "^1.0.2",
     "istanbul-lib-coverage": "^3.0.0-alpha.0",
     "istanbul-lib-report": "^3.0.0-alpha.0",
@@ -53,7 +57,6 @@
     "exclude": [
       "lib/html/assets/**",
       "lib/html-spa/assets/**",
-      "lib/html-spa/src/**",
       "lib/html-spa/rollup.config.js",
       "test/**"
     ]
