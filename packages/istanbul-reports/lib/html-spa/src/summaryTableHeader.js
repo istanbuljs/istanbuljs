@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 function getSortDetails(sortKey, activeSort) {
     let newSort = { sortKey, order: 'desc' };
@@ -74,7 +74,7 @@ function SubHeadings({ sortKeyPrefix, onSort, activeSort }) {
     );
 }
 
-export default function SummaryTableHeader({
+module.exports = function SummaryTableHeader({
     onSort,
     activeSort,
     metricsToShow
@@ -121,4 +121,4 @@ export default function SummaryTableHeader({
             </tr>
         </thead>
     );
-}
+};

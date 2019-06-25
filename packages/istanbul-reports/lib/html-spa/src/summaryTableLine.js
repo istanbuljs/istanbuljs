@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 function MetricCells({ metrics }) {
     const { classForPercent, pct, covered, total } = metrics;
@@ -60,7 +60,7 @@ function FileCell({
     }
 }
 
-export default function SummaryTableLine({
+module.exports = function SummaryTableLine({
     prefix,
     metrics,
     file,
@@ -123,4 +123,4 @@ export default function SummaryTableLine({
                 ))}
         </>
     );
-}
+};

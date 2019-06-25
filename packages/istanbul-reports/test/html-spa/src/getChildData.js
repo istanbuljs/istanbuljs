@@ -1,7 +1,7 @@
 'use strict';
 /* globals describe, it */
 const assert = require('chai').assert;
-const getChildData = require('../../../lib/html-spa/src/getChildData').default;
+const getChildData = require('../../../lib/html-spa/src/getChildData');
 
 const mediumMetrics = {
     statements: {

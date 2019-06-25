@@ -1,14 +1,16 @@
 // The index file for the spa running on the summary page
-import React, { useState, useMemo, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import SummaryTableHeader from './summaryTableHeader';
-import SummaryTableLine from './summaryTableLine';
-import SummaryHeader from './summaryHeader';
-import getChildData from './getChildData';
-import FlattenToggle from './flattenToggle';
-import FilterToggle from './filterToggle';
-import FileBreadcrumbs from './fileBreadcrumbs';
-import { setLocation, decodeLocation } from './routing';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const SummaryTableHeader = require('./summaryTableHeader');
+const SummaryTableLine = require('./summaryTableLine');
+const SummaryHeader = require('./summaryHeader');
+const getChildData = require('./getChildData');
+const FlattenToggle = require('./flattenToggle');
+const FilterToggle = require('./filterToggle');
+const FileBreadcrumbs = require('./fileBreadcrumbs');
+const { setLocation, decodeLocation } = require('./routing');
+
+const { useState, useMemo, useEffect } = React;
 
 const sourceData = window.data;
 const metricsToShow = {};
