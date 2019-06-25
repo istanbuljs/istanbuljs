@@ -93,7 +93,8 @@ class HtmlSpaReport extends ReportBase {
         this.htmlReport.onDetail(node, context);
     }
 
-    getMetric(metric, type, isEmpty, context) {
+    getMetric(metric, type, context) {
+        const isEmpty = metric.total === 0;
         return {
             total: metric.total,
             covered: metric.covered,
@@ -107,37 +108,28 @@ class HtmlSpaReport extends ReportBase {
 
     toDataStructure(node, context) {
         const coverageSummary = node.getCoverageSummary();
-        const isEmpty = coverageSummary.isEmpty();
         const metrics = {
             statements: this.getMetric(
                 coverageSummary.statements,
                 'statements',
-                isEmpty,
                 context
             ),
             branches: this.getMetric(
                 coverageSummary.branches,
                 'branches',
-                isEmpty,
                 context
             ),
             functions: this.getMetric(
                 coverageSummary.functions,
                 'functions',
-                isEmpty,
                 context
             ),
-            lines: this.getMetric(
-                coverageSummary.lines,
-                'lines',
-                isEmpty,
-                context
-            )
+            lines: this.getMetric(coverageSummary.lines, 'lines', context)
         };
 
         return {
             file: node.getRelativeName(),
-            isEmpty,
+            isEmpty: coverageSummary.isEmpty(),
             metrics,
             children:
                 node.isSummary() &&
