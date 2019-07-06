@@ -9,5 +9,6 @@ module.exports = [
     'test{,-*}.{js,cjs,mjs,ts}',
     '**/*{.,-}test.{js,cjs,mjs,ts}',
     '**/__tests__/**',
+    '**/fixture*{,/**}',
     `**/{${devConfigs.join()}}.config.js`
 ];

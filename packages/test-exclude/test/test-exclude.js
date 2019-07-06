@@ -53,6 +53,28 @@ describe('testExclude', () => {
             .should.equal(false);
     });
 
+    it('ignores fixture directories and files', () => {
+        exclude()
+            .shouldInstrument('./fixture/index.js')
+            .should.equal(false);
+
+        exclude()
+            .shouldInstrument('./fixtures/index.js')
+            .should.equal(false);
+
+        exclude()
+            .shouldInstrument('./fixture-some-suffix/index.js')
+            .should.equal(false);
+
+        exclude()
+            .shouldInstrument('./nested/fixtures/index.js')
+            .should.equal(false);
+
+        exclude()
+            .shouldInstrument('./fixtures-file.txt')
+            .should.equal(false);
+    });
+
     it('matches files in root with **/', () => {
         exclude()
             .shouldInstrument('__tests__/**')
@@ -247,6 +269,7 @@ describe('testExclude', () => {
             'test{,-*}.{js,cjs,mjs,ts}',
             '**/*{.,-}test.{js,cjs,mjs,ts}',
             '**/__tests__/**',
+            '**/fixture*{,/**}',
             '**/{ava,babel,jest,nyc,rollup,webpack}.config.js'
         ]);
     });
@@ -281,7 +304,7 @@ describe('testExclude', () => {
                 .sort()
                 .should.deep.equal(['file1.js', 'file2.js', 'package.json']);
 
-            exclude({ cwd: path.join(process.cwd(), 'test') })
+            exclude({ cwd: path.join(__dirname, 'fixtures') })
                 .globSync(cwd)
                 .sort()
                 .should.deep.equal([
