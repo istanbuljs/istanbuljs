@@ -4,8 +4,8 @@
 const _summarizer = Symbol('ReportBase.#summarizer');
 
 class ReportBase {
-    constructor(summarizer) {
-        this[_summarizer] = summarizer;
+    constructor(opts = {}) {
+        this[_summarizer] = opts.summarizer;
     }
 
     execute(context) {
