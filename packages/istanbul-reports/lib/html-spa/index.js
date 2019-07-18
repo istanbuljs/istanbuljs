@@ -39,8 +39,10 @@ const standardLinkMapper = {
 
 class HtmlSpaReport extends ReportBase {
     constructor(opts = {}) {
-        // force the summarizer to nested for html-spa
-        super('nested');
+        super({
+            // force the summarizer to nested for html-spa
+            summarizer: 'nested'
+        });
 
         this.verbose = opts.verbose || false;
         this.linkMapper = opts.linkMapper || standardLinkMapper;
