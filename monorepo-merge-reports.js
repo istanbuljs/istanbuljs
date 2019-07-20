@@ -14,7 +14,7 @@ makeDir.sync('.nyc_output');
 // Merge coverage data from each package so we can generate a complete report
 glob.sync('packages/*/.nyc_output').forEach(nycOutput => {
     const { status, stderr } = spawnSync(
-        path.join('node_modules', '.bin', 'nyc'),
+        'nyc',
         [
             'merge',
             nycOutput,
