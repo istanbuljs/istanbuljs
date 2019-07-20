@@ -2,6 +2,7 @@
 /* globals describe, it */
 
 const assert = require('chai').assert;
+const { createContext } = require('..');
 const Context = require('../lib/context');
 const coverageMap = require('./helpers/coverage-map');
 
@@ -11,7 +12,7 @@ const optsEmptyCoverage = {
 
 describe('context', () => {
     it('provides a writer when not specified', () => {
-        const ctx = new Context(optsEmptyCoverage);
+        const ctx = createContext(optsEmptyCoverage);
         const w = ctx.writer;
 
         assert.ok(w);
