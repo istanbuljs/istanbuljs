@@ -5,6 +5,7 @@
 'use strict';
 
 const percent = require('./percent');
+const dataProperties = require('./data-properties');
 const { CoverageSummary } = require('./coverage-summary');
 
 // returns a data object that represents empty coverage
@@ -236,14 +237,15 @@ class FileCoverage {
 }
 
 // expose coverage data attributes
-['path', 'statementMap', 'fnMap', 'branchMap', 's', 'f', 'b'].forEach(p => {
-    Object.defineProperty(FileCoverage.prototype, p, {
-        enumerable: true,
-        get() {
-            return this.data[p];
-        }
-    });
-});
+dataProperties(FileCoverage, [
+    'path',
+    'statementMap',
+    'fnMap',
+    'branchMap',
+    's',
+    'f',
+    'b'
+]);
 
 module.exports = {
     FileCoverage

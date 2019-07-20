@@ -5,6 +5,7 @@
 'use strict';
 
 const percent = require('./percent');
+const dataProperties = require('./data-properties');
 
 function blankSummary() {
     const empty = () => ({
@@ -89,14 +90,12 @@ class CoverageSummary {
     }
 }
 
-['lines', 'statements', 'functions', 'branches'].forEach(p => {
-    Object.defineProperty(CoverageSummary.prototype, p, {
-        enumerable: true,
-        get() {
-            return this.data[p];
-        }
-    });
-});
+dataProperties(CoverageSummary, [
+    'lines',
+    'statements',
+    'functions',
+    'branches'
+]);
 
 module.exports = {
     CoverageSummary
