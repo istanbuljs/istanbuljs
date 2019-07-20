@@ -2,8 +2,8 @@
 /* globals describe, it */
 
 const assert = require('chai').assert;
-const CoverageSummary = require('../lib/file').CoverageSummary;
-const CoverageMap = require('../lib/coverage-map').CoverageMap;
+const { CoverageSummary } = require('../lib/coverage-summary');
+const { CoverageMap } = require('../lib/coverage-map');
 const index = require('../index');
 
 describe('external interface', () => {

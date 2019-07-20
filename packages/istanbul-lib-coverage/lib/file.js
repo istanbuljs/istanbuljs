@@ -4,102 +4,8 @@
  */
 'use strict';
 
-function percent(covered, total) {
-    let tmp;
-    if (total > 0) {
-        tmp = (1000 * 100 * covered) / total + 5;
-        return Math.floor(tmp / 10) / 100;
-    } else {
-        return 100.0;
-    }
-}
-
-function blankSummary() {
-    const empty = function() {
-        return {
-            total: 0,
-            covered: 0,
-            skipped: 0,
-            pct: 'Unknown'
-        };
-    };
-    return {
-        lines: empty(),
-        statements: empty(),
-        functions: empty(),
-        branches: empty()
-    };
-}
-
-// asserts that a data object "looks like" a summary coverage object
-function assertValidSummary(obj) {
-    const valid =
-        obj && obj.lines && obj.statements && obj.functions && obj.branches;
-    if (!valid) {
-        throw new Error(
-            'Invalid summary coverage object, missing keys, found:' +
-                Object.keys(obj).join(',')
-        );
-    }
-}
-/**
- * CoverageSummary provides a summary of code coverage . It exposes 4 properties,
- * `lines`, `statements`, `branches`, and `functions`. Each of these properties
- * is an object that has 4 keys `total`, `covered`, `skipped` and `pct`.
- * `pct` is a percentage number (0-100).
- * @param {Object|CoverageSummary} [obj=undefined] an optional data object or
- * another coverage summary to initialize this object with.
- * @constructor
- */
-function CoverageSummary(obj) {
-    if (!obj) {
-        this.data = blankSummary();
-    } else if (obj instanceof CoverageSummary) {
-        this.data = obj.data;
-    } else {
-        this.data = obj;
-    }
-    assertValidSummary(this.data);
-}
-
-['lines', 'statements', 'functions', 'branches'].forEach(p => {
-    Object.defineProperty(CoverageSummary.prototype, p, {
-        enumerable: true,
-        get() {
-            return this.data[p];
-        }
-    });
-});
-
-/**
- * merges a second summary coverage object into this one
- * @param {CoverageSummary} obj - another coverage summary object
- */
-CoverageSummary.prototype.merge = function(obj) {
-    const keys = ['lines', 'statements', 'branches', 'functions'];
-    keys.forEach(key => {
-        this[key].total += obj[key].total;
-        this[key].covered += obj[key].covered;
-        this[key].skipped += obj[key].skipped;
-        this[key].pct = percent(this[key].covered, this[key].total);
-    });
-    return this;
-};
-
-/**
- * returns a POJO that is JSON serializable. May be used to get the raw
- * summary object.
- */
-CoverageSummary.prototype.toJSON = function() {
-    return this.data;
-};
-
-/**
- * return true if summary has no lines of code
- */
-CoverageSummary.prototype.isEmpty = function() {
-    return this.lines.total === 0;
-};
+const percent = require('./percent');
+const { CoverageSummary } = require('./coverage-summary');
 
 // returns a data object that represents empty coverage
 function emptyCoverage(filePath) {
@@ -329,6 +235,5 @@ FileCoverage.prototype.toSummary = function() {
 };
 
 module.exports = {
-    CoverageSummary,
     FileCoverage
 };

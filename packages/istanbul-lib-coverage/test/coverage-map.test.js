@@ -2,9 +2,8 @@
 /* globals describe, it */
 
 const assert = require('chai').assert;
-const cm = require('../lib/coverage-map');
-const CoverageMap = cm.CoverageMap;
-const FileCoverage = require('../lib/file').FileCoverage;
+const { CoverageMap } = require('../lib/coverage-map');
+const { FileCoverage } = require('../lib/file');
 
 describe('coverage map', () => {
     it('allows a noop constructor', () => {

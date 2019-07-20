@@ -4,8 +4,8 @@
  */
 'use strict';
 
-const FileCoverage = require('./file').FileCoverage;
-const CoverageSummary = require('./file').CoverageSummary;
+const { FileCoverage } = require('./file');
+const { CoverageSummary } = require('./coverage-summary');
 
 function maybeConstruct(obj, klass) {
     if (obj instanceof klass) {
