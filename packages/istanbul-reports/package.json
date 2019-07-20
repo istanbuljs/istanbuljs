@@ -22,7 +22,6 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
-    "cross-env": "^5.2.0",
     "is-windows": "^1.0.2",
     "istanbul-lib-coverage": "^3.0.0-alpha.0",
     "istanbul-lib-report": "^3.0.0-alpha.0",
