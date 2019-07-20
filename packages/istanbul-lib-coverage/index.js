@@ -12,7 +12,7 @@
  *
  * @module Exports
  */
-const { FileCoverage } = require('./lib/file');
+const { FileCoverage } = require('./lib/file-coverage');
 const { CoverageMap } = require('./lib/coverage-map');
 const { CoverageSummary } = require('./lib/coverage-summary');
 

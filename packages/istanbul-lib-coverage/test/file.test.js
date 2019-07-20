@@ -2,7 +2,7 @@
 /* globals describe, it */
 
 const assert = require('chai').assert;
-const { FileCoverage } = require('../lib/file');
+const { FileCoverage } = require('../lib/file-coverage');
 const { CoverageSummary } = require('../lib/coverage-summary');
 
 describe('coverage summary', () => {

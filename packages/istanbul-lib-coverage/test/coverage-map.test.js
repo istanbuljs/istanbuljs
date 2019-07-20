@@ -3,7 +3,7 @@
 
 const assert = require('chai').assert;
 const { CoverageMap } = require('../lib/coverage-map');
-const { FileCoverage } = require('../lib/file');
+const { FileCoverage } = require('../lib/file-coverage');
 
 describe('coverage map', () => {
     it('allows a noop constructor', () => {

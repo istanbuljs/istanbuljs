@@ -4,7 +4,7 @@
  */
 'use strict';
 
-const { FileCoverage } = require('./file');
+const { FileCoverage } = require('./file-coverage');
 const { CoverageSummary } = require('./coverage-summary');
 
 function maybeConstruct(obj, klass) {
