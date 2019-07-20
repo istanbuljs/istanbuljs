@@ -74,6 +74,15 @@ describe('coverage map', () => {
         assert.equal(3, cm.files().length);
         assert.deepEqual(['foo.js', 'bar.js', 'baz.js'], cm.files());
     });
+    it('can filter file coverage', () => {
+        const cm = new CoverageMap({
+            'foo.js': new FileCoverage('foo.js'),
+            'bar.js': new FileCoverage('bar.js')
+        });
+        assert.deepEqual(['foo.js', 'bar.js'], cm.files());
+        cm.filter(file => file === 'foo.js');
+        assert.deepEqual(['foo.js'], cm.files());
+    });
     it('returns coverage summary for all files', () => {
         const cm = new CoverageMap({
             'foo.js': new FileCoverage('foo.js'),

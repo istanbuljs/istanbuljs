@@ -88,6 +88,7 @@ class FileCoverage {
         const lineMap = Object.create(null);
 
         Object.entries(statements).forEach(([st, count]) => {
+            /* istanbul ignore if: is this even possible? */
             if (!statementMap[st]) {
                 return;
             }
@@ -165,6 +166,7 @@ class FileCoverage {
         Object.entries(other.b).forEach(([k, v]) => {
             let i;
             const retArray = this.data.b[k];
+            /* istanbul ignore if: is this even possible? */
             if (!retArray) {
                 this.data.b[k] = v;
                 return;
