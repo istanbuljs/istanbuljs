@@ -12,7 +12,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/istanbuljs/istanbuljs.git"
+    "url": "git+https://github.com/istanbuljs/istanbuljs.git",
+    "directory": "packages/test-exclude"
   },
   "keywords": [
     "exclude",
