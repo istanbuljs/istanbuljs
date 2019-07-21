@@ -80,7 +80,7 @@ class ReportNode extends BaseNode {
         const cacheProp = `c_${filesOnly ? 'files' : 'full'}`;
         let summary;
 
-        if (this.hasOwnProperty(cacheProp)) {
+        if (Object.prototype.hasOwnProperty.call(this, cacheProp)) {
             return this[cacheProp];
         }
 
