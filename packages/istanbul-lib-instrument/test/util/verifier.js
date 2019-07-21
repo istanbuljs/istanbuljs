@@ -105,7 +105,7 @@ class Verifier {
 
 function extractTestOption(opts, name, defaultValue) {
     let v = defaultValue;
-    if (opts.hasOwnProperty(name)) {
+    if (Object.prototype.hasOwnProperty.call(opts, name)) {
         v = opts[name];
     }
     return v;
