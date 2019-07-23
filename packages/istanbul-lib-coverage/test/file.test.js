@@ -2,9 +2,8 @@
 /* globals describe, it */
 
 const assert = require('chai').assert;
-const base = require('../lib/file');
-const CoverageSummary = base.CoverageSummary;
-const FileCoverage = base.FileCoverage;
+const { FileCoverage } = require('../lib/file-coverage');
+const { CoverageSummary } = require('../lib/coverage-summary');
 
 describe('coverage summary', () => {
     it('allows a noop constructor', () => {
