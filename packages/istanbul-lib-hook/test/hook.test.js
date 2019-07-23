@@ -207,6 +207,34 @@ describe('hooks', () => {
             );
             assert.equal(s, 10);
         });
+        it('transfers coverageVar when not set globally', () => {
+            let s;
+            const vm = require('vm');
+            const scriptTransformer = function() {
+                return `(function () {
+                    fakeCoverageVar.success = true;
+                    return 42;
+                }());`;
+            };
+            /* this simulates all unit tests being run through vm.runInContext */
+            hook.hookRunInContext(matcher, scriptTransformer, {
+                coverageVariable: 'fakeCoverageVar'
+            });
+            s = vm.runInContext(
+                '(function () { return 10; }());',
+                vm.createContext({}),
+                '/bar/foo.js'
+            );
+            assert.equal(s, 42);
+            assert.deepEqual(global.fakeCoverageVar, { success: true });
+            hook.unhookRunInContext();
+            s = vm.runInContext(
+                '(function () { return 10; }());',
+                vm.createContext({}),
+                '/bar/foo.js'
+            );
+            assert.equal(s, 10);
+        });
         it('does not transform code with no filename', () => {
             const vm = require('vm');
             hook.hookRunInContext(matcher, scriptTransformer);
