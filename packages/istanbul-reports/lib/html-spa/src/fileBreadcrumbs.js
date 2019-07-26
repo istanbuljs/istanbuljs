@@ -1,6 +1,6 @@
-import React from 'react';
+const React = require('react');
 
-export default function FileBreadcrumbs({ fileFilter = '', setFileFilter }) {
+module.exports = function FileBreadcrumbs({ fileFilter = '', setFileFilter }) {
     const parts = fileFilter.split('/');
     const breadcrumbs = [
         {
@@ -28,4 +28,4 @@ export default function FileBreadcrumbs({ fileFilter = '', setFileFilter }) {
             </>
         )
     );
-}
+};

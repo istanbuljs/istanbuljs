@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 function ToggleOption({ children, filter, activeFilters, setFilters }) {
     return (
@@ -18,7 +18,7 @@ function ToggleOption({ children, filter, activeFilters, setFilters }) {
     );
 }
 
-export default function FilterToggle({ activeFilters, setFilters }) {
+module.exports = function FilterToggle({ activeFilters, setFilters }) {
     return (
         <div className="toggle">
             <div className="toggle__label">Filter:</div>
@@ -47,4 +47,4 @@ export default function FilterToggle({ activeFilters, setFilters }) {
             </div>
         </div>
     );
-}
+};

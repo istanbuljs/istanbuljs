@@ -1,6 +1,6 @@
-import React from 'react';
+const React = require('react');
 
-export default function FlattenButton({ setIsFlat, isFlat }) {
+module.exports = function FlattenButton({ setIsFlat, isFlat }) {
     return (
         <div className="toggle">
             <div className="toggle__label">Files:</div>
@@ -22,4 +22,4 @@ export default function FlattenButton({ setIsFlat, isFlat }) {
             </div>{' '}
         </div>
     );
-}
+};
