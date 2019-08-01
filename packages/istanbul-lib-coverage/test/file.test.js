@@ -260,6 +260,75 @@ describe('base coverage', () => {
         assert.equal(c1.b[1][1], 2);
     });
 
+    it('drops all data during merges', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        const template = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                1: loc(1, 1, 1, 100),
+                2: loc(2, 1, 2, 50),
+                3: loc(2, 51, 2, 100),
+                4: loc(2, 101, 3, 100)
+            },
+            fnMap: {
+                1: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
+                }
+            },
+            branchMap: {
+                1: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0
+            },
+            f: {
+                1: 0
+            },
+            b: {
+                1: [0, 0]
+            }
+        });
+        const clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        };
+        const createCoverage = all => {
+            const data = clone(template);
+            if (all) {
+                data.all = true;
+            } else {
+                data.s[1] = 1;
+                data.f[1] = 1;
+                data.b[1][0] = 1;
+            }
+
+            return new FileCoverage(data);
+        };
+
+        const expected = createCoverage().data;
+        // Get non-all data regardless of merge order
+        let cov = createCoverage(true);
+        cov.merge(createCoverage());
+        assert.deepEqual(cov.data, expected);
+
+        cov = createCoverage();
+        cov.merge(createCoverage(true));
+        assert.deepEqual(cov.data, expected);
+    });
+
     it('resets hits when requested', () => {
         const loc = function(sl, sc, el, ec) {
             return {
