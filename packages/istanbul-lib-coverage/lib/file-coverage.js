@@ -157,6 +157,15 @@ class FileCoverage {
      *  Note that the other object should have the same structure as this one (same file).
      */
     merge(other) {
+        if (other.all === true) {
+            return;
+        }
+
+        if (this.all === true) {
+            this.data = other.data;
+            return;
+        }
+
         Object.entries(other.s).forEach(([k, v]) => {
             this.data.s[k] += v;
         });
@@ -246,7 +255,8 @@ dataProperties(FileCoverage, [
     'branchMap',
     's',
     'f',
-    'b'
+    'b',
+    'all'
 ]);
 
 module.exports = {
