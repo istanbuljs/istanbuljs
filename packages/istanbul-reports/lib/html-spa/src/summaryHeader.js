@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 function Ignores({ metrics, metricsToShow }) {
     const metricKeys = Object.keys(metricsToShow);
@@ -42,7 +42,7 @@ function StatusMetric({ data, name }) {
     );
 }
 
-export default function SummaryHeader({ metrics, metricsToShow }) {
+module.exports = function SummaryHeader({ metrics, metricsToShow }) {
     return (
         <div className="toolbar">
             {metricsToShow.statements && (
@@ -60,4 +60,4 @@ export default function SummaryHeader({ metrics, metricsToShow }) {
             <Ignores metrics={metrics} metricsToShow={metricsToShow} />
         </div>
     );
-}
+};

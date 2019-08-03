@@ -125,7 +125,7 @@ function filter(nodes, metricsMap, activeFilters) {
     return children;
 }
 
-export default function getChildData(
+module.exports = function getChildData(
     sourceData,
     metricsToShow,
     activeSort,
@@ -152,4 +152,4 @@ export default function getChildData(
         childData = sort(childData, activeSort);
     }
     return childData;
-}
+};

@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha --recursive",
-    "prepare": "rollup --config lib/html-spa/rollup.config.js",
-    "prepare:watch": "rollup -w --config lib/html-spa/rollup.config.js"
+    "prepare": "webpack --config lib/html-spa/webpack.config.js --mode production",
+    "prepare:watch": "webpack --config lib/html-spa/webpack.config.js --watch --mode development"
   },
   "dependencies": {
     "handlebars": "^4.1.2"
@@ -20,6 +20,7 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "is-windows": "^1.0.2",
     "istanbul-lib-coverage": "^3.0.0-alpha.0",
@@ -28,12 +29,8 @@
     "nyc": "^14.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "rollup": "^1.15.6",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-node-resolve": "^5.0.3",
-    "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-terser": "^5.0.0"
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.5"
   },
   "license": "BSD-3-Clause",
   "repository": {
@@ -53,7 +50,6 @@
     "exclude": [
       "lib/html/assets/**",
       "lib/html-spa/assets/**",
-      "lib/html-spa/src/**",
       "lib/html-spa/rollup.config.js",
       "test/**"
     ]
