@@ -20,7 +20,7 @@
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
-    "rimraf": "^2.6.3"
+    "rimraf": "^3.0.0"
   },
   "license": "BSD-3-Clause",
   "bugs": {
