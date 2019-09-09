@@ -11,7 +11,7 @@ const codeNeedDecoratorPlugin = `
 const codeNeedV8intrinsicPlugin = `
   function fn() {}
   %GetOptimizationStatus(fn)
-`
+`;
 
 const generateCode = (code, plugins) => {
     const opts = {
