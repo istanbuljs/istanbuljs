@@ -33,7 +33,8 @@ export function defaultOpts() {
             'objectRestSpread',
             'optionalCatchBinding',
             'flow',
-            'jsx'
+            'jsx',
+            'v8intrinsic'
         ]
     };
 }
