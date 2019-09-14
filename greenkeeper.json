@@ -11,8 +11,7 @@
                 "packages/istanbul-reports/package.json",
                 "packages/nyc-config-babel/package.json",
                 "packages/nyc-config-hook-run-in-this-context/package.json",
-                "packages/nyc-config-typescript/package.json",
-                "packages/test-exclude/package.json"
+                "packages/nyc-config-typescript/package.json"
             ],
             "ignore": [
                 "source-map"
