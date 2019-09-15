@@ -7,36 +7,9 @@ import * as t from '@babel/types';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import programVisitor from './visitor';
+import defaultOpts from './default-opts';
+import readInitialCoverage from './read-coverage';
 
-export function defaultOpts() {
-    return {
-        coverageVariable: '__coverage__',
-        coverageGlobalScope: 'this',
-        coverageGlobalScopeFunc: true,
-        preserveComments: false,
-        compact: true,
-        esModules: false,
-        autoWrap: false,
-        produceSourceMap: false,
-        ignoreClassMethods: [],
-        sourceMapUrlCallback: null,
-        debug: false,
-        /* babel parser plugins are to be enabled when the feature is stage 3 and
-         * implemented in a released version of node.js */
-        plugins: [
-            'asyncGenerators',
-            'bigInt',
-            'classProperties',
-            'classPrivateProperties',
-            'dynamicImport',
-            'importMeta',
-            'objectRestSpread',
-            'optionalCatchBinding',
-            'flow',
-            'jsx'
-        ]
-    };
-}
 /**
  * Instrumenter is the public API for the instrument library.
  * It is typically used for ES5 code. For ES6 code that you
@@ -113,7 +86,14 @@ class Instrumenter {
             sourceFileName: filename
         };
         const codeMap = generate(ast, generateOptions, code);
-        this.fileCoverage = output.fileCoverage;
+        if (output && output.fileCoverage) {
+            this.fileCoverage = output.fileCoverage;
+        } else {
+            const initialCoverage =
+                readInitialCoverage(ast) ||
+                /* istanbul ignore next: paranoid check */ {};
+            this.fileCoverage = initialCoverage.coverageData;
+        }
         this.sourceMap = codeMap.map;
         const cb = this.opts.sourceMapUrlCallback;
         if (cb && output.sourceMappingURL) {

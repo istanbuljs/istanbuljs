@@ -73,10 +73,7 @@ class Verifier {
         );
         const initial = readInitialCoverage(this.getGeneratedCode());
         assert.ok(initial);
-        assert.deepEqual(initial.coverageData, {
-            hash: initial.coverageData.hash,
-            ...this.result.emptyCoverage
-        });
+        assert.deepEqual(initial.coverageData, this.result.emptyCoverage);
         assert.ok(initial.path);
         if (this.result.file) {
             assert.equal(initial.path, this.result.file);
