@@ -27,14 +27,14 @@ LcovOnlyReport.prototype.onDetail = function (node) {
     writer.println('TN:'); //no test name
     writer.println('SF:' + fc.path);
 
-    Object.keys(functions).forEach(function (key) {
+    Object.keys(functionMap).forEach(function (key) {
         var meta = functionMap[key];
         writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
     });
     writer.println('FNF:' + summary.functions.total);
     writer.println('FNH:' + summary.functions.covered);
 
-    Object.keys(functions).forEach(function (key) {
+    Object.keys(functionMap).forEach(function (key) {
         var stats = functions[key],
             meta = functionMap[key];
         writer.println('FNDA:' + [stats, meta.name].join(','));
@@ -47,7 +47,7 @@ LcovOnlyReport.prototype.onDetail = function (node) {
     writer.println('LF:' + summary.lines.total);
     writer.println('LH:' + summary.lines.covered);
 
-    Object.keys(branches).forEach(function (key) {
+    Object.keys(branchMap).forEach(function (key) {
         var branchArray = branches[key],
             meta = branchMap[key],
             line = meta.loc.start.line,
