@@ -368,6 +368,8 @@ function makeBlock(path) {
     if (!path.isBlockStatement()) {
         path.replaceWith(T.blockStatement([path.node]));
         path.node.loc = path.node.body[0].loc;
+        path.node.body[0].leadingComments = path.node.leadingComments;
+        path.node.leadingComments = undefined;
     }
 }
 
