@@ -22,6 +22,14 @@ function getStructure(tree, localNames) {
 
 describe('summarizer', () => {
     let fn;
+
+    it('caches summarizer', () => {
+        const factory = new SummarizerFactory(coverageMap.empty);
+        assert.strictEqual(factory.pkg, factory.pkg);
+        assert.strictEqual(factory.nested, factory.nested);
+        assert.strictEqual(factory.flat, factory.flat);
+    });
+
     describe('[flat strategy]', () => {
         beforeEach(() => {
             fn = coverageMap => new SummarizerFactory(coverageMap).flat;
@@ -336,6 +344,20 @@ describe('summarizer', () => {
     describe('report node properties', () => {
         beforeEach(() => {
             fn = coverageMap => new SummarizerFactory(coverageMap).pkg;
+        });
+
+        it('asRelative results', () => {
+            const map = coverageMap.threeDir();
+            const tree = fn(map);
+            let node = null;
+            const visitor = {
+                onDetail(n) {
+                    node = n;
+                }
+            };
+            tree.visit(visitor);
+            assert.strictEqual(node.asRelative('/dir/path.js'), 'dir/path.js');
+            assert.strictEqual(node.asRelative('dir/path.js'), 'dir/path.js');
         });
 
         it('provides file coverage for leaf nodes', () => {

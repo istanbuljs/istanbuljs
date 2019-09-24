@@ -29,7 +29,11 @@ function makeCoverage(filePath, numStatements, numCovered) {
 }
 
 function filesMap(dir, files) {
-    dir = dir ? dir + '/' : '';
+    if (!dir) {
+        dir = '';
+    } else if (dir !== '/') {
+        dir = dir + '/';
+    }
 
     let count = 0;
 
