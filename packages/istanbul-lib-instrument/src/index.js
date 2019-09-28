@@ -1,4 +1,5 @@
-import Instrumenter, { defaultOpts } from './instrumenter';
+import Instrumenter from './instrumenter';
+import defaultOpts from './default-opts';
 import programVisitor from './visitor';
 import readInitialCoverage from './read-coverage';
 
