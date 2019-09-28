@@ -79,7 +79,7 @@ describe('varia', () => {
         const code = v.getGeneratedCode();
         assert.ok(
             code.match(
-                /}\(\);export function fn1\(\){}export default function\(\){}/
+                /return actualCoverage;}cov_[^(]+\(\);export function fn1\(\){}export default function\(\){}/
             )
         );
     });
@@ -96,7 +96,7 @@ describe('varia', () => {
         const code = v.getGeneratedCode();
         assert.ok(
             code.match(
-                /}\(\);export function fn1\(\){cov_(.+)\.f\[\d+\]\+\+;}export default function\(\){cov_(.+)\.f\[\d+\]\+\+;}/
+                /return actualCoverage;}export function fn1\(\){cov_(.+)\.f\[\d+\]\+\+;}export default function\(\){cov_(.+)\.f\[\d+\]\+\+;}/
             )
         );
     });
@@ -199,7 +199,11 @@ describe('varia', () => {
         assert.ok(!v.err);
 
         const code = v.getGeneratedCode();
-        assert.ok(code.match(/cov_(.+);export class App extends/));
+        assert.ok(
+            code.match(
+                /return actualCoverage;}cov_[^(]+\(\);export class App extends/
+            )
+        );
     });
 
     it('declares Function when needed', () => {
@@ -233,7 +237,11 @@ describe('varia', () => {
         assert.ok(!v.err);
 
         const code = v.getGeneratedCode();
-        assert.ok(code.match(/cov_(.+);class App extends Component/));
+        assert.ok(
+            code.match(
+                /return actualCoverage;}cov_[^(]+\(\);class App extends Component/
+            )
+        );
     });
 
     it('can store coverage object in alternative scope', () => {
