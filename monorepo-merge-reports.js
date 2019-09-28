@@ -19,11 +19,7 @@ glob.sync('packages/*/.nyc_output').forEach(nycOutput => {
         [
             'merge',
             '.nyc_output',
-            path.join(
-                __dirname,
-                '.nyc_output',
-                path.basename(cwd) + '.json'
-            )
+            path.join(__dirname, '.nyc_output', path.basename(cwd) + '.json')
         ],
         {
             encoding: 'utf8',
