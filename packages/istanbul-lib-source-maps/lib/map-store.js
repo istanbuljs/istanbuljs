@@ -9,7 +9,6 @@ const fs = require('fs');
 const debug = require('debug')('istanbuljs');
 const SMC = require('source-map').SourceMapConsumer;
 const pathutils = require('./pathutils');
-const sourceStore = require('./source-store');
 const transformer = require('./transformer');
 
 /**
@@ -21,18 +20,23 @@ class MapStore {
      * @param {Boolean} opts.verbose [opts.verbose=false] verbose mode
      * @param {String} opts.baseDir [opts.baseDir=null] alternate base directory
      *  to resolve sourcemap files
-     * @param {String} opts.sourceStore [opts.sourceStore='memory'] - store that tracks
-     *  embedded sources found in source maps, one of 'memory' or 'file'
-     * @param {String} opts.tmpdir [opts.tmpdir=undefined] - temporary directory
-     *   to use for storing files.
+     * @param {Class} opts.SourceStore [opts.SourceStore=Map] class to use for
+     * SourceStore.  Must support `get`, `set` and `clear` methods.
+     * @param {Array} opts.sourceStoreOpts [opts.sourceStoreOpts=[]] arguments
+     * to use in the SourceStore constructor.
      * @constructor
      */
-    constructor(opts = {}) {
-        this.baseDir = opts.baseDir || null;
-        this.verbose = opts.verbose || false;
-        this.sourceStore = sourceStore.create(opts.sourceStore, {
-            tmpdir: opts.tmpdir
-        });
+    constructor(opts) {
+        opts = {
+            baseDir: null,
+            verbose: false,
+            SourceStore: Map,
+            sourceStoreOpts: [],
+            ...opts
+        };
+        this.baseDir = opts.baseDir;
+        this.verbose = opts.verbose;
+        this.sourceStore = new opts.SourceStore(...opts.sourceStoreOpts);
         this.data = Object.create(null);
     }
 
@@ -100,8 +104,8 @@ class MapStore {
      */
     transformCoverage(coverageMap) {
         const sourceFinder = filePath => {
-            const content = this.sourceStore.getSource(filePath);
-            if (content !== null) {
+            const content = this.sourceStore.get(filePath);
+            if (content !== undefined) {
                 return content;
             }
 
@@ -155,10 +159,7 @@ class MapStore {
                                 s,
                                 filePath
                             );
-                            this.sourceStore.registerSource(
-                                sourceFilePath,
-                                content
-                            );
+                            this.sourceStore.set(sourceFilePath, content);
                         }
                     });
 
@@ -182,7 +183,7 @@ class MapStore {
      * Disposes temporary resources allocated by this map store
      */
     dispose() {
-        this.sourceStore.dispose();
+        this.sourceStore.clear();
     }
 }
 
