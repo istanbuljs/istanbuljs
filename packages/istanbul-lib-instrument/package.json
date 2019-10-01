@@ -18,6 +18,7 @@
     "@babel/template": "^7.4.4",
     "@babel/traverse": "^7.4.5",
     "@babel/types": "^7.4.4",
+    "@istanbuljs/schema": "^0.1.0",
     "istanbul-lib-coverage": "^3.0.0-alpha.0",
     "semver": "^6.1.1"
   },

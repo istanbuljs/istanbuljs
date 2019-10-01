@@ -45,7 +45,7 @@ instead.
     -   `opts.sourceMapUrlCallback` **[Function][17]** a callback function that is called when a source map URL
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
     -   `opts.debug` **[boolean][15]** turn debugging on (optional, default `false`)
-    -   `opts.plugins` **[array][16]** set plugins (optional, default `['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']`)
+    -   `opts.parserPlugins` **[array][16]?** set babel parser plugins, see @istanbuljs/schema for defaults.
 
 ### instrumentSync
 
@@ -109,7 +109,7 @@ The exit function returns an object that currently has the following keys:
 
 -   `types` **[Object][13]** an instance of babel-types
 -   `sourceFilePath` **[string][14]** the path to source file (optional, default `'unknown.js'`)
--   `opts` **[Object][13]** additional options (optional, default `defaultProgramVisitorOpts`)
+-   `opts` **[Object][13]** additional options (optional, default `{}`)
     -   `opts.coverageVariable` **[string][14]** the global coverage variable name. (optional, default `__coverage__`)
     -   `opts.coverageGlobalScope` **[string][14]** the global coverage variable scope. (optional, default `this`)
     -   `opts.coverageGlobalScopeFunc` **[boolean][15]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)

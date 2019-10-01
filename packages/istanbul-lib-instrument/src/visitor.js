@@ -1,8 +1,8 @@
 import { createHash } from 'crypto';
 import template from '@babel/template';
+import { defaults } from '@istanbuljs/schema';
 import { SourceCoverage } from './source-coverage';
 import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
-import defaultOpts from './default-opts';
 
 // pattern for istanbul to ignore a section
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
@@ -571,9 +571,6 @@ function shouldIgnoreFile(programNode) {
     );
 }
 
-const defaultProgramVisitorOpts = {
-    inputSourceMap: undefined
-};
 /**
  * programVisitor is a `babel` adaptor for instrumentation.
  * It returns an object with two methods `enter` and `exit`.
@@ -597,16 +594,10 @@ const defaultProgramVisitorOpts = {
  * @param {object} [opts.inputSourceMap=undefined] the input source map, that maps the uninstrumented code back to the
  * original code.
  */
-function programVisitor(
-    types,
-    sourceFilePath = 'unknown.js',
-    opts = defaultProgramVisitorOpts
-) {
+function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
     const T = types;
-    // This sets some unused options but ensures all required options are initialized
     opts = {
-        ...defaultOpts(),
-        ...defaultProgramVisitorOpts,
+        ...defaults.instrumentVisitor,
         ...opts
     };
     const visitState = new VisitState(

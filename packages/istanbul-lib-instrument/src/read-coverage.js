@@ -1,8 +1,8 @@
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
+import { defaults } from '@istanbuljs/schema';
 import { MAGIC_KEY, MAGIC_VALUE } from './constants';
-import defaultOpts from './default-opts';
 
 const astClass = parse('').constructor;
 
@@ -22,7 +22,7 @@ function getAst(code) {
         allowReturnOutsideFunction: true,
         allowSuperOutsideMethod: true,
         sourceType: 'script',
-        plugins: defaultOpts().plugins
+        plugins: defaults.instrumenter.parserPlugins
     });
 }
 

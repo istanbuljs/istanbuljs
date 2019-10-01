@@ -4,7 +4,8 @@ import { assert } from 'chai';
 import Instrumenter from '../src/instrumenter';
 
 function instrument(code) {
-    const instrumenter = new Instrumenter({});
+    // XXX produceSourceMap: true produces an altered source-map for the second run.
+    const instrumenter = new Instrumenter({ produceSourceMap: false });
     const result = instrumenter.instrumentSync(code, __filename);
     return {
         code: result,

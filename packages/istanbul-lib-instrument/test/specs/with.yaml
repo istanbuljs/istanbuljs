@@ -7,6 +7,8 @@ tests:
     out: 1
     lines: {'1': 1}
     statements: {'0': 1, '1': 1}
+instrumentOpts:
+  esModules: false
 
 ---
 name: with statement with block
@@ -17,3 +19,5 @@ tests:
     out: 1
     lines: {'1': 1}
     statements: {'0': 1, '1': 1}
+instrumentOpts:
+  esModules: false
