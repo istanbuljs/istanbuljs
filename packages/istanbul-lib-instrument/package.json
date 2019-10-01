@@ -13,18 +13,16 @@
     "prepublish": "npm run release"
   },
   "dependencies": {
-    "@babel/generator": "^7.6.2",
+    "@babel/core": "^7.6.2",
     "@babel/parser": "^7.6.2",
     "@babel/template": "^7.6.0",
     "@babel/traverse": "^7.6.2",
-    "@babel/types": "^7.6.1",
     "@istanbuljs/schema": "^0.1.0",
     "istanbul-lib-coverage": "^3.0.0-alpha.1",
     "semver": "^6.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.6.2",
     "@babel/plugin-transform-modules-commonjs": "^7.6.0",
     "@babel/register": "^7.6.2",
     "chai": "^4.2.0",
