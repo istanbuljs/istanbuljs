@@ -28,6 +28,7 @@ class VisitState {
         ignoreClassMethods = []
     ) {
         this.varName = genVar(sourceFilePath);
+        this.varCalled = false;
         this.attrs = {};
         this.nextIgnore = null;
         this.cov = new SourceCoverage(sourceFilePath);
@@ -167,12 +168,13 @@ class VisitState {
                 ? // If `index` present, turn `x` into `x[index]`.
                   x => T.memberExpression(x, T.numericLiteral(index), true)
                 : x => x;
+        this.varCalled = true;
         return T.updateExpression(
             '++',
             wrap(
                 T.memberExpression(
                     T.memberExpression(
-                        T.identifier(this.varName),
+                        T.callExpression(T.identifier(this.varName), []),
                         T.identifier(type)
                     ),
                     T.numericLiteral(id),
@@ -535,18 +537,24 @@ const globalTemplateVariable = template(`
 `);
 // the template to insert at the top of the program.
 const coverageTemplate = template(`
-    var COVERAGE_VAR = (function () {
+    function COVERAGE_FUNCTION () {
         var path = PATH;
         var hash = HASH;
         GLOBAL_COVERAGE_TEMPLATE
         var gcv = GLOBAL_COVERAGE_VAR;
         var coverageData = INITIAL;
         var coverage = global[gcv] || (global[gcv] = {});
-        if (coverage[path] && coverage[path].hash === hash) {
-            return coverage[path];
+        if (!coverage[path] || coverage[path].hash !== hash) {
+            coverage[path] = coverageData;
         }
-        return coverage[path] = coverageData;
-    })();
+
+        var actualCoverage = coverage[path];
+        COVERAGE_FUNCTION = function () {
+          return actualCoverage;
+        }
+
+        return actualCoverage;
+    }
 `);
 // the rewire plugin (and potentially other babel middleware)
 // may cause files to be instrumented twice, see:
@@ -660,12 +668,19 @@ function programVisitor(
             const cv = coverageTemplate({
                 GLOBAL_COVERAGE_VAR: T.stringLiteral(opts.coverageVariable),
                 GLOBAL_COVERAGE_TEMPLATE: gvTemplate,
-                COVERAGE_VAR: T.identifier(visitState.varName),
+                COVERAGE_FUNCTION: T.identifier(visitState.varName),
                 PATH: T.stringLiteral(sourceFilePath),
                 INITIAL: coverageNode,
                 HASH: T.stringLiteral(hash)
             });
-            cv._blockHoist = 5;
+            // explicitly call this.varName if this file has no coverage
+            if (!visitState.varCalled) {
+                path.node.body.unshift(
+                    T.expressionStatement(
+                        T.callExpression(T.identifier(visitState.varName), [])
+                    )
+                );
+            }
             path.node.body.unshift(cv);
             return {
                 fileCoverage: coverageData,
