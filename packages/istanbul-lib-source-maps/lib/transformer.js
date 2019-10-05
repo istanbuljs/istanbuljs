@@ -105,7 +105,7 @@ class SourceMapTransformer {
 
         coverageMap.files().forEach(file => {
             const fc = coverageMap.fileCoverageFor(file);
-            const sourceMap = this.finder(file);
+            const sourceMap = this.finder(file, fc);
             if (!sourceMap) {
                 uniqueFiles[getUniqueKey(file)] = {
                     file,

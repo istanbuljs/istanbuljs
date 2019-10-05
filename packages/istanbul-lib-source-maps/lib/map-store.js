@@ -95,6 +95,58 @@ class MapStore {
     }
 
     /**
+     * Retrieve a source map object from this store.
+     * @param filePath - the file path for which the source map is valid
+     * @returns {Object} a parsed source map object
+     */
+    getSourceMapSync(filePath) {
+        try {
+            if (!this.data[filePath]) {
+                return;
+            }
+
+            const d = this.data[filePath];
+            if (d.type === 'file') {
+                return JSON.parse(fs.readFileSync(d.data, 'utf8'));
+            }
+
+            if (d.type === 'encoded') {
+                return JSON.parse(Buffer.from(d.data, 'base64').toString());
+            }
+
+            /* The caller might delete properties */
+            return {
+                ...d.data
+            };
+        } catch (error) {
+            debug('Error returning source map for ' + filePath);
+            debug(error.stack);
+
+            return;
+        }
+    }
+
+    /**
+     * Add inputSourceMap property to coverage data
+     * @param coverageData - the __coverage__ object
+     * @returns {Object} a parsed source map object
+     */
+    addInputSourceMapsSync(coverageData) {
+        Object.entries(coverageData).forEach(([filePath, data]) => {
+            if (data.inputSourceMap) {
+                return;
+            }
+
+            const sourceMap = this.getSourceMapSync(filePath);
+            if (sourceMap) {
+                data.inputSourceMap = sourceMap;
+                /* This huge property is not needed. */
+                delete data.inputSourceMap.sourcesContent;
+            }
+        });
+    }
+
+    /**
      * Transforms the coverage map provided into one that refers to original
      * sources when valid mappings have been registered with this store.
      * @param {CoverageMap} coverageMap - the coverage map to transform
@@ -118,14 +170,13 @@ class MapStore {
             );
         };
 
-        coverageMap.files().forEach(file => {
-            const coverage = coverageMap.fileCoverageFor(file);
-            if (coverage.data.inputSourceMap && !this.data[file]) {
-                this.registerMap(file, coverage.data.inputSourceMap);
-            }
-        });
+        const hasInputSourceMaps = coverageMap
+            .files()
+            .some(
+                file => coverageMap.fileCoverageFor(file).data.inputSourceMap
+            );
 
-        if (Object.keys(this.data).length === 0) {
+        if (!hasInputSourceMaps && Object.keys(this.data).length === 0) {
             return {
                 map: coverageMap,
                 sourceFinder
@@ -133,22 +184,13 @@ class MapStore {
         }
 
         const mappedCoverage = transformer
-            .create(filePath => {
+            .create((filePath, coverage) => {
                 try {
-                    if (!this.data[filePath]) {
+                    const obj =
+                        coverage.data.inputSourceMap ||
+                        this.getSourceMapSync(filePath);
+                    if (!obj) {
                         return null;
-                    }
-
-                    const d = this.data[filePath];
-                    let obj;
-                    if (d.type === 'file') {
-                        obj = JSON.parse(fs.readFileSync(d.data, 'utf8'));
-                    } else if (d.type === 'encoded') {
-                        obj = JSON.parse(
-                            Buffer.from(d.data, 'base64').toString()
-                        );
-                    } else {
-                        obj = d.data;
                     }
 
                     const smc = new SMC(obj);
