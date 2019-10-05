@@ -72,7 +72,7 @@ describe('varia', () => {
             '/* istanbul ignore next*/ export function fn1() {}' +
                 '/* istanbul ignore next*/ export default function() {}',
             { generateOnly: true },
-            { esModules: true }
+            { esModules: true, preserveComments: false }
         );
         assert.ok(!v.err);
 

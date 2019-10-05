@@ -8,11 +8,11 @@ const codeNeedDecoratorPlugin = `
   class MyClass {}
 `;
 
-const generateCode = (code, plugins) => {
+const generateCode = (code, parserPlugins) => {
     const opts = {
         esModules: true,
         produceSourceMap: true,
-        plugins
+        parserPlugins
     };
     const instrumenter = new Instrumenter(opts);
     return instrumenter.instrumentSync(code, __filename);

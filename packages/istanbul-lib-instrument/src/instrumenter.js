@@ -6,8 +6,8 @@ import * as parser from '@babel/parser';
 import * as t from '@babel/types';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
+import { defaults } from '@istanbuljs/schema';
 import programVisitor from './visitor';
-import defaultOpts from './default-opts';
 import readInitialCoverage from './read-coverage';
 
 /**
@@ -26,12 +26,12 @@ import readInitialCoverage from './read-coverage';
  * @param {Function} [opts.sourceMapUrlCallback=null] a callback function that is called when a source map URL
  *     is found in the original code. This function is called with the source file name and the source map URL.
  * @param {boolean} [opts.debug=false] - turn debugging on
- * @param {array} [opts.plugins=['asyncGenerators','dynamicImport','objectRestSpread','optionalCatchBinding','flow','jsx']] - set plugins
+ * @param {array} [opts.parserPlugins] - set babel parser plugins, see @istanbuljs/schema for defaults.
  */
 class Instrumenter {
     constructor(opts = {}) {
         this.opts = {
-            ...defaultOpts(),
+            ...defaults.instrumenter,
             ...opts
         };
         this.fileCoverage = null;
@@ -59,7 +59,7 @@ class Instrumenter {
         const ast = parser.parse(code, {
             allowReturnOutsideFunction: opts.autoWrap,
             sourceType: opts.esModules ? 'module' : 'script',
-            plugins: opts.plugins
+            plugins: opts.parserPlugins
         });
         const ee = programVisitor(t, filename, {
             coverageVariable: opts.coverageVariable,

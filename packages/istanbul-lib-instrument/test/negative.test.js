@@ -19,7 +19,11 @@ describe('negative tests', () => {
     });
 
     it('should barf on mainline returns with no auto-wrap', () => {
-        const v = verifier.create('return 10;', { quiet: true });
+        const v = verifier.create(
+            'return 10;',
+            { quiet: true },
+            { autoWrap: false }
+        );
         const err = v.compileError();
         assert.ok(err);
         assert.ok(err.message.match(/'return' outside/));
