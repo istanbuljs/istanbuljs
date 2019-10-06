@@ -14,23 +14,23 @@
     "prepare:watch": "webpack --config lib/html-spa/webpack.config.js --watch --mode development"
   },
   "dependencies": {
-    "handlebars": "^4.1.2"
+    "handlebars": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "is-windows": "^1.0.2",
     "istanbul-lib-coverage": "^3.0.0-alpha.0",
     "istanbul-lib-report": "^3.0.0-alpha.0",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.1",
     "nyc": "^14.1.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "webpack": "^4.35.0",
-    "webpack-cli": "^3.3.5"
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
   },
   "license": "BSD-3-Clause",
   "repository": {
