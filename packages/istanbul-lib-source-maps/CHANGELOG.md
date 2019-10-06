@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.0...istanbul-lib-source-maps@4.0.0-alpha.1) (2019-10-06)
+
+
+### Bug Fixes
+
+* **package:** update rimraf to version 3.0.0 ([b6e7953](https://github.com/istanbuljs/istanbuljs/commit/b6e7953))
+
+
+### Features
+
+* Accept SourceStore and sourceStoreOpts options ([#482](https://github.com/istanbuljs/istanbuljs/issues/482)) ([0dc45a6](https://github.com/istanbuljs/istanbuljs/commit/0dc45a6))
+* Add addInputSourceMapsSync and getSourceMapSync methods ([#484](https://github.com/istanbuljs/istanbuljs/issues/484)) ([dd7048e](https://github.com/istanbuljs/istanbuljs/commit/dd7048e))
+
+
+### BREAKING CHANGES
+
+* sourceStore and tmpdir options are removed.
+
+
+
+
+
 # [4.0.0-alpha.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@3.0.6...istanbul-lib-source-maps@4.0.0-alpha.0) (2019-06-19)
 
 

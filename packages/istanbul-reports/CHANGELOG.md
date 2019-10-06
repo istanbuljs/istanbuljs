@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.1...istanbul-reports@3.0.0-alpha.2) (2019-10-06)
+
+
+### Bug Fixes
+
+* Use path.posix.relative to generate URL's for html reports ([#472](https://github.com/istanbuljs/istanbuljs/issues/472)) ([05dc22c](https://github.com/istanbuljs/istanbuljs/commit/05dc22c))
+* **html-spa:** Filter only exact paths ([#431](https://github.com/istanbuljs/istanbuljs/issues/431)) ([bbc85f6](https://github.com/istanbuljs/istanbuljs/commit/bbc85f6)), closes [#426](https://github.com/istanbuljs/istanbuljs/issues/426)
+
+
+
+
+
 # [3.0.0-alpha.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.0...istanbul-reports@3.0.0-alpha.1) (2019-06-20)
 
 

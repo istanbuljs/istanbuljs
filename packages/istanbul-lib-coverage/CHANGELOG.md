@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage@3.0.0-alpha.0...istanbul-lib-coverage@3.0.0-alpha.1) (2019-10-06)
+
+
+### Bug Fixes
+
+* Drop unneeded coverage data from `nyc --all` ([#456](https://github.com/istanbuljs/istanbuljs/issues/456)) ([f6bb0b4](https://github.com/istanbuljs/istanbuljs/commit/f6bb0b4)), closes [#123](https://github.com/istanbuljs/istanbuljs/issues/123) [#224](https://github.com/istanbuljs/istanbuljs/issues/224) [#260](https://github.com/istanbuljs/istanbuljs/issues/260) [#322](https://github.com/istanbuljs/istanbuljs/issues/322) [#413](https://github.com/istanbuljs/istanbuljs/issues/413)
+
+
+
+
+
 # [3.0.0-alpha.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage@2.0.5...istanbul-lib-coverage@3.0.0-alpha.0) (2019-06-19)
 
 

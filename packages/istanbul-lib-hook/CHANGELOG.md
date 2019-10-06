@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@3.0.0-alpha.0...istanbul-lib-hook@3.0.0-alpha.1) (2019-10-06)
+
+
+### Bug Fixes
+
+* **package:** update append-transform to version 2.0.0 ([#466](https://github.com/istanbuljs/istanbuljs/issues/466)) ([7344b2b](https://github.com/istanbuljs/istanbuljs/commit/7344b2b))
+
+
+
+
+
 # [3.0.0-alpha.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@2.0.7...istanbul-lib-hook@3.0.0-alpha.0) (2019-06-19)
 
 
