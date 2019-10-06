@@ -4,11 +4,9 @@ import * as t from '@babel/types';
 import { defaults } from '@istanbuljs/schema';
 import { MAGIC_KEY, MAGIC_VALUE } from './constants';
 
-const astClass = parse('').constructor;
-
 function getAst(code) {
-    if (code && code.constructor === astClass) {
-        // Already a babel ast
+    if (typeof code === 'object' && typeof code.type === 'string') {
+        // Assume code is already a babel ast.
         return code;
     }
 
