@@ -14,11 +14,11 @@
   "dependencies": {
     "istanbul-lib-coverage": "^3.0.0-alpha.0",
     "make-dir": "^3.0.0",
-    "supports-color": "^7.0.0"
+    "supports-color": "^7.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.1",
     "nyc": "^14.1.1",
     "rimraf": "^3.0.0"
   },
