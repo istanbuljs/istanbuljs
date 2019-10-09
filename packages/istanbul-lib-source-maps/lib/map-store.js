@@ -6,10 +6,13 @@
 
 const path = require('path');
 const fs = require('fs');
+const { promisify } = require('util');
 const debug = require('debug')('istanbuljs');
-const SMC = require('source-map').SourceMapConsumer;
+const { SourceMapConsumer } = require('source-map');
 const pathutils = require('./pathutils');
-const transformer = require('./transformer');
+const { SourceMapTransformer } = require('./transformer');
+
+const readFile = promisify(fs.readFile);
 
 /**
  * Tracks source maps for registered files
@@ -146,30 +149,29 @@ class MapStore {
         });
     }
 
+    async sourceFinder(filePath) {
+        const content = this.sourceStore.get(filePath);
+        if (content !== undefined) {
+            return content;
+        }
+
+        if (path.isAbsolute(filePath)) {
+            return await readFile(filePath, 'utf8');
+        }
+
+        return await readFile(
+            pathutils.asAbsolute(filePath, this.baseDir),
+            'utf8'
+        );
+    }
+
     /**
      * Transforms the coverage map provided into one that refers to original
      * sources when valid mappings have been registered with this store.
      * @param {CoverageMap} coverageMap - the coverage map to transform
-     * @returns {Object} an object with 2 properties. `map` for the transformed
-     * coverage map and `sourceFinder` which is a function to return the source
-     * text for a file.
+     * @returns {Promise<CoverageMap>} the transformed coverage map
      */
-    transformCoverage(coverageMap) {
-        const sourceFinder = filePath => {
-            const content = this.sourceStore.get(filePath);
-            if (content !== undefined) {
-                return content;
-            }
-
-            if (path.isAbsolute(filePath)) {
-                return fs.readFileSync(filePath, 'utf8');
-            }
-
-            return fs.readFileSync(
-                pathutils.asAbsolute(filePath, this.baseDir)
-            );
-        };
-
+    async transformCoverage(coverageMap) {
         const hasInputSourceMaps = coverageMap
             .files()
             .some(
@@ -177,14 +179,11 @@ class MapStore {
             );
 
         if (!hasInputSourceMaps && Object.keys(this.data).length === 0) {
-            return {
-                map: coverageMap,
-                sourceFinder
-            };
+            return coverageMap;
         }
 
-        const mappedCoverage = transformer
-            .create((filePath, coverage) => {
+        const transformer = new SourceMapTransformer(
+            async (filePath, coverage) => {
                 try {
                     const obj =
                         coverage.data.inputSourceMap ||
@@ -193,7 +192,7 @@ class MapStore {
                         return null;
                     }
 
-                    const smc = new SMC(obj);
+                    const smc = new SourceMapConsumer(obj);
                     smc.sources.forEach(s => {
                         const content = smc.sourceContentFor(s);
                         if (content) {
@@ -212,13 +211,10 @@ class MapStore {
 
                     return null;
                 }
-            })
-            .transform(coverageMap);
+            }
+        );
 
-        return {
-            map: mappedCoverage,
-            sourceFinder
-        };
+        return await transformer.transform(coverageMap);
     }
 
     /**

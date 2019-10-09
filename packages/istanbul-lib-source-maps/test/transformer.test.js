@@ -3,8 +3,8 @@
 const path = require('path');
 const assert = require('chai').assert;
 const createMap = require('istanbul-lib-coverage').createCoverageMap;
-const SMC = require('source-map').SourceMapConsumer;
-const createTransformer = require('../lib/transformer').create;
+const { SourceMapConsumer } = require('source-map');
+const { SourceMapTransformer } = require('../lib/transformer');
 
 const coverageData = {
     statementMap: {
@@ -51,13 +51,14 @@ const testDataBackslash = {
 };
 
 describe('transformer', () => {
-    it('maps statement locations', () => {
+    it('maps statement locations', async () => {
         const coverageMap = createMap({});
         coverageMap.addFileCoverage(testDataSlash.coverageData);
 
-        const mapped = createTransformer(
-            () => new SMC(testDataSlash.sourceMap)
-        ).transform(coverageMap);
+        const transformer = new SourceMapTransformer(
+            () => new SourceMapConsumer(testDataSlash.sourceMap)
+        );
+        const mapped = await transformer.transform(coverageMap);
 
         assert.deepEqual(
             mapped.data[testDataSlash.coverageData.path].statementMap,
@@ -74,17 +75,18 @@ describe('transformer', () => {
         );
     });
 
-    it('maps each file only once, /path/to/file.js and \\path\\to\\file.js are the same file', () => {
+    it('maps each file only once, /path/to/file.js and \\path\\to\\file.js are the same file', async () => {
         const coverageMap = createMap({});
 
         coverageMap.addFileCoverage(testDataSlash.coverageData);
         coverageMap.addFileCoverage(testDataBackslash.coverageData);
 
-        const mapped = createTransformer(file =>
+        const transformer = new SourceMapTransformer(file =>
             file === testDataSlash.coverageData.path
-                ? new SMC(testDataSlash.sourceMap)
+                ? new SourceMapConsumer(testDataSlash.sourceMap)
                 : undefined
-        ).transform(coverageMap);
+        );
+        const mapped = await transformer.transform(coverageMap);
 
         assert.equal(Object.keys(mapped.data).length, 1);
         assert.isDefined(mapped.data[testDataBackslash.coverageData.path]);
