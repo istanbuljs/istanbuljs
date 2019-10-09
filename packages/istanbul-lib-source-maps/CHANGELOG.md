@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.1...istanbul-lib-source-maps@4.0.0-alpha.2) (2019-10-09)
+
+
+### Features
+
+* Convert to async API ([#489](https://github.com/istanbuljs/istanbuljs/issues/489)) ([f8ebbc9](https://github.com/istanbuljs/istanbuljs/commit/f8ebbc9))
+
+
+### BREAKING CHANGES
+
+* MapStore#transformCoverage is now async and returns a
+the coverage data only.  The `sourceFinder` method is now async and
+provided directly on the `MapStore` instance.
+
+
+
+
+
 # [4.0.0-alpha.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.0...istanbul-lib-source-maps@4.0.0-alpha.1) (2019-10-06)
 
 
