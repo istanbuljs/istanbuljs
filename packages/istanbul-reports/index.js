@@ -12,6 +12,10 @@ module.exports = {
         try {
             Cons = require(path.join(__dirname, 'lib', name));
         } catch (e) {
+            if (e.code !== 'MODULE_NOT_FOUND') {
+                throw e;
+            }
+
             Cons = require(name);
         }
 
