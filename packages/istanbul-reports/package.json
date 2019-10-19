@@ -1,6 +1,6 @@
 {
   "name": "istanbul-reports",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.3",
   "description": "istanbul reports",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -14,8 +14,8 @@
     "prepare:watch": "webpack --config lib/html-spa/webpack.config.js --watch --mode development"
   },
   "dependencies": {
-    "istanbul-lib-report": "^3.0.0-alpha.1",
-    "handlebars": "^4.4.2"
+    "handlebars": "^4.4.2",
+    "istanbul-lib-report": "^3.0.0-alpha.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

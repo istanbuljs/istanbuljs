@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.2...istanbul-reports@3.0.0-alpha.3) (2019-10-19)
+
+
+### Bug Fixes
+
+* Add missing dependency on istanbul-lib-report ([#490](https://github.com/istanbuljs/istanbuljs/issues/490)) ([95a2b2f](https://github.com/istanbuljs/istanbuljs/commit/95a2b2f)), closes [istanbuljs/nyc#1204](https://github.com/istanbuljs/nyc/issues/1204)
+
+
+
+
+
 # [3.0.0-alpha.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.1...istanbul-reports@3.0.0-alpha.2) (2019-10-06)
 
 
