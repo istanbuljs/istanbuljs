@@ -9,6 +9,7 @@ class LcovOnlyReport extends ReportBase {
     constructor(opts) {
         super();
         this.file = opts.file || 'lcov.info';
+        this.relative = opts.relative || false;
         this.contentWriter = null;
     }
 
@@ -25,9 +26,10 @@ class LcovOnlyReport extends ReportBase {
         const branches = fc.b;
         const branchMap = fc.branchMap;
         const summary = node.getCoverageSummary();
+        const path = require('path');
 
         writer.println('TN:'); //no test name
-        writer.println('SF:' + fc.path);
+        writer.println('SF:' + (this.relative ? path.relative(process.cwd(), fc.path) : fc.path));
 
         Object.values(functionMap).forEach(meta => {
             writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));

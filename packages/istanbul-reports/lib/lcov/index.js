@@ -8,10 +8,9 @@ const LcovOnlyReport = require('../lcovonly');
 const HtmlReport = require('../html');
 
 class LcovReport extends ReportBase {
-    constructor() {
+    constructor(opts) {
         super();
-
-        this.lcov = new LcovOnlyReport({ file: 'lcov.info' });
+        this.lcov = new LcovOnlyReport({ file: 'lcov.info', ...opts});
         this.html = new HtmlReport({ subdir: 'lcov-report' });
     }
 }
