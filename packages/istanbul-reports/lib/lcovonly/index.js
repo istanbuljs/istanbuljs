@@ -28,8 +28,7 @@ class LcovOnlyReport extends ReportBase {
         const summary = node.getCoverageSummary();
         const path = require('path');
 
-        writer.println('TN:'); //no test name
-        writer.println('SF:' + (this.relative ? path.relative(process.cwd(), fc.path) : fc.path));
+        writer.println('TN:'); //no test nam
         writer.println(
             'SF:' +
                 (this.relative
