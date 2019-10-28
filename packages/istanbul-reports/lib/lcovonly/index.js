@@ -30,6 +30,12 @@ class LcovOnlyReport extends ReportBase {
 
         writer.println('TN:'); //no test name
         writer.println('SF:' + (this.relative ? path.relative(process.cwd(), fc.path) : fc.path));
+        writer.println(
+            'SF:' +
+                (this.relative
+                    ? path.relative(process.cwd(), fc.path)
+                    : fc.path)
+        );
 
         Object.values(functionMap).forEach(meta => {
             writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
