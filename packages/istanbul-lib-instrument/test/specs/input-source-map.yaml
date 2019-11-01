@@ -14,11 +14,9 @@ tests:
 name: without input source map
 code: |
   output = "test"
-inputSourceMap: undefined
 tests:
   - name: is not set on the coverage object
     args: []
     out: "test"
     lines: { '1': 1 }
     statements: { '0': 1 }
-    inputSourceMap: undefined
