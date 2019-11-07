@@ -94,7 +94,7 @@ const standardLinkMapper = {
     relativePath(source, target) {
         const targetPath = this.getPath(target);
         const sourcePath = path.dirname(this.getPath(source));
-        return path.posix.relative(sourcePath, targetPath).replace(/index\.html$/, '');
+        return sourcePath == '.' ? targetPath : path.posix.join(sourcePath.replace(/([^\/]+)/g, '..'), targetPath);
     },
 
     assetPath(node, name) {
