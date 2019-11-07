@@ -132,7 +132,7 @@ class HtmlReport extends ReportBase {
         const linkPath = nodePath.map(ancestor => {
             const target = this.linkMapper.relativePath(node, ancestor);
             const name = ancestor.getRelativeName() || 'All files';
-            return '<a href="' + (target == '' ? '/' + name : target) + '">' + name + '</a>';
+            return '<a href="' + target + '">' + name + '</a>';
         });
 
         linkPath.reverse();
