@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.3...istanbul-lib-source-maps@4.0.0-alpha.4) (2019-11-16)
+
+
+### Bug Fixes
+
+* sourceFinder cannot be async. ([#501](https://github.com/istanbuljs/istanbuljs/issues/501)) ([094f1b8](https://github.com/istanbuljs/istanbuljs/commit/094f1b83b4652c5ba492781620cb6358c685a849))
+
+
+
+
+
 # [4.0.0-alpha.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.2...istanbul-lib-source-maps@4.0.0-alpha.3) (2019-11-15)
 
 
