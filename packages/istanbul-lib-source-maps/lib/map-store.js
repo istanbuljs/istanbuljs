@@ -6,13 +6,10 @@
 
 const path = require('path');
 const fs = require('fs');
-const { promisify } = require('util');
 const debug = require('debug')('istanbuljs');
 const { SourceMapConsumer } = require('source-map');
 const pathutils = require('./pathutils');
 const { SourceMapTransformer } = require('./transformer');
-
-const readFile = promisify(fs.readFile);
 
 /**
  * Tracks source maps for registered files
@@ -41,6 +38,7 @@ class MapStore {
         this.verbose = opts.verbose;
         this.sourceStore = new opts.SourceStore(...opts.sourceStoreOpts);
         this.data = Object.create(null);
+        this.sourceFinder = this.sourceFinder.bind(this);
     }
 
     /**
@@ -149,17 +147,17 @@ class MapStore {
         });
     }
 
-    async sourceFinder(filePath) {
+    sourceFinder(filePath) {
         const content = this.sourceStore.get(filePath);
         if (content !== undefined) {
             return content;
         }
 
         if (path.isAbsolute(filePath)) {
-            return await readFile(filePath, 'utf8');
+            return fs.readFileSync(filePath, 'utf8');
         }
 
-        return await readFile(
+        return fs.readFileSync(
             pathutils.asAbsolute(filePath, this.baseDir),
             'utf8'
         );
