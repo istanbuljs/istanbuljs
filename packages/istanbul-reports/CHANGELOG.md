@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.3...istanbul-reports@3.0.0-alpha.4) (2019-11-18)
+
+
+### Bug Fixes
+
+* Remove handlebars ([#503](https://github.com/istanbuljs/istanbuljs/issues/503)) ([aa8ae7f](https://github.com/istanbuljs/istanbuljs/commit/aa8ae7fe42ef9c8aeaa193309bafb22ad725bc3d)), closes [#476](https://github.com/istanbuljs/istanbuljs/issues/476)
+
+
+
+
+
 # [3.0.0-alpha.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.2...istanbul-reports@3.0.0-alpha.3) (2019-10-19)
 
 
