@@ -119,7 +119,7 @@ class SourceMapTransformer {
             } else {
                 uniqueFiles[getUniqueKey(file)] = {
                     file,
-                    mappedCoverage: fc
+                    mappedCoverage: new MappedCoverage(fc)
                 };
             }
         }

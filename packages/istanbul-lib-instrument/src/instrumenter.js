@@ -2,10 +2,7 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-import * as parser from '@babel/parser';
-import * as t from '@babel/types';
-import traverse from '@babel/traverse';
-import generate from '@babel/generator';
+import { transformSync } from '@babel/core';
 import { defaults } from '@istanbuljs/schema';
 import programVisitor from './visitor';
 import readInitialCoverage from './read-coverage';
@@ -55,50 +52,67 @@ class Instrumenter {
             throw new Error('Code must be a string');
         }
         filename = filename || String(new Date().getTime()) + '.js';
-        const opts = this.opts;
-        const ast = parser.parse(code, {
-            allowReturnOutsideFunction: opts.autoWrap,
-            sourceType: opts.esModules ? 'module' : 'script',
-            plugins: opts.parserPlugins
-        });
-        const ee = programVisitor(t, filename, {
-            coverageVariable: opts.coverageVariable,
-            coverageGlobalScope: opts.coverageGlobalScope,
-            coverageGlobalScopeFunc: opts.coverageGlobalScopeFunc,
-            ignoreClassMethods: opts.ignoreClassMethods,
-            inputSourceMap
-        });
+        const { opts } = this;
         let output = {};
-        const visitor = {
-            Program: {
-                enter: ee.enter,
-                exit(path) {
-                    output = ee.exit(path);
-                }
-            }
-        };
-        traverse(ast, visitor);
-
-        const generateOptions = {
+        const babelOpts = {
+            configFile: false,
+            babelrc: false,
+            ast: true,
+            filename: filename || String(new Date().getTime()) + '.js',
+            inputSourceMap,
+            sourceMaps: opts.produceSourceMap,
             compact: opts.compact,
             comments: opts.preserveComments,
-            sourceMaps: opts.produceSourceMap,
-            sourceFileName: filename
+            parserOpts: {
+                allowReturnOutsideFunction: opts.autoWrap,
+                sourceType: opts.esModules ? 'module' : 'script',
+                plugins: opts.parserPlugins
+            },
+            plugins: [
+                [
+                    ({ types }) => {
+                        const ee = programVisitor(types, filename, {
+                            coverageVariable: opts.coverageVariable,
+                            coverageGlobalScope: opts.coverageGlobalScope,
+                            coverageGlobalScopeFunc:
+                                opts.coverageGlobalScopeFunc,
+                            ignoreClassMethods: opts.ignoreClassMethods,
+                            inputSourceMap
+                        });
+
+                        return {
+                            visitor: {
+                                Program: {
+                                    enter: ee.enter,
+                                    exit(path) {
+                                        output = ee.exit(path);
+                                    }
+                                }
+                            }
+                        };
+                    }
+                ]
+            ]
         };
-        const codeMap = generate(ast, generateOptions, code);
-        if (output && output.fileCoverage) {
-            this.fileCoverage = output.fileCoverage;
-        } else {
+
+        const codeMap = transformSync(code, babelOpts);
+
+        if (!output || !output.fileCoverage) {
             const initialCoverage =
-                readInitialCoverage(ast) ||
+                readInitialCoverage(codeMap.ast) ||
                 /* istanbul ignore next: paranoid check */ {};
             this.fileCoverage = initialCoverage.coverageData;
+            this.sourceMap = inputSourceMap;
+            return code;
         }
+
+        this.fileCoverage = output.fileCoverage;
         this.sourceMap = codeMap.map;
         const cb = this.opts.sourceMapUrlCallback;
         if (cb && output.sourceMappingURL) {
             cb(filename, output.sourceMappingURL);
         }
+
         return codeMap.code;
     }
     /**

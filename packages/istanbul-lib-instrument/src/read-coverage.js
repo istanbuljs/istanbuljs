@@ -1,6 +1,5 @@
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
-import * as t from '@babel/types';
 import { defaults } from '@istanbuljs/schema';
 import { MAGIC_KEY, MAGIC_VALUE } from './constants';
 
@@ -33,7 +32,7 @@ export default function readInitialCoverage(code) {
             const { node } = path;
             if (
                 !node.computed &&
-                t.isIdentifier(node.key) &&
+                path.get('key').isIdentifier() &&
                 node.key.name === MAGIC_KEY
             ) {
                 const magicValue = path.get('value').evaluate();

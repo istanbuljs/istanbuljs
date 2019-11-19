@@ -266,6 +266,4 @@ function annotateSourceCode(fileCoverage, sourceStore) {
     }
 }
 
-module.exports = {
-    annotateSourceCode
-};
+module.exports = annotateSourceCode;

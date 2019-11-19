@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@4.0.0-alpha.1...istanbul-lib-instrument@4.0.0-alpha.2) (2019-11-01)
+
+
+### Bug Fixes
+
+* Produce properly merged source-maps when inputSourceMap is provided ([#487](https://github.com/istanbuljs/istanbuljs/issues/487)) ([8f8c88e](https://github.com/istanbuljs/istanbuljs/commit/8f8c88e3a2add4c08729e41e356aa7981dc69d4d))
+
+
+
+
+
 # [4.0.0-alpha.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@4.0.0-alpha.0...istanbul-lib-instrument@4.0.0-alpha.1) (2019-10-06)
 
 

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.3...istanbul-lib-source-maps@4.0.0-alpha.4) (2019-11-16)
+
+
+### Bug Fixes
+
+* sourceFinder cannot be async. ([#501](https://github.com/istanbuljs/istanbuljs/issues/501)) ([094f1b8](https://github.com/istanbuljs/istanbuljs/commit/094f1b83b4652c5ba492781620cb6358c685a849))
+
+
+
+
+
+# [4.0.0-alpha.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.2...istanbul-lib-source-maps@4.0.0-alpha.3) (2019-11-15)
+
+
+### Bug Fixes
+
+* mappedCoverage.addStatement is not a function ([#500](https://github.com/istanbuljs/istanbuljs/issues/500)) ([d77cc14](https://github.com/istanbuljs/istanbuljs/commit/d77cc147f7d791686af2975f7d906603335d0bfc)), closes [istanbuljs/nyc#940](https://github.com/istanbuljs/nyc/issues/940)
+
+
+
+
+
 # [4.0.0-alpha.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.1...istanbul-lib-source-maps@4.0.0-alpha.2) (2019-10-09)
 
 
