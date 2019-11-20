@@ -9,7 +9,7 @@ class LcovOnlyReport extends ReportBase {
     constructor(opts) {
         super();
         this.file = opts.file || 'lcov.info';
-        this.relative = opts.relative || false;
+        this.projectRoot = opts.projectRoot || process.cwd();
         this.contentWriter = null;
     }
 
@@ -29,12 +29,7 @@ class LcovOnlyReport extends ReportBase {
         const path = require('path');
 
         writer.println('TN:'); //no test nam
-        writer.println(
-            'SF:' +
-                (this.relative
-                    ? path.relative(process.cwd(), fc.path)
-                    : fc.path)
-        );
+        writer.println('SF:' + path.relative(this.projectRoot, fc.path));
 
         Object.values(functionMap).forEach(meta => {
             writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
