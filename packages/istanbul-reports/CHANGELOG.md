@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.4...istanbul-reports@3.0.0-alpha.5) (2019-11-22)
+
+
+### Features
+
+* Add support for projectRoot option ([#492](https://github.com/istanbuljs/istanbuljs/issues/492)) ([177fd45](https://github.com/istanbuljs/istanbuljs/commit/177fd45ebd7e505e79120995d937d40f965bad79))
+
+
+
+
+
 # [3.0.0-alpha.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.3...istanbul-reports@3.0.0-alpha.4) (2019-11-18)
 
 
