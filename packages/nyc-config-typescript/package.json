@@ -2,9 +2,9 @@
   "name": "@istanbuljs/nyc-config-typescript",
   "version": "1.0.0-alpha.1",
   "description": "nyc configuration that works with typescript",
-  "main": "index.json",
+  "main": "index.js",
   "files": [
-    "index.json"
+    "index.js"
   ],
   "scripts": {
     "test": "exit 0"
