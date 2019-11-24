@@ -16,7 +16,10 @@ function htmlHead(details) {
     <meta charset="utf-8" />
     <link rel="stylesheet" href="${html.escape(details.prettify.css)}" />
     <link rel="stylesheet" href="${html.escape(details.base.css)}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="${html.escape(
+        details.favicon
+    )}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
             background-image: url(${html.escape(details.sorter.image)});
@@ -303,6 +306,7 @@ class HtmlReport extends ReportBase {
             js: linkMapper.assetPath(node, 'prettify.js'),
             css: linkMapper.assetPath(node, 'prettify.css')
         };
+        templateData.favicon = linkMapper.assetPath(node, 'favicon.png');
     }
 
     getTemplateData() {

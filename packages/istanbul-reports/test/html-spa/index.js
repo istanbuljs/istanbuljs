@@ -84,6 +84,15 @@ describe('html-spa', () => {
                     header: '/* eslint-disable */\n'
                 },
                 {
+                    dest: './favicon.png',
+                    header: undefined,
+                    source: path.join(
+                        __dirname,
+                        '/../../lib/html/assets/favicon.png'
+                    ),
+                    type: 'copy'
+                },
+                {
                     type: 'copy',
                     source: path.join(
                         __dirname,
