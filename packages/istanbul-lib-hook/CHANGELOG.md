@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@3.0.0-alpha.1...istanbul-lib-hook@3.0.0-alpha.2) (2019-12-07)
+
+**Note:** Version bump only for package istanbul-lib-hook
+
+
+
+
+
 # [3.0.0-alpha.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@3.0.0-alpha.0...istanbul-lib-hook@3.0.0-alpha.1) (2019-10-06)
 
 

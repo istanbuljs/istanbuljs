@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.4...istanbul-lib-source-maps@4.0.0-alpha.5) (2019-12-07)
+
+**Note:** Version bump only for package istanbul-lib-source-maps
+
+
+
+
+
 # [4.0.0-alpha.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps@4.0.0-alpha.3...istanbul-lib-source-maps@4.0.0-alpha.4) (2019-11-16)
 
 

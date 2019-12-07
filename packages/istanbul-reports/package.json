@@ -1,6 +1,6 @@
 {
   "name": "istanbul-reports",
-  "version": "3.0.0-alpha.5",
+  "version": "3.0.0-alpha.6",
   "description": "istanbul reports",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "html-escaper": "^2.0.0",
-    "istanbul-lib-report": "^3.0.0-alpha.1"
+    "istanbul-lib-report": "^3.0.0-alpha.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
@@ -24,7 +24,7 @@
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "is-windows": "^1.0.2",
-    "istanbul-lib-coverage": "^3.0.0-alpha.1",
+    "istanbul-lib-coverage": "^3.0.0-alpha.2",
     "mocha": "^6.2.2",
     "nyc": "^15.0.0-beta.2",
     "react": "^16.12.0",
