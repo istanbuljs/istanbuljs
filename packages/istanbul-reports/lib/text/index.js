@@ -4,6 +4,7 @@
  file for terms.
  */
 'use strict';
+const { ReportBase } = require('istanbul-lib-report');
 
 const NAME_COL = 4;
 const PCT_COLS = 7;
@@ -198,73 +199,76 @@ function tableRow(
     return elements.join(DELIM) + ' ';
 }
 
-function TextReport(opts) {
-    opts = opts || {};
+class TextReport extends ReportBase {
+    constructor(opts) {
+        super();
 
-    const { maxCols } = opts;
+        opts = opts || {};
+        const { maxCols } = opts;
 
-    this.file = opts.file || null;
-    this.maxCols = maxCols != null ? maxCols : process.stdout.columns || 80;
-    this.cw = null;
-    this.skipEmpty = opts.skipEmpty;
-    this.skipFull = opts.skipFull;
-}
+        this.file = opts.file || null;
+        this.maxCols = maxCols != null ? maxCols : process.stdout.columns || 80;
+        this.cw = null;
+        this.skipEmpty = opts.skipEmpty;
+        this.skipFull = opts.skipFull;
+    }
 
-TextReport.prototype.onStart = function(root, context) {
-    this.cw = context.writer.writeFile(this.file);
-    this.nameWidth = Math.max(
-        NAME_COL,
-        findWidth(root, context, nodeName, depthFor)
-    );
-    this.missingWidth = Math.max(
-        MISSING_COL,
-        findWidth(root, context, nodeMissing)
-    );
+    onStart(root, context) {
+        this.cw = context.writer.writeFile(this.file);
+        this.nameWidth = Math.max(
+            NAME_COL,
+            findWidth(root, context, nodeName, depthFor)
+        );
+        this.missingWidth = Math.max(
+            MISSING_COL,
+            findWidth(root, context, nodeMissing)
+        );
 
-    if (this.maxCols > 0) {
-        const pct_cols = DELIM.length + 4 * (PCT_COLS + DELIM.length) + 2;
+        if (this.maxCols > 0) {
+            const pct_cols = DELIM.length + 4 * (PCT_COLS + DELIM.length) + 2;
 
-        const maxRemaining = this.maxCols - (pct_cols + MISSING_COL);
-        if (this.nameWidth > maxRemaining) {
-            this.nameWidth = maxRemaining;
-            this.missingWidth = MISSING_COL;
-        } else if (this.nameWidth < maxRemaining) {
-            const maxRemaining = this.maxCols - (this.nameWidth + pct_cols);
-            if (this.missingWidth > maxRemaining) {
-                this.missingWidth = maxRemaining;
+            const maxRemaining = this.maxCols - (pct_cols + MISSING_COL);
+            if (this.nameWidth > maxRemaining) {
+                this.nameWidth = maxRemaining;
+                this.missingWidth = MISSING_COL;
+            } else if (this.nameWidth < maxRemaining) {
+                const maxRemaining = this.maxCols - (this.nameWidth + pct_cols);
+                if (this.missingWidth > maxRemaining) {
+                    this.missingWidth = maxRemaining;
+                }
             }
         }
+        const line = makeLine(this.nameWidth, this.missingWidth);
+        this.cw.println(line);
+        this.cw.println(tableHeader(this.nameWidth, this.missingWidth));
+        this.cw.println(line);
     }
-    const line = makeLine(this.nameWidth, this.missingWidth);
-    this.cw.println(line);
-    this.cw.println(tableHeader(this.nameWidth, this.missingWidth));
-    this.cw.println(line);
-};
 
-TextReport.prototype.onSummary = function(node, context) {
-    const nodeDepth = depthFor(node);
-    const row = tableRow(
-        node,
-        context,
-        this.cw.colorize.bind(this.cw),
-        this.nameWidth,
-        nodeDepth,
-        this.skipEmpty,
-        this.skipFull,
-        this.missingWidth
-    );
-    if (row) {
-        this.cw.println(row);
+    onSummary(node, context) {
+        const nodeDepth = depthFor(node);
+        const row = tableRow(
+            node,
+            context,
+            this.cw.colorize.bind(this.cw),
+            this.nameWidth,
+            nodeDepth,
+            this.skipEmpty,
+            this.skipFull,
+            this.missingWidth
+        );
+        if (row) {
+            this.cw.println(row);
+        }
     }
-};
 
-TextReport.prototype.onDetail = function(node, context) {
-    return this.onSummary(node, context);
-};
+    onDetail(node, context) {
+        return this.onSummary(node, context);
+    }
 
-TextReport.prototype.onEnd = function() {
-    this.cw.println(makeLine(this.nameWidth, this.missingWidth));
-    this.cw.close();
-};
+    onEnd() {
+        this.cw.println(makeLine(this.nameWidth, this.missingWidth));
+        this.cw.close();
+    }
+}
 
 module.exports = TextReport;

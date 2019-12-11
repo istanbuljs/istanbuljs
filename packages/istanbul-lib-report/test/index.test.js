@@ -8,10 +8,6 @@ describe('report interface', () => {
     it('exports the desired interface', () => {
         assert.isFunction(index.createContext);
         assert.isFunction(index.getDefaultWatermarks);
-        assert.isObject(index.summarizers);
-        assert.isFunction(index.summarizers.flat);
-        assert.isFunction(index.summarizers.nested);
-        assert.isFunction(index.summarizers.pkg);
     });
     it('exposes default watermarks', () => {
         const w = index.getDefaultWatermarks();
@@ -24,8 +20,5 @@ describe('report interface', () => {
             },
             w
         );
-    });
-    it('creates a context without options', () => {
-        assert.ok(index.createContext());
     });
 });

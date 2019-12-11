@@ -1,17 +1,18 @@
 {
   "name": "@istanbuljs/nyc-config-typescript",
-  "version": "0.1.3",
+  "version": "1.0.0-alpha.2",
   "description": "nyc configuration that works with typescript",
-  "main": "index.json",
+  "main": "index.js",
   "files": [
-    "index.json"
+    "index.js"
   ],
   "scripts": {
     "test": "exit 0"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+    "directory": "packages/nyc-config-typescript"
   },
   "keywords": [
     "typescript",

@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-instrument",
-  "version": "3.3.0",
+  "version": "4.0.0-alpha.3",
   "description": "Core istanbul API for JS code coverage",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "dist/index.js",
@@ -13,27 +13,26 @@
     "prepublish": "npm run release"
   },
   "dependencies": {
-    "@babel/generator": "^7.4.4",
-    "@babel/parser": "^7.4.4",
-    "@babel/template": "^7.4.4",
-    "@babel/traverse": "^7.4.4",
-    "@babel/types": "^7.4.4",
-    "istanbul-lib-coverage": "^2.0.5",
-    "semver": "^6.0.0"
+    "@babel/core": "^7.7.5",
+    "@babel/parser": "^7.7.5",
+    "@babel/template": "^7.7.4",
+    "@babel/traverse": "^7.7.4",
+    "@istanbuljs/schema": "^0.1.2",
+    "istanbul-lib-coverage": "^3.0.0-alpha.2",
+    "semver": "^6.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
-    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
-    "@babel/register": "^7.4.4",
+    "@babel/cli": "^7.7.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+    "@babel/register": "^7.7.4",
     "chai": "^4.2.0",
     "clone": "^2.1.2",
     "debug": "^4.1.1",
-    "documentation": "^11.0.0",
+    "documentation": "^12.1.4",
     "js-yaml": "^3.13.1",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.2",
     "nopt": "^4.0.1",
-    "nyc": "^14.1.0"
+    "nyc": "^15.0.0-beta.2"
   },
   "license": "BSD-3-Clause",
   "bugs": {
@@ -42,7 +41,8 @@
   "homepage": "https://istanbul.js.org/",
   "repository": {
     "type": "git",
-    "url": "git@github.com:istanbuljs/istanbuljs.git"
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+    "directory": "packages/istanbul-lib-instrument"
   },
   "keywords": [
     "coverage",

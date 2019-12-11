@@ -1,17 +1,18 @@
 {
   "name": "@istanbuljs/nyc-config-babel",
-  "version": "2.1.1",
+  "version": "3.0.0-alpha.2",
   "description": "nyc configuration that works with babel-plugin-istanbul",
-  "main": "index.json",
+  "main": "index.js",
   "files": [
-    "index.json"
+    "index.js"
   ],
   "scripts": {
     "test": "exit 0"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+    "directory": "packages/nyc-config-babel"
   },
   "keywords": [
     "babel-plugin-istanbul",

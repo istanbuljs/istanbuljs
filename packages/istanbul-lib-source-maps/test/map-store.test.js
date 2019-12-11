@@ -6,17 +6,17 @@ const libCoverage = require('istanbul-lib-coverage');
 const MapStore = require('../lib/map-store').MapStore;
 
 describe('map store', () => {
-    it('applies the inputSourceMap from the coverage object if available', () => {
+    it('applies the inputSourceMap from the coverage object if available', async () => {
         /* shint ignore:line */
         const mapStore = new MapStore({});
 
         const coverageMap = libCoverage.createCoverageMap(coverageData);
 
-        const transformed = mapStore.transformCoverage(coverageMap);
-        assert.isUndefined(transformed.map.data.constructor);
+        const transformed = await mapStore.transformCoverage(coverageMap);
+        assert.isUndefined(transformed.data.constructor);
 
         const transformedCoverage =
-            transformed.map.data[path.resolve('./test.ts')].data;
+            transformed.data[path.resolve('./test.ts')].data;
 
         assert.deepEqual(transformedCoverage.statementMap, {
             '0': {

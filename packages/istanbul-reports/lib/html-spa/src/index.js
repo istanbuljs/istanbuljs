@@ -1,13 +1,16 @@
 // The index file for the spa running on the summary page
-import React, { useState, useMemo, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import SummaryTableHeader from './summaryTableHeader';
-import SummaryTableLine from './summaryTableLine';
-import SummaryHeader from './summaryHeader';
-import getChildData from './getChildData';
-import FlattenButton from './flattenButton';
-import FilterButtons from './filterButtons';
-import { setLocation, decodeLocation } from './routing';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const SummaryTableHeader = require('./summaryTableHeader');
+const SummaryTableLine = require('./summaryTableLine');
+const SummaryHeader = require('./summaryHeader');
+const getChildData = require('./getChildData');
+const FlattenToggle = require('./flattenToggle');
+const FilterToggle = require('./filterToggle');
+const FileBreadcrumbs = require('./fileBreadcrumbs');
+const { setLocation, decodeLocation } = require('./routing');
+
+const { useState, useMemo, useEffect } = React;
 
 const sourceData = window.data;
 const metricsToShow = {};
@@ -87,66 +90,66 @@ function App() {
     }, []);
 
     return (
-        <>
-            <div className="body">
+        <div className="layout">
+            <div className="layout__section">
                 <SummaryHeader
                     metrics={overallMetrics}
                     metricsToShow={metricsToShow}
                 />
-                {Boolean(fileFilter) && (
-                    <div className="pad1">
-                        <h1>
-                            {fileFilter} (
-                            <a
-                                href="javascript:void()"
-                                onClick={() => setFileFilter('')}
-                            >
-                                Clear
-                            </a>
-                            )
-                        </h1>
+            </div>
+            <div className="layout__section">
+                <div className="toolbar">
+                    <div className="toolbar__item">
+                        <FlattenToggle setIsFlat={setIsFlat} isFlat={isFlat} />
                     </div>
-                )}
-                <div className="pad1">
-                    <FlattenButton setIsFlat={setIsFlat} isFlat={isFlat} />
-                    <FilterButtons
-                        activeFilters={activeFilters}
-                        setFilters={setFilters}
-                    />
-                </div>
-                <div className="pad1">
-                    <table className="coverage-summary">
-                        <SummaryTableHeader
-                            onSort={newSort => {
-                                setSort(newSort);
-                            }}
-                            activeSort={activeSort}
-                            metricsToShow={metricsToShow}
+                    <div className="toolbar__item">
+                        <FilterToggle
+                            activeFilters={activeFilters}
+                            setFilters={setFilters}
                         />
-                        <tbody>
-                            {childData.map(child => (
-                                <SummaryTableLine
-                                    {...child}
-                                    key={child.file}
-                                    metricsToShow={metricsToShow}
-                                    expandedLines={expandedLines}
-                                    setExpandedLines={setExpandedLines}
-                                    fileFilter={fileFilter}
-                                    setFileFilter={setFileFilter}
-                                />
-                            ))}
-                        </tbody>
-                    </table>
+                    </div>
                 </div>
             </div>
-            <div className="footer quiet pad2 space-top1 center small">
+            <div className="layout__section">
+                <h1>
+                    <FileBreadcrumbs
+                        fileFilter={fileFilter}
+                        setFileFilter={setFileFilter}
+                    />
+                </h1>
+            </div>
+            <div className="layout__section layout__section--fill">
+                <table className="coverage-summary">
+                    <SummaryTableHeader
+                        onSort={newSort => {
+                            setSort(newSort);
+                        }}
+                        activeSort={activeSort}
+                        metricsToShow={metricsToShow}
+                    />
+                    <tbody>
+                        {childData.map(child => (
+                            <SummaryTableLine
+                                {...child}
+                                key={child.file}
+                                metricsToShow={metricsToShow}
+                                expandedLines={expandedLines}
+                                setExpandedLines={setExpandedLines}
+                                fileFilter={fileFilter}
+                                setFileFilter={setFileFilter}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="layout__section center small quiet">
                 Code coverage generated by{' '}
                 <a href="https://istanbul.js.org/" target="_blank">
                     istanbul
                 </a>{' '}
                 at {window.generatedDatetime}
             </div>
-        </>
+        </div>
     );
 }
 

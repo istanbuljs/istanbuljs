@@ -1,6 +1,6 @@
 {
   "name": "@istanbuljs/nyc-config-hook-run-in-this-context",
-  "version": "0.1.1",
+  "version": "1.0.0-alpha.2",
   "description": "nyc configuration for hook-run-in-this-context",
   "main": "index.js",
   "files": [
@@ -11,7 +11,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+    "directory": "packages/nyc-config-hook-run-in-this-context"
   },
   "keywords": [
     "hook",
@@ -30,12 +31,12 @@
     "access": "public"
   },
   "dependencies": {
-    "semver": "^6.0.0"
+    "semver": "^6.3.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.0"
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0-beta.2"
   },
   "engines": {
     "node": ">=8"

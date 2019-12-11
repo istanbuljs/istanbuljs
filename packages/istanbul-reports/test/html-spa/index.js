@@ -54,13 +54,12 @@ describe('html-spa', () => {
             __dirname,
             '../fixtures/specs/' + file
         ));
-        const tree = istanbulLibReport.summarizers.nested(
-            istanbulLibCoverage.createCoverageMap(fixture.map)
-        );
         it(fixture.title, () => {
             const context = istanbulLibReport.createContext({
-                dir: './'
+                dir: './',
+                coverageMap: istanbulLibCoverage.createCoverageMap(fixture.map)
             });
+            const tree = context.getTree('nested');
             const report = new HtmlSpaReport(fixture.opts);
             tree.visit(report, context);
 
@@ -83,6 +82,15 @@ describe('html-spa', () => {
                     ),
                     dest: './block-navigation.js',
                     header: '/* eslint-disable */\n'
+                },
+                {
+                    dest: './favicon.png',
+                    header: undefined,
+                    source: path.join(
+                        __dirname,
+                        '/../../lib/html/assets/favicon.png'
+                    ),
+                    type: 'copy'
                 },
                 {
                     type: 'copy',

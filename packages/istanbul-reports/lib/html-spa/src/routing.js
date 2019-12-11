@@ -1,4 +1,4 @@
-export function setLocation(
+exports.setLocation = function setLocation(
     isReplace,
     activeSort,
     isFlat,
@@ -23,9 +23,9 @@ export function setLocation(
     }
 
     window.history[isReplace ? 'replaceState' : 'pushState'](null, '', newUrl);
-}
+};
 
-export function decodeLocation() {
+exports.decodeLocation = function decodeLocation() {
     const items = location.hash.substr(1).split('/');
     if (items.length !== 8) {
         return null;
@@ -49,4 +49,4 @@ export function decodeLocation() {
     } catch (e) {
         return null;
     }
-}
+};

@@ -5,6 +5,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { ReportBase } = require('istanbul-lib-report');
 const HtmlReport = require('../html');
 
 const standardLinkMapper = {
@@ -36,8 +37,13 @@ const standardLinkMapper = {
     }
 };
 
-class HtmlSpaReport {
+class HtmlSpaReport extends ReportBase {
     constructor(opts = {}) {
+        super({
+            // force the summarizer to nested for html-spa
+            summarizer: 'nested'
+        });
+
         this.verbose = opts.verbose || false;
         this.linkMapper = opts.linkMapper || standardLinkMapper;
         this.subdir = opts.subdir || '';
@@ -87,7 +93,8 @@ class HtmlSpaReport {
         this.htmlReport.onDetail(node, context);
     }
 
-    getMetric(metric, type, isEmpty, context) {
+    getMetric(metric, type, context) {
+        const isEmpty = metric.total === 0;
         return {
             total: metric.total,
             covered: metric.covered,
@@ -101,37 +108,28 @@ class HtmlSpaReport {
 
     toDataStructure(node, context) {
         const coverageSummary = node.getCoverageSummary();
-        const isEmpty = coverageSummary.isEmpty();
         const metrics = {
             statements: this.getMetric(
                 coverageSummary.statements,
                 'statements',
-                isEmpty,
                 context
             ),
             branches: this.getMetric(
                 coverageSummary.branches,
                 'branches',
-                isEmpty,
                 context
             ),
             functions: this.getMetric(
                 coverageSummary.functions,
                 'functions',
-                isEmpty,
                 context
             ),
-            lines: this.getMetric(
-                coverageSummary.lines,
-                'lines',
-                isEmpty,
-                context
-            )
+            lines: this.getMetric(coverageSummary.lines, 'lines', context)
         };
 
         return {
             file: node.getRelativeName(),
-            isEmpty,
+            isEmpty: coverageSummary.isEmpty(),
             metrics,
             children:
                 node.isSummary() &&

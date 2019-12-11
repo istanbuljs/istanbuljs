@@ -1,38 +1,21 @@
-import React from 'react';
-
-function ShowPicture({ num }) {
-    let rest;
-    let cls = '';
-    if (isFinite(num)) {
-        if (num === 100) {
-            cls = ' cover-full';
-        }
-        num = Math.floor(num);
-        rest = 100 - num;
-        return (
-            <>
-                <div
-                    className={'cover-fill' + cls}
-                    style={{ width: num + '%' }}
-                />
-                <div className="cover-empty" style={{ width: rest + '%' }} />
-            </>
-        );
-    } else {
-        return false;
-    }
-}
+const React = require('react');
 
 function MetricCells({ metrics }) {
+    const { classForPercent, pct, covered, total } = metrics;
+
     return (
         <>
-            <td className={'pct ' + metrics.classForPercent}>{metrics.pct}%</td>
-            <td className={'abs ' + metrics.classForPercent}>
-                {metrics.covered}
+            <td className={'pct ' + classForPercent}>{Math.round(pct)}% </td>
+            <td className={classForPercent}>
+                <div className="bar">
+                    <div
+                        className={`bar__data ${classForPercent} ${classForPercent}--dark`}
+                        style={{ width: pct + '%' }}
+                    ></div>
+                </div>
             </td>
-            <td className={'abs ' + metrics.classForPercent}>
-                {metrics.total}
-            </td>
+            <td className={'abs ' + classForPercent}>{covered}</td>
+            <td className={'abs ' + classForPercent}>{total}</td>
         </>
     );
 }
@@ -77,7 +60,34 @@ function FileCell({
     }
 }
 
-export default function SummaryTableLine({
+function getWorstMetricClassForPercent(metricsToShow, metrics) {
+    let classForPercent = 'none';
+    for (const metricToShow in metricsToShow) {
+        if (metricsToShow[metricToShow]) {
+            const metricClassForPercent = metrics[metricToShow].classForPercent;
+
+            // ignore none metrics so they don't change whats shown
+            if (metricClassForPercent === 'none') {
+                continue;
+            }
+
+            // if the metric low or lower than whats currently being used, replace it
+            if (
+                metricClassForPercent == 'low' ||
+                (metricClassForPercent === 'medium' &&
+                    classForPercent !== 'low') ||
+                (metricClassForPercent === 'high' &&
+                    classForPercent !== 'low' &&
+                    classForPercent !== 'medium')
+            ) {
+                classForPercent = metricClassForPercent;
+            }
+        }
+    }
+    return classForPercent;
+}
+
+module.exports = function SummaryTableLine({
     prefix,
     metrics,
     file,
@@ -99,8 +109,10 @@ export default function SummaryTableLine({
         <>
             <tr>
                 <td
-                    className={'file ' + metrics.statements.classForPercent}
-                    rowSpan={2}
+                    className={
+                        'file ' +
+                        getWorstMetricClassForPercent(metricsToShow, metrics)
+                    }
                 >
                     {/* eslint-disable-line prefer-spread */ Array.apply(null, {
                         length: tabSize
@@ -127,48 +139,6 @@ export default function SummaryTableLine({
                 )}
                 {metricsToShow.lines && <MetricCells metrics={metrics.lines} />}
             </tr>
-            <tr>
-                {metricsToShow.statements && (
-                    <td
-                        className={'pic ' + metrics.statements.classForPercent}
-                        colSpan={3}
-                    >
-                        <div className="chart">
-                            <ShowPicture num={metrics.statements.pct} />
-                        </div>
-                    </td>
-                )}
-                {metricsToShow.branches && (
-                    <td
-                        className={'pic ' + metrics.branches.classForPercent}
-                        colSpan={3}
-                    >
-                        <div className="chart">
-                            <ShowPicture num={metrics.branches.pct} />
-                        </div>
-                    </td>
-                )}
-                {metricsToShow.functions && (
-                    <td
-                        className={'pic ' + metrics.functions.classForPercent}
-                        colSpan={3}
-                    >
-                        <div className="chart">
-                            <ShowPicture num={metrics.functions.pct} />
-                        </div>
-                    </td>
-                )}
-                {metricsToShow.lines && (
-                    <td
-                        className={'pic ' + metrics.lines.classForPercent}
-                        colSpan={3}
-                    >
-                        <div className="chart">
-                            <ShowPicture num={metrics.lines.pct} />
-                        </div>
-                    </td>
-                )}
-            </tr>
             {children &&
                 expandedLines.indexOf(prefix + file) >= 0 &&
                 children.map(child => (
@@ -185,4 +155,4 @@ export default function SummaryTableLine({
                 ))}
         </>
     );
-}
+};

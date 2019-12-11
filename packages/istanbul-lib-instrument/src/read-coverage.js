@@ -1,22 +1,30 @@
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
-import * as t from '@babel/types';
+import { defaults } from '@istanbuljs/schema';
 import { MAGIC_KEY, MAGIC_VALUE } from './constants';
-import { defaultOpts } from './instrumenter';
 
-export default function readInitialCoverage(code) {
+function getAst(code) {
+    if (typeof code === 'object' && typeof code.type === 'string') {
+        // Assume code is already a babel ast.
+        return code;
+    }
+
     if (typeof code !== 'string') {
         throw new Error('Code must be a string');
     }
 
     // Parse as leniently as possible
-    const ast = parse(code, {
+    return parse(code, {
         allowImportExportEverywhere: true,
         allowReturnOutsideFunction: true,
         allowSuperOutsideMethod: true,
         sourceType: 'script',
-        plugins: defaultOpts().plugins
+        plugins: defaults.instrumenter.parserPlugins
     });
+}
+
+export default function readInitialCoverage(code) {
+    const ast = getAst(code);
 
     let covScope;
     traverse(ast, {
@@ -24,7 +32,7 @@ export default function readInitialCoverage(code) {
             const { node } = path;
             if (
                 !node.computed &&
-                t.isIdentifier(node.key) &&
+                path.get('key').isIdentifier() &&
                 node.key.name === MAGIC_KEY
             ) {
                 const magicValue = path.get('value').evaluate();
@@ -59,6 +67,7 @@ export default function readInitialCoverage(code) {
     }
 
     delete result.coverageData[MAGIC_KEY];
+    delete result.coverageData.hash;
 
     return result;
 }

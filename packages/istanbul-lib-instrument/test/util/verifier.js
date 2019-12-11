@@ -73,10 +73,7 @@ class Verifier {
         );
         const initial = readInitialCoverage(this.getGeneratedCode());
         assert.ok(initial);
-        assert.deepEqual(initial.coverageData, {
-            hash: initial.coverageData.hash,
-            ...this.result.emptyCoverage
-        });
+        assert.deepEqual(initial.coverageData, this.result.emptyCoverage);
         assert.ok(initial.path);
         if (this.result.file) {
             assert.equal(initial.path, this.result.file);
@@ -105,7 +102,7 @@ class Verifier {
 
 function extractTestOption(opts, name, defaultValue) {
     let v = defaultValue;
-    if (opts.hasOwnProperty(name)) {
+    if (Object.prototype.hasOwnProperty.call(opts, name)) {
         v = opts[name];
     }
     return v;

@@ -1,8 +1,8 @@
 import { createHash } from 'crypto';
 import template from '@babel/template';
+import { defaults } from '@istanbuljs/schema';
 import { SourceCoverage } from './source-coverage';
 import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
-import { defaultOpts } from './instrumenter';
 
 // pattern for istanbul to ignore a section
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
@@ -28,6 +28,7 @@ class VisitState {
         ignoreClassMethods = []
     ) {
         this.varName = genVar(sourceFilePath);
+        this.varCalled = false;
         this.attrs = {};
         this.nextIgnore = null;
         this.cov = new SourceCoverage(sourceFilePath);
@@ -167,12 +168,13 @@ class VisitState {
                 ? // If `index` present, turn `x` into `x[index]`.
                   x => T.memberExpression(x, T.numericLiteral(index), true)
                 : x => x;
+        this.varCalled = true;
         return T.updateExpression(
             '++',
             wrap(
                 T.memberExpression(
                     T.memberExpression(
-                        T.identifier(this.varName),
+                        T.callExpression(T.identifier(this.varName), []),
                         T.identifier(type)
                     ),
                     T.numericLiteral(id),
@@ -368,6 +370,8 @@ function makeBlock(path) {
     if (!path.isBlockStatement()) {
         path.replaceWith(T.blockStatement([path.node]));
         path.node.loc = path.node.body[0].loc;
+        path.node.body[0].leadingComments = path.node.leadingComments;
+        path.node.leadingComments = undefined;
     }
 }
 
@@ -533,18 +537,24 @@ const globalTemplateVariable = template(`
 `);
 // the template to insert at the top of the program.
 const coverageTemplate = template(`
-    var COVERAGE_VAR = (function () {
+    function COVERAGE_FUNCTION () {
         var path = PATH;
         var hash = HASH;
         GLOBAL_COVERAGE_TEMPLATE
         var gcv = GLOBAL_COVERAGE_VAR;
         var coverageData = INITIAL;
         var coverage = global[gcv] || (global[gcv] = {});
-        if (coverage[path] && coverage[path].hash === hash) {
-            return coverage[path];
+        if (!coverage[path] || coverage[path].hash !== hash) {
+            coverage[path] = coverageData;
         }
-        return coverage[path] = coverageData;
-    })();
+
+        var actualCoverage = coverage[path];
+        COVERAGE_FUNCTION = function () {
+          return actualCoverage;
+        }
+
+        return actualCoverage;
+    }
 `);
 // the rewire plugin (and potentially other babel middleware)
 // may cause files to be instrumented twice, see:
@@ -561,9 +571,6 @@ function shouldIgnoreFile(programNode) {
     );
 }
 
-const defaultProgramVisitorOpts = {
-    inputSourceMap: undefined
-};
 /**
  * programVisitor is a `babel` adaptor for instrumentation.
  * It returns an object with two methods `enter` and `exit`.
@@ -587,16 +594,10 @@ const defaultProgramVisitorOpts = {
  * @param {object} [opts.inputSourceMap=undefined] the input source map, that maps the uninstrumented code back to the
  * original code.
  */
-function programVisitor(
-    types,
-    sourceFilePath = 'unknown.js',
-    opts = defaultProgramVisitorOpts
-) {
+function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
     const T = types;
-    // This sets some unused options but ensures all required options are initialized
     opts = {
-        ...defaultOpts(),
-        ...defaultProgramVisitorOpts,
+        ...defaults.instrumentVisitor,
         ...opts
     };
     const visitState = new VisitState(
@@ -658,12 +659,19 @@ function programVisitor(
             const cv = coverageTemplate({
                 GLOBAL_COVERAGE_VAR: T.stringLiteral(opts.coverageVariable),
                 GLOBAL_COVERAGE_TEMPLATE: gvTemplate,
-                COVERAGE_VAR: T.identifier(visitState.varName),
+                COVERAGE_FUNCTION: T.identifier(visitState.varName),
                 PATH: T.stringLiteral(sourceFilePath),
                 INITIAL: coverageNode,
                 HASH: T.stringLiteral(hash)
             });
-            cv._blockHoist = 5;
+            // explicitly call this.varName if this file has no coverage
+            if (!visitState.varCalled) {
+                path.node.body.unshift(
+                    T.expressionStatement(
+                        T.callExpression(T.identifier(visitState.varName), [])
+                    )
+                );
+            }
             path.node.body.unshift(cv);
             return {
                 fileCoverage: coverageData,

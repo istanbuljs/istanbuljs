@@ -89,7 +89,7 @@ class SourceMapTransformer {
         return changes > 0;
     }
 
-    transform(coverageMap) {
+    async transform(coverageMap) {
         const uniqueFiles = {};
         const getMappedCoverage = file => {
             const key = getUniqueKey(file);
@@ -103,29 +103,31 @@ class SourceMapTransformer {
             return uniqueFiles[key].mappedCoverage;
         };
 
-        coverageMap.files().forEach(file => {
+        for (const file of coverageMap.files()) {
             const fc = coverageMap.fileCoverageFor(file);
-            const sourceMap = this.finder(file);
-            if (!sourceMap) {
+            const sourceMap = await this.finder(file, fc);
+
+            if (sourceMap) {
+                const changed = this.processFile(
+                    fc,
+                    sourceMap,
+                    getMappedCoverage
+                );
+                if (!changed) {
+                    debug(`File [${file}] ignored, nothing could be mapped`);
+                }
+            } else {
                 uniqueFiles[getUniqueKey(file)] = {
                     file,
-                    mappedCoverage: fc
+                    mappedCoverage: new MappedCoverage(fc)
                 };
-                return;
             }
-
-            const changed = this.processFile(fc, sourceMap, getMappedCoverage);
-            if (!changed) {
-                debug(`File [${file}] ignored, nothing could be mapped`);
-            }
-        });
+        }
 
         return libCoverage.createCoverageMap(getOutput(uniqueFiles));
     }
 }
 
 module.exports = {
-    create(finder, opts) {
-        return new SourceMapTransformer(finder, opts);
-    }
+    SourceMapTransformer
 };

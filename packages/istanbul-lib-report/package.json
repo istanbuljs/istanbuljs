@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-report",
-  "version": "2.0.8",
+  "version": "3.0.0-alpha.2",
   "description": "Base reporting library for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -9,18 +9,18 @@
     "index.js"
   ],
   "scripts": {
-    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha"
+    "test": "nyc --nycrc-path=../../monorepo-per-package-full.js mocha"
   },
   "dependencies": {
-    "istanbul-lib-coverage": "^2.0.5",
+    "istanbul-lib-coverage": "^3.0.0-alpha.2",
     "make-dir": "^3.0.0",
-    "supports-color": "^6.1.0"
+    "supports-color": "^7.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.0",
-    "rimraf": "^2.6.3"
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0-beta.2",
+    "rimraf": "^3.0.0"
   },
   "license": "BSD-3-Clause",
   "bugs": {
@@ -29,7 +29,8 @@
   "homepage": "https://istanbul.js.org/",
   "repository": {
     "type": "git",
-    "url": "git@github.com:istanbuljs/istanbuljs.git"
+    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+    "directory": "packages/istanbul-lib-report"
   },
   "keywords": [
     "istanbul",
