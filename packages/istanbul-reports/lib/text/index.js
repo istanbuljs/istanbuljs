@@ -78,7 +78,25 @@ function nodeMissing(node) {
     } else {
         missingLines = fileCoverage.getUncoveredLines();
     }
-    return missingLines.join(',');
+
+    const ranges = missingLines
+        .reduce((acum, line) => {
+            line = parseInt(line);
+            const range = acum[acum.length - 1];
+            if (range && range[range.length - 1] === line - 1) range.push(line);
+            else acum.push([line]);
+
+            return acum;
+        }, [])
+        .map(range => {
+            const { length } = range;
+
+            if (length <= 2) return range;
+
+            return `${range[0]}-${range[length - 1]}`;
+        });
+
+    return [].concat(...ranges).join(',');
 }
 
 function nodeName(node) {
