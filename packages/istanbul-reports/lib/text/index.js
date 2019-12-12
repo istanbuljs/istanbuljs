@@ -78,7 +78,8 @@ function nodeMissing(node) {
     } else {
         missingLines = fileCoverage.getUncoveredLines();
     }
-    return missingLines
+
+    const ranges = missingLines
         .reduce((acum, line) => {
             line = parseInt(line);
             const range = acum[acum.length - 1];
@@ -87,14 +88,15 @@ function nodeMissing(node) {
 
             return acum;
         }, [])
-        .flatMap(range => {
+        .map(range => {
             const { length } = range;
 
             if (length <= 2) return range;
 
             return `${range[0]}-${range[length - 1]}`;
-        })
-        .join(',');
+        });
+
+    return [].concat(...ranges).join(',');
 }
 
 function nodeName(node) {
