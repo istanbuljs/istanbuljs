@@ -19,7 +19,7 @@
     "@babel/traverse": "^7.7.4",
     "@istanbuljs/schema": "^0.1.2",
     "istanbul-lib-coverage": "^3.0.0-alpha.2",
-    "semver": "^6.3.0"
+    "semver": "^7.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
