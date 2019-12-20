@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.6...istanbul-reports@3.0.0) (2019-12-20)
+
+
+### Features
+
+* **text:** Coalesce ranges of missing lines ([#511](https://github.com/istanbuljs/istanbuljs/issues/511)) ([54636fc](https://github.com/istanbuljs/istanbuljs/commit/54636fc9acbb53e5724fe9018837d0d205413194))
+
+
+
+
+
 # [3.0.0-alpha.6](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0-alpha.5...istanbul-reports@3.0.0-alpha.6) (2019-12-07)
 
 

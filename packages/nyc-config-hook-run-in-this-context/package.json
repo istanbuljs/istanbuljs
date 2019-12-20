@@ -1,6 +1,6 @@
 {
   "name": "@istanbuljs/nyc-config-hook-run-in-this-context",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0",
   "description": "nyc configuration for hook-run-in-this-context",
   "main": "index.js",
   "files": [
