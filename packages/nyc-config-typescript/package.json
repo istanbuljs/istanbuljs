@@ -33,7 +33,11 @@
   "engines": {
     "node": ">=8"
   },
+  "dependencies": {
+    "@istanbuljs/schema": "^0.1.2"
+  },
   "peerDependencies": {
+    "nyc": ">=15",
     "source-map-support": "*",
     "ts-node": "*"
   }
