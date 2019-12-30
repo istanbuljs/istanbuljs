@@ -1,16 +1,8 @@
 'use strict';
 
+const { parserPlugins } = require('@istanbuljs/schema').defaults.nyc;
+
 module.exports = {
     cache: false,
-    extension: ['.ts', '.tsx'],
-    exclude: [
-        '**/*.d.ts',
-        'coverage/**',
-        'packages/*/test/**',
-        'test/**',
-        'test{,-*}.ts',
-        '**/*{.,-}{test,spec}.ts',
-        '**/__tests__/**',
-        '**/node_modules/**'
-    ]
+    parserPlugins: parserPlugins.concat('typescript')
 };
