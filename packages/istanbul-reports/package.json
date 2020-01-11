@@ -1,6 +1,6 @@
 {
   "name": "istanbul-reports",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "description": "istanbul reports",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
