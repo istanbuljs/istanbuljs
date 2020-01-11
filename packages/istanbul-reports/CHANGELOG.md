@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.6]
+
+
+### Bug Fixes
+
+* **istanbul-reports:** Revert to istanbul-reports@2.2.4
+
+
+
+
+
 ## [2.2.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@2.2.4...istanbul-reports@2.2.5) (2019-05-02)
 
 
