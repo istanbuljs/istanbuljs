@@ -50,6 +50,34 @@ const testDataBackslash = {
     }
 };
 
+class MappingResolver {
+    constructor(mappingFile) {
+        this.mapping = require(mappingFile);
+    }
+
+    resolveMapping(sourceMap, location, filePath) {
+        const mapResult = this.mapping.find(
+            m =>
+                m.start.line == location.start.line &&
+                m.start.column == location.start.column &&
+                m.end.line == location.end.line &&
+                m.end.column == location.end.column
+        );
+
+        if (!mapResult) {
+            return null;
+        }
+
+        return {
+            source: filePath.replace('.js', '.ts'),
+            loc: {
+                start: mapResult.mapped.start,
+                end: mapResult.mapped.end
+            }
+        };
+    }
+}
+
 describe('transformer', () => {
     it('maps statement locations', async () => {
         const coverageMap = createMap({});
@@ -90,5 +118,28 @@ describe('transformer', () => {
 
         assert.equal(Object.keys(mapped.data).length, 1);
         assert.isDefined(mapped.data[testDataBackslash.coverageData.path]);
+    });
+
+    it('correctly maps location for branch statements', async () => {
+        const switchBranchCoverageData = require('./testdata/switchBranchCoverageData.json');
+        const switchBranchCoverageDataExpectedResult = require('./testdata/switchBranchCoverageDataExpectedResult.json');
+        const mappingResolver = new MappingResolver(
+            './testdata/switchBranchCoverageDataMapping.json'
+        );
+
+        const coverageMap = createMap({});
+        coverageMap.addFileCoverage(switchBranchCoverageData);
+
+        const transformer = new SourceMapTransformer(
+            file => ({ file }),
+            {},
+            mappingResolver.resolveMapping.bind(mappingResolver)
+        );
+        const mapped = await transformer.transform(coverageMap);
+
+        assert.deepEqual(
+            mapped.fileCoverageFor('dummyFile.ts').data,
+            switchBranchCoverageDataExpectedResult
+        );
     });
 });

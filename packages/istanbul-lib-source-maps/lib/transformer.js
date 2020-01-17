@@ -11,9 +11,10 @@ const getMapping = require('./get-mapping');
 const { getUniqueKey, getOutput } = require('./transform-utils');
 
 class SourceMapTransformer {
-    constructor(finder, opts = {}) {
+    constructor(finder, opts = {}, resolveMapping = getMapping) {
         this.finder = finder;
         this.baseDir = opts.baseDir || process.cwd();
+        this.resolveMapping = resolveMapping;
     }
 
     processFile(fc, sourceMap, coverageMapper) {
@@ -21,7 +22,7 @@ class SourceMapTransformer {
 
         Object.entries(fc.statementMap).forEach(([s, loc]) => {
             const hits = fc.s[s];
-            const mapping = getMapping(sourceMap, loc, fc.path);
+            const mapping = this.resolveMapping(sourceMap, loc, fc.path);
 
             if (mapping) {
                 changes += 1;
@@ -32,8 +33,17 @@ class SourceMapTransformer {
 
         Object.entries(fc.fnMap).forEach(([f, fnMeta]) => {
             const hits = fc.f[f];
-            const mapping = getMapping(sourceMap, fnMeta.decl, fc.path);
-            const spanMapping = getMapping(sourceMap, fnMeta.loc, fc.path);
+            const mapping = this.resolveMapping(
+                sourceMap,
+                fnMeta.decl,
+                fc.path
+            );
+
+            const spanMapping = this.resolveMapping(
+                sourceMap,
+                fnMeta.loc,
+                fc.path
+            );
 
             if (
                 mapping &&
@@ -59,7 +69,7 @@ class SourceMapTransformer {
             let skip;
 
             branchMeta.locations.forEach((loc, i) => {
-                const mapping = getMapping(sourceMap, loc, fc.path);
+                const mapping = this.resolveMapping(sourceMap, loc, fc.path);
                 if (mapping) {
                     if (!source) {
                         source = mapping.source;
@@ -74,7 +84,9 @@ class SourceMapTransformer {
                 }
             });
 
-            const locMapping = branchMeta.loc ? getMapping(sourceMap, branchMeta.loc, fc.path) : null;
+            const locMapping = branchMeta.loc
+                ? this.resolveMapping(sourceMap, branchMeta.loc, fc.path)
+                : null;
 
             if (!skip && locs.length > 0) {
                 changes += 1;
