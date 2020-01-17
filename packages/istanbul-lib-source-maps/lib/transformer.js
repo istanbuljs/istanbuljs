@@ -74,12 +74,14 @@ class SourceMapTransformer {
                 }
             });
 
+            const locMapping = branchMeta.loc ? getMapping(sourceMap, branchMeta.loc, fc.path) : null;
+
             if (!skip && locs.length > 0) {
                 changes += 1;
                 const mappedCoverage = coverageMapper(source);
                 mappedCoverage.addBranch(
                     branchMeta.type,
-                    locs[0] /* XXX */,
+                    locMapping ? locMapping.loc : locs[0],
                     locs,
                     mappedHits
                 );
