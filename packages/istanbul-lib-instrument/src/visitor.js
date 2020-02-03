@@ -28,7 +28,6 @@ class VisitState {
         ignoreClassMethods = []
     ) {
         this.varName = genVar(sourceFilePath);
-        this.varCalled = false;
         this.attrs = {};
         this.nextIgnore = null;
         this.cov = new SourceCoverage(sourceFilePath);
@@ -168,7 +167,6 @@ class VisitState {
                 ? // If `index` present, turn `x` into `x[index]`.
                   x => T.memberExpression(x, T.numericLiteral(index), true)
                 : x => x;
-        this.varCalled = true;
         return T.updateExpression(
             '++',
             wrap(
@@ -664,14 +662,12 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                 INITIAL: coverageNode,
                 HASH: T.stringLiteral(hash)
             });
-            // explicitly call this.varName if this file has no coverage
-            if (!visitState.varCalled) {
-                path.node.body.unshift(
-                    T.expressionStatement(
-                        T.callExpression(T.identifier(visitState.varName), [])
-                    )
-                );
-            }
+            // explicitly call this.varName to ensure coverage is always initialized
+            path.node.body.unshift(
+                T.expressionStatement(
+                    T.callExpression(T.identifier(visitState.varName), [])
+                )
+            );
             path.node.body.unshift(cv);
             return {
                 fileCoverage: coverageData,

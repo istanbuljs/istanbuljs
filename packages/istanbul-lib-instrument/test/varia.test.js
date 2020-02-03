@@ -96,7 +96,7 @@ describe('varia', () => {
         const code = v.getGeneratedCode();
         assert.ok(
             code.match(
-                /return actualCoverage;}export function fn1\(\){cov_(.+)\.f\[\d+\]\+\+;}export default function\(\){cov_(.+)\.f\[\d+\]\+\+;}/
+                /return actualCoverage;}cov_([^(]+)\(\);export function fn1\(\){cov_(.+)\.f\[\d+\]\+\+;}export default function\(\){cov_(.+)\.f\[\d+\]\+\+;}/
             )
         );
     });
