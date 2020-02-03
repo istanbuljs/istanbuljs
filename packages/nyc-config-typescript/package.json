@@ -1,6 +1,6 @@
 {
   "name": "@istanbuljs/nyc-config-typescript",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.1",
   "description": "nyc configuration that works with typescript",
   "main": "index.js",
   "files": [
@@ -33,7 +33,11 @@
   "engines": {
     "node": ">=8"
   },
+  "dependencies": {
+    "@istanbuljs/schema": "^0.1.2"
+  },
   "peerDependencies": {
+    "nyc": ">=15",
     "source-map-support": "*",
     "ts-node": "*"
   }
