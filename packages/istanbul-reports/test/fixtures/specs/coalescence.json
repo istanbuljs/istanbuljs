@@ -11,9 +11,9 @@
         "metrics": {
             "statements": {
                 "total": 20,
-                "covered": 0,
+                "covered": 6,
                 "skipped": 0,
-                "pct": 0,
+                "pct": 30,
                 "classForPercent": "low"
             },
             "branches": {
@@ -32,9 +32,9 @@
             },
             "lines": {
                 "total": 18,
-                "covered": 0,
+                "covered": 6,
                 "skipped": 0,
-                "pct": 0,
+                "pct": 33.33,
                 "classForPercent": "low"
             }
         },
@@ -45,9 +45,9 @@
                 "metrics": {
                     "statements": {
                         "total": 20,
-                        "covered": 0,
+                        "covered": 6,
                         "skipped": 0,
-                        "pct": 0,
+                        "pct": 30,
                         "classForPercent": "low"
                     },
                     "branches": {
@@ -66,9 +66,9 @@
                     },
                     "lines": {
                         "total": 18,
-                        "covered": 0,
+                        "covered": 6,
                         "skipped": 0,
-                        "pct": 0,
+                        "pct": 33.33,
                         "classForPercent": "low"
                     }
                 },
