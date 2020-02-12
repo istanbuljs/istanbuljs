@@ -91,7 +91,7 @@ class CoberturaReport extends ReportBase {
         Object.entries(fnMap).forEach(([k, { name, decl }]) => {
             const hits = fileCoverage.f[k];
             this.xml.openTag('method', {
-                name,
+                name: asMethodName(name),
                 hits,
                 signature: '()V' //fake out a no-args void return
             });
@@ -144,6 +144,11 @@ function asJavaPackage(node) {
 
 function asClassName(node) {
     return node.getRelativeName().replace(/.*[\\/]/, '');
+}
+
+function asMethodName(name) {
+    // avoid invalid xml structure in method name like <method name="map.<computed>.f" hits="1" signature="()V">
+    return name.replace('<', '&lt;').replace('>', '&gt;');
 }
 
 module.exports = CoberturaReport;
