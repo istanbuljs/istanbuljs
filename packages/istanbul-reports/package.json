@@ -14,7 +14,7 @@
     "prepare:watch": "webpack --config lib/html-spa/webpack.config.js --watch --mode development"
   },
   "dependencies": {
-    "html-escaper": "^2.0.0",
+    "html-escaper": "^3.0.0",
     "istanbul-lib-report": "^3.0.0"
   },
   "devDependencies": {
