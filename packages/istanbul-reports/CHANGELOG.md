@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.1...istanbul-reports@3.0.2) (2020-04-01)
+
+
+### Bug Fixes
+
+* Ignore insignificant lines when coalesce ([#525](https://github.com/istanbuljs/istanbuljs/issues/525)) ([d7d7cfa](https://github.com/istanbuljs/istanbuljs/commit/d7d7cfa1301f0dde2ff19078c31235ffd55c01ef))
+
+
+
+
+
 ## [3.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports@3.0.0...istanbul-reports@3.0.1) (2020-03-26)
 
 
