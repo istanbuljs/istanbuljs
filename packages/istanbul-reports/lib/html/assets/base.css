@@ -222,3 +222,48 @@ pre.prettyprint {
 .footer, .push {
   height: 48px;
 }
+
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color:#ddd;
+  }
+  .quiet {
+    color: #bcbcbc;
+    color: rgba(255,255,255,0.5);
+  }
+
+
+  /* yellow */
+  .cbranch-no { background: yellow !important; color: #111; }
+  /* dark red */
+  .red.solid, .status-line.low, .low .cover-fill { background:#C21F39 }
+  .low .chart { border:1px solid #C21F39 }
+  .highlighted,
+  .highlighted .cstat-no, .highlighted .fstat-no, .highlighted .cbranch-no{
+    background: #C21F39 !important;
+  }
+  /* medium red */
+  .cstat-no, .fstat-no, .cbranch-no, .cbranch-no { background:#F6C6CE }
+  /* light red */
+  .low, .cline-no { background:#FCE1E5 }
+  /* light green */
+  .high, .cline-yes { background:#36471c }
+  /* medium green */
+  .cstat-yes { background:#526d2a }
+  /* dark green */
+  .status-line.high, .high .cover-fill { background:#1d541a }
+  .high .chart { border:1px solid #1d541a }
+  /* dark yellow (gold) */
+  .status-line.medium, .medium .cover-fill { background: #f9cd0b; }
+  .medium .chart { border:1px solid #f9cd0b; }
+  /* light yellow */
+  .medium { background: #fff4c2; }
+
+  .cstat-skip { background: #ddd; color: #111; }
+  .fstat-skip { background: #ddd; color: #111 !important; }
+  .cbranch-skip { background: #ddd !important; color: #111; }
+
+  span.cline-neutral { background: #1c1c1c; }
+}
+
