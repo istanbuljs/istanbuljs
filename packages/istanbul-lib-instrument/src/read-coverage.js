@@ -1,5 +1,4 @@
-import { parse } from '@babel/parser';
-import traverse from '@babel/traverse';
+import { parseSync, traverse } from '@babel/core';
 import { defaults } from '@istanbuljs/schema';
 import { MAGIC_KEY, MAGIC_VALUE } from './constants';
 
@@ -14,12 +13,14 @@ function getAst(code) {
     }
 
     // Parse as leniently as possible
-    return parse(code, {
-        allowImportExportEverywhere: true,
-        allowReturnOutsideFunction: true,
-        allowSuperOutsideMethod: true,
-        sourceType: 'script',
-        plugins: defaults.instrumenter.parserPlugins
+    return parseSync(code, {
+        parserOpts: {
+            allowImportExportEverywhere: true,
+            allowReturnOutsideFunction: true,
+            allowSuperOutsideMethod: true,
+            sourceType: 'script',
+            plugins: defaults.instrumenter.parserPlugins
+        }
     });
 }
 
