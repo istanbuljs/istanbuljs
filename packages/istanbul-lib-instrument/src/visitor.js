@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import template from '@babel/template';
+import { template } from '@babel/core';
 import { defaults } from '@istanbuljs/schema';
 import { SourceCoverage } from './source-coverage';
 import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
