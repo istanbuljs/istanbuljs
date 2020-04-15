@@ -547,13 +547,16 @@ const coverageTemplate = template(`
         }
 
         var actualCoverage = coverage[path];
-        COVERAGE_FUNCTION = function () {
-          return actualCoverage;
+        {
+            // @ts-ignore
+            COVERAGE_FUNCTION = function () {
+                return actualCoverage;
+            }
         }
 
         return actualCoverage;
     }
-`);
+`, {preserveComments: true});
 // the rewire plugin (and potentially other babel middleware)
 // may cause files to be instrumented twice, see:
 // https://github.com/istanbuljs/babel-plugin-istanbul/issues/94
