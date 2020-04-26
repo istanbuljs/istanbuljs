@@ -257,7 +257,6 @@ pre.prettyprint {
   .cstat-yes { background:#526d2a }
   /* dark green */
   .status-line.high, .high .cover-fill { background:#1d541a }
-  .high .chart { border:1px solid #1d541a }
   /* dark yellow (gold) */
   .status-line.medium, .medium .cover-fill { background: #f9cd0b; }
   .medium .chart { border:1px solid #f9cd0b; }
