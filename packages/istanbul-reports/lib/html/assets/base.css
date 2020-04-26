@@ -231,6 +231,7 @@ pre.prettyprint {
 @media (prefers-color-scheme: dark) {
   body {
     color:#ddd;
+    background:#222;
   }
   .quiet {
     color: #bcbcbc;
