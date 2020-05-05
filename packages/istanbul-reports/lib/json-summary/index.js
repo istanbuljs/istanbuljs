@@ -3,6 +3,7 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 'use strict';
+const path = require('path');
 const { ReportBase } = require('istanbul-lib-report');
 
 class JsonSummaryReport extends ReportBase {
@@ -12,6 +13,7 @@ class JsonSummaryReport extends ReportBase {
         this.file = opts.file || 'coverage-summary.json';
         this.contentWriter = null;
         this.first = true;
+        this.projectRoot = opts.projectRoot;
     }
 
     onStart(root, context) {
@@ -26,7 +28,13 @@ class JsonSummaryReport extends ReportBase {
         } else {
             cw.write(',');
         }
-        cw.write(JSON.stringify(filePath));
+        cw.write(
+            JSON.stringify(
+                this.projectRoot != null
+                    ? path.relative(this.projectRoot, filePath)
+                    : filePath
+            )
+        );
         cw.write(': ');
         cw.write(JSON.stringify(sc));
         cw.println('');
