@@ -23,7 +23,12 @@ class JsonReport extends ReportBase {
     onDetail(node) {
         let fc = node.getFileCoverage();
         if (this.projectRoot != null) {
-            fc = { ...fc, path: path.relative(this.projectRoot, fc.path) };
+            const relativePath = path.relative(this.projectRoot, fc.path);
+            fc = {
+                ...fc,
+                path: relativePath,
+                data: { ...fc.data, path: relativePath }
+            };
         }
         const key = fc.path;
         const cw = this.contentWriter;
