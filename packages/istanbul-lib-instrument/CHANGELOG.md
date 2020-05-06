@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@4.0.1...istanbul-lib-instrument@4.0.2) (2020-05-06)
+
+
+### Bug Fixes
+
+* Add ts-ignore to reassignment of generated function ([#557](https://github.com/istanbuljs/istanbuljs/issues/557)) ([817efb0](https://github.com/istanbuljs/istanbuljs/commit/817efb04fc161efae426b2231a0221606b09f559))
+* Use @babel/core for all babel imports. ([#555](https://github.com/istanbuljs/istanbuljs/issues/555)) ([a99a13e](https://github.com/istanbuljs/istanbuljs/commit/a99a13ee6931fc124a2a723c3f511cdbcb0aa81d))
+
+
+
+
+
 ## [4.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@4.0.0...istanbul-lib-instrument@4.0.1) (2020-02-03)
 
 
