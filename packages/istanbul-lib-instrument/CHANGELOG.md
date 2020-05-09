@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@4.0.2...istanbul-lib-instrument@4.0.3) (2020-05-09)
+
+
+### Bug Fixes
+
+* Prevent readInitialCoverage from reading babel config ([#562](https://github.com/istanbuljs/istanbuljs/issues/562)) ([49b4745](https://github.com/istanbuljs/istanbuljs/commit/49b474525c15e703642916011bd86f663aca0c3d))
+
+
+
+
+
 ## [4.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@4.0.1...istanbul-lib-instrument@4.0.2) (2020-05-06)
 
 
