@@ -14,6 +14,8 @@ function getAst(code) {
 
     // Parse as leniently as possible
     return parseSync(code, {
+        babelrc: false,
+        configFile: false,
         parserOpts: {
             allowImportExportEverywhere: true,
             allowReturnOutsideFunction: true,
