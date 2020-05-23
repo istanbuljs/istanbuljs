@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.2",
+    "mocha": "^7.2.0",
     "nyc": "^15.0.0-beta.2",
     "ts-node": "^8.5.4"
   },
