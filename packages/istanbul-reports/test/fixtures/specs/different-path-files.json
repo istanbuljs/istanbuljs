@@ -6,9 +6,9 @@
     },
     "textReportExpected": "-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n istanbuljs-test   |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  rootfile.js      |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...-test/package1 |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  package1file.js  |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...ge1/subpackage |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  ...ackagefile.js |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...-test/package2 |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  package2file.js  |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n-------------------|---------|----------|---------|---------|-------------------\n",
     "htmlSpaFiles": [
-        "package1/package1file.js.html",
-        "package1/subpackage/subpackagefile.js.html",
-        "package2/package2file.js.html",
+        ["package1","package1file.js.html"],
+        ["package1","subpackage","subpackagefile.js.html"],
+        ["package2","package2file.js.html"],
         "rootfile.js.html",
         "index.html"
     ],
