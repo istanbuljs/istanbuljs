@@ -55,15 +55,12 @@ class CoberturaReport extends ReportBase {
     }
 
     onSummary(node) {
-        if (node.isRoot()) {
-            return;
-        }
         const metrics = node.getCoverageSummary(true);
         if (!metrics) {
             return;
         }
         this.xml.openTag('package', {
-            name: escape(asJavaPackage(node)),
+            name: node.isRoot() ? 'main' : escape(asJavaPackage(node)),
             'line-rate': metrics.lines.pct / 100.0,
             'branch-rate': metrics.branches.pct / 100.0
         });
@@ -71,7 +68,8 @@ class CoberturaReport extends ReportBase {
     }
 
     onSummaryEnd(node) {
-        if (node.isRoot()) {
+        const metrics = node.getCoverageSummary(true);
+        if (!metrics) {
             return;
         }
         this.xml.closeTag('classes');
