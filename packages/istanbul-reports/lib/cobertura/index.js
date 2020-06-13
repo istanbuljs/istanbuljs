@@ -11,8 +11,11 @@ class CoberturaReport extends ReportBase {
     constructor(opts) {
         super();
 
+        opts = opts || {};
+
         this.cw = null;
         this.xml = null;
+        this.timestamp = opts.timestamp || Date.now().toString();
         this.projectRoot = opts.projectRoot || process.cwd();
         this.file = opts.file || 'cobertura-coverage.xml';
     }
@@ -41,7 +44,7 @@ class CoberturaReport extends ReportBase {
             'branches-valid': metrics.branches.total,
             'branches-covered': metrics.branches.covered,
             'branch-rate': metrics.branches.pct / 100.0,
-            timestamp: Date.now().toString(),
+            timestamp: this.timestamp,
             complexity: '0',
             version: '0.1'
         });
