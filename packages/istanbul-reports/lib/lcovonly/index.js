@@ -50,6 +50,9 @@ class LcovOnlyReport extends ReportBase {
 
         Object.entries(branches).forEach(([key, branchArray]) => {
             const meta = branchMap[key];
+            if (!meta) {
+                return;
+            }
             const { line } = meta.loc.start;
             branchArray.forEach((b, i) => {
                 writer.println('BRDA:' + [line, key, i, b].join(','));
