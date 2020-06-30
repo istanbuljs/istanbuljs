@@ -130,12 +130,9 @@ describe('transformer', () => {
         const coverageMap = createMap({});
         coverageMap.addFileCoverage(switchBranchCoverageData);
 
-        const transformer = new SourceMapTransformer(
-            file => ({ file }),
-            {
-                getMapping: mappingResolver.resolveMapping.bind(mappingResolver)
-            }
-        );
+        const transformer = new SourceMapTransformer(file => ({ file }), {
+            getMapping: mappingResolver.resolveMapping.bind(mappingResolver)
+        });
         const mapped = await transformer.transform(coverageMap);
 
         assert.deepEqual(
