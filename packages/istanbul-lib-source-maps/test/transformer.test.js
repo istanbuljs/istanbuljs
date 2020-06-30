@@ -132,8 +132,9 @@ describe('transformer', () => {
 
         const transformer = new SourceMapTransformer(
             file => ({ file }),
-            {},
-            mappingResolver.resolveMapping.bind(mappingResolver)
+            {
+                getMapping: mappingResolver.resolveMapping.bind(mappingResolver)
+            }
         );
         const mapped = await transformer.transform(coverageMap);
 

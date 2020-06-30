@@ -11,10 +11,10 @@ const getMapping = require('./get-mapping');
 const { getUniqueKey, getOutput } = require('./transform-utils');
 
 class SourceMapTransformer {
-    constructor(finder, opts = {}, resolveMapping = getMapping) {
+    constructor(finder, opts = {}) {
         this.finder = finder;
         this.baseDir = opts.baseDir || process.cwd();
-        this.resolveMapping = resolveMapping;
+        this.resolveMapping = opts.getMapping || getMapping;
     }
 
     processFile(fc, sourceMap, coverageMapper) {
