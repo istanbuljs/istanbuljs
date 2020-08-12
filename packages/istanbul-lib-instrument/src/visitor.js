@@ -632,6 +632,13 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                     sourceMappingURL: visitState.sourceMappingURL
                 };
             }
+            const { inputSourceMap } = coverageData;
+            // ensure inputSourceMap is a plain object
+            if (inputSourceMap) {
+                coverageData.inputSourceMap = JSON.parse(
+                    JSON.stringify(inputSourceMap)
+                );
+            }
             coverageData[MAGIC_KEY] = MAGIC_VALUE;
             const hash = createHash(SHA)
                 .update(JSON.stringify(coverageData))
@@ -640,6 +647,10 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
             delete coverageData.hash;
+            // restore `inputSourceMap`
+            if (inputSourceMap) {
+                coverageData.inputSourceMap = inputSourceMap;
+            }
             let gvTemplate;
             if (opts.coverageGlobalScopeFunc) {
                 if (path.scope.getBinding('Function')) {
