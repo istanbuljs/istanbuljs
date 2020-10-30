@@ -25,7 +25,8 @@ class VisitState {
         types,
         sourceFilePath,
         inputSourceMap,
-        ignoreClassMethods = []
+        ignoreClassMethods = [],
+        ignoreGuardStatements = []
     ) {
         this.varName = genVar(sourceFilePath);
         this.attrs = {};
@@ -36,6 +37,7 @@ class VisitState {
             this.cov.inputSourceMap(inputSourceMap);
         }
         this.ignoreClassMethods = ignoreClassMethods;
+        this.ignoreGuardStatements = ignoreGuardStatements;
         this.types = types;
         this.sourceMappingURL = null;
     }
@@ -409,11 +411,62 @@ function convertArrowExpression(path) {
     }
 }
 
+function isIgnoredGuard(n) {
+    if (!this.ignoreGuardStatements
+        || n.type !== 'BlockStatement'
+        || !Array.isArray(this.ignoreGuardStatements)
+        || !this.ignoreGuardStatements.length) {
+        return false;
+    }
+    if (n.body.length !== 1) {
+        // only ignore simple bodies (signle statement)
+        return false;
+    }
+    const stm = n.body[0];
+    if (stm.type === 'ThrowStatement') {
+        // ignore throws
+        return this.ignoreGuardStatements.includes('throws');
+    }
+    if (stm.type === 'ContinueStatement') {
+        // ignore continues
+        return this.ignoreGuardStatements.includes('continues');
+    }
+    if (stm.type === 'BreakStatement') {
+        // ignore continues
+        return this.ignoreGuardStatements.includes('breaks');
+    }
+    if (stm.type === 'ReturnStatement') {
+        if (!this.ignoreGuardStatements) {
+            return false;
+        }
+        if (this.ignoreGuardStatements.includes('returns')) {
+            // ignore all returns
+            return true;
+        }
+        if (!stm.argument) {
+            return this.ignoreGuardStatements.includes('literalReturns')
+                || this.ignoreGuardStatements.includes('voidReturns');
+        }
+        switch (stm.argument.type) {
+            case 'NumericLiteral':
+            case 'BooleanLiteral':
+            case 'StringLiteral':
+            case 'NullLiteral':
+                return this.ignoreGuardStatements.includes('literalReturns');
+            case 'Identifier':
+                return stm.argument.name === 'undefined' && this.ignoreGuardStatements.includes('literalReturns')
+                    || this.ignoreGuardStatements.includes('identifierReturns');
+
+        }
+    }
+    return false;
+}
+
 function coverIfBranches(path) {
     const n = path.node;
     const hint = this.hintFor(n);
-    const ignoreIf = hint === 'if';
-    const ignoreElse = hint === 'else';
+    const ignoreIf = hint === 'if' || isIgnoredGuard.call(this, n.consequent);
+    const ignoreElse = hint === 'else' || isIgnoredGuard.call(this, n.alternate);
     const branch = this.cov.newBranch('if', n.loc);
 
     if (ignoreIf) {
@@ -595,6 +648,7 @@ function shouldIgnoreFile(programNode) {
  * @param {string} [opts.coverageGlobalScope=this] the global coverage variable scope.
  * @param {boolean} [opts.coverageGlobalScopeFunc=true] use an evaluated function to find coverageGlobalScope.
  * @param {Array} [opts.ignoreClassMethods=[]] names of methods to ignore by default on classes.
+ * @param {Array} [opts.ignoreGuardStatements=[]] ignore all guard statements. Can contain any of 'returns', 'literalReturns', 'identifierReturns', 'voidReturns', 'throws', 'continues', 'breaks'
  * @param {object} [opts.inputSourceMap=undefined] the input source map, that maps the uninstrumented code back to the
  * original code.
  */
@@ -608,7 +662,8 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
         types,
         sourceFilePath,
         opts.inputSourceMap,
-        opts.ignoreClassMethods
+        opts.ignoreClassMethods,
+        opts.ignoreGuardStatements
     );
     return {
         enter(path) {
