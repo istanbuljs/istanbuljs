@@ -411,13 +411,17 @@ function convertArrowExpression(path) {
     }
 }
 
-function isIgnoredGuard(n) {
-    if (!this.ignoreGuardStatements
-        || n.type !== 'BlockStatement'
-        || !Array.isArray(this.ignoreGuardStatements)
-        || !this.ignoreGuardStatements.length) {
+function ignoreGuard(n) {
+    if (!this.ignoreGuardStatements || n.type !== 'BlockStatement') {
         return false;
     }
+    if (!Array.isArray(this.ignoreGuardStatements)) {
+        return false;
+    }
+    if (!this.ignoreGuardStatements.length) {
+        return false;
+    }
+
     if (n.body.length !== 1) {
         // only ignore simple bodies (signle statement)
         return false;
@@ -432,31 +436,37 @@ function isIgnoredGuard(n) {
         return this.ignoreGuardStatements.includes('continues');
     }
     if (stm.type === 'BreakStatement') {
-        // ignore continues
+        // ignore breaks
         return this.ignoreGuardStatements.includes('breaks');
     }
     if (stm.type === 'ReturnStatement') {
-        if (!this.ignoreGuardStatements) {
-            return false;
-        }
         if (this.ignoreGuardStatements.includes('returns')) {
             // ignore all returns
             return true;
         }
         if (!stm.argument) {
-            return this.ignoreGuardStatements.includes('literalReturns')
-                || this.ignoreGuardStatements.includes('voidReturns');
+            // ignore void returns
+            return (
+                this.ignoreGuardStatements.includes('literalReturns') ||
+                this.ignoreGuardStatements.includes('voidReturns')
+            );
         }
         switch (stm.argument.type) {
             case 'NumericLiteral':
             case 'BooleanLiteral':
             case 'StringLiteral':
             case 'NullLiteral':
+                // ignore constant literal returns
                 return this.ignoreGuardStatements.includes('literalReturns');
             case 'Identifier':
-                return stm.argument.name === 'undefined' && this.ignoreGuardStatements.includes('literalReturns')
-                    || this.ignoreGuardStatements.includes('identifierReturns');
-
+                if (this.ignoreGuardStatements.includes('identifierReturns')) {
+                    return true;
+                }
+                // ignore 'return undefined'
+                return (
+                    stm.argument.name === 'undefined' &&
+                    this.ignoreGuardStatements.includes('literalReturns')
+                );
         }
     }
     return false;
@@ -465,8 +475,8 @@ function isIgnoredGuard(n) {
 function coverIfBranches(path) {
     const n = path.node;
     const hint = this.hintFor(n);
-    const ignoreIf = hint === 'if' || isIgnoredGuard.call(this, n.consequent);
-    const ignoreElse = hint === 'else' || isIgnoredGuard.call(this, n.alternate);
+    const ignoreIf = hint === 'if' || ignoreGuard.call(this, n.consequent);
+    const ignoreElse = hint === 'else' || ignoreGuard.call(this, n.alternate);
     const branch = this.cov.newBranch('if', n.loc);
 
     if (ignoreIf) {

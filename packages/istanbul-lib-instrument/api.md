@@ -42,6 +42,7 @@ instead.
     -   `opts.autoWrap` **[boolean][15]** set to true to allow `return` statements outside of functions. (optional, default `false`)
     -   `opts.produceSourceMap` **[boolean][15]** set to true to produce a source map for the instrumented code. (optional, default `false`)
     -   `opts.ignoreClassMethods` **[Array][16]** set to array of class method names to ignore for coverage. (optional, default `[]`)
+    -   `opts.ignoreGuardStatements` **[Array][16]** ignore all guard statements. Can contain any of 'returns', 'literalReturns', 'identifierReturns', 'voidReturns', 'throws', 'continues', 'breaks' (optional, default `[]`)
     -   `opts.sourceMapUrlCallback` **[Function][17]** a callback function that is called when a source map URL
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
     -   `opts.debug` **[boolean][15]** turn debugging on (optional, default `false`)
@@ -114,6 +115,7 @@ The exit function returns an object that currently has the following keys:
     -   `opts.coverageGlobalScope` **[string][14]** the global coverage variable scope. (optional, default `this`)
     -   `opts.coverageGlobalScopeFunc` **[boolean][15]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)
     -   `opts.ignoreClassMethods` **[Array][16]** names of methods to ignore by default on classes. (optional, default `[]`)
+    -   `opts.ignoreGuardStatements` **[Array][16]** ignore all guard statements. Can contain any of 'returns', 'literalReturns', 'identifierReturns', 'voidReturns', 'throws', 'continues', 'breaks' (optional, default `[]`)
     -   `opts.inputSourceMap` **[object][13]** the input source map, that maps the uninstrumented code back to the
         original code. (optional, default `undefined`)
 
