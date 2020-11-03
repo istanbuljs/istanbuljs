@@ -398,7 +398,7 @@ class HtmlReport extends ReportBase {
         cw.close();
     }
 
-    onDetail(node, context) {
+    async onDetail(node, context) {
         const linkMapper = this.linkMapper;
         const templateData = this.getTemplateData();
 
