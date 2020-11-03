@@ -406,7 +406,7 @@ class HtmlReport extends ReportBase {
         const cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
         cw.write(headerTemplate(templateData));
         cw.write('<pre><table class="coverage">\n');
-        cw.write(detailTemplate(annotator(node.getFileCoverage(), context)));
+        cw.write(detailTemplate(await annotator(node.getFileCoverage(), context)));
         cw.write('</table></pre>\n');
         cw.write(footerTemplate(templateData));
         cw.close();
