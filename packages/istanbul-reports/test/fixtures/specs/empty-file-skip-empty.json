@@ -12,6 +12,7 @@
             "statements": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -19,6 +20,7 @@
             "branches": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -26,6 +28,7 @@
             "functions": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -33,6 +36,7 @@
             "lines": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -46,6 +50,7 @@
                     "statements": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -53,6 +58,7 @@
                     "branches": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -60,6 +66,7 @@
                     "functions": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -67,6 +74,7 @@
                     "lines": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
