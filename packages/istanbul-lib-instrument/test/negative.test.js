@@ -5,7 +5,7 @@ import * as verifier from './util/verifier';
 
 describe('negative tests', () => {
     it('should barf on junk code', () => {
-        const v = verifier.create('output = args[0] : 1 : 2;', { quiet: true });
+        const v = verifier.create('}', { quiet: true });
         const err = v.compileError();
         assert.ok(err);
         assert.ok(err.message.match(/Unexpected token/));
