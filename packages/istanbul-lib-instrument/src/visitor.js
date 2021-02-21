@@ -242,12 +242,8 @@ class VisitState {
         // get location for declaration
         switch (n.type) {
             case 'FunctionDeclaration':
-                /* istanbul ignore else: paranoid check */
-                if (n.id) {
-                    dloc = n.id.loc;
-                }
-                break;
             case 'FunctionExpression':
+                /* istanbul ignore else: paranoid check */
                 if (n.id) {
                     dloc = n.id.loc;
                 }
