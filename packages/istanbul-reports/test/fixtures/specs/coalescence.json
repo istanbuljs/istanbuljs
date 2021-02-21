@@ -1,7 +1,8 @@
 {
     "title": "coalescense ranges of missing lines",
     "opts": {
-        "maxCols": 80
+        "maxCols": 80,
+        "projectRoot": "/"
     },
     "textReportExpected": "----------|---------|----------|---------|---------|----------------------\nFile      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s    \n----------|---------|----------|---------|---------|----------------------\n\u001b[31;1mAll files\u001b[0m | \u001b[31;1m     30\u001b[0m | \u001b[32;1m     100\u001b[0m | \u001b[32;1m    100\u001b[0m | \u001b[31;1m  33.33\u001b[0m | \u001b[31;1m                    \u001b[0m \n\u001b[31;1m index.js\u001b[0m | \u001b[31;1m     30\u001b[0m | \u001b[32;1m     100\u001b[0m | \u001b[32;1m    100\u001b[0m | \u001b[31;1m  33.33\u001b[0m | \u001b[31;1m2,4,9,21-28,32,35-37\u001b[0m \n----------|---------|----------|---------|---------|----------------------\n",
     "htmlSpaFiles": ["index.js.html", "index.html"],
@@ -84,6 +85,7 @@
             }
         ]
     },
+    "coberturaCoverageData": "<?xml version=\"1.0\" ?>\n<!DOCTYPE coverage SYSTEM \"http://cobertura.sourceforge.net/xml/coverage-04.dtd\">\n<coverage lines-valid=\"18\" lines-covered=\"6\" line-rate=\"0.3333\" branches-valid=\"0\" branches-covered=\"0\" branch-rate=\"1\" timestamp=\"123456789\" complexity=\"0\" version=\"0.1\">\n  <sources>\n    <source>/</source>\n  </sources>\n  <packages>\n    <package name=\"main\" line-rate=\"0.3333\" branch-rate=\"1\">\n      <classes>\n        <class name=\"index.js\" filename=\"index.js\" line-rate=\"0.3333\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n            <line number=\"1\" hits=\"1\" branch=\"false\"/>\n            <line number=\"2\" hits=\"0\" branch=\"false\"/>\n            <line number=\"3\" hits=\"1\" branch=\"false\"/>\n            <line number=\"4\" hits=\"0\" branch=\"false\"/>\n            <line number=\"5\" hits=\"1\" branch=\"false\"/>\n            <line number=\"9\" hits=\"0\" branch=\"false\"/>\n            <line number=\"13\" hits=\"1\" branch=\"false\"/>\n            <line number=\"21\" hits=\"0\" branch=\"false\"/>\n            <line number=\"22\" hits=\"0\" branch=\"false\"/>\n            <line number=\"23\" hits=\"0\" branch=\"false\"/>\n            <line number=\"24\" hits=\"0\" branch=\"false\"/>\n            <line number=\"28\" hits=\"0\" branch=\"false\"/>\n            <line number=\"29\" hits=\"1\" branch=\"false\"/>\n            <line number=\"32\" hits=\"0\" branch=\"false\"/>\n            <line number=\"33\" hits=\"1\" branch=\"false\"/>\n            <line number=\"35\" hits=\"0\" branch=\"false\"/>\n            <line number=\"36\" hits=\"0\" branch=\"false\"/>\n            <line number=\"37\" hits=\"0\" branch=\"false\"/>\n          </lines>\n        </class>\n      </classes>\n    </package>\n  </packages>\n</coverage>\n",
     "map": {
         "/index.js": {
             "path": "/index.js",

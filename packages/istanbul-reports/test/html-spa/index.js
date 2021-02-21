@@ -161,7 +161,7 @@ describe('html-spa', () => {
                 operations
                     .filter(op => op.type === 'write')
                     .map(op => path.join(op.baseDir, op.file)),
-                fixture.htmlSpaFiles
+                fixture.htmlSpaFiles.map(p => path.join(...[].concat(p)))
             );
 
             assert.deepEqual(
