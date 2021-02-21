@@ -9,6 +9,7 @@
             "statements": {
                 "total": 51,
                 "covered": 50,
+                "missed": 1,
                 "skipped": 0,
                 "pct": 98.04,
                 "classForPercent": "high"
@@ -16,6 +17,7 @@
             "branches": {
                 "total": 43,
                 "covered": 41,
+                "missed": 2,
                 "skipped": 0,
                 "pct": 95.35,
                 "classForPercent": "high"
@@ -23,6 +25,7 @@
             "functions": {
                 "total": 9,
                 "covered": 8,
+                "missed": 1,
                 "skipped": 0,
                 "pct": 88.89,
                 "classForPercent": "high"
@@ -30,6 +33,7 @@
             "lines": {
                 "total": 47,
                 "covered": 46,
+                "missed": 1,
                 "skipped": 0,
                 "pct": 97.87,
                 "classForPercent": "high"
@@ -43,6 +47,7 @@
                     "statements": {
                         "total": 51,
                         "covered": 50,
+                        "missed": 1,
                         "skipped": 0,
                         "pct": 98.04,
                         "classForPercent": "high"
@@ -50,6 +55,7 @@
                     "branches": {
                         "total": 43,
                         "covered": 41,
+                        "missed": 2,
                         "skipped": 0,
                         "pct": 95.35,
                         "classForPercent": "high"
@@ -57,6 +63,7 @@
                     "functions": {
                         "total": 9,
                         "covered": 8,
+                        "missed": 1,
                         "skipped": 0,
                         "pct": 88.89,
                         "classForPercent": "high"
@@ -64,6 +71,7 @@
                     "lines": {
                         "total": 47,
                         "covered": 46,
+                        "missed": 1,
                         "skipped": 0,
                         "pct": 97.87,
                         "classForPercent": "high"
