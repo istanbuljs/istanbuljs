@@ -67,8 +67,8 @@ class Context {
      * @param {String} filePath the file path as found in a file coverage object
      * @returns {String} the source code
      */
-    getSource(filePath) {
-        return this.sourceFinder(filePath);
+    async getSource(filePath) {
+        return await this.sourceFinder(filePath);
     }
 
     /**
