@@ -97,7 +97,6 @@ function footerTemplate(details) {
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
                 at ${html.escape(details.datetime)}
             </div>
-        </div>
         <script src="${html.escape(details.prettify.js)}"></script>
         <script>
             window.onload = function () {
