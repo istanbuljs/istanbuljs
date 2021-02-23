@@ -25,6 +25,20 @@ function htmlHead(details) {
             background-image: url(${html.escape(details.sorter.image)});
         }
     </style>
+    <script>
+        function onInput() {
+            const searchValue = document.getElementById("fileSearch").value;
+            const rows = document.getElementsByTagName('tbody')[0].children;
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                if (row.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+    </script>
 </head>
     `;
 }
@@ -83,6 +97,10 @@ ${htmlHead(details)}
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <div class="quiet">
+            Filter:
+            <input oninput="onInput()" type="search" id="fileSearch">
+        </div>
     </div>
     <div class='status-line ${details.reportClass}'></div>
     `;
