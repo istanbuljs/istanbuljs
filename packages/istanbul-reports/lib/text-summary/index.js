@@ -21,6 +21,12 @@ class TextSummaryReport extends ReportBase {
             const clazz = context.classForPercent(key, summary[key].pct);
             cw.println(cw.colorize(str, clazz));
         };
+        const printTotalLine = function() {
+            const total = average(summary);
+            const str = `${keyBeautifier('total')} : ${total}%`;
+            const clazz = context.classForPercent('total', total);
+            cw.println(cw.colorize(str, clazz));
+        };
 
         cw.println('');
         cw.println(
@@ -31,6 +37,10 @@ class TextSummaryReport extends ReportBase {
         printLine('functions');
         printLine('lines');
         cw.println(
+            '--------------------------------------------------------------------------------'
+        );
+        printTotalLine();
+        cw.println(
             '================================================================================'
         );
         cw.close();
@@ -39,13 +49,8 @@ class TextSummaryReport extends ReportBase {
 
 function lineForKey(summary, key) {
     const metrics = summary[key];
-
-    key = key.substring(0, 1).toUpperCase() + key.substring(1);
-    if (key.length < 12) {
-        key += '                   '.substring(0, 12 - key.length);
-    }
     const result = [
-        key,
+        keyBeautifier(key),
         ':',
         metrics.pct + '%',
         '(',
@@ -57,6 +62,22 @@ function lineForKey(summary, key) {
         return result + ', ' + skipped + ' ignored';
     }
     return result;
+}
+
+function average(summary) {
+    const sum = Object.values(summary.data).reduce((acc, { pct }) => {
+        acc += pct;
+        return acc;
+    }, 0);
+    return Math.round((sum / 4) * 100) / 100;
+}
+
+function keyBeautifier(key) {
+    key = key.substring(0, 1).toUpperCase() + key.substring(1);
+    if (key.length < 12) {
+        key += '                   '.substring(0, 12 - key.length);
+    }
+    return key;
 }
 
 module.exports = TextSummaryReport;
