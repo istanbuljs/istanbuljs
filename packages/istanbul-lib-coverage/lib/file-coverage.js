@@ -151,6 +151,14 @@ class FileCoverage {
         return this.data;
     }
 
+    sumHits(map, key, value){
+        if (typeof(map[key])!=="number"){
+            map[key] = value;
+        }else{
+            map[key] +=value;
+        }
+    }
+
     /**
      * merges a second coverage object into this one, updating hit counts
      * @param {FileCoverage} other - the coverage object to be merged into this one.
@@ -167,10 +175,10 @@ class FileCoverage {
         }
 
         Object.entries(other.s).forEach(([k, v]) => {
-            this.data.s[k] += v;
+            this.sumHits(this.data.s, k, v);
         });
         Object.entries(other.f).forEach(([k, v]) => {
-            this.data.f[k] += v;
+            this.sumHits(this.data.f, k, v);
         });
         Object.entries(other.b).forEach(([k, v]) => {
             let i;
@@ -181,7 +189,7 @@ class FileCoverage {
                 return;
             }
             for (i = 0; i < retArray.length; i += 1) {
-                retArray[i] += v[i];
+                this.sumHits(retArray, i, v[i]);
             }
         });
     }
