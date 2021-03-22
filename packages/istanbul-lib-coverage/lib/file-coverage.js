@@ -151,11 +151,11 @@ class FileCoverage {
         return this.data;
     }
 
-    sumHits(map, key, value){
-        if (typeof(map[key])!=="number"){
+    sumHits(map, key, value) {
+        if (typeof map[key] !== "number" ) {
             map[key] = value;
-        }else{
-            map[key] +=value;
+        } else {
+            map[key] += value;
         }
     }
 
