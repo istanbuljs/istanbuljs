@@ -152,7 +152,7 @@ class FileCoverage {
     }
 
     sumHits(map, key, value) {
-        if (typeof map[key] !== 'number' ) {
+        if (typeof map[key] !== 'number') {
             map[key] = value;
         } else {
             map[key] += value;
