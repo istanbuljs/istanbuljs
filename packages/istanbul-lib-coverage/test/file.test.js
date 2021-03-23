@@ -260,6 +260,122 @@ describe('base coverage', () => {
         assert.equal(c1.b[1][1], 2);
     });
 
+    it('merges another file coverage correctly (exclusive)', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        const template = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                1: loc(1, 1, 1, 100),
+                2: loc(2, 1, 2, 50)
+            },
+            fnMap: {
+                1: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
+                }
+            },
+            branchMap: {
+                1: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                1: 0,
+                2: 0
+            },
+            f: {
+                1: 0
+            },
+            b: {
+                1: [0, 0]
+            }
+        });
+        const clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        };
+        const c1 = new FileCoverage(clone(template));
+        const c2 = new FileCoverage(clone(template));
+        let summary;
+
+        c1.s[1] = 1;
+        c1.f[1] = 1;
+        c1.b[1][0] = 1;
+
+        delete c1.s[2];
+        delete c2.s[1];
+
+        c2.s[2] = 1;
+        c2.f[1] = 1;
+        c2.b[1][1] = 2;
+        summary = c1.toSummary();
+        assert.ok(summary instanceof CoverageSummary);
+        assert.deepEqual(summary.statements, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.lines, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 1,
+            skipped: 0,
+            pct: 50
+        });
+
+        c1.merge(c2);
+        summary = c1.toSummary();
+        assert.deepEqual(summary.statements, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+
+        assert.equal(c1.s[1], 1);
+        assert.equal(c1.s[2], 1);
+        assert.equal(c1.f[1], 2);
+        assert.equal(c1.b[1][0], 1);
+        assert.equal(c1.b[1][1], 2);
+    });
+
     it('drops all data during merges', () => {
         const loc = function(sl, sc, el, ec) {
             return {
