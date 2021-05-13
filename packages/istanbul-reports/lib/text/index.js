@@ -181,6 +181,7 @@ function tableRow(
     level,
     skipEmpty,
     skipFull,
+    colorMetric,
     missingWidth
 ) {
     const name = nodeName(node);
@@ -208,7 +209,12 @@ function tableRow(
           };
     const elements = [];
 
-    elements.push(colorize(formatName(name, maxNameCols, level), 'statements'));
+    elements.push(
+        colorize(
+            formatName(name, maxNameCols, level),
+            colorMetric ? colorMetric : 'statements'
+        )
+    );
     elements.push(colorize(formatPct(mm.statements), 'statements'));
     elements.push(colorize(formatPct(mm.branches, PCT_COLS + 1), 'branches'));
     elements.push(colorize(formatPct(mm.functions), 'functions'));
@@ -235,6 +241,7 @@ class TextReport extends ReportBase {
         this.cw = null;
         this.skipEmpty = opts.skipEmpty;
         this.skipFull = opts.skipFull;
+        this.colorMetric = opts.colorMetric;
     }
 
     onStart(root, context) {
@@ -278,6 +285,7 @@ class TextReport extends ReportBase {
             nodeDepth,
             this.skipEmpty,
             this.skipFull,
+            this.colorMetric,
             this.missingWidth
         );
         if (row) {
