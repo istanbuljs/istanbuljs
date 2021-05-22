@@ -63,4 +63,14 @@ describe('context', () => {
         const visitor = ctx.getVisitor({});
         assert.ok(typeof visitor.onStart === 'function');
     });
+    it('returns a report tree when passed a summarizer name', () => {
+        const ctx = new Context(optsEmptyCoverage);
+        const tree = ctx.getTree('nested');
+        assert.equal(typeof tree, 'object');
+    });
+    it('returns a report tree when passed a summarizer function', () => {
+        const ctx = new Context(optsEmptyCoverage);
+        const tree = ctx.getTree(() => ({ root: 'a valid tree' }));
+        assert.deepEqual(tree, { root: 'a valid tree' });
+    });
 });
