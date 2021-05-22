@@ -8,10 +8,6 @@ const coverage = require('istanbul-lib-coverage');
 const Path = require('./path');
 const { BaseNode, BaseTree } = require('./tree');
 
-/**
- * A report node, representing the coverage for either an individual file
- * or a folder of files.
- */
 class ReportNode extends BaseNode {
     constructor(path, fileCoverage) {
         super();
@@ -109,9 +105,6 @@ class ReportNode extends BaseNode {
     }
 }
 
-/**
- * A report tree is a tree of report nodes, used by reporters to organize the coverage report.
- */
 class ReportTree extends BaseTree {
     constructor(root, childPrefix) {
         super(root);
@@ -139,9 +132,6 @@ class ReportTree extends BaseTree {
     }
 }
 
-/**
- * A collection of utility functions useful for creating a report tree.
- */
 const Util = {
     addAllPaths(topPaths, nodeMap, path, node) {
         const parent = Util.findOrCreateParent(
@@ -266,7 +256,6 @@ module.exports = {
     ReportNode,
     ReportTree,
     Util,
-    Path,
     getFlatTree,
     getPkgTree,
     getNestedTree

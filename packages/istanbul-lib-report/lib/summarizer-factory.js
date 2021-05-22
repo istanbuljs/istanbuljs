@@ -10,7 +10,7 @@ const {
     getPkgTree,
     getNestedTree,
     Util
-} = require('./summarizer');
+} = require('./summarizer-core');
 
 class SummarizerFactory {
     constructor(coverageMap, defaultSummarizer = 'pkg') {
