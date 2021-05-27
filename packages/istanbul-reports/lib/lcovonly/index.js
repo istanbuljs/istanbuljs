@@ -29,7 +29,8 @@ class LcovOnlyReport extends ReportBase {
         const path = require('path');
 
         writer.println('TN:'); //no test nam
-        writer.println('SF:' + path.relative(this.projectRoot, fc.path));
+        const fileName = path.relative(this.projectRoot, fc.path);
+        writer.println('SF:' + fileName);
 
         Object.values(functionMap).forEach(meta => {
             writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
@@ -50,10 +51,14 @@ class LcovOnlyReport extends ReportBase {
 
         Object.entries(branches).forEach(([key, branchArray]) => {
             const meta = branchMap[key];
-            const { line } = meta.loc.start;
-            branchArray.forEach((b, i) => {
-                writer.println('BRDA:' + [line, key, i, b].join(','));
-            });
+            if (meta) {
+                const { line } = meta.loc.start;
+                branchArray.forEach((b, i) => {
+                    writer.println('BRDA:' + [line, key, i, b].join(','));
+                });
+            } else {
+                console.warn('Missing coverage entries in', fileName, key);
+            }
         });
         writer.println('BRF:' + summary.branches.total);
         writer.println('BRH:' + summary.branches.covered);
