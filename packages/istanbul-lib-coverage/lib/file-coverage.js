@@ -40,6 +40,44 @@ function assertValidObject(obj) {
     }
 }
 
+const keyFromLoc = ({ start, end }) => `${start.line}|${start.column}|${end.line}|${end.column}`;
+
+const mergeProp = (aHits, aMap, bHits, bMap, itemKey = keyFromLoc) => {
+    const aItems = Object.values(aHits).reduce((items, itemHits, i) => {
+        const item = aMap[i];
+        items[itemKey(item)] = [itemHits, item];
+        return items;
+    }, {});
+
+    Object.values(bHits).forEach((bItemHits, i) => {
+        const bItem = bMap[i], k = itemKey(bItem);
+
+        if (aItems[k]) {
+            const aPair = aItems[k];
+            if (bItemHits.forEach) {
+                // should this throw an exception if aPair[0] is not an array?
+                bItemHits.forEach((hits, h) => {
+                    if (aPair[0][h] !== undefined) aPair[0][h] += hits;
+                    else aPair[0][h] = hits;
+                });
+            } else {
+                aPair[0] += bItemHits;
+            }
+        } else {
+            aItems[k] = [bItemHits, bItem];
+        }
+    });
+
+    const hits = {}, map = {};
+
+    Object.values(aItems).forEach(([itemHits, item], i) => {
+        hits[i] = itemHits;
+        map[i] = item;
+    });
+
+    return [hits, map];
+};
+
 /**
  * provides a read-only view of coverage for a single file.
  * The deep structure of this object is documented elsewhere. It has the following
@@ -157,33 +195,16 @@ class FileCoverage {
      *  Note that the other object should have the same structure as this one (same file).
      */
     merge(other) {
-        if (other.all === true) {
-            return;
-        }
+        let [hits, map] = mergeProp(this.s, this.statementMap, other.s, other.statementMap);
+        this.data.s = hits; this.data.statementMap = map;
 
-        if (this.all === true) {
-            this.data = other.data;
-            return;
-        }
+        const keyFromLocProp = x => keyFromLoc(x.loc);
 
-        Object.entries(other.s).forEach(([k, v]) => {
-            this.data.s[k] += v;
-        });
-        Object.entries(other.f).forEach(([k, v]) => {
-            this.data.f[k] += v;
-        });
-        Object.entries(other.b).forEach(([k, v]) => {
-            let i;
-            const retArray = this.data.b[k];
-            /* istanbul ignore if: is this even possible? */
-            if (!retArray) {
-                this.data.b[k] = v;
-                return;
-            }
-            for (i = 0; i < retArray.length; i += 1) {
-                retArray[i] += v[i];
-            }
-        });
+        [hits, map] = mergeProp(this.f, this.fnMap, other.f, other.fnMap, keyFromLocProp);
+        this.data.f = hits; this.data.fnMap = map;
+
+        [hits, map] = mergeProp(this.b, this.branchMap, other.b, other.branchMap, keyFromLocProp);
+        this.data.b = hits; this.data.branchMap = map;
     }
 
     computeSimpleTotals(property) {
