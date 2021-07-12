@@ -153,36 +153,36 @@ describe('base coverage', () => {
         const template = new FileCoverage({
             path: '/path/to/file',
             statementMap: {
-                1: loc(1, 1, 1, 100),
-                2: loc(2, 1, 2, 50),
-                3: loc(2, 51, 2, 100),
-                4: loc(2, 101, 3, 100)
+                0: loc(1, 1, 1, 100),
+                1: loc(2, 1, 2, 50),
+                2: loc(2, 51, 2, 100),
+                3: loc(2, 101, 3, 100)
             },
             fnMap: {
-                1: {
+                0: {
                     name: 'foobar',
                     line: 1,
                     loc: loc(1, 1, 1, 50)
                 }
             },
             branchMap: {
-                1: {
+                0: {
                     type: 'if',
                     line: 2,
                     locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
                 }
             },
             s: {
+                0: 0,
                 1: 0,
                 2: 0,
-                3: 0,
-                4: 0
+                3: 0
             },
             f: {
-                1: 0
+                0: 0
             },
             b: {
-                1: [0, 0]
+                0: [0, 0]
             }
         });
         const clone = function(obj) {
@@ -192,13 +192,13 @@ describe('base coverage', () => {
         const c2 = new FileCoverage(clone(template));
         let summary;
 
-        c1.s[1] = 1;
-        c1.f[1] = 1;
-        c1.b[1][0] = 1;
+        c1.s[0] = 1;
+        c1.f[0] = 1;
+        c1.b[0][0] = 1;
 
-        c2.s[2] = 1;
-        c2.f[1] = 1;
-        c2.b[1][1] = 2;
+        c2.s[1] = 1;
+        c2.f[0] = 1;
+        c2.b[0][1] = 2;
         summary = c1.toSummary();
         assert.ok(summary instanceof CoverageSummary);
         assert.deepEqual(summary.statements, {
@@ -253,11 +253,11 @@ describe('base coverage', () => {
             pct: 100
         });
 
+        assert.equal(c1.s[0], 1);
         assert.equal(c1.s[1], 1);
-        assert.equal(c1.s[2], 1);
-        assert.equal(c1.f[1], 2);
-        assert.equal(c1.b[1][0], 1);
-        assert.equal(c1.b[1][1], 2);
+        assert.equal(c1.f[0], 2);
+        assert.equal(c1.b[0][0], 1);
+        assert.equal(c1.b[0][1], 2);
     });
 
     it('drops all data during merges', () => {
