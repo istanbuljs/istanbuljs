@@ -198,6 +198,15 @@ class FileCoverage {
      *  Note that the other object should have the same structure as this one (same file).
      */
     merge(other) {
+        if (other.all === true) {
+            return;
+        }
+
+        if (this.all === true) {
+            this.data = other.data;
+            return;
+        }
+
         let [hits, map] = mergeProp(
             this.s,
             this.statementMap,
@@ -208,6 +217,7 @@ class FileCoverage {
         this.data.statementMap = map;
 
         const keyFromLocProp = x => keyFromLoc(x.loc);
+        const keyFromLocationsProp = x => keyFromLoc(x.locations[0]);
 
         [hits, map] = mergeProp(
             this.f,
@@ -224,7 +234,7 @@ class FileCoverage {
             this.branchMap,
             other.b,
             other.branchMap,
-            keyFromLocProp
+            keyFromLocationsProp
         );
         this.data.b = hits;
         this.data.branchMap = map;
