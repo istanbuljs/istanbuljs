@@ -40,7 +40,8 @@ function assertValidObject(obj) {
     }
 }
 
-const keyFromLoc = ({ start, end }) => `${start.line}|${start.column}|${end.line}|${end.column}`;
+const keyFromLoc = ({ start, end }) =>
+    `${start.line}|${start.column}|${end.line}|${end.column}`;
 
 const mergeProp = (aHits, aMap, bHits, bMap, itemKey = keyFromLoc) => {
     const aItems = Object.values(aHits).reduce((items, itemHits, i) => {
@@ -50,7 +51,8 @@ const mergeProp = (aHits, aMap, bHits, bMap, itemKey = keyFromLoc) => {
     }, {});
 
     Object.values(bHits).forEach((bItemHits, i) => {
-        const bItem = bMap[i], k = itemKey(bItem);
+        const bItem = bMap[i];
+        const k = itemKey(bItem);
 
         if (aItems[k]) {
             const aPair = aItems[k];
@@ -68,7 +70,8 @@ const mergeProp = (aHits, aMap, bHits, bMap, itemKey = keyFromLoc) => {
         }
     });
 
-    const hits = {}, map = {};
+    const hits = {};
+    const map = {};
 
     Object.values(aItems).forEach(([itemHits, item], i) => {
         hits[i] = itemHits;
@@ -195,16 +198,36 @@ class FileCoverage {
      *  Note that the other object should have the same structure as this one (same file).
      */
     merge(other) {
-        let [hits, map] = mergeProp(this.s, this.statementMap, other.s, other.statementMap);
-        this.data.s = hits; this.data.statementMap = map;
+        let [hits, map] = mergeProp(
+            this.s,
+            this.statementMap,
+            other.s,
+            other.statementMap
+        );
+        this.data.s = hits;
+        this.data.statementMap = map;
 
         const keyFromLocProp = x => keyFromLoc(x.loc);
 
-        [hits, map] = mergeProp(this.f, this.fnMap, other.f, other.fnMap, keyFromLocProp);
-        this.data.f = hits; this.data.fnMap = map;
+        [hits, map] = mergeProp(
+            this.f,
+            this.fnMap,
+            other.f,
+            other.fnMap,
+            keyFromLocProp
+        );
+        this.data.f = hits;
+        this.data.fnMap = map;
 
-        [hits, map] = mergeProp(this.b, this.branchMap, other.b, other.branchMap, keyFromLocProp);
-        this.data.b = hits; this.data.branchMap = map;
+        [hits, map] = mergeProp(
+            this.b,
+            this.branchMap,
+            other.b,
+            other.branchMap,
+            keyFromLocProp
+        );
+        this.data.b = hits;
+        this.data.branchMap = map;
     }
 
     computeSimpleTotals(property) {
