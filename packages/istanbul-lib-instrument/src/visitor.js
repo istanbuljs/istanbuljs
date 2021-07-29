@@ -5,9 +5,9 @@ import { SourceCoverage } from './source-coverage';
 import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
 
 // pattern for istanbul to ignore a section
-const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
+const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?:\s+platform(!?)=([a-z0-9]))?(?=\W|$)/;
 // pattern for istanbul to ignore the whole file
-const COMMENT_FILE_RE = /^\s*istanbul\s+ignore\s+(file)(?=\W|$)/;
+const COMMENT_FILE_RE = /^\s*istanbul\s+ignore\s+(file)(?:\s+platform(!?)=([a-z0-9]))?(?=\W|$)/;
 // source map URL pattern
 const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
 
@@ -56,6 +56,16 @@ class VisitState {
                 ).trim();
                 const groups = v.match(COMMENT_RE);
                 if (groups) {
+                    if (groups[3]) {
+                        const negate = groups[2] === '!'
+                        const platformMatch = groups[3] === process.platform
+                        if (platformMatch === negate) {
+                            // either platform!=windows and we are windows,
+                            // or platform=win32 and we're not windows
+                            // do not add this hint.
+                            return
+                        }
+                    }
                     hint = groups[1];
                 }
             });
@@ -567,7 +577,22 @@ function alreadyInstrumented(path, visitState) {
 function shouldIgnoreFile(programNode) {
     return (
         programNode.parent &&
-        programNode.parent.comments.some(c => COMMENT_FILE_RE.test(c.value))
+        programNode.parent.comments.some(c => {
+            const groups = c.value.test(COMMENT_FILE_RE)
+            if (groups) {
+                if (groups[3]) {
+                    const negate = groups[2] === '!'
+                    const platformMatch = groups[3] === process.platform
+                    if (platformMatch === negate) {
+                        // either platform!=windows and we are windows,
+                        // or platform=win32 and we're not windows
+                        // do not add this hint.
+                        return false
+                    }
+                }
+                return true
+            }
+        })
     );
 }
 
