@@ -31,7 +31,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "peerDependencies": {
     "@babel/register": "*",
