@@ -11,7 +11,8 @@
     "test": "nyc mocha"
   },
   "dependencies": {
-    "@babel/core": "^7.7.5",
+    "@babel/core": "^7.12.3",
+    "@babel/parser": "^7.14.7",
     "@istanbuljs/schema": "^0.1.2",
     "istanbul-lib-coverage": "^3.0.0",
     "semver": "^6.3.0"
@@ -23,9 +24,9 @@
     "debug": "^4.1.1",
     "documentation": "^12.1.4",
     "js-yaml": "^3.13.1",
-    "mocha": "^6.2.2",
+    "mocha": "^6.2.3",
     "nopt": "^4.0.1",
-    "nyc": "^15.0.0-beta.2"
+    "nyc": "^15.1.0"
   },
   "license": "BSD-3-Clause",
   "bugs": {

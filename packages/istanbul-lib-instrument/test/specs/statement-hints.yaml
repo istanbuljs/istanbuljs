@@ -117,7 +117,9 @@ tests:
   - args: [1]
     out: 11
     lines: {'1': 1, '2': 1, '4': 0}
-    branches: {'0': [1, 0], '1': [1]}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # branches: {'0': [1, 0], '1': [1]}
+    branches: {'0': [1, 0], '1': [1, 0, 0]}
     statements: {'0': 1, '1': 1, '2': 0}
 
 ---

@@ -197,27 +197,51 @@ tests:
   - name: '1'
     args: [1]
     out: '1'
-    lines: {'1': 1, '2': 1, '3': 0, '4': 0}
-    branches: {'0': [1, 0], 1: [0]}
-    statements: {'0': 1, '1': 1, '2': 0, '3': 0}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # lines: {'1': 1, '2': 1, '3': 0, '4': 0}
+    lines: {'1': 1, '2': 1, '3': 0, '4': 0, '5': 0, '6': 0, '8': 0}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # branches: {'0': [1, 0], 1: [0]}
+    branches: {'0': [1, 0], 1: [0, 0], 2: [0, 0]}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # statements: {'0': 1, '1': 1, '2': 0, '3': 0}
+    statements: {'0': 1, '1': 1, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
   - name: '2'
     args: [2]
     out: '2'
-    lines: {'1': 1, '2': 0, '3': 1, '4': 1}
-    branches: {'0': [0, 1], 1: [1]}
-    statements: {'0': 1, '1': 0, '2': 1, '3': 1}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # lines: {'1': 1, '2': 0, '3': 1, '4': 1}
+    lines: {'1': 1, '2': 0, '3': 1, '4': 1, '5': 0, '6': 0, '8': 0}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # branches: {'0': [0, 1], 1: [1]}
+    branches: {'0': [0, 1], 1: [1, 0], 2: [0, 0]}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # statements: {'0': 1, '1': 0, '2': 1, '3': 1}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 1, '4': 0, '5': 0, '6': 0}
   - name: '3'
     args: [3]
     out: '3'
-    lines: {'1': 1, '2': 0, '3': 1, '4': 0}
-    branches: {'0': [0, 1], 1: [0]}
-    statements: {'0': 1, '1': 0, '2': 1, '3': 0}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # lines: {'1': 1, '2': 0, '3': 1, '4': 0}
+    lines: {'1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 1, '8': 0}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # branches: {'0': [0, 1], 1: [0]}
+    branches: {'0': [0, 1], 1: [0, 1], 2: [1, 0]}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # statements: {'0': 1, '1': 0, '2': 1, '3': 0}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 0, '4': 1, '5': 1, '6': 0}
   - name: '4'
     args: [4]
     out: 'other'
-    lines: {'1': 1, '2': 0, '3': 1, '4': 0}
-    branches: {'0': [0, 1], 1: [0]}
-    statements: {'0': 1, '1': 0, '2': 1, '3': 0}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # lines: {'1': 1, '2': 0, '3': 1, '4': 0}
+    lines: {'1': 1, '2': 0, '3': 1, '4': 0, '5': 1, '6': 0, '8': 1}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # branches: {'0': [0, 1], 1: [0]}
+    branches: {'0': [0, 1], 1: [0, 1], 2: [0, 1]}
+    # Refs: https://github.com/babel/babel/issues/13750
+    # statements: {'0': 1, '1': 0, '2': 1, '3': 0}
+    statements: {'0': 1, '1': 0, '2': 1, '3': 0, '4': 1, '5': 0, '6': 1}
 ---
 name: ignore next chained if
 code: |
