@@ -1,8 +1,8 @@
-import { createHash } from 'crypto';
-import { template } from '@babel/core';
-import { defaults } from '@istanbuljs/schema';
-import { SourceCoverage } from './source-coverage';
-import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
+const { createHash } = require('crypto');
+const { template } = require('@babel/core');
+const { defaults } = require('@istanbuljs/schema');
+const { SourceCoverage } = require('./source-coverage');
+const { SHA, MAGIC_KEY, MAGIC_VALUE } = require('./constants');
 
 // pattern for istanbul to ignore a section
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
@@ -679,4 +679,4 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
     };
 }
 
-export default programVisitor;
+module.exports = programVisitor;

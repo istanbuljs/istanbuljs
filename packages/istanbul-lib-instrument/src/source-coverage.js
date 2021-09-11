@@ -1,4 +1,4 @@
-import { classes } from 'istanbul-lib-coverage';
+const { classes } = require('istanbul-lib-coverage');
 
 function cloneLocation(loc) {
     return {
@@ -106,4 +106,4 @@ class SourceCoverage extends classes.FileCoverage {
     }
 }
 
-export { SourceCoverage };
+module.exports = { SourceCoverage };

@@ -3,14 +3,12 @@
   "version": "4.0.3",
   "description": "Core istanbul API for JS code coverage",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
-    "release": "babel src --out-dir dist && documentation build -f md -o api.md src",
-    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json --require=@babel/register --include=src mocha",
-    "prepublish": "npm run release"
+    "test": "nyc mocha"
   },
   "dependencies": {
     "@babel/core": "^7.7.5",
@@ -20,8 +18,6 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.7.5",
-    "@babel/register": "^7.7.4",
     "chai": "^4.2.0",
     "clone": "^2.1.2",
     "debug": "^4.1.1",
