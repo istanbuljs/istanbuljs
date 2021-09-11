@@ -9,7 +9,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "nyc --nycrc-path=../../monorepo-per-package-full.js mocha"
+    "test": "nyc mocha"
   },
   "dependencies": {
     "istanbul-lib-coverage": "^3.0.0",
