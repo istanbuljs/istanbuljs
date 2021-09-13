@@ -18,7 +18,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: release
-    if: ${{ needs.release.outputs.release_created }}
     strategy:
       fail-fast: false
       matrix:
