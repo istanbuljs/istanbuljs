@@ -42,6 +42,6 @@
   },
   "homepage": "https://istanbul.js.org/",
   "engines": {
-    "node": ">=10"
+    "node": ">=8"
   }
 }

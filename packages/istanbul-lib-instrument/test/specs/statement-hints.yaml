@@ -108,7 +108,7 @@ tests:
 ---
 name: ignore in complex logical expression
 code: >
-  if (args[0] === 1  || /* istanbul ignore next */ (args[0] === 2  || args[0] === 3)) {
+  if (args[0] === 1 || (/* istanbul ignore next */ args[0] === 2  || args[0] === 3)) {
      output = args[0] + 10;
   } else {
      output = 20;
@@ -117,9 +117,7 @@ tests:
   - args: [1]
     out: 11
     lines: {'1': 1, '2': 1, '4': 0}
-    # Refs: https://github.com/babel/babel/issues/13750
-    # branches: {'0': [1, 0], '1': [1]}
-    branches: {'0': [1, 0], '1': [1, 0, 0]}
+    branches: {'0': [1, 0], '1': [1]}
     statements: {'0': 1, '1': 1, '2': 0}
 
 ---

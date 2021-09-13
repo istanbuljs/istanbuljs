@@ -31,7 +31,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=8"
   },
   "dependencies": {
     "@istanbuljs/schema": "^0.1.2"
