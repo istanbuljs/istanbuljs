@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [5.0.2](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.1...istanbul-lib-instrument-v5.0.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* **build:** verfiy automated publication ([b232690](https://www.github.com/istanbuljs/istanbuljs/commit/b232690193f4b524332046c96dd1cdc6e881c6c7))
+
 ### [5.0.1](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.0...istanbul-lib-instrument-v5.0.1) (2021-09-13)
 
 
