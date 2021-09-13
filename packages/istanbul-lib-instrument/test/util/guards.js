@@ -14,34 +14,34 @@ function tryThis(str, feature, generateOnly) {
     return true;
 }
 
-export function isYieldAvailable() {
+function isYieldAvailable() {
     return tryThis('function *foo() { yield 1; }', 'yield');
 }
 
-export function isClassPropAvailable() {
+function isClassPropAvailable() {
     return tryThis('class Foo { a = 1; }', 'class property');
 }
 
-export function isClassPrivatePropAvailable() {
+function isClassPrivatePropAvailable() {
     return tryThis('class Foo { #a = 1; }', 'class private property');
 }
 
-export function isForOfAvailable() {
+function isForOfAvailable() {
     return tryThis(
         'function *foo() { yield 1; }\n' + 'for (var k of foo()) {}',
         'for-of'
     );
 }
 
-export function isArrowFnAvailable() {
+function isArrowFnAvailable() {
     return tryThis('[1 ,2, 3].map(x => x * x)', 'arrow function');
 }
 
-export function isObjectSpreadAvailable() {
+function isObjectSpreadAvailable() {
     return tryThis('const a = {...{b: 33}}', 'object-spread');
 }
 
-export function isObjectFreezeAvailable() {
+function isObjectFreezeAvailable() {
     if (!Object.freeze) {
         return false;
     }
@@ -54,34 +54,51 @@ export function isObjectFreezeAvailable() {
     }
 }
 
-export function isOptionalCatchBindingAvailable() {
+function isOptionalCatchBindingAvailable() {
     return tryThis('try {} catch {}');
 }
 
-export function isImportAvailable() {
+function isImportAvailable() {
     return tryThis('import fs from "fs"', 'import', true);
 }
 
-export function isExportAvailable() {
+function isExportAvailable() {
     return tryThis('export default function foo() {}', 'export', true);
 }
 
-export function isDefaultArgsAvailable() {
+function isDefaultArgsAvailable() {
     return tryThis('function foo(a=1) { return a + 1; }', 'default args');
 }
 
-export function isInferredFunctionNameAvailable() {
+function isInferredFunctionNameAvailable() {
     return tryThis(
         'const foo = function () {}; require("assert").equal(foo.name, "foo")'
     );
 }
 
-export function isInferredClassNameAvailable() {
+function isInferredClassNameAvailable() {
     return tryThis(
         'const foo = class {}; require("assert").equal(foo.name, "foo")'
     );
 }
 
-export function isClassAvailable() {
+function isClassAvailable() {
     return tryThis("new Function('args', '{class Foo extends (Bar) {}}')");
 }
+
+module.exports = {
+    isClassAvailable,
+    isInferredClassNameAvailable,
+    isInferredFunctionNameAvailable,
+    isDefaultArgsAvailable,
+    isExportAvailable,
+    isImportAvailable,
+    isOptionalCatchBindingAvailable,
+    isObjectFreezeAvailable,
+    isYieldAvailable,
+    isClassPropAvailable,
+    isClassPrivatePropAvailable,
+    isForOfAvailable,
+    isArrowFnAvailable,
+    isObjectSpreadAvailable
+};

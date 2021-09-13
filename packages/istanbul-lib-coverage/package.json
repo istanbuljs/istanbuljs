@@ -9,7 +9,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "nyc --nycrc-path=../../monorepo-per-package-full.js mocha"
+    "test": "nyc mocha"
   },
   "devDependencies": {
     "chai": "^4.2.0",
