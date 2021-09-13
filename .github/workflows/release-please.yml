@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.manifest_release.outputs.release_created }}
-      paths_released: ${{ steps.manifest_release.outputs.paths_released || '[]' }}
+      paths_released: ${{ steps.manifest_release.outputs.paths_released }}
     steps:
       - uses: google-github-actions/release-please-action@v2
         id: manifest_release
@@ -19,6 +19,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: release
+    if: ${{ needs.release.outputs.release_created }}
     strategy:
       fail-fast: false
       matrix:
