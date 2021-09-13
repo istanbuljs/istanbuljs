@@ -1,0 +1,13 @@
+{
+  "reporter": ["text", "lcov"],
+  "exclude": [
+    "**/*-test",
+    "**/coverage",
+    "**/test",
+    "**/*.d.ts",
+    ".jsdoc.js",
+    "**/.jsdoc.js"
+  ],
+  "exclude-after-remap": false,
+  "all": true
+}

@@ -1,7 +1,7 @@
 /* globals describe, it, context */
 
-import { assert } from 'chai';
-import Instrumenter from '../src/instrumenter';
+const { assert } = require('chai');
+const Instrumenter = require('../src/instrumenter');
 
 const codeNeedDecoratorPlugin = `
   @decorator

@@ -9,7 +9,7 @@
     "lib"
   ],
   "scripts": {
-    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha --recursive",
+    "test": "nyc mocha --recursive",
     "prepare": "webpack --config lib/html-spa/webpack.config.js --mode production",
     "prepare:watch": "webpack --config lib/html-spa/webpack.config.js --watch --mode development"
   },
