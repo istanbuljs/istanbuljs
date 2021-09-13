@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        path: ${{fromJson(jobs.release.outputs.paths_released)}}
+        path: ${{fromJson(needs.release.outputs.paths_released)}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
