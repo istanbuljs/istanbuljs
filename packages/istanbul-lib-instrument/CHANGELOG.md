@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v4.0.3...istanbul-lib-instrument-v5.0.0) (2021-09-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* istanbul-lib-instrument no longer uses babel
+
+### Code Refactoring
+
+* istanbul-lib-instrument no longer uses babel ([8d3badb](https://www.github.com/istanbuljs/istanbuljs/commit/8d3badb8f6c9a4bed9af8e19c3ac6459ebd7267b))
+
 ## [4.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@4.0.2...istanbul-lib-instrument@4.0.3) (2020-05-09)
 
 
