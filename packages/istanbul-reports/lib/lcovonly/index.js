@@ -3,13 +3,13 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 'use strict';
-const { ReportBase } = require('istanbul-lib-report');
+const {ReportBase} = require('istanbul-lib-report');
 
 class LcovOnlyReport extends ReportBase {
     constructor(opts) {
         super();
         this.file = opts.file || 'lcov.info';
-        this.projectRoot = opts.projectRoot || process.cwd();
+        this.projectRoot = opts.projectRoot || null;
         this.contentWriter = null;
     }
 
@@ -29,7 +29,7 @@ class LcovOnlyReport extends ReportBase {
         const path = require('path');
 
         writer.println('TN:'); //no test nam
-        writer.println('SF:' + path.relative(this.projectRoot, fc.path));
+        writer.println('SF:' + (this.projectRoot ? path.relative(this.projectRoot, fc.path) : fc.path));
 
         Object.values(functionMap).forEach(meta => {
             writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
@@ -50,7 +50,7 @@ class LcovOnlyReport extends ReportBase {
 
         Object.entries(branches).forEach(([key, branchArray]) => {
             const meta = branchMap[key];
-            const { line } = meta.loc.start;
+            const {line} = meta.loc.start;
             branchArray.forEach((b, i) => {
                 writer.println('BRDA:' + [line, key, i, b].join(','));
             });
