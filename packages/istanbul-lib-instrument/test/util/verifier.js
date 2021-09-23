@@ -1,8 +1,8 @@
-import { classes } from 'istanbul-lib-coverage';
-import { assert } from 'chai';
-import clone from 'clone';
-import Instrumenter from '../../src/instrumenter';
-import readInitialCoverage from '../../src/read-coverage';
+const { classes } = require('istanbul-lib-coverage');
+const { assert } = require('chai');
+const clone = require('clone');
+const Instrumenter = require('../../src/instrumenter');
+const readInitialCoverage = require('../../src/read-coverage');
 
 const FileCoverage = classes.FileCoverage;
 
@@ -189,4 +189,4 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
     });
 }
 
-export { create };
+module.exports = { create };
