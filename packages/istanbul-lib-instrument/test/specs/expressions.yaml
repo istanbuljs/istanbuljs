@@ -9,6 +9,7 @@ tests:
     out: false
     lines: {'1': 1, '2': 1}
     branches: {'0': [1, 0]}
+    branchesTrue: {'0': [0, 0]}
     statements: {'0': 1, '1': 1}
 
   - name: covers line, both branches, returns false
@@ -16,6 +17,7 @@ tests:
     out: false
     lines: {'1': 1, '2': 1}
     branches: {'0': [1, 1]}
+    branchesTrue: {'0': [1, 0]}
     statements: {'0': 1, '1': 1}
 
   - name: covers line, both branches, returns true
@@ -23,6 +25,7 @@ tests:
     out: true
     lines: {'1': 1, '2': 1}
     branches: {'0': [1, 1]}
+    branchesTrue: {'0': [1, 1]}
     statements: {'0': 1, '1': 1}
 
 ---
@@ -36,6 +39,7 @@ tests:
     out: false
     lines: {'1': 1, '2': 1}
     branches: {'0': [1, 0, 0]}
+    branchesTrue: {'0': [0, 0, 0]}
     statements: {'0': 1, '1': 1}
 
   - name: covers line, both branches, returns false
@@ -43,6 +47,7 @@ tests:
     out: false
     lines: {'1': 1, '2': 1}
     branches: {'0': [1, 1, 1]}
+    branchesTrue: {'0': [1, 0, 0]}
     statements: {'0': 1, '1': 1}
 
   - name: covers line, both branches, returns true
@@ -50,6 +55,7 @@ tests:
     out: true
     lines: {'1': 1, '2': 1}
     branches: {'0': [1, 1, 0]}
+    branchesTrue: {'0': [1, 1, 0]}
     statements: {'0': 1, '1': 1}
 
 ---
@@ -63,6 +69,7 @@ tests:
     out: true
     lines: {'1': 1, '2': 1}
     branches: { '0': [1, 1] }
+    branchesTrue: {'0': [1, 1]}
     statements: {'0': 1, '1': 1}
 
 ---
@@ -76,6 +83,7 @@ tests:
     out: 2
     lines: {'1': 1, '2': 1}
     branches: { '0': [0, 1] }
+    branchesTrue: { }
     statements: {'0': 1, '1': 1}
 
 ---
@@ -89,4 +97,5 @@ tests:
     out: 2
     lines: {'1': 1, '2': 1}
     branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 1]}
     statements: {'0': 1, '1': 1}

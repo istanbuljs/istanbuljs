@@ -68,7 +68,13 @@ class SourceCoverage extends classes.FileCoverage {
             line: loc && loc.start.line
         };
         this.meta.last.b += 1;
+        this.maybeNewBranchTrue(type, b);
         return b;
+    }
+  
+    maybeNewBranchTrue(type, name) {
+        if (type !== 'binary-expr') { return; }
+        this.data.bT[name] = [];
     }
 
     addBranchPath(name, location) {
@@ -81,9 +87,16 @@ class SourceCoverage extends classes.FileCoverage {
         }
         bMeta.locations.push(cloneLocation(location));
         counts.push(0);
+        this.maybeAddBranchTrue(name);
         return counts.length - 1;
     }
 
+    maybeAddBranchTrue(name) {
+        const countsTrue = this.data.bT[name];
+        if (!countsTrue) { return; }
+        countsTrue.push(0);
+    }
+  
     /**
      * Assigns an input source map to the coverage that can be used
      * to remap the coverage output to the original source
@@ -97,10 +110,12 @@ class SourceCoverage extends classes.FileCoverage {
         // prune empty branches
         const map = this.data.branchMap;
         const branches = this.data.b;
+        const branchesT = this.data.bT;
         Object.keys(map).forEach(b => {
             if (map[b].locations.length === 0) {
                 delete map[b];
                 delete branches[b];
+                delete branchesT[b];
             }
         });
     }

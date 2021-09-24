@@ -62,6 +62,11 @@ class Verifier {
             'Branch coverage mismatch'
         );
         assert.deepEqual(
+          cov.bT,
+          expectedCoverage.branchesTrue || {},
+          'Branch coverage mismatch'
+        );
+        assert.deepEqual(
             cov.s,
             expectedCoverage.statements || {},
             'Statement coverage mismatch'

@@ -181,6 +181,18 @@ class VisitState {
             )
         );
     }
+  
+    // Reads the logic expression conditions and conditionally increments truthy counter.
+    increaseTrue(type, id, index, node) {
+        const T = this.types;
+        return T.parenthesizedExpression(
+            T.conditionalExpression(
+                node,
+                this.increase(type, id, index),
+                T.nullLiteral()
+            )
+        );
+    }
 
     insertCounter(path, increment) {
         const T = this.types;
@@ -274,6 +286,11 @@ class VisitState {
     getBranchIncrement(branchName, loc) {
         const index = this.cov.addBranchPath(branchName, loc);
         return this.increase('b', branchName, index);
+    }
+  
+    getBranchLogicIncrement(path, branchName, loc) {
+      const index = this.cov.addBranchPath(branchName, loc);
+      return [this.increase('b', branchName, index), this.increaseTrue('bT', branchName, index, path.node)];
     }
 
     insertBranchCounter(path, branchName, loc) {
@@ -468,12 +485,13 @@ function coverLogicalExpression(path) {
         if (hint === 'next') {
             continue;
         }
-        const increment = this.getBranchIncrement(b, leaf.node.loc);
-        if (!increment) {
+        const increment = this.getBranchLogicIncrement(leaf, b, leaf.node.loc);
+        if (!increment[0]) {
             continue;
         }
         leaf.parent[leaf.property] = T.sequenceExpression([
-            increment,
+            increment[0],
+            increment[1],
             leaf.node
         ]);
     }
