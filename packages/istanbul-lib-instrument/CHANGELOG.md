@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [5.0.3](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.2...istanbul-lib-instrument-v5.0.3) (2021-10-06)
+
+
+### Bug Fixes
+
+* coverage.branchMap else location. ([#633](https://www.github.com/istanbuljs/istanbuljs/issues/633)) ([eb4b4ec](https://www.github.com/istanbuljs/istanbuljs/commit/eb4b4ec8f4b858655a66b0033fcc662f44ef4cc9))
+
 ### [5.0.2](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.1...istanbul-lib-instrument-v5.0.2) (2021-09-13)
 
 
