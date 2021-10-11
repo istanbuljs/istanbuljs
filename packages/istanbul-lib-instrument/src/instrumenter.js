@@ -74,10 +74,10 @@ class Instrumenter {
                     ({ types }) => {
                         const ee = programVisitor(types, filename, {
                             coverageVariable: opts.coverageVariable,
+                            reportLogic: opts.reportLogic,
                             coverageGlobalScope: opts.coverageGlobalScope,
                             coverageGlobalScopeFunc:
                                 opts.coverageGlobalScopeFunc,
-                            reportLogic: opts.reportLogic,
                             ignoreClassMethods: opts.ignoreClassMethods,
                             inputSourceMap
                         });
