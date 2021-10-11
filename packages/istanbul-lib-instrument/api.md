@@ -37,7 +37,7 @@ instead.
 -   `opts` **[Object][13]** optional. (optional, default `{}`)
     -   `opts.coverageVariable` **[string][14]** name of global coverage variable. (optional, default `__coverage__`)
     -   `opts.reportLogic` **[boolean][15]** report boolean value of logical expressions. (optional, default `false`)
-    -   `opts.preserveComments` **[boolean][15]** preserve comments in output (optional, default `false`)
+    -   `opts.preserveComments` **[boolean][15]** preserve comments in output. (optional, default `false`)
     -   `opts.compact` **[boolean][15]** generate compact code. (optional, default `true`)
     -   `opts.esModules` **[boolean][15]** set to true to instrument ES6 modules. (optional, default `false`)
     -   `opts.autoWrap` **[boolean][15]** set to true to allow `return` statements outside of functions. (optional, default `false`)
