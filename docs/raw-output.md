@@ -53,9 +53,9 @@ This file describes the output raw output format of the IstanbulJS libraries.
                             -   `end.line` **[number][3]** the branch component end location line number.
                             -   `end.column` **[number][3]** the branch component end location column number.
         -   `<absolute path>.s` **[Object][1]** the object that reports the aggregated statement-level counters.
-            -   `s.<index>` **[number][3]** The aggregated statement-level counter.
+            -   `s.<index>` **[number][3]** The aggregated statement-level counter; 0-based.
         -   `<absolute path>.f` **[Object][1]** the object that reports the aggregated function-level counters.
-            -   `f.<index>` **[number][3]** The aggregated function-level counter.
+            -   `f.<index>` **[number][3]** The aggregated function-level counter; 0-based.
         -   `<absolute path>.b` **[Object][1]** the object that reports the aggregated branch-level counters.
             -   `b.<index>` **[Array][4]** The array for branch component counters.
                 -   `<index>[component index]` **[number][3]** The aggregated branch component counter.
