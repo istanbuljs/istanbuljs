@@ -44,14 +44,13 @@ const keyFromLoc = ({ start, end }) =>
     `${start.line}|${start.column}|${end.line}|${end.column}`;
 
 const mergeProp = (aHits, aMap, bHits, bMap, itemKey = keyFromLoc) => {
-    const aItems = Object.values(aHits).reduce((items, itemHits, i) => {
-        const item = aMap[i];
-        items[itemKey(item)] = [itemHits, item];
-        return items;
-    }, {});
-
-    Object.values(bHits).forEach((bItemHits, i) => {
-        const bItem = bMap[i];
+    const aItems = {};
+    for (const [key, itemHits] of Object.entries(aHits)) {
+        const item = aMap[key];
+        aItems[itemKey(item)] = [itemHits, item];
+    }
+    for (const [key, bItemHits] of Object.entries(bHits)) {
+        const bItem = bMap[key];
         const k = itemKey(bItem);
 
         if (aItems[k]) {
@@ -68,8 +67,7 @@ const mergeProp = (aHits, aMap, bHits, bMap, itemKey = keyFromLoc) => {
         } else {
             aItems[k] = [bItemHits, bItem];
         }
-    });
-
+    }
     const hits = {};
     const map = {};
 
