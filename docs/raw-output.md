@@ -70,7 +70,7 @@ This file describes the output raw output format of the IstanbulJS libraries.
 
 - `if`  an if statement; can also be `else if`.
 - `binary-expr`  a logical expression with a binary operand. e.g.: `x && y`
-- `cond-expr`  a ternary expression. e.g.: `x ? y : z
+- `cond-expr`  a ternary expression. e.g.: `x ? y : z`
 - `switch`  a switch statement.
 - `default-arg`  assignment logic. e.g.: `x &= y`
 
