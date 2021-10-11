@@ -20,17 +20,17 @@ This file describes the output raw output format of the IstanbulJS libraries.
                 -   `<index>.name` **[string][2]** the function's name.
                 -   `<index>.line` **[number][3]** the function declaration start location line number.
                 -   `<index>.decl` **[Object][1]** the function declaration location object.
-                    -   `<index>.start` **[Object][1]** the function declaration start location object.
+                    -   `decl.start` **[Object][1]** the function declaration start location object.
                         -   `start.line` **[number][3]** the function declaration start location line number.
                         -   `start.column` **[number][3]** the function declaration start location column number.
-                    -   `<index>.end` **[Object][1]** the function declaration end location object.
+                    -   `decl.end` **[Object][1]** the function declaration end location object.
                         -   `end.line` **[number][3]** the function declaration end location line number.
                         -   `end.column` **[number][3]** the function declaration end location column number.
                 -   `<index>.loc` **[Object][1]** the function body location object.
-                    -   `<index>.start` **[Object][1]** the function body start location object.
+                    -   `loc.start` **[Object][1]** the function body start location object.
                         -   `start.line` **[number][3]** the function body start location line number.
                         -   `start.column` **[number][3]** the function body start location column number.
-                    -   `<index>.end` **[Object][1]** the function body end location object.
+                    -   `loc.end` **[Object][1]** the function body end location object.
                         -   `end.line` **[number][3]** the function body end location line number.
                         -   `end.column` **[number][3]** the function body end location column number.
         -   `<absolute path>.branchMap` **[Object][1]** the object that maps branches to code.
@@ -38,10 +38,10 @@ This file describes the output raw output format of the IstanbulJS libraries.
                 -   `<index>.line` **[number][3]** the branch declaration start location line number.
                 -   `<index>.type` **[string][2]** the branch type; see [branch types][5].
                 -   `<index>.loc` **[Object][1]** the branch location object.
-                    -   `<index>.start` **[Object][1]** the branch start location object.
+                    -   `loc.start` **[Object][1]** the branch start location object.
                         -   `start.line` **[number][3]** the branch start location line number.
                         -   `start.column` **[number][3]** the branch start location column number.
-                    -   `<index>.end` **[Object][1]** the branch end location object.
+                    -   `loc.end` **[Object][1]** the branch end location object.
                         -   `end.line` **[number][3]** the branch end location line number.
                         -   `end.column` **[number][3]** the branch end location column number.
                 -   `<index>.locations` **[Array][4]** the location objects for component branches or binary expressions.
