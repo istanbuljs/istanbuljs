@@ -23,6 +23,7 @@ function genVar(filename) {
 class VisitState {
     constructor(
         types,
+        reportLogic = false,
         sourceFilePath,
         inputSourceMap,
         ignoreClassMethods = []
@@ -38,6 +39,7 @@ class VisitState {
         this.ignoreClassMethods = ignoreClassMethods;
         this.types = types;
         this.sourceMappingURL = null;
+        this.reportLogic = reportLogic;
     }
 
     // should we ignore the node? Yes, if specifically ignoring
@@ -485,15 +487,28 @@ function coverLogicalExpression(path) {
         if (hint === 'next') {
             continue;
         }
-        const increment = this.getBranchLogicIncrement(leaf, b, leaf.node.loc);
-        if (!increment[0]) {
+      
+        if (this.reportLogic) {
+            const increment = this.getBranchLogicIncrement(leaf, b, leaf.node.loc);
+            if (!increment[0]) {
+                continue;
+            }
+            leaf.parent[leaf.property] = T.sequenceExpression([
+                increment[0],
+                increment[1],
+                leaf.node
+            ]);
+            continue;
+        }
+      
+        const increment = this.getBranchIncrement(b, leaf.node.loc);
+        if (!increment) {
             continue;
         }
         leaf.parent[leaf.property] = T.sequenceExpression([
-            increment[0],
-            increment[1],
+            increment,
             leaf.node
-        ]);
+        ]);  
     }
 }
 
@@ -602,10 +617,11 @@ function shouldIgnoreFile(programNode) {
  * `fileCoverage` - the file coverage object created for the source file.
  * `sourceMappingURL` - any source mapping URL found when processing the file.
  *
- * @param {Object} types - an instance of babel-types
- * @param {string} sourceFilePath - the path to source file
- * @param {Object} opts - additional options
+ * @param {Object} types - an instance of babel-types.
+ * @param {string} sourceFilePath - the path to source file.
+ * @param {Object} opts - additional options.
  * @param {string} [opts.coverageVariable=__coverage__] the global coverage variable name.
+ * @param {boolean} [opts.reportLogic=false] report boolean value of logical expressions.
  * @param {string} [opts.coverageGlobalScope=this] the global coverage variable scope.
  * @param {boolean} [opts.coverageGlobalScopeFunc=true] use an evaluated function to find coverageGlobalScope.
  * @param {Array} [opts.ignoreClassMethods=[]] names of methods to ignore by default on classes.
@@ -620,6 +636,7 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
     };
     const visitState = new VisitState(
         types,
+        opts.reportLogic,
         sourceFilePath,
         opts.inputSourceMap,
         opts.ignoreClassMethods

@@ -8,6 +8,8 @@ code: |
          output += x[k];
      }
   }
+instrumentOpts:
+  reportLogic: true
 tests:
   - args: [10, 0]
     out: 10
@@ -26,6 +28,8 @@ code: |
          output += x[k];
      }
   }
+instrumentOpts:
+  reportLogic: true
 tests:
   - args: [10, 0]
     out: 10

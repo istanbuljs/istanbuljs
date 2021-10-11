@@ -103,7 +103,7 @@ tests:
     out: 11
     lines: {'1': 1, '2': 1, '4': 0}
     branches: {'0': [1, 0], '1': [1]}
-    branchesTrue: {'1': [1]}
+    branchesTrue: {'1': [0]}
     statements: {'0': 1, '1': 1, '2': 0}
 
 ---
@@ -119,7 +119,7 @@ tests:
     out: 11
     lines: {'1': 1, '2': 1, '4': 0}
     branches: {'0': [1, 0], '1': [1]}
-    branchesTrue: {'1': [1]}
+    branchesTrue: {'1': [0]}
     statements: {'0': 1, '1': 1, '2': 0}
 
 ---
@@ -135,7 +135,7 @@ tests:
     out: 11
     lines: {'1': 1, '2': 1, '4': 0}
     branches: {'0': [1, 0], '1': [1]}
-    branchesTrue: {'1': [1]}
+    branchesTrue: {'1': [0]}
     statements: {'0': 1, '1': 1, '2': 0}
 
 ---

@@ -24,4 +24,4 @@ tests:
     functions: {}
     statements: {'0': 1}
     branches: {'0': [1, 0]}
-    branchesTrue: {'0': [1, 0]}
+    branchesTrue: {'0': [0, 0]}
