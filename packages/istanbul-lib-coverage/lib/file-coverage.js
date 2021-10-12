@@ -249,7 +249,7 @@ class FileCoverage {
           other.bT,
           other.branchMap,
           keyFromLocationsProp
-      );
+        );
       this.data.bT = hits;
     }
 
