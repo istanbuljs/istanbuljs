@@ -19,8 +19,7 @@ function blankSummary() {
         lines: empty(),
         statements: empty(),
         functions: empty(),
-        branches: empty(),
-        branchesTrue: empty()
+        branches: empty()
     };
 }
 
@@ -95,8 +94,7 @@ dataProperties(CoverageSummary, [
     'lines',
     'statements',
     'functions',
-    'branches',
-    'branchesTrue'
+    'branches'
 ]);
 
 module.exports = {

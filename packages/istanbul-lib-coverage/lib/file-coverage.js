@@ -17,8 +17,7 @@ function emptyCoverage(filePath) {
         branchMap: {},
         s: {},
         f: {},
-        b: {},
-        bT: {}
+        b: {}
     };
 }
 
@@ -32,8 +31,7 @@ function assertValidObject(obj) {
         obj.branchMap &&
         obj.s &&
         obj.f &&
-        obj.b &&
-        obj.bT;
+        obj.b;
     if (!valid) {
         throw new Error(
             'Invalid file coverage object, missing keys, found:' +
@@ -160,7 +158,6 @@ class FileCoverage {
         return ret;
     }
 
-    // STARK TODO
     /**
      * returns a map of branch coverage by source line number.
      * @returns {Object} an object keyed by line number. Each object
@@ -195,7 +192,6 @@ class FileCoverage {
         return this.data;
     }
 
-    // STARK TODO
     /**
      * merges a second coverage object into this one, updating hit counts
      * @param {FileCoverage} other - the coverage object to be merged into this one.
@@ -242,15 +238,6 @@ class FileCoverage {
         );
         this.data.b = hits;
         this.data.branchMap = map;
-        
-        [hits, map] = mergeProp(
-          this.bT,
-          this.branchMap,
-          other.bT,
-          other.branchMap,
-          keyFromLocationsProp
-        );
-      this.data.bT = hits;
     }
 
     computeSimpleTotals(property) {
@@ -269,8 +256,8 @@ class FileCoverage {
         return ret;
     }
 
-    computeBranchTotals(property) {
-        const stats = this[property];
+    computeBranchTotals() {
+        const stats = this.b;
         const ret = { total: 0, covered: 0, skipped: 0 };
 
         Object.values(stats).forEach(branches => {
@@ -289,7 +276,6 @@ class FileCoverage {
         const statements = this.s;
         const functions = this.f;
         const branches = this.b;
-        const branchesTrue = this.bT;
         Object.keys(statements).forEach(s => {
             statements[s] = 0;
         });
@@ -298,9 +284,6 @@ class FileCoverage {
         });
         Object.keys(branches).forEach(b => {
             branches[b].fill(0);
-        });
-        Object.keys(branchesTrue).forEach(bT => {
-          branchesTrue[bT].fill(0);
         });
     }
 
@@ -313,8 +296,7 @@ class FileCoverage {
         ret.lines = this.computeSimpleTotals('getLineCoverage');
         ret.functions = this.computeSimpleTotals('f', 'fnMap');
         ret.statements = this.computeSimpleTotals('s', 'statementMap');
-        ret.branches = this.computeBranchTotals('b');
-        ret.branchesTrue = this.computeBranchTotals('bT');
+        ret.branches = this.computeBranchTotals();
         return new CoverageSummary(ret);
     }
 }
@@ -328,7 +310,6 @@ dataProperties(FileCoverage, [
     's',
     'f',
     'b',
-    'bT',
     'all'
 ]);
 
