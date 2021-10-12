@@ -296,7 +296,7 @@ class FileCoverage {
             branches[b].fill(0);
         });
         Object.keys(branchesTrue).forEach(bT => {
-          branchesTrue[bT].fill(0);
+            branchesTrue[bT].fill(0);
         });
     }
 
