@@ -480,7 +480,7 @@ function coverLogicalExpression(path) {
     }
     const leaves = [];
     this.findLeaves(path.node, leaves);
-    const b = this.cov.newBranch('binary-expr', path.node.loc);
+    const b = this.cov.newBranch('binary-expr', path.node.loc, this.reportLogic);
     for (let i = 0; i < leaves.length; i += 1) {
         const leaf = leaves[i];
         const hint = this.hintFor(leaf.node);

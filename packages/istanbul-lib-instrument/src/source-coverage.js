@@ -57,7 +57,7 @@ class SourceCoverage extends classes.FileCoverage {
         return f;
     }
 
-    newBranch(type, loc) {
+    newBranch(type, loc, isReportLogic = false) {
         const b = this.meta.last.b;
         this.data.b[b] = [];
         this.data.branchMap[b] = {
@@ -68,11 +68,12 @@ class SourceCoverage extends classes.FileCoverage {
             line: loc && loc.start.line
         };
         this.meta.last.b += 1;
-        this.maybeNewBranchTrue(type, b);
+        this.maybeNewBranchTrue(type, b, isReportLogic);
         return b;
     }
   
-    maybeNewBranchTrue(type, name) {
+    maybeNewBranchTrue(type, name, isReportLogic) {
+        if (!isReportLogic) { return; }
         if (type !== 'binary-expr') { return; }
         this.data.bT[name] = [];
     }
