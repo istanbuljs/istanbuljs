@@ -508,7 +508,7 @@ function coverLogicalExpression(path) {
         leaf.parent[leaf.property] = T.sequenceExpression([
             increment,
             leaf.node
-        ]);  
+        ]);
     }
 }
 
