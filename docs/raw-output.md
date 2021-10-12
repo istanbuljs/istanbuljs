@@ -58,8 +58,8 @@ This file describes the output raw output format of the IstanbulJS libraries.
             -   `f.<index>` **[number][3]** The aggregated function-level counter; 0-based.
         -   `<absolute path>.b` **[Object][1]** the object that reports the aggregated branch-level counters.
             -   `b.<index>` **[Array][4]** The array for branch component counters.
-                -   `<index>[component index]` **[number][3]** The aggregated branch component counter. Only evaluated with the `reportLogic=true` option. (optional, default `undefined`)
-        -   `<absolute path>.bT` **[Object][1]** the object that reports the aggregated branch-level, evaluated logical truthiness counters.
+                -   `<index>[component index]` **[number][3]** The aggregated branch component counter.
+        -   `<absolute path>.bT` **[Object][1]** the object that reports the aggregated branch-level, evaluated logical truthiness counters. Only evaluated with the `reportLogic=true` option. (optional, default `undefined`)
             -   `bT.<index>` **[Array][4]** The array for branch component truthiness counters.
                 -   `<index>[component index]` **[number][3]** The aggregated branch component counter.
         -   `<absolute path>._coverageSchema` **[string][2]** the coverage schema.
