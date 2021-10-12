@@ -1,8 +1,8 @@
 /* globals describe, it */
 
-import { assert } from 'chai';
-import Instrumenter from '../src/instrumenter';
-import * as verifier from './util/verifier';
+const { assert } = require('chai');
+const Instrumenter = require('../src/instrumenter');
+const verifier = require('./util/verifier');
 
 describe('varia', () => {
     it('debug/ walkDebug should not cause errors', () => {
@@ -96,7 +96,7 @@ describe('varia', () => {
         const code = v.getGeneratedCode();
         assert.ok(
             code.match(
-                /return actualCoverage;}export function fn1\(\){cov_(.+)\.f\[\d+\]\+\+;}export default function\(\){cov_(.+)\.f\[\d+\]\+\+;}/
+                /return actualCoverage;}cov_([^(]+)\(\);export function fn1\(\){cov_(.+)\.f\[\d+\]\+\+;}export default function\(\){cov_(.+)\.f\[\d+\]\+\+;}/
             )
         );
     });

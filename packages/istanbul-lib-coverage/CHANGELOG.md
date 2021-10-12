@@ -46,6 +46,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+### [3.0.2](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.0.1...istanbul-lib-coverage-v3.0.2) (2021-10-11)
+
+
+### Bug Fixes
+
+* handle merging '0' indexed coverage with '1' indexed coverage ([5dac2bc](https://www.github.com/istanbuljs/istanbuljs/commit/5dac2bcf28d6f27dbb720be72c2b692153418ab5)), closes [#632](https://www.github.com/istanbuljs/istanbuljs/issues/632)
+
+### [3.0.1](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.0.0...istanbul-lib-coverage-v3.0.1) (2021-09-23)
+
+
+### Bug Fixes
+
+* merge branch/statement/functionMap's together when merging two coverage reports ([#617](https://www.github.com/istanbuljs/istanbuljs/issues/617)) ([ff1b5e9](https://www.github.com/istanbuljs/istanbuljs/commit/ff1b5e915201e4ff8f737010509bab98d8238118))
+
 ## [2.0.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage@2.0.4...istanbul-lib-coverage@2.0.5) (2019-04-24)
 
 **Note:** Version bump only for package istanbul-lib-coverage

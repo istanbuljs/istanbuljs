@@ -1,7 +1,6 @@
-import { parse } from '@babel/parser';
-import traverse from '@babel/traverse';
-import { defaults } from '@istanbuljs/schema';
-import { MAGIC_KEY, MAGIC_VALUE } from './constants';
+const { parseSync, traverse } = require('@babel/core');
+const { defaults } = require('@istanbuljs/schema');
+const { MAGIC_KEY, MAGIC_VALUE } = require('./constants');
 
 function getAst(code) {
     if (typeof code === 'object' && typeof code.type === 'string') {
@@ -14,16 +13,20 @@ function getAst(code) {
     }
 
     // Parse as leniently as possible
-    return parse(code, {
-        allowImportExportEverywhere: true,
-        allowReturnOutsideFunction: true,
-        allowSuperOutsideMethod: true,
-        sourceType: 'script',
-        plugins: defaults.instrumenter.parserPlugins
+    return parseSync(code, {
+        babelrc: false,
+        configFile: false,
+        parserOpts: {
+            allowImportExportEverywhere: true,
+            allowReturnOutsideFunction: true,
+            allowSuperOutsideMethod: true,
+            sourceType: 'script',
+            plugins: defaults.instrumenter.parserPlugins
+        }
     });
 }
 
-export default function readInitialCoverage(code) {
+module.exports = function readInitialCoverage(code) {
     const ast = getAst(code);
 
     let covScope;
@@ -70,4 +73,4 @@ export default function readInitialCoverage(code) {
     delete result.coverageData.hash;
 
     return result;
-}
+};

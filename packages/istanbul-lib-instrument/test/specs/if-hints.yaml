@@ -186,7 +186,7 @@ name: ignore chained else
 code: |
   if (args[0] === 1) {
     output = '1';
-  } /* istanbul ignore else */ else if (args[0] === 2) {
+  } else /* istanbul ignore else */ if (args[0] === 2) {
     output = '2';
   } else if (args[0] === 3) {
     output = '3';

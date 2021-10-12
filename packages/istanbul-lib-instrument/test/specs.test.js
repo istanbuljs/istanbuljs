@@ -1,11 +1,11 @@
 /* globals describe, it */
 
-import * as path from 'path';
-import * as fs from 'fs';
-import * as yaml from 'js-yaml';
-import { assert } from 'chai';
-import * as verifier from './util/verifier';
-import * as guards from './util/guards';
+const path = require('path');
+const fs = require('fs');
+const yaml = require('js-yaml');
+const { assert } = require('chai');
+const verifier = require('./util/verifier');
+const guards = require('./util/guards');
 
 const clone = require('clone');
 

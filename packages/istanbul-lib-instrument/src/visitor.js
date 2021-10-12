@@ -1,8 +1,8 @@
-import { createHash } from 'crypto';
-import template from '@babel/template';
-import { defaults } from '@istanbuljs/schema';
-import { SourceCoverage } from './source-coverage';
-import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
+const { createHash } = require('crypto');
+const { template } = require('@babel/core');
+const { defaults } = require('@istanbuljs/schema');
+const { SourceCoverage } = require('./source-coverage');
+const { SHA, MAGIC_KEY, MAGIC_VALUE } = require('./constants');
 
 // pattern for istanbul to ignore a section
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
@@ -28,7 +28,6 @@ class VisitState {
         ignoreClassMethods = []
     ) {
         this.varName = genVar(sourceFilePath);
-        this.varCalled = false;
         this.attrs = {};
         this.nextIgnore = null;
         this.cov = new SourceCoverage(sourceFilePath);
@@ -168,7 +167,6 @@ class VisitState {
                 ? // If `index` present, turn `x` into `x[index]`.
                   x => T.memberExpression(x, T.numericLiteral(index), true)
                 : x => x;
-        this.varCalled = true;
         return T.updateExpression(
             '++',
             wrap(
@@ -244,12 +242,8 @@ class VisitState {
         // get location for declaration
         switch (n.type) {
             case 'FunctionDeclaration':
-                /* istanbul ignore else: paranoid check */
-                if (n.id) {
-                    dloc = n.id.loc;
-                }
-                break;
             case 'FunctionExpression':
+                /* istanbul ignore else: paranoid check */
                 if (n.id) {
                     dloc = n.id.loc;
                 }
@@ -426,7 +420,7 @@ function coverIfBranches(path) {
     if (ignoreElse) {
         this.setAttr(n.alternate, 'skip-all', true);
     } else {
-        this.insertBranchCounter(path.get('alternate'), branch, n.loc);
+        this.insertBranchCounter(path.get('alternate'), branch);
     }
 }
 
@@ -536,7 +530,8 @@ const globalTemplateVariable = template(`
         var global = GLOBAL_COVERAGE_SCOPE;
 `);
 // the template to insert at the top of the program.
-const coverageTemplate = template(`
+const coverageTemplate = template(
+    `
     function COVERAGE_FUNCTION () {
         var path = PATH;
         var hash = HASH;
@@ -549,13 +544,18 @@ const coverageTemplate = template(`
         }
 
         var actualCoverage = coverage[path];
-        COVERAGE_FUNCTION = function () {
-          return actualCoverage;
+        {
+            // @ts-ignore
+            COVERAGE_FUNCTION = function () {
+                return actualCoverage;
+            }
         }
 
         return actualCoverage;
     }
-`);
+`,
+    { preserveComments: true }
+);
 // the rewire plugin (and potentially other babel middleware)
 // may cause files to be instrumented twice, see:
 // https://github.com/istanbuljs/babel-plugin-istanbul/issues/94
@@ -664,14 +664,12 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                 INITIAL: coverageNode,
                 HASH: T.stringLiteral(hash)
             });
-            // explicitly call this.varName if this file has no coverage
-            if (!visitState.varCalled) {
-                path.node.body.unshift(
-                    T.expressionStatement(
-                        T.callExpression(T.identifier(visitState.varName), [])
-                    )
-                );
-            }
+            // explicitly call this.varName to ensure coverage is always initialized
+            path.node.body.unshift(
+                T.expressionStatement(
+                    T.callExpression(T.identifier(visitState.varName), [])
+                )
+            );
             path.node.body.unshift(cv);
             return {
                 fileCoverage: coverageData,
@@ -681,4 +679,4 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
     };
 }
 
-export default programVisitor;
+module.exports = programVisitor;

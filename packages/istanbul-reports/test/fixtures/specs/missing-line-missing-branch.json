@@ -1,6 +1,6 @@
 {
     "title": "missing line and branch coverage",
-    "textReportExpected": "----------|---------|----------|---------|---------|-------------------\nFile      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n----------|---------|----------|---------|---------|-------------------\n\u001b[32;1mAll files\u001b[0m | \u001b[32;1m  98.04\u001b[0m | \u001b[32;1m   95.35\u001b[0m | \u001b[32;1m  88.89\u001b[0m | \u001b[32;1m  97.87\u001b[0m | \u001b[31;1m                 \u001b[0m \n\u001b[32;1m index.js\u001b[0m | \u001b[32;1m  98.04\u001b[0m | \u001b[32;1m   95.35\u001b[0m | \u001b[32;1m  88.89\u001b[0m | \u001b[32;1m  97.87\u001b[0m | \u001b[31;1m9                \u001b[0m \n----------|---------|----------|---------|---------|-------------------\n",
+    "textReportExpected": "----------|---------|----------|---------|---------|-------------------\nFile      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n----------|---------|----------|---------|---------|-------------------\n\u001b[32;1mAll files\u001b[0m | \u001b[32;1m  98.03\u001b[0m | \u001b[32;1m   95.34\u001b[0m | \u001b[32;1m  88.88\u001b[0m | \u001b[32;1m  97.87\u001b[0m | \u001b[31;1m                 \u001b[0m \n\u001b[32;1m index.js\u001b[0m | \u001b[32;1m  98.03\u001b[0m | \u001b[32;1m   95.34\u001b[0m | \u001b[32;1m  88.88\u001b[0m | \u001b[32;1m  97.87\u001b[0m | \u001b[31;1m9                \u001b[0m \n----------|---------|----------|---------|---------|-------------------\n",
     "htmlSpaFiles": ["index.js.html", "index.html"],
     "htmlSpaCoverageData": {
         "file": "",
@@ -9,27 +9,31 @@
             "statements": {
                 "total": 51,
                 "covered": 50,
+                "missed": 1,
                 "skipped": 0,
-                "pct": 98.04,
+                "pct": 98.03,
                 "classForPercent": "high"
             },
             "branches": {
                 "total": 43,
                 "covered": 41,
+                "missed": 2,
                 "skipped": 0,
-                "pct": 95.35,
+                "pct": 95.34,
                 "classForPercent": "high"
             },
             "functions": {
                 "total": 9,
                 "covered": 8,
+                "missed": 1,
                 "skipped": 0,
-                "pct": 88.89,
+                "pct": 88.88,
                 "classForPercent": "high"
             },
             "lines": {
                 "total": 47,
                 "covered": 46,
+                "missed": 1,
                 "skipped": 0,
                 "pct": 97.87,
                 "classForPercent": "high"
@@ -43,27 +47,31 @@
                     "statements": {
                         "total": 51,
                         "covered": 50,
+                        "missed": 1,
                         "skipped": 0,
-                        "pct": 98.04,
+                        "pct": 98.03,
                         "classForPercent": "high"
                     },
                     "branches": {
                         "total": 43,
                         "covered": 41,
+                        "missed": 2,
                         "skipped": 0,
-                        "pct": 95.35,
+                        "pct": 95.34,
                         "classForPercent": "high"
                     },
                     "functions": {
                         "total": 9,
                         "covered": 8,
+                        "missed": 1,
                         "skipped": 0,
-                        "pct": 88.89,
+                        "pct": 88.88,
                         "classForPercent": "high"
                     },
                     "lines": {
                         "total": 47,
                         "covered": 46,
+                        "missed": 1,
                         "skipped": 0,
                         "pct": 97.87,
                         "classForPercent": "high"
