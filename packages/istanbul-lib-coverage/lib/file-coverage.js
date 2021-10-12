@@ -240,11 +240,11 @@ class FileCoverage {
         this.data.branchMap = map;
 
         [hits, map] = mergeProp(
-          this.bT,
-          this.branchMap,
-          other.bT,
-          other.branchMap,
-          keyFromLocationsProp
+            this.bT,
+            this.branchMap,
+            other.bT,
+            other.branchMap,
+            keyFromLocationsProp
         );
         this.data.bT = hits;
     }
