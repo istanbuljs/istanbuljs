@@ -8,6 +8,7 @@ const { ReportBase } = require('istanbul-lib-report');
 class LcovOnlyReport extends ReportBase {
     constructor(opts) {
         super();
+        opts = opts || {};
         this.file = opts.file || 'lcov.info';
         this.projectRoot = opts.projectRoot || process.cwd();
         this.contentWriter = null;
@@ -28,12 +29,15 @@ class LcovOnlyReport extends ReportBase {
         const summary = node.getCoverageSummary();
         const path = require('path');
 
-        writer.println('TN:'); //no test nam
+        writer.println('TN:');
         const fileName = path.relative(this.projectRoot, fc.path);
         writer.println('SF:' + fileName);
 
         Object.values(functionMap).forEach(meta => {
-            writer.println('FN:' + [meta.decl.start.line, meta.name].join(','));
+            // Some versions of the instrumenter in the wild populate 'loc'
+            // but not 'decl':
+            const decl = meta.decl || meta.loc;
+            writer.println('FN:' + [decl.start.line, meta.name].join(','));
         });
         writer.println('FNF:' + summary.functions.total);
         writer.println('FNH:' + summary.functions.covered);

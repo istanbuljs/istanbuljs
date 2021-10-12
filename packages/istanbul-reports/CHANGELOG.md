@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [3.0.4](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.0.3...istanbul-reports-v3.0.4) (2021-10-12)
+
+
+### Bug Fixes
+
+* handle reports with "loc" but no "decl" ([#637](https://www.github.com/istanbuljs/istanbuljs/issues/637)) ([cdc28f3](https://www.github.com/istanbuljs/istanbuljs/commit/cdc28f3a1e80e786eaab3b7d3b8b9b558fc2d3c8)), closes [#322](https://www.github.com/istanbuljs/istanbuljs/issues/322)
+
 ### [3.0.3](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.0.2...istanbul-reports-v3.0.3) (2021-10-06)
 
 
