@@ -237,16 +237,16 @@ class FileCoverage {
             keyFromLocationsProp
         );
         this.data.b = hits;
+        this.data.bT = hits;
         this.data.branchMap = map;
-        
+
         [hits, map] = mergeProp(
           this.bT,
           this.branchMap,
           other.bT,
           other.branchMap,
           keyFromLocationsProp
-      );
-      this.data.bT = hits;
+        );
     }
 
     computeSimpleTotals(property) {
