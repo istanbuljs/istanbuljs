@@ -237,7 +237,6 @@ class FileCoverage {
             keyFromLocationsProp
         );
         this.data.b = hits;
-        this.data.bT = hits;
         this.data.branchMap = map;
 
         [hits, map] = mergeProp(
@@ -247,6 +246,7 @@ class FileCoverage {
           other.branchMap,
           keyFromLocationsProp
         );
+        this.data.bT = hits;
     }
 
     computeSimpleTotals(property) {

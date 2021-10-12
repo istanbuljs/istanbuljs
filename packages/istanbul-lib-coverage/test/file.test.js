@@ -269,6 +269,8 @@ describe('base coverage', () => {
         assert.equal(c1.f[0], 2);
         assert.equal(c1.b[0][0], 1);
         assert.equal(c1.b[0][1], 2);
+        assert.equal(c1.bT[0][0], 1);
+        assert.equal(c1.bT[0][1], 2);
     });
 
     it('merges another file coverage with different starting indices', () => {
