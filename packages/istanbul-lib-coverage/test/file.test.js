@@ -12,6 +12,7 @@ describe('coverage summary', () => {
         assert.ok(cs.lines);
         assert.ok(cs.functions);
         assert.ok(cs.branches);
+        assert.ok(cs.branchesTrue);
     });
 
     it('allows another summary in constructor', () => {
@@ -70,13 +71,15 @@ describe('coverage summary', () => {
             statements: basic(),
             functions: basic(),
             lines: basic(),
-            branches: empty()
+            branches: empty(),
+            branchesTrue: empty()
         });
         const cs2 = new CoverageSummary({
             statements: basic(),
             functions: basic(),
             lines: basic(),
-            branches: empty()
+            branches: empty(),
+            branchesTrue: empty()
         });
         cs2.statements.covered = 5;
         cs1.merge(cs2);
@@ -87,6 +90,7 @@ describe('coverage summary', () => {
             pct: 90
         });
         assert.equal(cs1.branches.pct, 100);
+        assert.equal(cs1.branchesTrue.pct, 100);
         const data = JSON.parse(JSON.stringify(cs1));
         assert.deepEqual(data.statements, {
             total: 10,
@@ -95,6 +99,7 @@ describe('coverage summary', () => {
             pct: 90
         });
         assert.equal(data.branches.pct, 100);
+        assert.equal(data.branchesTrue.pct, 100);
     });
 
     it('isEmpty() by default', () => {
@@ -124,6 +129,7 @@ describe('base coverage', () => {
         assert.ok(bc.s);
         assert.ok(bc.f);
         assert.ok(bc.b);
+        assert.ok(bc.bT);
         assert.ok(bc.getLineCoverage());
         assert.equal(bc.path, '/path/to/file');
     });
@@ -183,6 +189,9 @@ describe('base coverage', () => {
             },
             b: {
                 0: [0, 0]
+            },
+            bT: {
+                0: [0, 0]
             }
         });
         const clone = function(obj) {
@@ -195,10 +204,12 @@ describe('base coverage', () => {
         c1.s[0] = 1;
         c1.f[0] = 1;
         c1.b[0][0] = 1;
-
+        c1.bT[0][0] = 1;
+        
         c2.s[1] = 1;
         c2.f[0] = 1;
         c2.b[0][1] = 2;
+        c2.bT[0][1] = 2;
         summary = c1.toSummary();
         assert.ok(summary instanceof CoverageSummary);
         assert.deepEqual(summary.statements, {
@@ -300,6 +311,9 @@ describe('base coverage', () => {
             },
             b: {
                 0: [0, 0]
+            },
+            bT: {
+                0: [0, 0]
             }
         });
         const template2 = new FileCoverage({
@@ -334,6 +348,9 @@ describe('base coverage', () => {
                 1: 0
             },
             b: {
+                1: [0, 0]
+            },
+            bT: {
                 1: [0, 0]
             }
         });
@@ -452,6 +469,9 @@ describe('base coverage', () => {
             },
             b: {
                 1: [0, 0]
+            },
+            bT: {
+                1: [0, 0]
             }
         });
         const clone = function(obj) {
@@ -465,6 +485,7 @@ describe('base coverage', () => {
                 data.s[1] = 1;
                 data.f[1] = 1;
                 data.b[1][0] = 1;
+                data.bT[1][0] = 1;
             }
 
             return new FileCoverage(data);
@@ -521,12 +542,16 @@ describe('base coverage', () => {
             },
             b: {
                 1: [1, 50]
+            },
+            bT: {
+                1: [1, 50]
             }
         });
         fc.resetHits();
         assert.deepEqual({ 1: 0, 2: 0, 3: 0, 4: 0 }, fc.s);
         assert.deepEqual({ 1: 0 }, fc.f);
         assert.deepEqual({ 1: [0, 0] }, fc.b);
+        assert.deepEqual({ 1: [0, 0] }, fc.bT);
     });
 
     it('returns uncovered lines', () => {
@@ -550,6 +575,7 @@ describe('base coverage', () => {
             branchMap: {},
             s: { 1: 0, 2: 1, 3: 0 },
             b: {},
+            bT: {},
             f: {}
         });
         assert.deepEqual(['2'], c.getUncoveredLines());
@@ -566,6 +592,10 @@ describe('base coverage', () => {
             statementMap: {},
             s: {},
             b: {
+                1: [1, 0],
+                2: [0, 0, 0, 1]
+            },
+            bT: {
                 1: [1, 0],
                 2: [0, 0, 0, 1]
             },
@@ -606,6 +636,10 @@ describe('base coverage', () => {
             statementMap: {},
             s: {},
             b: {
+                1: [1, 0],
+                2: [0, 0, 0, 1]
+            },
+            bT: {
                 1: [1, 0],
                 2: [0, 0, 0, 1]
             },
