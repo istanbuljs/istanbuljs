@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [3.0.5](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.0.4...istanbul-reports-v3.0.5) (2021-10-13)
+
+
+### Bug Fixes
+
+* cobertura reports in root folder ([#571](https://www.github.com/istanbuljs/istanbuljs/issues/571)) ([596f6ff](https://www.github.com/istanbuljs/istanbuljs/commit/596f6ff1342ae4baa6688bf3ee7786c75d4df947))
+
 ### [3.0.4](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.0.3...istanbul-reports-v3.0.4) (2021-10-12)
 
 
