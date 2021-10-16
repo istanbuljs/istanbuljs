@@ -129,7 +129,6 @@ describe('base coverage', () => {
         assert.ok(bc.s);
         assert.ok(bc.f);
         assert.ok(bc.b);
-        assert.ok(bc.bT);
         assert.ok(bc.getLineCoverage());
         assert.equal(bc.path, '/path/to/file');
     });
@@ -150,6 +149,343 @@ describe('base coverage', () => {
     });
 
     it('merges another file coverage correctly', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        const template = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 1, 1, 100),
+                1: loc(2, 1, 2, 50),
+                2: loc(2, 51, 2, 100),
+                3: loc(2, 101, 3, 100)
+            },
+            fnMap: {
+                0: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
+                }
+            },
+            branchMap: {
+                0: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                0: 0,
+                1: 0,
+                2: 0,
+                3: 0
+            },
+            f: {
+                0: 0
+            },
+            b: {
+                0: [0, 0]
+            }
+        });
+        const clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        };
+        const c1 = new FileCoverage(clone(template));
+        const c2 = new FileCoverage(clone(template));
+        let summary;
+
+        c1.s[0] = 1;
+        c1.f[0] = 1;
+        c1.b[0][0] = 1;
+
+        c2.s[1] = 1;
+        c2.f[0] = 1;
+        c2.b[0][1] = 2;
+        summary = c1.toSummary();
+        assert.ok(summary instanceof CoverageSummary);
+        assert.deepEqual(summary.statements, {
+            total: 4,
+            covered: 1,
+            skipped: 0,
+            pct: 25
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 1,
+            skipped: 0,
+            pct: 50
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 1,
+            skipped: 0,
+            pct: 50
+        });
+
+        c1.merge(c2);
+        summary = c1.toSummary();
+        assert.deepEqual(summary.statements, {
+            total: 4,
+            covered: 2,
+            skipped: 0,
+            pct: 50
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+
+        assert.equal(c1.s[0], 1);
+        assert.equal(c1.s[1], 1);
+        assert.equal(c1.f[0], 2);
+        assert.equal(c1.b[0][0], 1);
+        assert.equal(c1.b[0][1], 2);
+    });
+
+    it('merges another file coverage with different starting indices', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        const template1 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 1, 1, 100),
+                1: loc(2, 1, 2, 50),
+                2: loc(2, 51, 2, 100),
+                3: loc(2, 101, 3, 100)
+            },
+            fnMap: {
+                0: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
+                }
+            },
+            branchMap: {
+                0: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                0: 0,
+                1: 0,
+                2: 0,
+                3: 0
+            },
+            f: {
+                0: 0
+            },
+            b: {
+                0: [0, 0]
+            }
+        });
+        const template2 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                1: loc(1, 1, 1, 100),
+                2: loc(2, 1, 2, 50),
+                3: loc(2, 51, 2, 100),
+                4: loc(2, 101, 3, 100)
+            },
+            fnMap: {
+                1: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
+                }
+            },
+            branchMap: {
+                1: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0
+            },
+            f: {
+                1: 0
+            },
+            b: {
+                1: [0, 0]
+            }
+        });
+        const clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        };
+        const c1 = new FileCoverage(clone(template1));
+        const c2 = new FileCoverage(clone(template2));
+        let summary;
+
+        c1.s[0] = 1;
+        c1.f[0] = 1;
+        c1.b[0][0] = 1;
+
+        c2.s[2] = 1;
+        c2.f[1] = 1;
+        c2.b[1][1] = 2;
+        summary = c1.toSummary();
+        assert.ok(summary instanceof CoverageSummary);
+        assert.deepEqual(summary.statements, {
+            total: 4,
+            covered: 1,
+            skipped: 0,
+            pct: 25
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 1,
+            skipped: 0,
+            pct: 50
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 1,
+            skipped: 0,
+            pct: 50
+        });
+
+        c1.merge(c2);
+        summary = c1.toSummary();
+        assert.deepEqual(summary.statements, {
+            total: 4,
+            covered: 2,
+            skipped: 0,
+            pct: 50
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+
+        assert.equal(c1.s[0], 1);
+        assert.equal(c1.s[1], 1);
+        assert.equal(c1.f[0], 2);
+        assert.equal(c1.b[0][0], 1);
+        assert.equal(c1.b[0][1], 2);
+    });
+
+    it('drops all data during merges', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        const template = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                1: loc(1, 1, 1, 100),
+                2: loc(2, 1, 2, 50),
+                3: loc(2, 51, 2, 100),
+                4: loc(2, 101, 3, 100)
+            },
+            fnMap: {
+                1: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
+                }
+            },
+            branchMap: {
+                1: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0
+            },
+            f: {
+                1: 0
+            },
+            b: {
+                1: [0, 0]
+            }
+        });
+        const clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        };
+        const createCoverage = all => {
+            const data = clone(template);
+            if (all) {
+                data.all = true;
+            } else {
+                data.s[1] = 1;
+                data.f[1] = 1;
+                data.b[1][0] = 1;
+            }
+
+            return new FileCoverage(data);
+        };
+
+        const expected = createCoverage().data;
+        // Get non-all data regardless of merge order
+        let cov = createCoverage(true);
+        cov.merge(createCoverage());
+        assert.deepEqual(cov.data, expected);
+        cov = createCoverage();
+        cov.merge(createCoverage(true));
+        assert.deepEqual(cov.data, expected);
+    });
+
+    it('merges another file coverage that tracks logical truthiness', () => {
         const loc = function(sl, sc, el, ec) {
             return {
                 start: { line: sl, column: sc },
@@ -273,237 +609,6 @@ describe('base coverage', () => {
         assert.equal(c1.bT[0][1], 2);
     });
 
-    it('merges another file coverage with different starting indices', () => {
-        const loc = function(sl, sc, el, ec) {
-            return {
-                start: { line: sl, column: sc },
-                end: { line: el, column: ec }
-            };
-        };
-        const template1 = new FileCoverage({
-            path: '/path/to/file',
-            statementMap: {
-                0: loc(1, 1, 1, 100),
-                1: loc(2, 1, 2, 50),
-                2: loc(2, 51, 2, 100),
-                3: loc(2, 101, 3, 100)
-            },
-            fnMap: {
-                0: {
-                    name: 'foobar',
-                    line: 1,
-                    loc: loc(1, 1, 1, 50)
-                }
-            },
-            branchMap: {
-                0: {
-                    type: 'if',
-                    line: 2,
-                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
-                }
-            },
-            s: {
-                0: 0,
-                1: 0,
-                2: 0,
-                3: 0
-            },
-            f: {
-                0: 0
-            },
-            b: {
-                0: [0, 0]
-            },
-            bT: {
-                0: [0, 0]
-            }
-        });
-        const template2 = new FileCoverage({
-            path: '/path/to/file',
-            statementMap: {
-                1: loc(1, 1, 1, 100),
-                2: loc(2, 1, 2, 50),
-                3: loc(2, 51, 2, 100),
-                4: loc(2, 101, 3, 100)
-            },
-            fnMap: {
-                1: {
-                    name: 'foobar',
-                    line: 1,
-                    loc: loc(1, 1, 1, 50)
-                }
-            },
-            branchMap: {
-                1: {
-                    type: 'if',
-                    line: 2,
-                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
-                }
-            },
-            s: {
-                1: 0,
-                2: 0,
-                3: 0,
-                4: 0
-            },
-            f: {
-                1: 0
-            },
-            b: {
-                1: [0, 0]
-            },
-            bT: {
-                1: [0, 0]
-            }
-        });
-        const clone = function(obj) {
-            return JSON.parse(JSON.stringify(obj));
-        };
-        const c1 = new FileCoverage(clone(template1));
-        const c2 = new FileCoverage(clone(template2));
-        let summary;
-
-        c1.s[0] = 1;
-        c1.f[0] = 1;
-        c1.b[0][0] = 1;
-
-        c2.s[2] = 1;
-        c2.f[1] = 1;
-        c2.b[1][1] = 2;
-        summary = c1.toSummary();
-        assert.ok(summary instanceof CoverageSummary);
-        assert.deepEqual(summary.statements, {
-            total: 4,
-            covered: 1,
-            skipped: 0,
-            pct: 25
-        });
-        assert.deepEqual(summary.lines, {
-            total: 2,
-            covered: 1,
-            skipped: 0,
-            pct: 50
-        });
-        assert.deepEqual(summary.functions, {
-            total: 1,
-            covered: 1,
-            skipped: 0,
-            pct: 100
-        });
-        assert.deepEqual(summary.branches, {
-            total: 2,
-            covered: 1,
-            skipped: 0,
-            pct: 50
-        });
-
-        c1.merge(c2);
-        summary = c1.toSummary();
-        assert.deepEqual(summary.statements, {
-            total: 4,
-            covered: 2,
-            skipped: 0,
-            pct: 50
-        });
-        assert.deepEqual(summary.lines, {
-            total: 2,
-            covered: 2,
-            skipped: 0,
-            pct: 100
-        });
-        assert.deepEqual(summary.functions, {
-            total: 1,
-            covered: 1,
-            skipped: 0,
-            pct: 100
-        });
-        assert.deepEqual(summary.branches, {
-            total: 2,
-            covered: 2,
-            skipped: 0,
-            pct: 100
-        });
-
-        assert.equal(c1.s[0], 1);
-        assert.equal(c1.s[1], 1);
-        assert.equal(c1.f[0], 2);
-        assert.equal(c1.b[0][0], 1);
-        assert.equal(c1.b[0][1], 2);
-    });
-
-    it('drops all data during merges', () => {
-        const loc = function(sl, sc, el, ec) {
-            return {
-                start: { line: sl, column: sc },
-                end: { line: el, column: ec }
-            };
-        };
-        const template = new FileCoverage({
-            path: '/path/to/file',
-            statementMap: {
-                1: loc(1, 1, 1, 100),
-                2: loc(2, 1, 2, 50),
-                3: loc(2, 51, 2, 100),
-                4: loc(2, 101, 3, 100)
-            },
-            fnMap: {
-                1: {
-                    name: 'foobar',
-                    line: 1,
-                    loc: loc(1, 1, 1, 50)
-                }
-            },
-            branchMap: {
-                1: {
-                    type: 'if',
-                    line: 2,
-                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
-                }
-            },
-            s: {
-                1: 0,
-                2: 0,
-                3: 0,
-                4: 0
-            },
-            f: {
-                1: 0
-            },
-            b: {
-                1: [0, 0]
-            },
-            bT: {
-                1: [0, 0]
-            }
-        });
-        const clone = function(obj) {
-            return JSON.parse(JSON.stringify(obj));
-        };
-        const createCoverage = all => {
-            const data = clone(template);
-            if (all) {
-                data.all = true;
-            } else {
-                data.s[1] = 1;
-                data.f[1] = 1;
-                data.b[1][0] = 1;
-                data.bT[1][0] = 1;
-            }
-
-            return new FileCoverage(data);
-        };
-
-        const expected = createCoverage().data;
-        // Get non-all data regardless of merge order
-        let cov = createCoverage(true);
-        cov.merge(createCoverage());
-        assert.deepEqual(cov.data, expected);
-
-        cov = createCoverage();
-        cov.merge(createCoverage(true));
-        assert.deepEqual(cov.data, expected);
-    });
-
     it('resets hits when requested', () => {
         const loc = function(sl, sc, el, ec) {
             return {
@@ -577,7 +682,6 @@ describe('base coverage', () => {
             branchMap: {},
             s: { 1: 0, 2: 1, 3: 0 },
             b: {},
-            bT: {},
             f: {}
         });
         assert.deepEqual(['2'], c.getUncoveredLines());
@@ -594,10 +698,6 @@ describe('base coverage', () => {
             statementMap: {},
             s: {},
             b: {
-                1: [1, 0],
-                2: [0, 0, 0, 1]
-            },
-            bT: {
                 1: [1, 0],
                 2: [0, 0, 0, 1]
             },
@@ -638,10 +738,6 @@ describe('base coverage', () => {
             statementMap: {},
             s: {},
             b: {
-                1: [1, 0],
-                2: [0, 0, 0, 1]
-            },
-            bT: {
                 1: [1, 0],
                 2: [0, 0, 0, 1]
             },
