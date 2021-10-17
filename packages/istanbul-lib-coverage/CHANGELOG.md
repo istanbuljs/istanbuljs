@@ -46,6 +46,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.1.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.0.2...istanbul-lib-coverage-v3.1.0) (2021-10-17)
+
+
+### Features
+
+* support tracking Logic Truthiness as additional metric in coverage API ([#639](https://www.github.com/istanbuljs/istanbuljs/issues/639)) ([0967c80](https://www.github.com/istanbuljs/istanbuljs/commit/0967c80b905c3c17675ff2185b2325784e8dc0a2))
+
 ### [3.0.2](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.0.1...istanbul-lib-coverage-v3.0.2) (2021-10-11)
 
 
