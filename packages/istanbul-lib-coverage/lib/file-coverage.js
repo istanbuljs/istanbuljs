@@ -9,8 +9,8 @@ const dataProperties = require('./data-properties');
 const { CoverageSummary } = require('./coverage-summary');
 
 // returns a data object that represents empty coverage
-function emptyCoverage(filePath) {
-    return {
+function emptyCoverage(filePath, reportLogic) {
+    const cov = {
         path: filePath,
         statementMap: {},
         fnMap: {},
@@ -19,6 +19,8 @@ function emptyCoverage(filePath) {
         f: {},
         b: {}
     };
+    if (reportLogic) cov.bT = {};
+    return cov;
 }
 
 // asserts that a data object "looks like" a coverage object
@@ -99,14 +101,14 @@ class FileCoverage {
      * and empty coverage object with the specified file path or a data object that
      * has all the required properties for a file coverage object.
      */
-    constructor(pathOrObj) {
+    constructor(pathOrObj, reportLogic = false) {
         if (!pathOrObj) {
             throw new Error(
                 'Coverage must be initialized with a path or an object'
             );
         }
         if (typeof pathOrObj === 'string') {
-            this.data = emptyCoverage(pathOrObj);
+            this.data = emptyCoverage(pathOrObj, reportLogic);
         } else if (pathOrObj instanceof FileCoverage) {
             this.data = pathOrObj.data;
         } else if (typeof pathOrObj === 'object') {
