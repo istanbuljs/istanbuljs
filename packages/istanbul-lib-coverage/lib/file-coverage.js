@@ -236,6 +236,19 @@ class FileCoverage {
         );
         this.data.b = hits;
         this.data.branchMap = map;
+
+        // Tracking additional information about branch truthiness
+        // can be optionally enabled:
+        if (this.bT && other.bT) {
+            [hits, map] = mergeProp(
+                this.bT,
+                this.branchMap,
+                other.bT,
+                other.branchMap,
+                keyFromLocationsProp
+            );
+            this.data.bT = hits;
+        }
     }
 
     computeSimpleTotals(property) {
@@ -254,8 +267,8 @@ class FileCoverage {
         return ret;
     }
 
-    computeBranchTotals() {
-        const stats = this.b;
+    computeBranchTotals(property) {
+        const stats = this[property];
         const ret = { total: 0, covered: 0, skipped: 0 };
 
         Object.values(stats).forEach(branches => {
@@ -274,6 +287,7 @@ class FileCoverage {
         const statements = this.s;
         const functions = this.f;
         const branches = this.b;
+        const branchesTrue = this.bT;
         Object.keys(statements).forEach(s => {
             statements[s] = 0;
         });
@@ -283,6 +297,13 @@ class FileCoverage {
         Object.keys(branches).forEach(b => {
             branches[b].fill(0);
         });
+        // Tracking additional information about branch truthiness
+        // can be optionally enabled:
+        if (branchesTrue) {
+            Object.keys(branchesTrue).forEach(bT => {
+                branchesTrue[bT].fill(0);
+            });
+        }
     }
 
     /**
@@ -294,7 +315,12 @@ class FileCoverage {
         ret.lines = this.computeSimpleTotals('getLineCoverage');
         ret.functions = this.computeSimpleTotals('f', 'fnMap');
         ret.statements = this.computeSimpleTotals('s', 'statementMap');
-        ret.branches = this.computeBranchTotals();
+        ret.branches = this.computeBranchTotals('b');
+        // Tracking additional information about branch truthiness
+        // can be optionally enabled:
+        if (this['bt']) {
+            ret.branchesTrue = this.computeBranchTotals('bT');
+        }
         return new CoverageSummary(ret);
     }
 }
@@ -308,6 +334,7 @@ dataProperties(FileCoverage, [
     's',
     'f',
     'b',
+    'bT',
     'all'
 ]);
 
