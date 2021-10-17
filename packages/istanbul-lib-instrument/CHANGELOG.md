@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [5.0.4](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.3...istanbul-lib-instrument-v5.0.4) (2021-10-16)
+
+
+### Bug Fixes
+
+* **magic-value:** make incrementing magic value a manual step ([#641](https://www.github.com/istanbuljs/istanbuljs/issues/641)) ([823010b](https://www.github.com/istanbuljs/istanbuljs/commit/823010b821cf81bd91377d75fc83f0875925db66))
+
 ### [5.0.3](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.2...istanbul-lib-instrument-v5.0.3) (2021-10-06)
 
 
