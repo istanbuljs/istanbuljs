@@ -760,4 +760,11 @@ describe('base coverage', () => {
             bcby
         );
     });
+
+    it('allows file coverage to be initialized with tracking for logical truthiness', () => {
+        let fcov = new FileCoverage('foo.json');
+        assert.notOk(fcov.data.bT);
+        fcov = new FileCoverage('foo.json', true);
+        assert.ok(fcov.data.bT);
+    });
 });
