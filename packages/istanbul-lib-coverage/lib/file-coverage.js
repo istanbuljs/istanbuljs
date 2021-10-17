@@ -17,8 +17,7 @@ function emptyCoverage(filePath) {
         branchMap: {},
         s: {},
         f: {},
-        b: {},
-        bT: {}
+        b: {}
     };
 }
 
@@ -32,8 +31,7 @@ function assertValidObject(obj) {
         obj.branchMap &&
         obj.s &&
         obj.f &&
-        obj.b &&
-        obj.bT;
+        obj.b;
     if (!valid) {
         throw new Error(
             'Invalid file coverage object, missing keys, found:' +
@@ -239,7 +237,9 @@ class FileCoverage {
         this.data.b = hits;
         this.data.branchMap = map;
 
-        if (this.bT || other.bT) {
+        // Tracking additional information about branch truthiness
+        // can be optionally enabled:
+        if (this.bT && other.bT) {
             [hits, map] = mergeProp(
                 this.bT,
                 this.branchMap,
@@ -297,9 +297,13 @@ class FileCoverage {
         Object.keys(branches).forEach(b => {
             branches[b].fill(0);
         });
-        Object.keys(branchesTrue).forEach(bT => {
-            branchesTrue[bT].fill(0);
-        });
+        // Tracking additional information about branch truthiness
+        // can be optionally enabled:
+        if (branchesTrue) {
+            Object.keys(branchesTrue).forEach(bT => {
+                branchesTrue[bT].fill(0);
+            });
+        }
     }
 
     /**
@@ -312,7 +316,11 @@ class FileCoverage {
         ret.functions = this.computeSimpleTotals('f', 'fnMap');
         ret.statements = this.computeSimpleTotals('s', 'statementMap');
         ret.branches = this.computeBranchTotals('b');
-        ret.branchesTrue = this.computeBranchTotals('bT');
+        // Tracking additional information about branch truthiness
+        // can be optionally enabled:
+        if (this['bt']) {
+            ret.branchesTrue = this.computeBranchTotals('bT');
+        }
         return new CoverageSummary(ret);
     }
 }
