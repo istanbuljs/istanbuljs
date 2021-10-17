@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test nyc mocha --timeout 30000 packages/*/test{,/*}.js",
     "posttest": "eslint .",
-    "fix": "eslint .",
+    "fix": "eslint . --fix",
     "postinstall": "bash scripts/install.sh"
   },
   "repository": {
