@@ -46,6 +46,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.1.0...istanbul-lib-coverage-v3.2.0) (2021-10-17)
+
+
+### Features
+
+* allow FileCoverage to be initialized with logical tracking ([#644](https://www.github.com/istanbuljs/istanbuljs/issues/644)) ([4cb5af1](https://www.github.com/istanbuljs/istanbuljs/commit/4cb5af1daaf33c3e9a5f3ee44f6bb7f958e5ba04))
+
 ## [3.1.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.0.2...istanbul-lib-coverage-v3.1.0) (2021-10-17)
 
 
