@@ -1,0 +1,229 @@
+---
+name: ignores throw
+code: |
+  output = -1;
+  if (args[0] > args [1]) throw new Error('Error !')
+instrumentOpts:
+  ignoreGuardStatements: ["throws"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: does not ignores throw
+code: |
+  output = -1;
+  if (args[0] > args [1]) throw new Error('Error !')
+instrumentOpts:
+  ignoreGuardStatements: ["returns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [0, 1] }
+    statements: { "0": 1, "1": 1, "2": 0 }
+
+---
+name: ignores void return
+code: |
+  output = -1;
+  if (args[0] > args [1]) return
+instrumentOpts:
+  ignoreGuardStatements: ["voidReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: ignores continue
+code: |
+  output = 3;
+  while (--output>0) {
+    if (args[0] > args [1]) continue
+  }
+instrumentOpts:
+  ignoreGuardStatements: ["continues"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: 0
+    lines: { "1": 1, "2": 1, "3": 2 }
+    branches: { "0": [2] }
+    statements: { "0": 1, "1": 1, "2": 2 }
+
+---
+name: ignores break
+code: |
+  output = 3;
+  while (--output>0) {
+    if (args[0] > args [1]) break
+  }
+instrumentOpts:
+  ignoreGuardStatements: ["breaks"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: 0
+    lines: { "1": 1, "2": 1, "3": 2 }
+    branches: { "0": [2] }
+    statements: { "0": 1, "1": 1, "2": 2 }
+
+
+---
+name: ignores numeric literal returns
+code: |
+  output = -1;
+  if (args[0] > args [1]) return 0
+instrumentOpts:
+  ignoreGuardStatements: ["literalReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: does not ignore numeric literal returns
+code: |
+  output = -1;
+  if (args[0] > args [1]) return 0
+instrumentOpts:
+  ignoreGuardStatements: ["voidReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [0, 1] }
+    statements: { "0": 1, "1": 1, "2": 0 }
+
+---
+name: ignores bool literal returns
+code: |
+  output = -1;
+  if (args[0] > args [1]) return false
+instrumentOpts:
+  ignoreGuardStatements: ["literalReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: ignores string literal returns
+code: |
+  output = -1;
+  if (args[0] > args [1]) return 'nope'
+instrumentOpts:
+  ignoreGuardStatements: ["literalReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: ignores null literal returns
+code: |
+  output = -1;
+  if (args[0] > args [1]) return null
+instrumentOpts:
+  ignoreGuardStatements: ["literalReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: ignores undefined literal returns
+code: |
+  output = -1;
+  if (args[0] > args [1]) return undefined
+instrumentOpts:
+  ignoreGuardStatements: ["literalReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: ignores identifier literal returns
+code: |
+  output = -1;
+  if (args[0] > args [1]) return output
+instrumentOpts:
+  ignoreGuardStatements: ["identifierReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: ignores complex return
+code: |
+  output = -1;
+  if (args[0] > args [1]) return args[0]
+instrumentOpts:
+  ignoreGuardStatements: ["returns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [1] }
+    statements: { "0": 1, "1": 1 }
+
+---
+name: does not ignore complex return
+code: |
+  output = -1;
+  if (args[0] > args [1]) return args[0]
+instrumentOpts:
+  ignoreGuardStatements: ["literalReturns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [0, 1] }
+    statements: { "0": 1, "1": 1, "2": 0 }
+
+---
+name: simple if single line does not ignore statement
+code: |
+  output = -1;
+  if (args[0] > args [1])  output = args[0];
+instrumentOpts:
+  ignoreGuardStatements: ["returns"]
+tests:
+  - name: default test
+    args: [10, 20]
+    out: -1
+    lines: { "1": 1, "2": 1 }
+    branches: { "0": [0, 1] }
+    statements: { "0": 1, "1": 1, "2": 0 }
