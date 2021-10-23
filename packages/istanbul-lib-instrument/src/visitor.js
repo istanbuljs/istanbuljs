@@ -188,21 +188,21 @@ class VisitState {
     increaseTrue(type, id, index, node) {
         const T = this.types;
         const tempName = `${this.varName}_temp`;
-      
+
         return T.callExpression(
             T.functionExpression(
                 null,
                 [],
                 T.blockStatement([
-                    T.variableDeclaration(
-                        'const',
-                        [T.variableDeclarator(T.identifier(tempName), node)]
+                    T.variableDeclaration('const', [
+                            T.variableDeclarator(T.identifier(tempName), node)
+                        ]
                     ),
                     T.ifStatement(
                         T.identifier(tempName),
                         T.expressionStatement(this.increase(type, id, index))
                     ),
-                T.returnStatement(T.identifier(tempName))
+                    T.returnStatement(T.identifier(tempName))
                 ])
             ),
             []
@@ -306,7 +306,7 @@ class VisitState {
     getBranchLogicIncrement(path, branchName, loc) {
         const index = this.cov.addBranchPath(branchName, loc);
         return [
-            this.increase('b', branchName, index), 
+            this.increase('b', branchName, index),
             this.increaseTrue('bT', branchName, index, path.node)
         ];
     }

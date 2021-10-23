@@ -74,10 +74,10 @@ class SourceCoverage extends classes.FileCoverage {
 
     maybeNewBranchTrue(type, name, isReportLogic) {
         if (!isReportLogic) {
-          return;
+            return;
         }
         if (type !== 'binary-expr') {
-          return;
+            return;
         }
         this.data.bT = this.data.bT || {};
         this.data.bT[name] = [];
@@ -99,11 +99,11 @@ class SourceCoverage extends classes.FileCoverage {
 
     maybeAddBranchTrue(name) {
         if (!this.data.bT) {
-          return;
+            return;
         }
         const countsTrue = this.data.bT[name];
         if (!countsTrue) {
-          return;
+            return;
         }
         countsTrue.push(0);
     }
