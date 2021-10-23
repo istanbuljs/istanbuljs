@@ -195,9 +195,8 @@ class VisitState {
                 [],
                 T.blockStatement([
                     T.variableDeclaration('const', [
-                            T.variableDeclarator(T.identifier(tempName), node)
-                        ]
-                    ),
+                        T.variableDeclarator(T.identifier(tempName), node)
+                    ]),
                     T.ifStatement(
                         T.identifier(tempName),
                         T.expressionStatement(this.increase(type, id, index))
