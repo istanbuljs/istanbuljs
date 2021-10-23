@@ -91,7 +91,7 @@ tests:
     out: 2
     lines: {'1': 1, '2': 1}
     branches: { '0': [0, 1] }
-    branchesTrue: { }
+    branchesTrue: {}
     statements: {'0': 1, '1': 1}
 
 ---

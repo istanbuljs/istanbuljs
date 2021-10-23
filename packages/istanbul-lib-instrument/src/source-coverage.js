@@ -71,10 +71,14 @@ class SourceCoverage extends classes.FileCoverage {
         this.maybeNewBranchTrue(type, b, isReportLogic);
         return b;
     }
-  
+
     maybeNewBranchTrue(type, name, isReportLogic) {
-        if (!isReportLogic) { return; }
-        if (type !== 'binary-expr') { return; }
+        if (!isReportLogic) {
+          return;
+        }
+        if (type !== 'binary-expr') {
+          return;
+        }
         this.data.bT = this.data.bT || {};
         this.data.bT[name] = [];
     }
@@ -94,12 +98,16 @@ class SourceCoverage extends classes.FileCoverage {
     }
 
     maybeAddBranchTrue(name) {
-        if (!this.data.bT) { return; }
+        if (!this.data.bT) {
+          return;
+        }
         const countsTrue = this.data.bT[name];
-        if (!countsTrue) { return; }
+        if (!countsTrue) {
+          return;
+        }
         countsTrue.push(0);
     }
-  
+
     /**
      * Assigns an input source map to the coverage that can be used
      * to remap the coverage output to the original source
