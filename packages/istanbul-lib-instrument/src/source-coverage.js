@@ -75,6 +75,7 @@ class SourceCoverage extends classes.FileCoverage {
     maybeNewBranchTrue(type, name, isReportLogic) {
         if (!isReportLogic) { return; }
         if (type !== 'binary-expr') { return; }
+        this.data.bT = this.data.bT || {};
         this.data.bT[name] = [];
     }
 
@@ -93,6 +94,7 @@ class SourceCoverage extends classes.FileCoverage {
     }
 
     maybeAddBranchTrue(name) {
+        if (!this.data.bT) { return; }
         const countsTrue = this.data.bT[name];
         if (!countsTrue) { return; }
         countsTrue.push(0);
@@ -111,7 +113,7 @@ class SourceCoverage extends classes.FileCoverage {
         // prune empty branches
         const map = this.data.branchMap;
         const branches = this.data.b;
-        const branchesT = this.data.bT;
+        const branchesT = this.data.bT || {};
         Object.keys(map).forEach(b => {
             if (map[b].locations.length === 0) {
                 delete map[b];

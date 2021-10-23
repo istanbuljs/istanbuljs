@@ -23,10 +23,10 @@ function genVar(filename) {
 class VisitState {
     constructor(
         types,
-        reportLogic = false,
         sourceFilePath,
         inputSourceMap,
-        ignoreClassMethods = []
+        ignoreClassMethods = [],
+        reportLogic = false
     ) {
         this.varName = genVar(sourceFilePath);
         this.attrs = {};
@@ -187,11 +187,17 @@ class VisitState {
     // Reads the logic expression conditions and conditionally increments truthy counter.
     increaseTrue(type, id, index, node) {
         const T = this.types;
+        
         return T.parenthesizedExpression(
-            T.conditionalExpression(
+            T.logicalExpression(
+                '&&', 
                 node,
-                this.increase(type, id, index),
-                T.nullLiteral()
+                T.parenthesizedExpression(
+                    T.sequenceExpression([
+                        this.increase(type, id, index),
+                        T.booleanLiteral(true)
+                    ])
+                )
             )
         );
     }
@@ -636,10 +642,10 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
     };
     const visitState = new VisitState(
         types,
-        opts.reportLogic,
         sourceFilePath,
         opts.inputSourceMap,
-        opts.ignoreClassMethods
+        opts.ignoreClassMethods,
+        opts.reportLogic
     );
     return {
         enter(path) {
