@@ -5,7 +5,7 @@ const Instrumenter = require('../../src/instrumenter');
 const readInitialCoverage = require('../../src/read-coverage');
 
 const FileCoverage = classes.FileCoverage;
-const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
+const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 
 function pad(str, len) {
     const blanks = '                                             ';
@@ -171,11 +171,11 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
             '{ var output;\n' + instrumenterOutput + '\nreturn output;\n}';
         g[coverageVariable] = undefined;
         try {
-          if (opts.isAsync) {
-            fn = new AsyncFunction('args', wrapped);
-          } else {
-            fn = new Function('args', wrapped);
-          }
+            if (opts.isAsync) {
+                fn = new AsyncFunction('args', wrapped);
+            } else {
+                fn = new Function('args', wrapped);
+            }
         } catch (ex) {
             console.error(ex.stack);
             verror = new Error(
