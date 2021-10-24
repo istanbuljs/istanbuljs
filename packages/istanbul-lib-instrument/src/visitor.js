@@ -187,24 +187,12 @@ class VisitState {
     // Reads the logic expression conditions and conditionally increments truthy counter.
     increaseTrue(type, id, index, node) {
         const T = this.types;
-        const tempName = `${this.varName}_temp`;
-
-        return T.callExpression(
-            T.functionExpression(
-                null,
-                [],
-                T.blockStatement([
-                    T.variableDeclaration('const', [
-                        T.variableDeclarator(T.identifier(tempName), node)
-                    ]),
-                    T.ifStatement(
-                        T.identifier(tempName),
-                        T.expressionStatement(this.increase(type, id, index))
-                    ),
-                    T.returnStatement(T.identifier(tempName))
-                ])
-            ),
-            []
+        return T.parenthesizedExpression(
+            T.conditionalExpression(
+                node,
+                this.increase(type, id, index),
+                T.nullLiteral()
+            )
         );
     }
 
@@ -518,7 +506,8 @@ function coverLogicalExpression(path) {
             }
             leaf.parent[leaf.property] = T.sequenceExpression([
                 increment[0],
-                increment[1]
+                increment[1],
+                leaf.node
             ]);
             continue;
         }
