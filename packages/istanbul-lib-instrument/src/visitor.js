@@ -193,15 +193,15 @@ class VisitState {
             T.assignmentExpression(
                 '=',
                 T.memberExpression(
-                    T.callExpression(T.identifier(this.varName), []), 
+                    T.callExpression(T.identifier(this.varName), []),
                     T.identifier(tempName)
                 ),
-                node  // Only evaluates once.
+                node // Only evaluates once.
             ),
             T.parenthesizedExpression(
                 T.conditionalExpression(
                     T.memberExpression(
-                        T.callExpression(T.identifier(this.varName), []), 
+                        T.callExpression(T.identifier(this.varName), []),
                         T.identifier(tempName)
                     ),
                     this.increase(type, id, index),
@@ -209,7 +209,7 @@ class VisitState {
                 )
             ),
             T.memberExpression(
-                T.callExpression(T.identifier(this.varName), []), 
+                T.callExpression(T.identifier(this.varName), []),
                 T.identifier(tempName)
             )
         ]);
