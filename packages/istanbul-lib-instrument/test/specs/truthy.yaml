@@ -90,11 +90,11 @@ tests:
   - name: covers truthy function evaluation
     args: false
     out: 42
-    lines: {'1': 2, '2': 1, '3': 1}
-    functions: { '0': 2 }
+    lines: {'1': 1, '2': 1, '3': 1}
+    functions: { '0': 1 }
     branches: { '0': [1, 1] }
     branchesTrue: {'0': [0, 1]}
-    statements: {'0': 1, '1': 2, '2': 1, '3': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1}
 
 ---
 name: async
