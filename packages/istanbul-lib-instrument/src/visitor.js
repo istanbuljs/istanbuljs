@@ -190,19 +190,28 @@ class VisitState {
         const tempName = `${this.varName}_temp`;
 
         return T.sequenceExpression([
-          T.assignmentExpression(
-              '=',
-              T.memberExpression(T.callExpression(T.identifier(this.varName), []), T.identifier(tempName)),
-              node
-          ),
-          T.parenthesizedExpression(
-              T.conditionalExpression(
-                  T.memberExpression(T.callExpression(T.identifier(this.varName), []), T.identifier(tempName)),
-                  this.increase(type, id, index),
-                  T.nullLiteral()
-              )
-          ),
-          T.memberExpression(T.callExpression(T.identifier(this.varName), []), T.identifier(tempName))
+            T.assignmentExpression(
+                '=',
+                T.memberExpression(
+                    T.callExpression(T.identifier(this.varName), []), 
+                    T.identifier(tempName)
+                ),
+                node  // Only evaluates once.
+            ),
+            T.parenthesizedExpression(
+                T.conditionalExpression(
+                    T.memberExpression(
+                        T.callExpression(T.identifier(this.varName), []), 
+                        T.identifier(tempName)
+                    ),
+                    this.increase(type, id, index),
+                    T.nullLiteral()
+                )
+            ),
+            T.memberExpression(
+                T.callExpression(T.identifier(this.varName), []), 
+                T.identifier(tempName)
+            )
         ]);
     }
 

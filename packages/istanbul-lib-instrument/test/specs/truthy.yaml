@@ -113,3 +113,19 @@ tests:
     branches: { '0': [1, 1] }
     branchesTrue: {'0': [0, 1]}
     statements: {'0': 1, '1': 1}
+
+---
+name: mutate and evaluate at the same time
+code: |
+  var x = args[0]++ || args[1];
+  output = args[0];
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: ends up with a single increment and not two
+    args: [ 0, { foo: 2 } ]
+    out: 1
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1}
