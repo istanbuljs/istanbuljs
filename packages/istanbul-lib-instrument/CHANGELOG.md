@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.4...istanbul-lib-instrument-v5.1.0) (2021-10-27)
+
+
+### Features
+
+* option to evaluate logical truthiness, for applications such as fuzzing ([#629](https://www.github.com/istanbuljs/istanbuljs/issues/629)) ([a743b84](https://www.github.com/istanbuljs/istanbuljs/commit/a743b8442e977f0c77ffa282eed7ac84ca200d1f))
+
 ### [5.0.4](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.3...istanbul-lib-instrument-v5.0.4) (2021-10-16)
 
 
