@@ -5,6 +5,7 @@ const Instrumenter = require('../../src/instrumenter');
 const readInitialCoverage = require('../../src/read-coverage');
 
 const FileCoverage = classes.FileCoverage;
+const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 
 function pad(str, len) {
     const blanks = '                                             ';
@@ -33,12 +34,12 @@ class Verifier {
         this.result = result;
     }
 
-    verify(args, expectedOutput, expectedCoverage) {
+    async verify(args, expectedOutput, expectedCoverage) {
         assert.ok(!this.result.err, (this.result.err || {}).message);
         getGlobalObject()[this.result.coverageVariable] = clone(
             this.result.baseline
         );
-        const actualOutput = this.result.fn(args);
+        const actualOutput = await this.result.fn(args);
         const cov = this.getFileCoverage();
 
         assert.ok(
@@ -60,6 +61,11 @@ class Verifier {
             cov.b,
             expectedCoverage.branches || {},
             'Branch coverage mismatch'
+        );
+        assert.deepEqual(
+            cov.bT || {},
+            expectedCoverage.branchesTrue || {},
+            'Branch truthiness coverage mismatch'
         );
         assert.deepEqual(
             cov.s,
@@ -165,7 +171,11 @@ function create(code, opts, instrumenterOpts, inputSourceMap) {
             '{ var output;\n' + instrumenterOutput + '\nreturn output;\n}';
         g[coverageVariable] = undefined;
         try {
-            fn = new Function('args', wrapped);
+            if (opts.isAsync) {
+                fn = new AsyncFunction('args', wrapped);
+            } else {
+                fn = new Function('args', wrapped);
+            }
         } catch (ex) {
             console.error(ex.stack);
             verror = new Error(
