@@ -36,15 +36,16 @@ instead.
 
 -   `opts` **[Object][13]** optional. (optional, default `{}`)
     -   `opts.coverageVariable` **[string][14]** name of global coverage variable. (optional, default `__coverage__`)
-    -   `opts.preserveComments` **[boolean][15]** preserve comments in output (optional, default `false`)
+    -   `opts.reportLogic` **[boolean][15]** report boolean value of logical expressions. (optional, default `false`)
+    -   `opts.preserveComments` **[boolean][15]** preserve comments in output. (optional, default `false`)
     -   `opts.compact` **[boolean][15]** generate compact code. (optional, default `true`)
     -   `opts.esModules` **[boolean][15]** set to true to instrument ES6 modules. (optional, default `false`)
     -   `opts.autoWrap` **[boolean][15]** set to true to allow `return` statements outside of functions. (optional, default `false`)
     -   `opts.produceSourceMap` **[boolean][15]** set to true to produce a source map for the instrumented code. (optional, default `false`)
     -   `opts.ignoreClassMethods` **[Array][16]** set to array of class method names to ignore for coverage. (optional, default `[]`)
-    -   `opts.sourceMapUrlCallback` **[Function][17]** a callback function that is called when a source map URL
+    -   `opts.sourceMapUrlCallback` **[Function][17]** a callback function that is called when a source map URL.
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
-    -   `opts.debug` **[boolean][15]** turn debugging on (optional, default `false`)
+    -   `opts.debug` **[boolean][15]** turn debugging on. (optional, default `false`)
     -   `opts.parserPlugins` **[array][16]?** set babel parser plugins, see @istanbuljs/schema for defaults.
 
 ### instrumentSync
@@ -107,10 +108,11 @@ The exit function returns an object that currently has the following keys:
 
 ### Parameters
 
--   `types` **[Object][13]** an instance of babel-types
--   `sourceFilePath` **[string][14]** the path to source file (optional, default `'unknown.js'`)
--   `opts` **[Object][13]** additional options (optional, default `{}`)
+-   `types` **[Object][13]** an instance of babel-types.
+-   `sourceFilePath` **[string][14]** the path to source file. (optional, default `'unknown.js'`)
+-   `opts` **[Object][13]** additional options. (optional, default `{}`)
     -   `opts.coverageVariable` **[string][14]** the global coverage variable name. (optional, default `__coverage__`)
+    -   `opts.reportLogic` **[boolean][15]** report boolean value of logical expressions. (optional, default `false`)
     -   `opts.coverageGlobalScope` **[string][14]** the global coverage variable scope. (optional, default `this`)
     -   `opts.coverageGlobalScopeFunc` **[boolean][15]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)
     -   `opts.ignoreClassMethods` **[Array][16]** names of methods to ignore by default on classes. (optional, default `[]`)

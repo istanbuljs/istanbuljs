@@ -1,0 +1,338 @@
+{
+    "title": "different path files in seperate packages",
+    "opts": {
+      "maxCols": 80,
+      "projectRoot": "/Users/jschmidle/oss/istanbuljs-test/"
+    },
+    "textReportExpected": "-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n istanbuljs-test   |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  rootfile.js      |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...-test/package1 |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  package1file.js  |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...ge1/subpackage |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  ...ackagefile.js |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...-test/package2 |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  package2file.js  |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n-------------------|---------|----------|---------|---------|-------------------\n",
+    "htmlSpaFiles": [
+        ["package1","package1file.js.html"],
+        ["package1","subpackage","subpackagefile.js.html"],
+        ["package2","package2file.js.html"],
+        "rootfile.js.html",
+        "index.html"
+    ],
+    "htmlSpaCoverageData": {
+        "file": "",
+        "isEmpty": true,
+        "metrics": {
+          "statements": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0,
+            "classForPercent": "empty"
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0,
+            "classForPercent": "empty"
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0,
+            "classForPercent": "empty"
+          },
+          "lines": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0,
+            "classForPercent": "empty"
+          }
+        },
+        "children": [
+          {
+            "file": "package1",
+            "isEmpty": true,
+            "metrics": {
+              "statements": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "branches": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "functions": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "lines": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              }
+            },
+            "children": [
+              {
+                "file": "package1file.js",
+                "isEmpty": true,
+                "metrics": {
+                  "statements": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "branches": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "functions": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "lines": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  }
+                },
+                "children": false
+              },
+              {
+                "file": "subpackage",
+                "isEmpty": true,
+                "metrics": {
+                  "statements": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "branches": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "functions": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "lines": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  }
+                },
+                "children": [
+                  {
+                    "file": "subpackagefile.js",
+                    "isEmpty": true,
+                    "metrics": {
+                      "statements": {
+                        "total": 0,
+                        "covered": 0,
+                        "skipped": 0,
+                        "pct": 0,
+                        "classForPercent": "empty"
+                      },
+                      "branches": {
+                        "total": 0,
+                        "covered": 0,
+                        "skipped": 0,
+                        "pct": 0,
+                        "classForPercent": "empty"
+                      },
+                      "functions": {
+                        "total": 0,
+                        "covered": 0,
+                        "skipped": 0,
+                        "pct": 0,
+                        "classForPercent": "empty"
+                      },
+                      "lines": {
+                        "total": 0,
+                        "covered": 0,
+                        "skipped": 0,
+                        "pct": 0,
+                        "classForPercent": "empty"
+                      }
+                    },
+                    "children": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "file": "package2",
+            "isEmpty": true,
+            "metrics": {
+              "statements": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "branches": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "functions": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "lines": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              }
+            },
+            "children": [
+              {
+                "file": "package2file.js",
+                "isEmpty": true,
+                "metrics": {
+                  "statements": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "branches": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "functions": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  },
+                  "lines": {
+                    "total": 0,
+                    "covered": 0,
+                    "skipped": 0,
+                    "pct": 0,
+                    "classForPercent": "empty"
+                  }
+                },
+                "children": false
+              }
+            ]
+          },
+          {
+            "file": "rootfile.js",
+            "isEmpty": true,
+            "metrics": {
+              "statements": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "branches": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "functions": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              },
+              "lines": {
+                "total": 0,
+                "covered": 0,
+                "skipped": 0,
+                "pct": 0,
+                "classForPercent": "empty"
+              }
+            },
+            "children": false
+          }
+        ]
+    },
+    "coberturaCoverageData": "<?xml version=\"1.0\" ?>\n<!DOCTYPE coverage SYSTEM \"http://cobertura.sourceforge.net/xml/coverage-04.dtd\">\n<coverage lines-valid=\"0\" lines-covered=\"0\" line-rate=\"1\" branches-valid=\"0\" branches-covered=\"0\" branch-rate=\"1\" timestamp=\"123456789\" complexity=\"0\" version=\"0.1\">\n  <sources>\n    <source>/Users/jschmidle/oss/istanbuljs-test/</source>\n  </sources>\n  <packages>\n    <package name=\"istanbuljs-test\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"rootfile.js\" filename=\"rootfile.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"istanbuljs-test.package1\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"package1file.js\" filename=\"package1/package1file.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"istanbuljs-test.package1.subpackage\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"subpackagefile.js\" filename=\"package1/subpackage/subpackagefile.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"istanbuljs-test.package2\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"package2file.js\" filename=\"package2/package2file.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n  </packages>\n</coverage>\n",
+    "map": {
+        "/Users/jschmidle/oss/istanbuljs-test/rootfile.js": {
+            "path": "/Users/jschmidle/oss/istanbuljs-test/rootfile.js",
+            "statementMap": {},
+            "fnMap": {},
+            "branchMap": {},
+            "s": {},
+            "f": {},
+            "b": {}
+        },
+        "/Users/jschmidle/oss/istanbuljs-test/package1/package1file.js": {
+            "path": "/Users/jschmidle/oss/istanbuljs-test/package1/package1file.js",
+            "statementMap": {},
+            "fnMap": {},
+            "branchMap": {},
+            "s": {},
+            "f": {},
+            "b": {}
+        },
+        "/Users/jschmidle/oss/istanbuljs-test/package2/package2file.js": {
+            "path": "/Users/jschmidle/oss/istanbuljs-test/package2/package2file.js",
+            "statementMap": {},
+            "fnMap": {},
+            "branchMap": {},
+            "s": {},
+            "f": {},
+            "b": {}
+        },
+        "/Users/jschmidle/oss/istanbuljs-test/package1/subpackage/subpackagefile.js": {
+            "path": "/Users/jschmidle/oss/istanbuljs-test/package1/subpackage/subpackagefile.js",
+            "statementMap": {},
+            "fnMap": {},
+            "branchMap": {},
+            "s": {},
+            "f": {},
+            "b": {}
+        }
+    }
+}

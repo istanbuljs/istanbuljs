@@ -5,28 +5,28 @@ const Instrumenter = require('../src/instrumenter');
 const verifier = require('./util/verifier');
 
 describe('varia', () => {
-    it('debug/ walkDebug should not cause errors', () => {
+    it('debug/ walkDebug should not cause errors', async () => {
         const v = verifier.create('output = args[0];', {}, { debug: true });
         assert.ok(!v.err);
-        v.verify(['X'], 'X', {
+        await v.verify(['X'], 'X', {
             lines: { 1: 1 },
             statements: { 0: 1 }
         });
     });
 
-    it('auto-generates filename', () => {
+    it('auto-generates filename', async () => {
         const v = verifier.create('output = args[0];', { file: null });
         assert.ok(!v.err);
-        v.verify(['X'], 'X', {
+        await v.verify(['X'], 'X', {
             lines: { 1: 1 },
             statements: { 0: 1 }
         });
     });
 
-    it('handles windows-style paths in file names', () => {
+    it('handles windows-style paths in file names', async () => {
         const v = verifier.create('output = args[0];', { file: 'c:\\x\\y.js' });
         assert.ok(!v.err);
-        v.verify(['X'], 'X', {
+        await v.verify(['X'], 'X', {
             lines: { 1: 1 },
             statements: { 0: 1 }
         });
@@ -35,14 +35,14 @@ describe('varia', () => {
         assert.equal(Object.keys(cov)[0], 'c:\\x\\y.js');
     });
 
-    it('preserves comments when requested', () => {
+    it('preserves comments when requested', async () => {
         const v = verifier.create(
             '/* hello */\noutput = args[0];',
             {},
             { preserveComments: true }
         );
         assert.ok(!v.err);
-        v.verify(['X'], 'X', {
+        await v.verify(['X'], 'X', {
             lines: { 2: 1 },
             statements: { 0: 1 }
         });
