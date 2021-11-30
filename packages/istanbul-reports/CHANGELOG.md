@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.0.5...istanbul-reports-v3.1.0) (2021-11-30)
+
+
+### Features
+
+* add filter to HTML report ([#650](https://github.com/istanbuljs/istanbuljs/issues/650)) ([eab47f7](https://github.com/istanbuljs/istanbuljs/commit/eab47f76be90343f679ef0e5567a21447a4995dc))
+
 ### [3.0.5](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.0.4...istanbul-reports-v3.0.5) (2021-10-13)
 
 
