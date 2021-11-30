@@ -9,7 +9,7 @@ jobs:
     outputs:
       paths_released: ${{ steps.manifest_release.outputs.paths_released }}
     steps:
-      - uses: google-github-actions/release-please-action@v2
+      - uses: google-github-actions/release-please-action@d71a91c8ec10fffa507d18743dd725e54211f3bb
         id: manifest_release
         with:
           command: manifest
