@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [3.1.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.0...istanbul-reports-v3.1.1) (2021-12-01)
+
+
+### Bug Fixes
+
+* rel="noopener" to the link in the generated html reports ([f234bb3](https://github.com/istanbuljs/istanbuljs/commit/f234bb321421e7312a83595934a1abf81c7af70c))
+
 ## [3.1.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.0.5...istanbul-reports-v3.1.0) (2021-11-30)
 
 
