@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.1...istanbul-reports-v3.2.0) (2021-12-01)
+
+
+### Features
+
+* add filter to HTML report ([#650](https://github.com/istanbuljs/istanbuljs/issues/650)) ([eab47f7](https://github.com/istanbuljs/istanbuljs/commit/eab47f76be90343f679ef0e5567a21447a4995dc))
+
+
+### Bug Fixes
+
+* cobertura reports in root folder ([#571](https://github.com/istanbuljs/istanbuljs/issues/571)) ([596f6ff](https://github.com/istanbuljs/istanbuljs/commit/596f6ff1342ae4baa6688bf3ee7786c75d4df947))
+* handle reports with "loc" but no "decl" ([#637](https://github.com/istanbuljs/istanbuljs/issues/637)) ([cdc28f3](https://github.com/istanbuljs/istanbuljs/commit/cdc28f3a1e80e786eaab3b7d3b8b9b558fc2d3c8)), closes [#322](https://github.com/istanbuljs/istanbuljs/issues/322)
+* lcov reporter crash when missing branches ([#613](https://github.com/istanbuljs/istanbuljs/issues/613)) ([d34981c](https://github.com/istanbuljs/istanbuljs/commit/d34981c8131e2ecbff6fc02ffd8702fd9808e241))
+* rel="noopener" to the link in the generated html reports ([f234bb3](https://github.com/istanbuljs/istanbuljs/commit/f234bb321421e7312a83595934a1abf81c7af70c))
+
 ### [3.1.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.0...istanbul-reports-v3.1.1) (2021-12-01)
 
 
