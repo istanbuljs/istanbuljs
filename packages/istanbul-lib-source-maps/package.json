@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-source-maps",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Source maps support for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha"
+    "test": "nyc mocha"
   },
   "dependencies": {
     "debug": "^4.1.1",
@@ -40,6 +40,6 @@
     "maps"
   ],
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   }
 }

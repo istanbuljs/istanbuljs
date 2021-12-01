@@ -37,8 +37,6 @@
     "@istanbuljs/schema": "^0.1.2"
   },
   "peerDependencies": {
-    "nyc": ">=15",
-    "source-map-support": "*",
-    "ts-node": "*"
+    "nyc": ">=15"
   }
 }

@@ -7,7 +7,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "nyc --nycrc-path=../../monorepo-per-package-nycrc.json mocha"
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",

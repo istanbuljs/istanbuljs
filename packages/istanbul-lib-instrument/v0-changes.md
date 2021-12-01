@@ -19,6 +19,7 @@
     that can be used by a babel plugin to instrument the ES6 code without
     having to instrument transpiled code and deal with source maps. This provides
     a "native" instrumentation option for Babel users.
+-   Optionally instruments and reports the truthiness of logical expressions.
 
 ## API changes
 

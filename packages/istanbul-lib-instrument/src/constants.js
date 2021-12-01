@@ -1,12 +1,14 @@
-import { createHash } from 'crypto';
-import { major } from 'semver';
-import { name, version } from '../package.json';
+const { createHash } = require('crypto');
+const { name } = require('../package.json');
+// TODO: increment this version if there are schema changes
+// that are not backwards compatible:
+const VERSION = '4';
 
-// function to use for creating hashes
-export const SHA = 'sha1';
-// name of coverage data magic key
-export const MAGIC_KEY = '_coverageSchema';
-// name of coverage data magic value
-export const MAGIC_VALUE = createHash(SHA)
-    .update(name + '@' + major(version))
-    .digest('hex');
+const SHA = 'sha1';
+module.exports = {
+    SHA,
+    MAGIC_KEY: '_coverageSchema',
+    MAGIC_VALUE: createHash(SHA)
+        .update(name + '@' + VERSION)
+        .digest('hex')
+};
