@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [3.1.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.1...istanbul-reports-v3.1.2) (2021-12-23)
+
+
+### Bug Fixes
+
+* remove stray div tag from HTML report ([68d9c74](https://github.com/istanbuljs/istanbuljs/commit/68d9c7469927ddcf15346307eacea8fd7104086c))
+
 ### [3.1.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.0...istanbul-reports-v3.1.1) (2021-12-01)
 
 
