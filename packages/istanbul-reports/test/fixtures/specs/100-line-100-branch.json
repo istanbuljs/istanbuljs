@@ -1,5 +1,9 @@
 {
     "title": "handles 100% branch and line coverage",
+    "opts": {
+        "maxCols": 80,
+        "projectRoot": "/Users/benjamincoe/oss/"
+    },
     "textReportExpected": "----------|---------|----------|---------|---------|-------------------\nFile      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n----------|---------|----------|---------|---------|-------------------\n\u001b[32;1mAll files\u001b[0m | \u001b[32;1m    100\u001b[0m | \u001b[32;1m     100\u001b[0m | \u001b[32;1m    100\u001b[0m | \u001b[32;1m    100\u001b[0m | \u001b[33;1m                 \u001b[0m \n\u001b[32;1m index.js\u001b[0m | \u001b[32;1m    100\u001b[0m | \u001b[32;1m     100\u001b[0m | \u001b[32;1m    100\u001b[0m | \u001b[32;1m    100\u001b[0m | \u001b[33;1m                 \u001b[0m \n----------|---------|----------|---------|---------|-------------------\n",
     "htmlSpaFiles": ["index.js.html", "index.html"],
     "htmlSpaCoverageData": {
@@ -9,6 +13,7 @@
             "statements": {
                 "total": 50,
                 "covered": 50,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 100,
                 "classForPercent": "high"
@@ -16,6 +21,7 @@
             "branches": {
                 "total": 39,
                 "covered": 39,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 100,
                 "classForPercent": "high"
@@ -23,6 +29,7 @@
             "functions": {
                 "total": 8,
                 "covered": 8,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 100,
                 "classForPercent": "high"
@@ -30,6 +37,7 @@
             "lines": {
                 "total": 46,
                 "covered": 46,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 100,
                 "classForPercent": "high"
@@ -43,6 +51,7 @@
                     "statements": {
                         "total": 50,
                         "covered": 50,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 100,
                         "classForPercent": "high"
@@ -50,6 +59,7 @@
                     "branches": {
                         "total": 39,
                         "covered": 39,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 100,
                         "classForPercent": "high"
@@ -57,6 +67,7 @@
                     "functions": {
                         "total": 8,
                         "covered": 8,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 100,
                         "classForPercent": "high"
@@ -65,6 +76,7 @@
                         "total": 46,
                         "covered": 46,
                         "skipped": 0,
+                        "missed": 0,
                         "pct": 100,
                         "classForPercent": "high"
                     }
@@ -73,6 +85,7 @@
             }
         ]
     },
+    "coberturaCoverageData": "<?xml version=\"1.0\" ?>\n<!DOCTYPE coverage SYSTEM \"http://cobertura.sourceforge.net/xml/coverage-04.dtd\">\n<coverage lines-valid=\"46\" lines-covered=\"46\" line-rate=\"1\" branches-valid=\"39\" branches-covered=\"39\" branch-rate=\"1\" timestamp=\"123456789\" complexity=\"0\" version=\"0.1\">\n  <sources>\n    <source>/Users/benjamincoe/oss/</source>\n  </sources>\n  <packages>\n    <package name=\"main\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"index.js\" filename=\"test-exclude/index.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n            <method name=\"TestExclude\" hits=\"21\" signature=\"()V\">\n              <lines>\n                <line number=\"12\" hits=\"21\"/>\n              </lines>\n            </method>\n            <method name=\"(anonymous_1)\" hits=\"21\" signature=\"()V\">\n              <lines>\n                <line number=\"50\" hits=\"21\"/>\n              </lines>\n            </method>\n            <method name=\"(anonymous_2)\" hits=\"95\" signature=\"()V\">\n              <lines>\n                <line number=\"52\" hits=\"95\"/>\n              </lines>\n            </method>\n            <method name=\"(anonymous_3)\" hits=\"56\" signature=\"()V\">\n              <lines>\n                <line number=\"61\" hits=\"56\"/>\n              </lines>\n            </method>\n            <method name=\"(anonymous_4)\" hits=\"7\" signature=\"()V\">\n              <lines>\n                <line number=\"71\" hits=\"7\"/>\n              </lines>\n            </method>\n            <method name=\"prepGlobPatterns\" hits=\"26\" signature=\"()V\">\n              <lines>\n                <line number=\"84\" hits=\"26\"/>\n              </lines>\n            </method>\n            <method name=\"(anonymous_6)\" hits=\"105\" signature=\"()V\">\n              <lines>\n                <line number=\"85\" hits=\"105\"/>\n              </lines>\n            </method>\n            <method name=\"(anonymous_7)\" hits=\"21\" signature=\"()V\">\n              <lines>\n                <line number=\"100\" hits=\"21\"/>\n              </lines>\n            </method>\n          </methods>\n          <lines>\n            <line number=\"1\" hits=\"1\" branch=\"false\"/>\n            <line number=\"2\" hits=\"1\" branch=\"false\"/>\n            <line number=\"3\" hits=\"1\" branch=\"false\"/>\n            <line number=\"4\" hits=\"1\" branch=\"false\"/>\n            <line number=\"5\" hits=\"1\" branch=\"false\"/>\n            <line number=\"13\" hits=\"21\" branch=\"false\"/>\n            <line number=\"21\" hits=\"21\" branch=\"true\" condition-coverage=\"100% (2/2)\"/>\n            <line number=\"22\" hits=\"21\" branch=\"true\" condition-coverage=\"100% (2/2)\"/>\n            <line number=\"24\" hits=\"21\" branch=\"true\" condition-coverage=\"100% (5/5)\"/>\n            <line number=\"25\" hits=\"7\" branch=\"false\"/>\n            <line number=\"28\" hits=\"21\" branch=\"true\" condition-coverage=\"100% (4/4)\"/>\n            <line number=\"29\" hits=\"15\" branch=\"false\"/>\n            <line number=\"32\" hits=\"21\" branch=\"true\" condition-coverage=\"100% (4/4)\"/>\n            <line number=\"33\" hits=\"5\" branch=\"false\"/>\n            <line number=\"35\" hits=\"16\" branch=\"false\"/>\n            <line number=\"38\" hits=\"21\" branch=\"true\" condition-coverage=\"100% (4/4)\"/>\n            <line number=\"39\" hits=\"5\" branch=\"false\"/>\n            <line number=\"42\" hits=\"21\" branch=\"false\"/>\n            <line number=\"50\" hits=\"1\" branch=\"false\"/>\n            <line number=\"51\" hits=\"21\" branch=\"false\"/>\n            <line number=\"52\" hits=\"21\" branch=\"false\"/>\n            <line number=\"53\" hits=\"95\" branch=\"false\"/>\n            <line number=\"55\" hits=\"95\" branch=\"true\" condition-coverage=\"100% (2/2)\"/>\n            <line number=\"56\" hits=\"95\" branch=\"false\"/>\n            <line number=\"58\" hits=\"21\" branch=\"false\"/>\n            <line number=\"61\" hits=\"1\" branch=\"false\"/>\n            <line number=\"62\" hits=\"56\" branch=\"true\" condition-coverage=\"100% (2/2)\"/>\n            <line number=\"65\" hits=\"56\" branch=\"true\" condition-coverage=\"100% (2/2)\"/>\n            <line number=\"67\" hits=\"55\" branch=\"false\"/>\n            <line number=\"68\" hits=\"55\" branch=\"true\" condition-coverage=\"100% (3/3)\"/>\n            <line number=\"71\" hits=\"1\" branch=\"false\"/>\n            <line number=\"72\" hits=\"7\" branch=\"false\"/>\n            <line number=\"76\" hits=\"7\" branch=\"true\" condition-coverage=\"100% (5/5)\"/>\n            <line number=\"77\" hits=\"6\" branch=\"false\"/>\n            <line number=\"78\" hits=\"6\" branch=\"false\"/>\n            <line number=\"80\" hits=\"1\" branch=\"false\"/>\n            <line number=\"85\" hits=\"26\" branch=\"false\"/>\n            <line number=\"87\" hits=\"105\" branch=\"true\" condition-coverage=\"100% (2/2)\"/>\n            <line number=\"88\" hits=\"39\" branch=\"false\"/>\n            <line number=\"92\" hits=\"105\" branch=\"true\" condition-coverage=\"100% (2/2)\"/>\n            <line number=\"93\" hits=\"50\" branch=\"false\"/>\n            <line number=\"96\" hits=\"105\" branch=\"false\"/>\n            <line number=\"100\" hits=\"1\" branch=\"false\"/>\n            <line number=\"101\" hits=\"21\" branch=\"false\"/>\n            <line number=\"104\" hits=\"1\" branch=\"false\"/>\n            <line number=\"113\" hits=\"1\" branch=\"false\"/>\n          </lines>\n        </class>\n      </classes>\n    </package>\n  </packages>\n</coverage>\n",
     "map": {
         "/Users/benjamincoe/oss/test-exclude/index.js": {
             "path": "/Users/benjamincoe/oss/test-exclude/index.js",

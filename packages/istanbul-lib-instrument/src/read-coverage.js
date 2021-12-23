@@ -1,6 +1,6 @@
-import { parseSync, traverse } from '@babel/core';
-import { defaults } from '@istanbuljs/schema';
-import { MAGIC_KEY, MAGIC_VALUE } from './constants';
+const { parseSync, traverse } = require('@babel/core');
+const { defaults } = require('@istanbuljs/schema');
+const { MAGIC_KEY, MAGIC_VALUE } = require('./constants');
 
 function getAst(code) {
     if (typeof code === 'object' && typeof code.type === 'string') {
@@ -17,6 +17,7 @@ function getAst(code) {
         babelrc: false,
         configFile: false,
         parserOpts: {
+            allowAwaitOutsideFunction: true,
             allowImportExportEverywhere: true,
             allowReturnOutsideFunction: true,
             allowSuperOutsideMethod: true,
@@ -26,7 +27,7 @@ function getAst(code) {
     });
 }
 
-export default function readInitialCoverage(code) {
+module.exports = function readInitialCoverage(code) {
     const ast = getAst(code);
 
     let covScope;
@@ -73,4 +74,4 @@ export default function readInitialCoverage(code) {
     delete result.coverageData.hash;
 
     return result;
-}
+};
