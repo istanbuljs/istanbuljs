@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [3.1.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.2...istanbul-reports-v3.1.3) (2021-12-29)
+
+
+### Bug Fixes
+
+* reverse tabnabbing vulnerability in URLs ([#591](https://github.com/istanbuljs/istanbuljs/issues/591)) ([4eceb9e](https://github.com/istanbuljs/istanbuljs/commit/4eceb9eb8b3169b882d74ecc526fb5837ebc6205))
+
 ### [3.1.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.1...istanbul-reports-v3.1.2) (2021-12-23)
 
 
