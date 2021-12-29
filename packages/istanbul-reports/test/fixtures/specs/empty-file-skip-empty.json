@@ -1,7 +1,9 @@
 {
     "title": "empty file - skip empty",
     "opts": {
-        "skipEmpty": true
+        "skipEmpty": true,
+        "maxCols": 80,
+        "projectRoot": "/dev/git/istanbuljs/packages/istanbul-reports"
     },
     "textReportExpected": "----------|---------|----------|---------|---------|-------------------\nFile      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n----------|---------|----------|---------|---------|-------------------\n----------|---------|----------|---------|---------|-------------------\n",
     "htmlSpaFiles": ["empty.js.html", "index.html"],
@@ -12,6 +14,7 @@
             "statements": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -19,6 +22,7 @@
             "branches": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -26,6 +30,7 @@
             "functions": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -33,6 +38,7 @@
             "lines": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -46,6 +52,7 @@
                     "statements": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -53,6 +60,7 @@
                     "branches": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -60,6 +68,7 @@
                     "functions": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -67,6 +76,7 @@
                     "lines": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -76,6 +86,7 @@
             }
         ]
     },
+    "coberturaCoverageData": "<?xml version=\"1.0\" ?>\n<!DOCTYPE coverage SYSTEM \"http://cobertura.sourceforge.net/xml/coverage-04.dtd\">\n<coverage lines-valid=\"0\" lines-covered=\"0\" line-rate=\"1\" branches-valid=\"0\" branches-covered=\"0\" branch-rate=\"1\" timestamp=\"123456789\" complexity=\"0\" version=\"0.1\">\n  <sources>\n    <source>/dev/git/istanbuljs/packages/istanbul-reports</source>\n  </sources>\n  <packages>\n    <package name=\"main\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"empty.js\" filename=\"lib/text/empty.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n  </packages>\n</coverage>\n",
     "map": {
         "/dev/git/istanbuljs/packages/istanbul-reports/lib/text/empty.js": {
             "path": "/dev/git/istanbuljs/packages/istanbul-reports/lib/text/empty.js",

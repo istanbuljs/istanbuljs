@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.4...istanbul-lib-instrument-v5.1.0) (2021-10-27)
+
+
+### Features
+
+* option to evaluate logical truthiness, for applications such as fuzzing ([#629](https://www.github.com/istanbuljs/istanbuljs/issues/629)) ([a743b84](https://www.github.com/istanbuljs/istanbuljs/commit/a743b8442e977f0c77ffa282eed7ac84ca200d1f))
+
+### [5.0.4](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.3...istanbul-lib-instrument-v5.0.4) (2021-10-16)
+
+
+### Bug Fixes
+
+* **magic-value:** make incrementing magic value a manual step ([#641](https://www.github.com/istanbuljs/istanbuljs/issues/641)) ([823010b](https://www.github.com/istanbuljs/istanbuljs/commit/823010b821cf81bd91377d75fc83f0875925db66))
+
+### [5.0.3](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.2...istanbul-lib-instrument-v5.0.3) (2021-10-06)
+
+
+### Bug Fixes
+
+* coverage.branchMap else location. ([#633](https://www.github.com/istanbuljs/istanbuljs/issues/633)) ([eb4b4ec](https://www.github.com/istanbuljs/istanbuljs/commit/eb4b4ec8f4b858655a66b0033fcc662f44ef4cc9))
+
+### [5.0.2](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.1...istanbul-lib-instrument-v5.0.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* **build:** verfiy automated publication ([b232690](https://www.github.com/istanbuljs/istanbuljs/commit/b232690193f4b524332046c96dd1cdc6e881c6c7))
+
+### [5.0.1](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.0...istanbul-lib-instrument-v5.0.1) (2021-09-13)
+
+
+### Bug Fixes
+
+* **build:** verfiy automated publication ([74c96bd](https://www.github.com/istanbuljs/istanbuljs/commit/74c96bdc4224a06e2e1166ebd9adf8faf28438b1))
+
+## [5.0.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v4.0.3...istanbul-lib-instrument-v5.0.0) (2021-09-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* istanbul-lib-instrument no longer uses babel
+
+### Code Refactoring
+
+* istanbul-lib-instrument no longer uses babel ([8d3badb](https://www.github.com/istanbuljs/istanbuljs/commit/8d3badb8f6c9a4bed9af8e19c3ac6459ebd7267b))
+
 ## [4.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument@4.0.2...istanbul-lib-instrument@4.0.3) (2020-05-09)
 
 
