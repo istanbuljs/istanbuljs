@@ -1,7 +1,7 @@
 /* globals describe, it */
 
-import { assert } from 'chai';
-import * as verifier from './util/verifier';
+const { assert } = require('chai');
+const verifier = require('./util/verifier');
 
 describe('negative tests', () => {
     it('should barf on junk code', () => {

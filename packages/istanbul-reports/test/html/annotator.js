@@ -69,5 +69,17 @@ describe('annotator', () => {
                 'if (cond1 &amp;&amp; <span class="branch-0 cbranch-no" title="branch not covered" >cond2) {</span>'
             );
         });
+
+        // see: https://github.com/istanbuljs/istanbuljs/pull/322
+        it('handles fnMap with missing decl', () => {
+            const annotated = annotator(getFixture('github-322'), {
+                getSource() {
+                    return '  function test () {};';
+                }
+            });
+            annotated.annotatedCode[0].should.equal(
+                '<span class="fstat-no" title="function not covered" >  function test () {};</span>'
+            );
+        });
     });
 });
