@@ -708,7 +708,9 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
             delete coverageData.hash;
-            coverageData.inputSourceMap = inputSourceMap;
+            if (inputSourceMap) {
+              coverageData.inputSourceMap = inputSourceMap;
+            }
             let gvTemplate;
             if (opts.coverageGlobalScopeFunc) {
                 if (path.scope.getBinding('Function')) {
