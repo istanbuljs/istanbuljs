@@ -697,9 +697,18 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                 .update(JSON.stringify(coverageData))
                 .digest('hex');
             coverageData.hash = hash;
+            const inputSourceMap = coverageData.inputSourceMap;
+            if (inputSourceMap) {
+              if (Object.getPrototypeOf(inputSourceMap) !== Object.prototype) {
+                console.warn("A non-plain object was passed to istanbul-lib-instrument.")
+                const {...inputSourceMapPlain} = inputSourceMap;
+                coverageData.inputSourceMap = inputSourceMapPlain;
+              }
+            }
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
             delete coverageData.hash;
+            coverageData.inputSourceMap = inputSourceMap;
             let gvTemplate;
             if (opts.coverageGlobalScopeFunc) {
                 if (path.scope.getBinding('Function')) {
