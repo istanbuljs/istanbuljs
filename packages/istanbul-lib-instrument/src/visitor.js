@@ -698,12 +698,10 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                 .digest('hex');
             coverageData.hash = hash;
             const inputSourceMap = coverageData.inputSourceMap;
-            if (inputSourceMap) {
-              if (Object.getPrototypeOf(inputSourceMap) !== Object.prototype) {
-                console.warn("A non-plain object was passed to istanbul-lib-instrument.")
-                const {...inputSourceMapPlain} = inputSourceMap;
-                coverageData.inputSourceMap = inputSourceMapPlain;
-              }
+            if (inputSourceMap && Object.getPrototypeOf(inputSourceMap) !== Object.prototype) {
+              console.warn("A non-plain object was passed to istanbul-lib-instrument.")
+              const {...inputSourceMapPlain} = inputSourceMap;
+              coverageData.inputSourceMap = inputSourceMapPlain;
             }
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
