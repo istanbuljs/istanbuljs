@@ -699,7 +699,7 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
             coverageData.hash = hash;
             const inputSourceMap = coverageData.inputSourceMap;
             if (inputSourceMap && Object.getPrototypeOf(inputSourceMap) !== Object.prototype) {
-              console.warn("A non-plain object was passed to istanbul-lib-instrument.")
+              console.warn("WARNING: istanbul-lib-instrument expects the source map to be a plain object. Instead, an object of class \"" + inputSourceMap.constructor.name + "\" was passed.")
               coverageData.inputSourceMap = {...inputSourceMap};
             }
             const coverageNode = T.valueToNode(coverageData);
