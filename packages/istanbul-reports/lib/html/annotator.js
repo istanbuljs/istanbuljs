@@ -164,6 +164,14 @@ function annotateBranches(fileCoverage, structuredText) {
                     gt;
                 closeSpan = lt + '/span' + gt;
 
+                if (count === 0 && startLine === undefined && branchMeta[branchName].type === 'if') { 
+                    let prevMeta = metaArray[i - 1];
+                    startCol = prevMeta.start.column;
+                    endCol = prevMeta.end.column + 1;
+                    startLine = prevMeta.start.line;
+                    endLine = prevMeta.end.line;
+                }
+              
                 if (count === 0 && structuredText[startLine]) {
                     //skip branches taken
                     if (endLine !== startLine) {
@@ -173,6 +181,7 @@ function annotateBranches(fileCoverage, structuredText) {
                     }
                     text = structuredText[startLine].text;
                     if (branchMeta[branchName].type === 'if') {
+                        debugger;
                         // 'if' is a special case
                         // since the else branch might not be visible, being non-existent
                         text.insertAt(
