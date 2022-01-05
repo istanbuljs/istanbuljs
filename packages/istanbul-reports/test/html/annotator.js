@@ -82,24 +82,24 @@ describe('annotator', () => {
             );
         });
       
-      // see: https://github.com/istanbuljs/istanbuljs/issues/649
-      it('handles implicit else branches', () => {
-        const annotated = annotator(getFixture('github-649'), {
-            getSource() {
-                return `exports.testy = function () { 
-                  let a = 0;
-                
-                    if (!a) {
-                      a = 3;
-                    }
-                
-                    return a;
-                };`;
-            }
+        // see: https://github.com/istanbuljs/istanbuljs/issues/649
+        it('handles implicit else branches', () => {
+            const annotated = annotator(getFixture('github-649'), {
+                getSource() {
+                    return `exports.testy = function () { 
+                        let a = 0;
+                      
+                        if (!a) {
+                          a = 3;
+                        }
+                    
+                        return a;
+                    };`;
+                }
+            });
+            annotated.annotatedCode[3].should.equal(
+              '    <span class="missing-if-branch" title="else path not taken" >E</span>                if (!a) {'
+            );
         });
-        annotated.annotatedCode[3].should.equal(
-          '    <span class="missing-if-branch" title="else path not taken" >E</span>                if (!a) {'
-        );
-    });
     });
 });
