@@ -168,7 +168,7 @@ function annotateBranches(fileCoverage, structuredText) {
                     count === 0 &&
                     startLine === undefined &&
                     branchMeta[branchName].type === 'if'
-                ) { 
+                ) {
                     const prevMeta = metaArray[i - 1];
                     startCol = prevMeta.start.column;
                     endCol = prevMeta.end.column + 1;
