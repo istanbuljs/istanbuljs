@@ -98,7 +98,7 @@ describe('annotator', () => {
                 }
             });
             annotated.annotatedCode[3].should.equal(
-                '    <span class="missing-if-branch" title="else path not taken" >E</span>                if (!a) {'
+                '    <span class="missing-if-branch" title="else path not taken" >E</span>                    if (!a) {'
             );
         });
     });
