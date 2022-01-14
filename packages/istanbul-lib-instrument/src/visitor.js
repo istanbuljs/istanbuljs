@@ -697,17 +697,23 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                 .update(JSON.stringify(coverageData))
                 .digest('hex');
             coverageData.hash = hash;
-            const inputSourceMap = coverageData.inputSourceMap;
-            if (inputSourceMap && Object.getPrototypeOf(inputSourceMap) !== Object.prototype) {
-              console.warn("WARNING: istanbul-lib-instrument expects the source map to be a plain object. Instead, an object of class \"" + inputSourceMap.constructor.name + "\" was passed.")
-              coverageData.inputSourceMap = {...inputSourceMap};
+            if (
+                coverageData.inputSourceMap &&
+                Object.getPrototypeOf(coverageData.inputSourceMap) !==
+                    Object.prototype
+            ) {
+                console.warn(
+                    'WARNING: istanbul-lib-instrument expects the source map to be a plain object. Instead, an object of class "' +
+                        coverageData.inputSourceMap.constructor.name +
+                        '" was passed.'
+                );
+                coverageData.inputSourceMap = {
+                    ...coverageData.inputSourceMap
+                };
             }
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
             delete coverageData.hash;
-            if (inputSourceMap) {
-              coverageData.inputSourceMap = inputSourceMap;
-            }
             let gvTemplate;
             if (opts.coverageGlobalScopeFunc) {
                 if (path.scope.getBinding('Function')) {
