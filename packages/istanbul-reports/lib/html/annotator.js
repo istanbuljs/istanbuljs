@@ -164,6 +164,22 @@ function annotateBranches(fileCoverage, structuredText) {
                     gt;
                 closeSpan = lt + '/span' + gt;
 
+                // If the branch is an implicit else from an if statement,
+                // then the coverage report won't show a statistic.
+                // Therefore, the previous branch will be used to report that
+                // there is no coverage on that implicit branch.
+                if (
+                    count === 0 &&
+                    startLine === undefined &&
+                    branchMeta[branchName].type === 'if'
+                ) {
+                    const prevMeta = metaArray[i - 1];
+                    startCol = prevMeta.start.column;
+                    endCol = prevMeta.end.column + 1;
+                    startLine = prevMeta.start.line;
+                    endLine = prevMeta.end.line;
+                }
+
                 if (count === 0 && structuredText[startLine]) {
                     //skip branches taken
                     if (endLine !== startLine) {
