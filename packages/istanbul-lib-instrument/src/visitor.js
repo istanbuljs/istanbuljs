@@ -190,29 +190,101 @@ class VisitState {
         const tempName = `${this.varName}_temp`;
 
         return T.sequenceExpression([
-            T.assignmentExpression(
-                '=',
-                T.memberExpression(
-                    T.callExpression(T.identifier(this.varName), []),
-                    T.identifier(tempName)
-                ),
-                node // Only evaluates once.
-            ),
-            T.parenthesizedExpression(
-                T.conditionalExpression(
-                    T.memberExpression(
-                        T.callExpression(T.identifier(this.varName), []),
-                        T.identifier(tempName)
-                    ),
-                    this.increase(type, id, index),
-                    T.nullLiteral()
-                )
-            ),
-            T.memberExpression(
-                T.callExpression(T.identifier(this.varName), []),
-                T.identifier(tempName)
-            )
-        ]);
+          T.assignmentExpression(
+              '=',
+              T.memberExpression(
+                  T.callExpression(T.identifier(this.varName), []),
+                  T.identifier(tempName)
+              ),
+              node // Only evaluates once.
+          ),
+          T.parenthesizedExpression(
+              T.conditionalExpression(
+                  T.logicalExpression(
+                      "&&",
+                      T.memberExpression(
+                          T.callExpression(T.identifier(this.varName), []),
+                          T.identifier(tempName)
+                      ),
+                      T.logicalExpression(
+                          "&&",
+                          T.parenthesizedExpression(
+                              T.logicalExpression(
+                                  "||",
+                                  T.unaryExpression(
+                                      "!",
+                                      T.callExpression(
+                                          T.memberExpression(
+                                              T.identifier("Array"),
+                                              T.identifier("isArray")
+                                          ),
+                                          [
+                                              T.memberExpression(
+                                                  T.callExpression(T.identifier(this.varName), []),
+                                                  T.identifier(tempName)
+                                              )
+                                          ]
+                                      )
+                                  ),
+                                  T.memberExpression(
+                                      T.memberExpression(
+                                          T.callExpression(T.identifier(this.varName), []),
+                                          T.identifier(tempName)
+                                      ),
+                                      T.identifier("length")
+                                  )
+                              )
+                          ),
+                          T.parenthesizedExpression(
+                              T.logicalExpression(
+                                  "||",
+                                  T.binaryExpression(
+                                      "!==",
+                                      T.callExpression(
+                                          T.memberExpression(
+                                              T.identifier("Object"),
+                                              T.identifier("getPrototypeOf")
+                                          ),
+                                          [
+                                              T.memberExpression(
+                                                  T.callExpression(T.identifier(this.varName), []),
+                                                  T.identifier(tempName)
+                                              )
+                                          ]
+                                      ),
+                                      T.memberExpression(
+                                          T.identifier("Object"),
+                                          T.identifier("prototype")
+                                      )
+                                  ),
+                                  T.memberExpression(
+                                      T.callExpression(
+                                          T.memberExpression(
+                                              T.identifier("Object"),
+                                              T.identifier("keys")
+                                          ),
+                                          [
+                                              T.memberExpression(
+                                                  T.callExpression(T.identifier(this.varName), []),
+                                                  T.identifier(tempName)
+                                              )
+                                          ]
+                                      ),
+                                      T.identifier("length")
+                                  )
+                              )
+                          ),
+                      )
+                  ),
+                  this.increase(type, id, index),
+                  T.nullLiteral()
+              )
+          ),
+          T.memberExpression(
+              T.callExpression(T.identifier(this.varName), []),
+              T.identifier(tempName)
+          )
+      ]);
     }
 
     insertCounter(path, increment) {
