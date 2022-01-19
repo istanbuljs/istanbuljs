@@ -201,26 +201,31 @@ class VisitState {
             T.parenthesizedExpression(
                 T.conditionalExpression(
                     T.logicalExpression(
-                        "&&",
+                        '&&',
                         T.memberExpression(
                             T.callExpression(T.identifier(this.varName), []),
                             T.identifier(tempName)
                         ),
                         T.logicalExpression(
-                            "&&",
+                            '&&',
                             T.parenthesizedExpression(
                                 T.logicalExpression(
-                                    "||",
+                                    '||',
                                     T.unaryExpression(
-                                        "!",
+                                        '!',
                                         T.callExpression(
                                             T.memberExpression(
-                                                T.identifier("Array"),
-                                                T.identifier("isArray")
+                                                T.identifier('Array'),
+                                                T.identifier('isArray')
                                             ),
                                             [
                                                 T.memberExpression(
-                                                    T.callExpression(T.identifier(this.varName), []),
+                                                    T.callExpression(
+                                                        T.identifier(
+                                                            this.varName
+                                                        ),
+                                                        []
+                                                    ),
                                                     T.identifier(tempName)
                                                 )
                                             ]
@@ -228,52 +233,65 @@ class VisitState {
                                     ),
                                     T.memberExpression(
                                         T.memberExpression(
-                                            T.callExpression(T.identifier(this.varName), []),
+                                            T.callExpression(
+                                                T.identifier(this.varName),
+                                                []
+                                            ),
                                             T.identifier(tempName)
                                         ),
-                                        T.identifier("length")
+                                        T.identifier('length')
                                     )
                                 )
                             ),
                             T.parenthesizedExpression(
                                 T.logicalExpression(
-                                    "||",
+                                    '||',
                                     T.binaryExpression(
-                                        "!==",
+                                        '!==',
                                         T.callExpression(
                                             T.memberExpression(
-                                                T.identifier("Object"),
-                                                T.identifier("getPrototypeOf")
+                                                T.identifier('Object'),
+                                                T.identifier('getPrototypeOf')
                                             ),
                                             [
                                                 T.memberExpression(
-                                                    T.callExpression(T.identifier(this.varName), []),
+                                                    T.callExpression(
+                                                        T.identifier(
+                                                            this.varName
+                                                        ),
+                                                        []
+                                                    ),
                                                     T.identifier(tempName)
                                                 )
                                             ]
                                         ),
                                         T.memberExpression(
-                                            T.identifier("Object"),
-                                            T.identifier("prototype")
+                                            T.identifier('Object'),
+                                            T.identifier('prototype')
                                         )
                                     ),
                                     T.memberExpression(
                                         T.callExpression(
                                             T.memberExpression(
-                                                T.identifier("Object"),
-                                                T.identifier("keys")
+                                                T.identifier('Object'),
+                                                T.identifier('keys')
                                             ),
                                             [
                                                 T.memberExpression(
-                                                    T.callExpression(T.identifier(this.varName), []),
+                                                    T.callExpression(
+                                                        T.identifier(
+                                                            this.varName
+                                                        ),
+                                                        []
+                                                    ),
                                                     T.identifier(tempName)
                                                 )
                                             ]
                                         ),
-                                        T.identifier("length")
+                                        T.identifier('length')
                                     )
                                 )
-                            ),
+                            )
                         )
                     ),
                     this.increase(type, id, index),
