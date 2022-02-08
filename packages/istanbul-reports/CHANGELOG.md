@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [3.1.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.3...istanbul-reports-v3.1.4) (2022-01-17)
+
+
+### Bug Fixes
+
+* "E" is not showing in the HTML reporter for "implicit else" branches after pull 633 ([#663](https://github.com/istanbuljs/istanbuljs/issues/663)) ([7818922](https://github.com/istanbuljs/istanbuljs/commit/7818922fd7229c4eee12b1407b5a13020f5d34de))
+
 ### [3.1.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.2...istanbul-reports-v3.1.3) (2021-12-29)
 
 
