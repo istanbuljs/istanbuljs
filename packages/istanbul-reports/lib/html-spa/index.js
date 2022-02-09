@@ -55,6 +55,7 @@ class HtmlSpaReport extends ReportBase {
         };
 
         this.metricsToShow = opts.metricsToShow || [
+            'statements',
             'lines',
             'branches',
             'functions'
