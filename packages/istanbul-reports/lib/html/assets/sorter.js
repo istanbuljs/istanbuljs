@@ -67,7 +67,8 @@ var addSorting = (function() {
             if (col.sortable) {
                 col.defaultDescSort = col.type === 'number';
                 colNode.innerHTML =
-                    colNode.innerHTML + '<span class="sorter"></span>';
+                    colNode.innerHTML +
+                    '<button class="sort-icon"><span class="sort-icon__desc">&#x25B2</span><span class="sort-icon__asc">&#x25BC</button>';
             }
         }
         return cols;
@@ -137,14 +138,14 @@ var addSorting = (function() {
         var col = getNthColumn(currentSort.index),
             cls = col.className;
 
-        cls = cls.replace(/ sorted$/, '').replace(/ sorted-desc$/, '');
+        cls = cls.replace(/ sorted-desc$/, '').replace(/ sorted-asc$/, '');
         col.className = cls;
     }
     // adds sort indicators for current column being sorted
     function addSortIndicators() {
         getNthColumn(currentSort.index).className += currentSort.desc
             ? ' sorted-desc'
-            : ' sorted';
+            : ' sorted-asc';
     }
     // adds event listeners for all sorter widgets
     function enableUI() {
@@ -170,7 +171,7 @@ var addSorting = (function() {
             if (cols[i].sortable) {
                 // add the click event handler on the th so users
                 // dont have to click on those tiny arrows
-                el = getNthColumn(i).querySelector('.sorter').parentElement;
+                el = getNthColumn(i).querySelector('.sort-icon').parentElement;
                 if (el.addEventListener) {
                     el.addEventListener('click', ithSorter(i));
                 } else {
