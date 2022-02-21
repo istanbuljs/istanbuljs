@@ -129,3 +129,35 @@ tests:
     branches: { '0': [1, 1] }
     branchesTrue: {'0': [0, 1]}
     statements: {'0': 1, '1': 1}
+
+---
+name: empty object
+code: |
+  var x = args[0] || { };
+  output = true;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers all branches correctly
+    args: [ false ]
+    out: true
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 0]}
+    statements: {'0': 1, '1': 1}
+
+---
+name: empty array
+code: |
+  var x = args[0] || [];
+  output = true;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers all branches correctly
+    args: [ false ]
+    out: true
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 0]}
+    statements: {'0': 1, '1': 1}
