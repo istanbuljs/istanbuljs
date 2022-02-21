@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.1.0...istanbul-lib-instrument-v5.2.0) (2022-02-21)
+
+
+### Features
+
+* exclude Empty Object and Arrays in Truthy Detection ([#666](https://github.com/istanbuljs/istanbuljs/issues/666)) ([e279684](https://github.com/istanbuljs/istanbuljs/commit/e279684e735f4b7dbe2b632cde2515f6862099de))
+
 ## [5.1.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.4...istanbul-lib-instrument-v5.1.0) (2021-10-27)
 
 

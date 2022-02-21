@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-instrument",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Core istanbul API for JS code coverage",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "src/index.js",
