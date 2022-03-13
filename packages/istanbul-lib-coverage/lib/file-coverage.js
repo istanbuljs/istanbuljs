@@ -242,7 +242,7 @@ class FileCoverage {
         // Tracking additional information about branch truthiness
         // can be optionally enabled:
         if (this.bT && other.bT) {
-            [hits, map] = mergeProp(
+            [hits] = mergeProp(
                 this.bT,
                 this.branchMap,
                 other.bT,
