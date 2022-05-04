@@ -23,10 +23,9 @@ function padding(num, ch) {
 }
 
 function fill(str, width, right, tabs) {
-    tabs = tabs || 0;
     str = String(str);
 
-    const leadingSpaces = tabs * TAB_SIZE;
+    const leadingSpaces = (tabs || 0) * TAB_SIZE;
     const remaining = width - leadingSpaces;
     const leader = padding(leadingSpaces);
     let fmtStr = '';
@@ -36,7 +35,9 @@ function fill(str, width, right, tabs) {
         let fillStr;
 
         if (remaining >= strlen) {
-            fillStr = padding(remaining - strlen);
+            fillStr = (right || tabs !== undefined)
+                ? padding(remaining - strlen)
+                : '';
         } else {
             fillStr = '...';
             const length = remaining - fillStr.length;
