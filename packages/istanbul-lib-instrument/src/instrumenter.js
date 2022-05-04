@@ -2,10 +2,10 @@
  Copyright 2012-2015, Yahoo Inc.
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-import { transformSync } from '@babel/core';
-import { defaults } from '@istanbuljs/schema';
-import programVisitor from './visitor';
-import readInitialCoverage from './read-coverage';
+const { transformSync } = require('@babel/core');
+const { defaults } = require('@istanbuljs/schema');
+const programVisitor = require('./visitor');
+const readInitialCoverage = require('./read-coverage');
 
 /**
  * Instrumenter is the public API for the instrument library.
@@ -14,7 +14,8 @@ import readInitialCoverage from './read-coverage';
  * instead.
  * @param {Object} opts optional.
  * @param {string} [opts.coverageVariable=__coverage__] name of global coverage variable.
- * @param {boolean} [opts.preserveComments=false] preserve comments in output
+ * @param {boolean} [opts.reportLogic=false] report boolean value of logical expressions.
+ * @param {boolean} [opts.preserveComments=false] preserve comments in output.
  * @param {boolean} [opts.compact=true] generate compact code.
  * @param {boolean} [opts.esModules=false] set to true to instrument ES6 modules.
  * @param {boolean} [opts.autoWrap=false] set to true to allow `return` statements outside of functions.
@@ -22,7 +23,7 @@ import readInitialCoverage from './read-coverage';
  * @param {Array} [opts.ignoreClassMethods=[]] set to array of class method names to ignore for coverage.
  * @param {Function} [opts.sourceMapUrlCallback=null] a callback function that is called when a source map URL
  *     is found in the original code. This function is called with the source file name and the source map URL.
- * @param {boolean} [opts.debug=false] - turn debugging on
+ * @param {boolean} [opts.debug=false] - turn debugging on.
  * @param {array} [opts.parserPlugins] - set babel parser plugins, see @istanbuljs/schema for defaults.
  */
 class Instrumenter {
@@ -73,6 +74,7 @@ class Instrumenter {
                     ({ types }) => {
                         const ee = programVisitor(types, filename, {
                             coverageVariable: opts.coverageVariable,
+                            reportLogic: opts.reportLogic,
                             coverageGlobalScope: opts.coverageGlobalScope,
                             coverageGlobalScopeFunc:
                                 opts.coverageGlobalScopeFunc,
@@ -155,4 +157,4 @@ class Instrumenter {
     }
 }
 
-export default Instrumenter;
+module.exports = Instrumenter;

@@ -1,7 +1,7 @@
 /* globals it */
 
-import { assert } from 'chai';
-import Instrumenter from '../src/instrumenter';
+const { assert } = require('chai');
+const Instrumenter = require('../src/instrumenter');
 
 function instrument(code, inputSourceMap) {
     const instrumenter = new Instrumenter({ compact: false });

@@ -1,8 +1,8 @@
-import { createHash } from 'crypto';
-import template from '@babel/template';
-import { defaults } from '@istanbuljs/schema';
-import { SourceCoverage } from './source-coverage';
-import { SHA, MAGIC_KEY, MAGIC_VALUE } from './constants';
+const { createHash } = require('crypto');
+const { template } = require('@babel/core');
+const { defaults } = require('@istanbuljs/schema');
+const { SourceCoverage } = require('./source-coverage');
+const { SHA, MAGIC_KEY, MAGIC_VALUE } = require('./constants');
 
 // pattern for istanbul to ignore a section
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
@@ -25,7 +25,8 @@ class VisitState {
         types,
         sourceFilePath,
         inputSourceMap,
-        ignoreClassMethods = []
+        ignoreClassMethods = [],
+        reportLogic = false
     ) {
         this.varName = genVar(sourceFilePath);
         this.attrs = {};
@@ -38,6 +39,7 @@ class VisitState {
         this.ignoreClassMethods = ignoreClassMethods;
         this.types = types;
         this.sourceMappingURL = null;
+        this.reportLogic = reportLogic;
     }
 
     // should we ignore the node? Yes, if specifically ignoring
@@ -182,6 +184,125 @@ class VisitState {
         );
     }
 
+    // Reads the logic expression conditions and conditionally increments truthy counter.
+    increaseTrue(type, id, index, node) {
+        const T = this.types;
+        const tempName = `${this.varName}_temp`;
+
+        return T.sequenceExpression([
+            T.assignmentExpression(
+                '=',
+                T.memberExpression(
+                    T.callExpression(T.identifier(this.varName), []),
+                    T.identifier(tempName)
+                ),
+                node // Only evaluates once.
+            ),
+            T.parenthesizedExpression(
+                T.conditionalExpression(
+                    this.validateTrueNonTrivial(T, tempName),
+                    this.increase(type, id, index),
+                    T.nullLiteral()
+                )
+            ),
+            T.memberExpression(
+                T.callExpression(T.identifier(this.varName), []),
+                T.identifier(tempName)
+            )
+        ]);
+    }
+
+    validateTrueNonTrivial(T, tempName) {
+        return T.logicalExpression(
+            '&&',
+            T.memberExpression(
+                T.callExpression(T.identifier(this.varName), []),
+                T.identifier(tempName)
+            ),
+            T.logicalExpression(
+                '&&',
+                T.parenthesizedExpression(
+                    T.logicalExpression(
+                        '||',
+                        T.unaryExpression(
+                            '!',
+                            T.callExpression(
+                                T.memberExpression(
+                                    T.identifier('Array'),
+                                    T.identifier('isArray')
+                                ),
+                                [
+                                    T.memberExpression(
+                                        T.callExpression(
+                                            T.identifier(this.varName),
+                                            []
+                                        ),
+                                        T.identifier(tempName)
+                                    )
+                                ]
+                            )
+                        ),
+                        T.memberExpression(
+                            T.memberExpression(
+                                T.callExpression(
+                                    T.identifier(this.varName),
+                                    []
+                                ),
+                                T.identifier(tempName)
+                            ),
+                            T.identifier('length')
+                        )
+                    )
+                ),
+                T.parenthesizedExpression(
+                    T.logicalExpression(
+                        '||',
+                        T.binaryExpression(
+                            '!==',
+                            T.callExpression(
+                                T.memberExpression(
+                                    T.identifier('Object'),
+                                    T.identifier('getPrototypeOf')
+                                ),
+                                [
+                                    T.memberExpression(
+                                        T.callExpression(
+                                            T.identifier(this.varName),
+                                            []
+                                        ),
+                                        T.identifier(tempName)
+                                    )
+                                ]
+                            ),
+                            T.memberExpression(
+                                T.identifier('Object'),
+                                T.identifier('prototype')
+                            )
+                        ),
+                        T.memberExpression(
+                            T.callExpression(
+                                T.memberExpression(
+                                    T.identifier('Object'),
+                                    T.identifier('values')
+                                ),
+                                [
+                                    T.memberExpression(
+                                        T.callExpression(
+                                            T.identifier(this.varName),
+                                            []
+                                        ),
+                                        T.identifier(tempName)
+                                    )
+                                ]
+                            ),
+                            T.identifier('length')
+                        )
+                    )
+                )
+            )
+        );
+    }
+
     insertCounter(path, increment) {
         const T = this.types;
         if (path.isBlockStatement()) {
@@ -242,12 +363,8 @@ class VisitState {
         // get location for declaration
         switch (n.type) {
             case 'FunctionDeclaration':
-                /* istanbul ignore else: paranoid check */
-                if (n.id) {
-                    dloc = n.id.loc;
-                }
-                break;
             case 'FunctionExpression':
+                /* istanbul ignore else: paranoid check */
                 if (n.id) {
                     dloc = n.id.loc;
                 }
@@ -278,6 +395,14 @@ class VisitState {
     getBranchIncrement(branchName, loc) {
         const index = this.cov.addBranchPath(branchName, loc);
         return this.increase('b', branchName, index);
+    }
+
+    getBranchLogicIncrement(path, branchName, loc) {
+        const index = this.cov.addBranchPath(branchName, loc);
+        return [
+            this.increase('b', branchName, index),
+            this.increaseTrue('bT', branchName, index, path.node)
+        ];
     }
 
     insertBranchCounter(path, branchName, loc) {
@@ -424,7 +549,7 @@ function coverIfBranches(path) {
     if (ignoreElse) {
         this.setAttr(n.alternate, 'skip-all', true);
     } else {
-        this.insertBranchCounter(path.get('alternate'), branch, n.loc);
+        this.insertBranchCounter(path.get('alternate'), branch);
     }
 }
 
@@ -465,13 +590,34 @@ function coverLogicalExpression(path) {
     }
     const leaves = [];
     this.findLeaves(path.node, leaves);
-    const b = this.cov.newBranch('binary-expr', path.node.loc);
+    const b = this.cov.newBranch(
+        'binary-expr',
+        path.node.loc,
+        this.reportLogic
+    );
     for (let i = 0; i < leaves.length; i += 1) {
         const leaf = leaves[i];
         const hint = this.hintFor(leaf.node);
         if (hint === 'next') {
             continue;
         }
+
+        if (this.reportLogic) {
+            const increment = this.getBranchLogicIncrement(
+                leaf,
+                b,
+                leaf.node.loc
+            );
+            if (!increment[0]) {
+                continue;
+            }
+            leaf.parent[leaf.property] = T.sequenceExpression([
+                increment[0],
+                increment[1]
+            ]);
+            continue;
+        }
+
         const increment = this.getBranchIncrement(b, leaf.node.loc);
         if (!increment) {
             continue;
@@ -534,7 +680,8 @@ const globalTemplateVariable = template(`
         var global = GLOBAL_COVERAGE_SCOPE;
 `);
 // the template to insert at the top of the program.
-const coverageTemplate = template(`
+const coverageTemplate = template(
+    `
     function COVERAGE_FUNCTION () {
         var path = PATH;
         var hash = HASH;
@@ -547,13 +694,18 @@ const coverageTemplate = template(`
         }
 
         var actualCoverage = coverage[path];
-        COVERAGE_FUNCTION = function () {
-          return actualCoverage;
+        {
+            // @ts-ignore
+            COVERAGE_FUNCTION = function () {
+                return actualCoverage;
+            }
         }
 
         return actualCoverage;
     }
-`);
+`,
+    { preserveComments: true }
+);
 // the rewire plugin (and potentially other babel middleware)
 // may cause files to be instrumented twice, see:
 // https://github.com/istanbuljs/babel-plugin-istanbul/issues/94
@@ -582,10 +734,11 @@ function shouldIgnoreFile(programNode) {
  * `fileCoverage` - the file coverage object created for the source file.
  * `sourceMappingURL` - any source mapping URL found when processing the file.
  *
- * @param {Object} types - an instance of babel-types
- * @param {string} sourceFilePath - the path to source file
- * @param {Object} opts - additional options
+ * @param {Object} types - an instance of babel-types.
+ * @param {string} sourceFilePath - the path to source file.
+ * @param {Object} opts - additional options.
  * @param {string} [opts.coverageVariable=__coverage__] the global coverage variable name.
+ * @param {boolean} [opts.reportLogic=false] report boolean value of logical expressions.
  * @param {string} [opts.coverageGlobalScope=this] the global coverage variable scope.
  * @param {boolean} [opts.coverageGlobalScopeFunc=true] use an evaluated function to find coverageGlobalScope.
  * @param {Array} [opts.ignoreClassMethods=[]] names of methods to ignore by default on classes.
@@ -602,7 +755,8 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
         types,
         sourceFilePath,
         opts.inputSourceMap,
-        opts.ignoreClassMethods
+        opts.ignoreClassMethods,
+        opts.reportLogic
     );
     return {
         enter(path) {
@@ -677,4 +831,4 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
     };
 }
 
-export default programVisitor;
+module.exports = programVisitor;

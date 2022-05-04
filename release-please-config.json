@@ -1,0 +1,16 @@
+{
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "bootstrap-sha": "c1559005b3bb318da01f505740adb0e782aaf14e",
+  "packages": {
+    "packages/istanbul-lib-coverage": { "release-as": "" },
+    "packages/istanbul-lib-hook": { "release-as": "" },
+    "packages/istanbul-lib-instrument": { "release-as": "" },
+    "packages/istanbul-lib-report": { "release-as": "" },
+    "packages/istanbul-lib-source-maps": { "release-as": "" },
+    "packages/istanbul-reports": { "release-as": "" },
+    "packages/nyc-config-babel": { "release-as": "" },
+    "packages/nyc-config-hook-run-in-this-context": { "release-as": "" },
+    "packages/nyc-config-typescript": { "release-as": "" }
+  }
+}

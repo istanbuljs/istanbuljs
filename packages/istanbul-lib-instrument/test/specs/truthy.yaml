@@ -1,0 +1,163 @@
+---
+name: simple expression
+code: |
+  var x = args[0] > 0 && args[0] < 5;
+  output = x;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers line and one branch
+    args: [-1]
+    out: false
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0]}
+    branchesTrue: {'0': [0, 0]}
+    statements: {'0': 1, '1': 1}
+
+  - name: covers line, both branches, returns false
+    args: [10]
+    out: false
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 1]}
+    branchesTrue: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1}
+
+---
+name: complex expression
+code: |
+  var x = args[0] > 0 && (args[0] < 5 || args[0] > 10);
+  output = x;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers line and one branch
+    args: [-1]
+    out: false
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 0, 0]}
+    branchesTrue: {'0': [0, 0, 0]}
+    statements: {'0': 1, '1': 1}
+
+  - name: covers line, both branches, returns false
+    args: [9]
+    out: false
+    lines: {'1': 1, '2': 1}
+    branches: {'0': [1, 1, 1]}
+    branchesTrue: {'0': [1, 0, 0]}
+    statements: {'0': 1, '1': 1}
+
+---
+name: or with object expression (bug track)
+code: |
+  var x = args[0] ? { foo: 1 } : { foo: 2 };
+  output = x.foo;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers all branches correctly
+    args: [ false ]
+    out: 2
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [0, 1] }
+    branchesTrue: {}
+    statements: {'0': 1, '1': 1}
+
+---
+name: or with object expression (part 2)
+code: |
+  var x = args[0] || { foo: 2 };
+  output = x.foo;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers all branches correctly
+    args: [ false ]
+    out: 2
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1}
+
+---
+name: function evaluation
+code: |
+  let f = function() { return 42; };
+  var x = args || f();
+  output = x;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers truthy function evaluation
+    args: false
+    out: 42
+    lines: {'1': 1, '2': 1, '3': 1}
+    functions: { '0': 1 }
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1}
+
+---
+name: async
+code: |
+  var x = args[0] || await args[1];
+  output = x.foo;
+opts:
+  isAsync: true
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers all branches correctly
+    args: [ false, { foo: 2 } ]
+    out: 2
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1}
+
+---
+name: mutate and evaluate at the same time
+code: |
+  var x = args[0]++ || args[1];
+  output = args[0];
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: ends up with a single increment and not two
+    args: [ 0, { foo: 2 } ]
+    out: 1
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1}
+
+---
+name: empty object
+code: |
+  var x = args[0] || { };
+  output = true;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers all branches correctly
+    args: [ false ]
+    out: true
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 0]}
+    statements: {'0': 1, '1': 1}
+
+---
+name: empty array
+code: |
+  var x = args[0] || [];
+  output = true;
+instrumentOpts:
+  reportLogic: true
+tests:
+  - name: covers all branches correctly
+    args: [ false ]
+    out: true
+    lines: {'1': 1, '2': 1}
+    branches: { '0': [1, 1] }
+    branchesTrue: {'0': [0, 0]}
+    statements: {'0': 1, '1': 1}

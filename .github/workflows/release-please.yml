@@ -1,0 +1,37 @@
+on:
+  push:
+    branches:
+      - master
+name: release-please-submodule
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      paths_released: ${{ steps.manifest_release.outputs.paths_released }}
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: manifest_release
+        with:
+          command: manifest
+          token: ${{ secrets.GITHUB_TOKEN }}
+          default-branch: master
+  publish:
+    runs-on: ubuntu-latest
+    needs: release
+    strategy:
+      fail-fast: false
+      matrix:
+        path: ${{fromJson(needs.release.outputs.paths_released)}}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+          registry-url: 'https://external-dot-oss-automation.appspot.com/'
+      - name: publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_MONOREPO_TOKEN}}
+        run: |
+          cd ${{ matrix.path }}
+          npm install
+          npm publish --access=public

@@ -1,11 +1,11 @@
 /* globals describe, it */
 
-import * as path from 'path';
-import * as fs from 'fs';
-import * as yaml from 'js-yaml';
-import { assert } from 'chai';
-import * as verifier from './util/verifier';
-import * as guards from './util/guards';
+const path = require('path');
+const fs = require('fs');
+const yaml = require('js-yaml');
+const { assert } = require('chai');
+const verifier = require('./util/verifier');
+const guards = require('./util/guards');
 
 const clone = require('clone');
 
@@ -65,7 +65,7 @@ function generateTests(docs) {
                 });
             } else {
                 (doc.tests || []).forEach(t => {
-                    const fn = function() {
+                    const fn = async function() {
                         const genOnly = (doc.opts || {}).generateOnly;
                         const noCoverage = (doc.opts || {}).noCoverage;
                         const v = verifier.create(
@@ -80,7 +80,7 @@ function generateTests(docs) {
                         delete test.args;
                         delete test.out;
                         if (!genOnly && !noCoverage) {
-                            v.verify(args, out, test);
+                            await v.verify(args, out, test);
                         }
                         if (noCoverage) {
                             assert.equal(v.code, v.generatedCode);

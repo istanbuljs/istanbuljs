@@ -24,12 +24,13 @@ And write a `.nycrc` that looks like this:
 ```
 
 This package specifies the `cache`, `exclude`, and `extension` options for you - only override those if you absolutely must.
+If you are going to modify `include` or `exclude` and you have specified a separate `outDir` in `tsconfig.json`, make sure that it remains included so that source mapping is possible. 
 
 ## Running Tests
 
-If you're using `mocha`:
+### If you're using `mocha`
 
-### test/mocha.opts
+In `test/mocha.opts`:
 
 ```
 --require ts-node/register #replace with ts-node/register/transpile-only if you have custom types
@@ -38,11 +39,20 @@ If you're using `mocha`:
 <glob for your test files>
 ```
 
-Now setup the test scripts in your package.json like so (with the equivalent for your test runner):
+Now setup the test scripts in your `package.json` like so (with the equivalent for your test runner):
 
 ```json
 {
     "test": "tsc && nyc mocha"
+}
+```
+
+### If you're using Jasmine
+In `package.json`:
+
+```json
+{
+    "test": "tsc && nyc --require ts-node/register jasmine"
 }
 ```
 

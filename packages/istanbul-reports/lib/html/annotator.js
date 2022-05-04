@@ -86,10 +86,13 @@ function annotateFunctions(fileCoverage, structuredText) {
     Object.entries(fnStats).forEach(([fName, count]) => {
         const meta = fnMeta[fName];
         const type = count > 0 ? 'yes' : 'no';
-        const startCol = meta.decl.start.column;
-        let endCol = meta.decl.end.column + 1;
-        const startLine = meta.decl.start.line;
-        const endLine = meta.decl.end.line;
+        // Some versions of the instrumenter in the wild populate 'func'
+        // but not 'decl':
+        const decl = meta.decl || meta.loc;
+        const startCol = decl.start.column;
+        let endCol = decl.end.column + 1;
+        const startLine = decl.start.line;
+        const endLine = decl.end.line;
         const openSpan =
             lt +
             'span class="' +
@@ -160,6 +163,22 @@ function annotateBranches(fileCoverage, structuredText) {
                     title('branch not covered') +
                     gt;
                 closeSpan = lt + '/span' + gt;
+
+                // If the branch is an implicit else from an if statement,
+                // then the coverage report won't show a statistic.
+                // Therefore, the previous branch will be used to report that
+                // there is no coverage on that implicit branch.
+                if (
+                    count === 0 &&
+                    startLine === undefined &&
+                    branchMeta[branchName].type === 'if'
+                ) {
+                    const prevMeta = metaArray[i - 1];
+                    startCol = prevMeta.start.column;
+                    endCol = prevMeta.end.column + 1;
+                    startLine = prevMeta.start.line;
+                    endLine = prevMeta.end.line;
+                }
 
                 if (count === 0 && structuredText[startLine]) {
                     //skip branches taken
