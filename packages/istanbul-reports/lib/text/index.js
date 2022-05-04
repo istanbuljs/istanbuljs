@@ -42,7 +42,23 @@ function fill(str, width, right, tabs) {
             fillStr = '...';
             const length = remaining - fillStr.length;
 
-            str = str.substring(strlen - length);
+            if (tabs !== undefined) {
+                str = str.substring(strlen - length);
+            } else {
+                const ranges = str.split(' ')
+                while(ranges.shift()) {
+                  str = ranges.join(' ');
+
+                  if (str.length < length) {
+                      break;
+                  }
+                }
+
+                if (str.length) {
+                    fillStr = fillStr + ' ';
+                }
+            }
+
             right = true;
         }
         fmtStr = right ? fillStr + str : str + fillStr;
