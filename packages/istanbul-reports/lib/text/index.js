@@ -102,7 +102,7 @@ function nodeMissing(node) {
             return `${range[0]}-${range[1]}`;
         });
 
-    return [].concat(...ranges).join(',');
+    return [].concat(...ranges).join(' ');
 }
 
 function nodeName(node) {
