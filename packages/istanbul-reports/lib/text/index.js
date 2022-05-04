@@ -62,8 +62,10 @@ function splitlastRange(ranges) {
     const {length} = ranges;
     if (!length) return
 
-    const [start, end] = ranges[length - 1];
-    if (!end || start + 1 < end) return
+    const lastRange = ranges[length - 1];
+    if(lastRange.length !== 2) return
+
+    const [start, end] = lastRange;
 
     ranges.pop();
     ranges.push([start], [end]);
@@ -102,7 +104,7 @@ function nodeMissing(node) {
                 if (newRange) {
                     acum.push([line]);
                     newRange = false;
-                } else acum[acum.length - 1][1] = line;
+                } else acum[acum.length - 1].push(line);
             }
 
             return acum;
@@ -116,7 +118,7 @@ function nodeMissing(node) {
 
             if (length === 1) return range[0];
 
-            return `${range[0]}-${range[1]}`;
+            return `${range[0]}-${range[range.length - 1]}`;
         });
 
     return [].concat(...ranges).join(' ');
