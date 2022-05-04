@@ -58,6 +58,17 @@ function formatPct(pct, width) {
     return fill(pct, width || PCT_COLS, true, 0);
 }
 
+function splitlastRange(ranges) {
+    const {length} = ranges;
+    if (!length) return
+
+    const [start, end] = ranges[length - 1];
+    if (!end || start + 1 < end) return
+
+    ranges.pop();
+    ranges.push([start], [end]);
+}
+
 function nodeMissing(node) {
     if (node.isSummary()) {
         return '';
@@ -81,10 +92,12 @@ function nodeMissing(node) {
     }
 
     let newRange = true;
-    const ranges = coveredLines
+    let ranges = coveredLines
         .reduce((acum, [line, hit]) => {
-            if (hit) newRange = true;
-            else {
+            if (hit) {
+                splitlastRange(acum);
+                newRange = true;
+            } else {
                 line = parseInt(line);
                 if (newRange) {
                     acum.push([line]);
@@ -94,6 +107,10 @@ function nodeMissing(node) {
 
             return acum;
         }, [])
+
+    splitlastRange(ranges);
+
+    ranges = ranges
         .map(range => {
             const { length } = range;
 
