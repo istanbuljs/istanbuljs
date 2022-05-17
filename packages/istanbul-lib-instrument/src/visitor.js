@@ -632,42 +632,42 @@ function coverLogicalExpression(path) {
 const codeVisitor = {
     ArrowFunctionExpression: entries(convertArrowExpression, coverFunction),
     AssignmentPattern: entries(coverAssignmentPattern),
-    BlockStatement: entries(), // ignore processing only
+    // BlockStatement: entries(), // ignore processing only
     ExportDefaultDeclaration: entries(), // ignore processing only
     ExportNamedDeclaration: entries(), // ignore processing only
     ClassMethod: entries(coverFunction),
     ClassDeclaration: entries(parenthesizedExpressionProp('superClass')),
-    ClassProperty: entries(coverClassPropDeclarator),
-    ClassPrivateProperty: entries(coverClassPropDeclarator),
+    // ClassProperty: entries(coverClassPropDeclarator),
+    // ClassPrivateProperty: entries(coverClassPropDeclarator),
     ObjectMethod: entries(coverFunction),
-    ExpressionStatement: entries(coverStatement),
-    BreakStatement: entries(coverStatement),
-    ContinueStatement: entries(coverStatement),
-    DebuggerStatement: entries(coverStatement),
-    ReturnStatement: entries(coverStatement),
-    ThrowStatement: entries(coverStatement),
-    TryStatement: entries(coverStatement),
-    VariableDeclaration: entries(), // ignore processing only
-    VariableDeclarator: entries(coverVariableDeclarator),
-    IfStatement: entries(
-        blockProp('consequent'),
-        blockProp('alternate'),
-        coverStatement,
-        coverIfBranches
-    ),
-    ForStatement: entries(blockProp('body'), coverStatement),
-    ForInStatement: entries(blockProp('body'), coverStatement),
-    ForOfStatement: entries(blockProp('body'), coverStatement),
-    WhileStatement: entries(blockProp('body'), coverStatement),
-    DoWhileStatement: entries(blockProp('body'), coverStatement),
-    SwitchStatement: entries(createSwitchBranch, coverStatement),
-    SwitchCase: entries(coverSwitchCase),
-    WithStatement: entries(blockProp('body'), coverStatement),
+    // ExpressionStatement: entries(coverStatement),
+    // BreakStatement: entries(coverStatement),
+    // ContinueStatement: entries(coverStatement),
+    // DebuggerStatement: entries(coverStatement),
+    // ReturnStatement: entries(coverStatement),
+    // ThrowStatement: entries(coverStatement),
+    // TryStatement: entries(coverStatement),
+    // VariableDeclaration: entries(), // ignore processing only
+    // VariableDeclarator: entries(coverVariableDeclarator),
+    // IfStatement: entries(
+    //     blockProp('consequent'),
+    //     blockProp('alternate'),
+    //     coverStatement,
+    //     coverIfBranches
+    // ),
+    // ForStatement: entries(blockProp('body'), coverStatement),
+    // ForInStatement: entries(blockProp('body'), coverStatement),
+    // ForOfStatement: entries(blockProp('body'), coverStatement),
+    // WhileStatement: entries(blockProp('body'), coverStatement),
+    // DoWhileStatement: entries(blockProp('body'), coverStatement),
+    // SwitchStatement: entries(createSwitchBranch, coverStatement),
+    // SwitchCase: entries(coverSwitchCase),
+    // WithStatement: entries(blockProp('body'), coverStatement),
     FunctionDeclaration: entries(coverFunction),
     FunctionExpression: entries(coverFunction),
-    LabeledStatement: entries(coverStatement),
-    ConditionalExpression: entries(coverTernary),
-    LogicalExpression: entries(coverLogicalExpression)
+    // LabeledStatement: entries(coverStatement),
+    // ConditionalExpression: entries(coverTernary),
+    // LogicalExpression: entries(coverLogicalExpression)
 };
 const globalTemplateAlteredFunction = template(`
         var Function = (function(){}).constructor;
