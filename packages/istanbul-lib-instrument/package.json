@@ -11,7 +11,7 @@
     "test": "nyc mocha"
   },
   "dependencies": {
-    "@babel/core": "^7.12.3",
+    "@babel/core": "^7.18.0",
     "@babel/parser": "^7.14.7",
     "@istanbuljs/schema": "^0.1.2",
     "istanbul-lib-coverage": "^3.2.0",
