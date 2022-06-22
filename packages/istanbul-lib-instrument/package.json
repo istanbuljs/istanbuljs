@@ -1,6 +1,6 @@
 {
   "name": "local-istanbul-lib-instrument",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "Core istanbul API for JS code coverage",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "src/index.js",
@@ -29,15 +29,6 @@
     "nyc": "^15.1.0"
   },
   "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/istanbuljs/istanbuljs/issues"
-  },
-  "homepage": "https://istanbul.js.org/",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
-    "directory": "packages/istanbul-lib-instrument"
-  },
   "keywords": [
     "coverage",
     "istanbul",
