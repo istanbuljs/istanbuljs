@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.4...istanbul-reports-v3.1.5) (2022-07-13)
+
+
+### Bug Fixes
+
+* `new Date()` such that it works with MockDate library ([#688](https://github.com/istanbuljs/istanbuljs/issues/688)) ([85905f9](https://github.com/istanbuljs/istanbuljs/commit/85905f989c9480e63ad534c6ff8b1a12dae278eb))
+* add placeholder to fix Implicit Else ([#679](https://github.com/istanbuljs/istanbuljs/issues/679)) ([0516f51](https://github.com/istanbuljs/istanbuljs/commit/0516f519575ee28f77ebf1e9556ac294d78904ea))
+
 ### [3.1.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.3...istanbul-reports-v3.1.4) (2022-01-17)
 
 
