@@ -142,6 +142,23 @@ function annotateBranches(fileCoverage, structuredText) {
         // only highlight if partial branches are missing or if there is a
         // single uncovered branch.
         if (sumCount > 0 || (sumCount === 0 && branchArray.length === 1)) {
+            // Need to recover the metaArray placeholder item to count an implicit else
+            if (
+                // Check if the branch is a conditional if branch.
+                branchMeta[branchName].type === 'if' &&
+                // Check if the branch has an implicit else.
+                branchArray.length === 2 &&
+                // Check if the implicit else branch is unnacounted for.
+                metaArray.length === 1 &&
+                // Check if the implicit else branch is uncovered.
+                branchArray[1] === 0
+            ) {
+                metaArray[1] = {
+                    start: {},
+                    end: {}
+                };
+            }
+
             for (
                 i = 0;
                 i < branchArray.length && i < metaArray.length;
