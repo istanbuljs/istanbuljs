@@ -25,6 +25,8 @@ const readInitialCoverage = require('./read-coverage');
  *     is found in the original code. This function is called with the source file name and the source map URL.
  * @param {boolean} [opts.debug=false] - turn debugging on.
  * @param {array} [opts.parserPlugins] - set babel parser plugins, see @istanbuljs/schema for defaults.
+ * @param {string} [opts.coverageGlobalScope=this] the global coverage variable scope.
+ * @param {boolean} [opts.coverageGlobalScopeFunc=true] use an evaluated function to find coverageGlobalScope.
  */
 class Instrumenter {
     constructor(opts = {}) {

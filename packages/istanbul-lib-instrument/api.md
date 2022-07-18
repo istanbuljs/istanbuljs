@@ -47,6 +47,8 @@ instead.
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
     -   `opts.debug` **[boolean][15]** turn debugging on. (optional, default `false`)
     -   `opts.parserPlugins` **[array][16]?** set babel parser plugins, see @istanbuljs/schema for defaults.
+    -   `opts.coverageGlobalScope` **[string][14]** the global coverage variable scope. (optional, default `this`)
+    -   `opts.coverageGlobalScopeFunc` **[boolean][15]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)
 
 ### instrumentSync
 
