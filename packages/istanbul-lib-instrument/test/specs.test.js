@@ -18,6 +18,12 @@ const files = fs.readdirSync(dir).filter(f => {
     return f.match(/\.yaml$/) && match;
 });
 
+class NonPojo {
+    constructor(props) {
+        Object.assign(this, props);
+    }
+}
+
 function loadDocs() {
     const docs = [];
     files.forEach(f => {
@@ -68,6 +74,11 @@ function generateTests(docs) {
                     const fn = async function() {
                         const genOnly = (doc.opts || {}).generateOnly;
                         const noCoverage = (doc.opts || {}).noCoverage;
+                        if (doc.inputSourceMapClass) {
+                            doc.inputSourceMap = new NonPojo(
+                                doc.inputSourceMap
+                            );
+                        }
                         const v = verifier.create(
                             doc.code,
                             doc.opts || {},

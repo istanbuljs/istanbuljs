@@ -785,6 +785,15 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                 .update(JSON.stringify(coverageData))
                 .digest('hex');
             coverageData.hash = hash;
+            if (
+                coverageData.inputSourceMap &&
+                Object.getPrototypeOf(coverageData.inputSourceMap) !==
+                    Object.prototype
+            ) {
+                coverageData.inputSourceMap = {
+                    ...coverageData.inputSourceMap
+                };
+            }
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
             delete coverageData.hash;

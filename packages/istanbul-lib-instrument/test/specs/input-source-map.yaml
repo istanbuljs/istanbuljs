@@ -20,3 +20,16 @@ tests:
     out: "test"
     lines: { '1': 1 }
     statements: { '0': 1 }
+---
+name: non-pojo source map
+code: |
+  output = "test"
+inputSourceMap: { file: "test.js", mappings: "", names: [], sourceRoot: undefined, sources: [ "test.js" ], sourcesContent: [ 'output = "test"' ], version: 3 }
+inputSourceMapClass: true
+tests:
+  - name: sets the input source map
+    args: []
+    out: "test"
+    lines: { '1': 1 }
+    statements: { '0': 1 }
+    inputSourceMap: { file: "test.js", mappings: "", names: [], sourceRoot: undefined, sources: [ "test.js" ], sourcesContent: [ 'output = "test"' ], version: 3 }
