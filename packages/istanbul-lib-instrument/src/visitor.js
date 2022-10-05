@@ -790,11 +790,6 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                 Object.getPrototypeOf(coverageData.inputSourceMap) !==
                     Object.prototype
             ) {
-                console.warn(
-                    'WARNING: istanbul-lib-instrument expects the source map to be a plain object. Instead, an object of class "' +
-                        coverageData.inputSourceMap.constructor.name +
-                        '" was passed.'
-                );
                 coverageData.inputSourceMap = {
                     ...coverageData.inputSourceMap
                 };
