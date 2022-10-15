@@ -242,11 +242,11 @@ function annotateBranches(fileCoverage, structuredText) {
     });
 }
 
-function annotateSourceCode(fileCoverage, sourceStore) {
+async function annotateSourceCode(fileCoverage, sourceStore) {
     let codeArray;
     let lineCoverageArray;
     try {
-        const sourceText = sourceStore.getSource(fileCoverage.path);
+        const sourceText = await sourceStore.getSource(fileCoverage.path);
         const code = sourceText.split(/(?:\r?\n)|\r/);
         let count = 0;
         const structured = code.map(str => {
