@@ -119,7 +119,7 @@ class CloverReport extends ReportBase {
     onDetail(node) {
         const fileCoverage = node.getFileCoverage();
         const metrics = node.getCoverageSummary();
-        const branchByLine = fileCoverage.getBranchCoverageByLine();
+        const branchDetails = getBranchDetails(fileCoverage);
 
         this.xml.openTag('file', {
             name: asClassName(node),
@@ -135,12 +135,12 @@ class CloverReport extends ReportBase {
                 count,
                 type: 'stmt'
             };
-            const branchDetail = branchByLine[k];
+            const branchDetail = branchDetails[k];
 
-            if (branchDetail) {
+            if (branchDetail && branchDetail.type === 'if') {
                 attrs.type = 'cond';
-                attrs.truecount = branchDetail.covered;
-                attrs.falsecount = branchDetail.total - branchDetail.covered;
+                attrs.truecount = branchDetail.states[0];
+                attrs.falsecount = branchDetail.states[1];
             }
             this.xml.inlineTag('line', attrs);
         });
@@ -159,6 +159,22 @@ function asJavaPackage(node) {
 
 function asClassName(node) {
     return node.getRelativeName().replace(/.*[\\/]/, '');
+}
+
+function getBranchDetails(fileCoverage) {
+    const branchMeta = fileCoverage.branchMap;
+    const branchStats = fileCoverage.b;
+
+    const branchDetails = {};
+
+    Object.entries(branchMeta).forEach(([index, branch]) => {
+        branchDetails[branch.loc.start.line] = {
+            type: branch.type,
+            states: branchStats[index]
+        };
+    });
+
+    return branchDetails;
 }
 
 module.exports = CloverReport;
