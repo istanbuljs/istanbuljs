@@ -31,7 +31,7 @@ _You're probably actually looking for one of the following repos:_
 
 Contributing to the packages contained in this repo is easy:
 
-1. after checking out, run `npm install` (this will run the lerna build).
+1. after checking out, run `npm install` (you need **npm>=7**, since this monorepo is using [npm workspaces](https://docs.npmjs.com/cli/v8/using-npm/workspaces)).
 2. to run all tests, simply run `npm test` in the root directory.
 3. to run tests for a single package `cd package/:name` and run
    `npm test` within the package's folder.
