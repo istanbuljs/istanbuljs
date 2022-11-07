@@ -137,11 +137,33 @@ class CloverReport extends ReportBase {
             };
             const branchDetail = branchDetails[k];
 
-            if (branchDetail && branchDetail.type === 'if') {
-                attrs.type = 'cond';
+            if (!branchDetail || branchDetail.type === 'switch') {
+                return this.xml.inlineTag('line', attrs);
+            }
+
+            attrs.type = 'cond';
+            attrs.truecount = 0;
+            attrs.falsecount = 0;
+
+            if (count === 0) {
+                return this.xml.inlineTag('line', attrs);
+            }
+
+            if (['if', 'cond-expr'].includes(branchDetail.type)) {
                 attrs.truecount = branchDetail.states[0];
                 attrs.falsecount = branchDetail.states[1];
+            } else if (
+                ['binary-expr', 'default-arg'].includes(branchDetail.type)
+            ) {
+                if (branchDetail.states.every(state => state > 0)) {
+                    attrs.truecount = 1;
+                    attrs.falsecount = 1;
+                } else {
+                    attrs.truecount = 1;
+                    attrs.falsecount = 0;
+                }
             }
+
             this.xml.inlineTag('line', attrs);
         });
 
