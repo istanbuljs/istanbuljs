@@ -149,14 +149,18 @@ class CloverReport extends ReportBase {
                 return this.xml.inlineTag('line', attrs);
             }
 
+            // `if` and `cond-expr` has binary result, just apply it
             if (['if', 'cond-expr'].includes(branchDetail.type)) {
                 attrs.truecount = branchDetail.states[0];
                 attrs.falsecount = branchDetail.states[1];
             } else if (
+                // statements of these types has no binary result
                 ['switch', 'binary-expr', 'default-arg'].includes(
                     branchDetail.type
                 )
             ) {
+                // assigning hardcode values to make 3rd-party parsers
+                // understand if condition was covered or not
                 if (branchDetail.states.every(state => state > 0)) {
                     attrs.truecount = 1;
                     attrs.falsecount = 1;
