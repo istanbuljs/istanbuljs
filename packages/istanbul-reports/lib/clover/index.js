@@ -137,7 +137,7 @@ class CloverReport extends ReportBase {
             };
             const branchDetail = branchDetails[k];
 
-            if (!branchDetail || branchDetail.type === 'switch') {
+            if (!branchDetail) {
                 return this.xml.inlineTag('line', attrs);
             }
 
@@ -153,7 +153,9 @@ class CloverReport extends ReportBase {
                 attrs.truecount = branchDetail.states[0];
                 attrs.falsecount = branchDetail.states[1];
             } else if (
-                ['binary-expr', 'default-arg'].includes(branchDetail.type)
+                ['switch', 'binary-expr', 'default-arg'].includes(
+                    branchDetail.type
+                )
             ) {
                 if (branchDetail.states.every(state => state > 0)) {
                     attrs.truecount = 1;
