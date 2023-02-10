@@ -217,7 +217,7 @@ class FileCoverage {
         this.data.statementMap = map;
 
         const keyFromLocProp = x => keyFromLoc(x.loc);
-        const keyFromLocationsProp = x => keyFromLoc(x.locations[0]);
+        const keyFromLocationsProp = x => x.locations.map(keyFromLoc).join(';');
 
         [hits, map] = mergeProp(
             this.f,
