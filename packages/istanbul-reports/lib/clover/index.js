@@ -113,7 +113,7 @@ class CloverReport extends ReportBase {
         if (node.isRoot()) {
             return;
         }
-        this.xml.closeTag('package');
+        this.xml.closeTag(this.xml.stack[this.xml.stack.length - 1]);
     }
 
     onDetail(node) {
