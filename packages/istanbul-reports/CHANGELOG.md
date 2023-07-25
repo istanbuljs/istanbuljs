@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.6](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.5...istanbul-reports-v3.1.6) (2023-07-25)
+
+
+### Bug Fixes
+
+* **clover:** always close last open tag ([07c6ea6](https://github.com/istanbuljs/istanbuljs/commit/07c6ea6537261a19b117702b7362dee0bdc001ac))
+
 ## [3.1.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.4...istanbul-reports-v3.1.5) (2022-07-13)
 
 
