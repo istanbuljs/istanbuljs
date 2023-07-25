@@ -11,7 +11,6 @@ class CloverReport extends ReportBase {
 
         this.cw = null;
         this.xml = null;
-        this.projectRoot = opts.projectRoot || process.cwd();
         this.file = opts.file || 'clover.xml';
     }
 
