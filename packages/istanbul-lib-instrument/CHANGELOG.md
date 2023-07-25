@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.2.1...istanbul-lib-instrument-v6.0.0) (2023-07-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** minimum Node version bumped to 10.
+
+### Bug Fixes
+
+* **deps:** upgrade semver CVE-2022-25883 ([#731](https://github.com/istanbuljs/istanbuljs/issues/731)) ([d8399f3](https://github.com/istanbuljs/istanbuljs/commit/d8399f39eab6767a6fca5ef3b1b458a14d48775a))
+
 ## [5.2.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.2.0...istanbul-lib-instrument-v5.2.1) (2022-10-05)
 
 
