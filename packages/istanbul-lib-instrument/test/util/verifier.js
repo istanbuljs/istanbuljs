@@ -26,7 +26,10 @@ function annotatedCode(code) {
 }
 
 function getGlobalObject() {
-    return new Function('return this')();
+  return typeof globalThis === 'object' ? globalThis :
+    typeof window === 'object' ? window :
+      typeof self === 'object' ? self :
+        new Function('return this')();
 }
 
 class Verifier {
