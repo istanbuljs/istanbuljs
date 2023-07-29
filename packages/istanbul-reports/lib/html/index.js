@@ -257,7 +257,7 @@ function fixPct(metrics) {
 
 class HtmlReport extends ReportBase {
     constructor(opts) {
-        super();
+        super({ summarizer: opts.summarizer });
 
         this.verbose = opts.verbose;
         this.linkMapper = opts.linkMapper || standardLinkMapper;

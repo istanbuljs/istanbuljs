@@ -114,8 +114,12 @@ class Context {
         return new tree.Visitor(partialVisitor);
     }
 
-    getTree(name = 'defaultSummarizer') {
-        return this._summarizerFactory[name];
+    getTree(nameOrFunction = 'defaultSummarizer') {
+        if (typeof nameOrFunction === 'function') {
+            return this._summarizerFactory.callSummarizer(nameOrFunction);
+        } else {
+            return this._summarizerFactory[nameOrFunction];
+        }
     }
 }
 
