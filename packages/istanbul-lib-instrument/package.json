@@ -3,9 +3,9 @@
   "version": "3.3.0",
   "description": "Core istanbul API for JS code coverage",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
     "release": "babel src --out-dir dist && documentation build -f md -o api.md src",
