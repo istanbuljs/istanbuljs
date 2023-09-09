@@ -3,7 +3,7 @@
 const path = require('path');
 const assert = require('chai').assert;
 const createMap = require('istanbul-lib-coverage').createCoverageMap;
-const { SourceMapConsumer } = require('source-map');
+const { TraceMap } = require('@jridgewell/trace-mapping');
 const { SourceMapTransformer } = require('../lib/transformer');
 
 const coverageData = {
@@ -84,7 +84,7 @@ describe('transformer', () => {
         coverageMap.addFileCoverage(testDataSlash.coverageData);
 
         const transformer = new SourceMapTransformer(
-            () => new SourceMapConsumer(testDataSlash.sourceMap)
+            () => new TraceMap(testDataSlash.sourceMap)
         );
         const mapped = await transformer.transform(coverageMap);
 
@@ -111,7 +111,7 @@ describe('transformer', () => {
 
         const transformer = new SourceMapTransformer(file =>
             file === testDataSlash.coverageData.path
-                ? new SourceMapConsumer(testDataSlash.sourceMap)
+                ? new TraceMap(testDataSlash.sourceMap)
                 : undefined
         );
         const mapped = await transformer.transform(coverageMap);

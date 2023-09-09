@@ -7,7 +7,7 @@
 const path = require('path');
 const fs = require('fs');
 const debug = require('debug')('istanbuljs');
-const { SourceMapConsumer } = require('source-map');
+const { TraceMap, sourceContentFor } = require('@jridgewell/trace-mapping');
 const pathutils = require('./pathutils');
 const { SourceMapTransformer } = require('./transformer');
 
@@ -190,15 +190,17 @@ class MapStore {
                         return null;
                     }
 
-                    const smc = new SourceMapConsumer(obj);
+                    const smc = new TraceMap(obj);
                     smc.sources.forEach(s => {
-                        const content = smc.sourceContentFor(s);
-                        if (content) {
-                            const sourceFilePath = pathutils.relativeTo(
-                                s,
-                                filePath
-                            );
-                            this.sourceStore.set(sourceFilePath, content);
+                        if (s) {
+                            const content = sourceContentFor(smc, s);
+                            if (content) {
+                                const sourceFilePath = pathutils.relativeTo(
+                                    s,
+                                    filePath
+                                );
+                                this.sourceStore.set(sourceFilePath, content);
+                            }
                         }
                     });
 
