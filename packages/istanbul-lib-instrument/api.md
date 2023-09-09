@@ -61,9 +61,9 @@ is supported. To instrument ES6 modules, make sure that you set the
 
 -   `code` **[string][14]** the code to instrument
 -   `filename` **[string][14]** the filename against which to track coverage.
--   `inputSourceMap` **[object][13]?** the source map that maps the not instrumented code back to it's original form.
+-   `inputSourceMap` **[Object][13]?** the source map that maps the not instrumented code back to it's original form.
     Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
-    coverage to the untranspiled source.
+    coverage to the untranspiled source. Must be a plain object.
 
 Returns **[string][14]** the instrumented code.
 
@@ -80,7 +80,7 @@ the callback will be called in the same process tick and is not asynchronous.
 -   `callback` **[Function][17]** the callback
 -   `inputSourceMap` **[Object][13]** the source map that maps the not instrumented code back to it's original form.
     Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
-    coverage to the untranspiled source.
+    coverage to the untranspiled source. Must be a plain object.
 
 ### lastFileCoverage
 
