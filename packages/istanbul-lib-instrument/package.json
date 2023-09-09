@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-instrument",
-  "version": "5.2.1",
+  "version": "6.0.0",
   "description": "Core istanbul API for JS code coverage",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "src/index.js",
@@ -15,7 +15,7 @@
     "@babel/parser": "^7.14.7",
     "@istanbuljs/schema": "^0.1.2",
     "istanbul-lib-coverage": "^3.2.0",
-    "semver": "^6.3.0"
+    "semver": "^7.5.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
@@ -45,6 +45,6 @@
     "instrumentation"
   ],
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   }
 }

@@ -48,6 +48,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.0.0](https://github.com/istanbuljs/istanbuljs/compare/nyc-config-hook-run-in-this-context-v1.0.0...nyc-config-hook-run-in-this-context-v2.0.0) (2023-07-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** minimum Node version bumped to 10.
+
+### Bug Fixes
+
+* **deps:** upgrade semver CVE-2022-25883 ([#731](https://github.com/istanbuljs/istanbuljs/issues/731)) ([d8399f3](https://github.com/istanbuljs/istanbuljs/commit/d8399f39eab6767a6fca5ef3b1b458a14d48775a))
+
 ## [0.1.1](https://github.com/istanbuljs/istanbuljs/compare/@istanbuljs/nyc-config-hook-run-in-this-context@0.1.0...@istanbuljs/nyc-config-hook-run-in-this-context@0.1.1) (2019-04-24)
 
 **Note:** Version bump only for package @istanbuljs/nyc-config-hook-run-in-this-context
