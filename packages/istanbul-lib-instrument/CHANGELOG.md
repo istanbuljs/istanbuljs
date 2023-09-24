@@ -357,7 +357,7 @@ plugin.  Add it to get tests working again, commit updated api.md.
 
 ### Bug Fixes
 
-* parenthesize superClass on non-idetifier case ([#158](https://github.com/istanbuljs/istanbuljs/issues/158)) ([6202c88](https://github.com/istanbuljs/istanbuljs/commit/6202c88))
+* parenthesize superClass on non-identifier case ([#158](https://github.com/istanbuljs/istanbuljs/issues/158)) ([6202c88](https://github.com/istanbuljs/istanbuljs/commit/6202c88))
 
 
 ### Chores
