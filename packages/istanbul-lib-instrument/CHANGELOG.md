@@ -378,7 +378,7 @@ plugin.  Add it to get tests working again, commit updated api.md.
 
 ### Bug Fixes
 
-* default value for ignorelassMethods ([#151](https://github.com/istanbuljs/istanbuljs/issues/151)) ([5dd88e8](https://github.com/istanbuljs/istanbuljs/commit/5dd88e8))
+* default value for ignoreClassMethods ([#151](https://github.com/istanbuljs/istanbuljs/issues/151)) ([5dd88e8](https://github.com/istanbuljs/istanbuljs/commit/5dd88e8))
 
 
 
