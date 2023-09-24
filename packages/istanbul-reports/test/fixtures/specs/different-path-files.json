@@ -1,5 +1,5 @@
 {
-    "title": "different path files in seperate packages",
+    "title": "different path files in separate packages",
     "opts": {
       "maxCols": 80,
       "projectRoot": "/Users/jschmidle/oss/istanbuljs-test/"
