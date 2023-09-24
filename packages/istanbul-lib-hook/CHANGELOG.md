@@ -113,7 +113,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-* the closure provied to hookRequire, hookRunInThisContext, etc., is now passed an object with a filename member, rather than a string representing filename.
+* the closure provided to hookRequire, hookRunInThisContext, etc., is now passed an object with a filename member, rather than a string representing filename.
 
 
 
