@@ -124,7 +124,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* pass correct args to tranformer ([#153](https://github.com/istanbuljs/istanbuljs/issues/153)) ([#154](https://github.com/istanbuljs/istanbuljs/issues/154)) ([2b2250f](https://github.com/istanbuljs/istanbuljs/commit/2b2250f))
+* pass correct args to transformer ([#153](https://github.com/istanbuljs/istanbuljs/issues/153)) ([#154](https://github.com/istanbuljs/istanbuljs/issues/154)) ([2b2250f](https://github.com/istanbuljs/istanbuljs/commit/2b2250f))
 
 
 
