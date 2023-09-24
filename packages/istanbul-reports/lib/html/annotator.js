@@ -207,7 +207,7 @@ function annotateBranches(fileCoverage, structuredText) {
                     text = structuredText[startLine].text;
                     if (branchMeta[branchName].type === 'if') {
                         // 'if' is a special case
-                        // since the else branch might not be visible, being non-existent
+                        // since the else branch might not be visible, being nonexistent
                         text.insertAt(
                             startCol,
                             lt +
