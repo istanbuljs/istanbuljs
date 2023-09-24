@@ -1,5 +1,5 @@
 {
-    "title": "coalescense ranges of missing lines",
+    "title": "coalesce ranges of missing lines",
     "opts": {
         "maxCols": 80,
         "projectRoot": "/"
