@@ -136,7 +136,7 @@ class VisitState {
     }
 
     // all the generic stuff on exit of a node,
-    // including reseting ignores and custom node attrs
+    // including resetting ignores and custom node attrs
     onExit(path) {
         // restore ignore status, if needed
         if (path.node === this.nextIgnore) {

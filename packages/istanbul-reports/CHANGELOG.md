@@ -256,7 +256,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* update dependendencies due to vulnerabilities ([#294](https://github.com/istanbuljs/istanbuljs/issues/294)) ([4c14fed](https://github.com/istanbuljs/istanbuljs/commit/4c14fed))
+* update dependencies due to vulnerabilities ([#294](https://github.com/istanbuljs/istanbuljs/issues/294)) ([4c14fed](https://github.com/istanbuljs/istanbuljs/commit/4c14fed))
 
 
 
