@@ -148,7 +148,7 @@ function annotateBranches(fileCoverage, structuredText) {
                 branchMeta[branchName].type === 'if' &&
                 // Check if the branch has an implicit else.
                 branchArray.length === 2 &&
-                // Check if the implicit else branch is unnacounted for.
+                // Check if the implicit else branch is unaccounted for.
                 metaArray.length === 1 &&
                 // Check if the implicit else branch is uncovered.
                 branchArray[1] === 0
@@ -207,7 +207,7 @@ function annotateBranches(fileCoverage, structuredText) {
                     text = structuredText[startLine].text;
                     if (branchMeta[branchName].type === 'if') {
                         // 'if' is a special case
-                        // since the else branch might not be visible, being non-existent
+                        // since the else branch might not be visible, being nonexistent
                         text.insertAt(
                             startCol,
                             lt +
