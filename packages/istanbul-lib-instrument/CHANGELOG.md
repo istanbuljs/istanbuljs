@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v6.0.0...istanbul-lib-instrument-v6.0.1) (2023-10-04)
+
+
+### Bug Fixes
+
+* globalThis with CSP compatibility ([#734](https://github.com/istanbuljs/istanbuljs/issues/734)) ([8b1baa8](https://github.com/istanbuljs/istanbuljs/commit/8b1baa8f45b6457ae2b467ddc5d4b6d9d9ea8690))
+* support ESM when reading coverage ([#692](https://github.com/istanbuljs/istanbuljs/issues/692)) ([fc509cc](https://github.com/istanbuljs/istanbuljs/commit/fc509ccdc8bf5215672aa6f00551dec2e512124f))
+
 ## [6.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.2.1...istanbul-lib-instrument-v6.0.0) (2023-07-25)
 
 
