@@ -60,7 +60,9 @@ class CoberturaReport extends ReportBase {
             return;
         }
         this.xml.openTag('package', {
-            name: node.isRoot() ? 'main' : escape(asJavaPackage(node)),
+            name: node.isRoot()
+                ? 'main'
+                : escape(asJavaPackage(node, this.projectRoot)),
             'line-rate': metrics.lines.pct / 100.0,
             'branch-rate': metrics.branches.pct / 100.0
         });
@@ -90,7 +92,8 @@ class CoberturaReport extends ReportBase {
 
         this.xml.openTag('methods');
         const fnMap = fileCoverage.fnMap;
-        Object.entries(fnMap).forEach(([k, { name, decl }]) => {
+        Object.entries(fnMap).forEach(([k, item]) => {
+            const { name, decl } = item;
             const hits = fileCoverage.f[k];
             this.xml.openTag('method', {
                 name: escape(name),
@@ -136,9 +139,10 @@ class CoberturaReport extends ReportBase {
     }
 }
 
-function asJavaPackage(node) {
-    return node
-        .getRelativeName()
+function asJavaPackage(node, projectRoot) {
+    return node.path
+        .toString()
+        .replace(projectRoot, '')
         .replace(/\//g, '.')
         .replace(/\\/g, '.')
         .replace(/\.$/, '');

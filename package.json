@@ -4,7 +4,7 @@
   "private": true,
   "description": "monorepo containing the various nuts and bolts that facilitate istanbul.js test instrumentation",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc mocha --timeout 30000 packages/*/test{,/*}.js",
+    "test": "cross-env NODE_ENV=test FORCE_COLOR=1 nyc mocha --timeout 30000 packages/{istanbul-reports/test/*/*,*/test/*}.js",
     "posttest": "eslint .",
     "fix": "eslint . --fix",
     "postinstall": "bash scripts/install.sh"

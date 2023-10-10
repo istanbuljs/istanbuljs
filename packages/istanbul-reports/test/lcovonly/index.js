@@ -26,23 +26,30 @@ describe('LcovOnlyReport', () => {
             __dirname,
             '../fixtures/specs/' + file
         ));
-        it(fixture.title, function() {
-            if (isWindows()) {
-                // appveyor does not render console color.
-                return this.skip();
-            }
-            const context = istanbulLibReport.createContext({
-                dir: './',
-                coverageMap: istanbulLibCoverage.createCoverageMap(fixture.map)
-            });
-            const tree = context.getTree('pkg');
-            const report = new LcovOnlyReport(fixture.opts);
-            tree.visit(report, context);
-            const output = FileWriter.getOutput().replace(/SF:.*/, 'SF:');
-            if (fixture.lcovonlyExpected) {
+        if (fixture.lcovonlyExpected) {
+            it(fixture.title, function() {
+                if (isWindows()) {
+                    // appveyor does not render console color.
+                    return this.skip();
+                }
+                const context = istanbulLibReport.createContext({
+                    dir: './',
+                    coverageMap: istanbulLibCoverage.createCoverageMap(
+                        fixture.map
+                    )
+                });
+                const tree = context.getTree('pkg');
+                const report = new LcovOnlyReport({
+                    file: '-',
+                    timestamp: '123456789',
+                    ...fixture.opts
+                });
+                tree.visit(report, context);
+                const content = FileWriter.getOutput();
+                const output = content.replace(/SF:.*/, 'SF:');
                 output.should.equal(fixture.lcovonlyExpected);
-            }
-        });
+            });
+        }
     }
 
     fs.readdirSync(path.resolve(__dirname, '../fixtures/specs')).forEach(
