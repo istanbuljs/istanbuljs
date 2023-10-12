@@ -609,6 +609,149 @@ describe('base coverage', () => {
         assert.equal(c1.bT[0][1], 2);
     });
 
+    it('merges another file coverage that has a duplicate first location', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        const template = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 1, 1, 100),
+                1: loc(2, 1, 2, 50),
+                2: loc(2, 51, 2, 100),
+                3: loc(2, 101, 3, 100)
+            },
+            fnMap: {
+                0: {
+                    name: 'foobar',
+                    line: 1,
+                    loc: loc(1, 1, 1, 50)
+                }
+            },
+            branchMap: {
+                0: {
+                    type: 'binary-expr',
+                    line: 2,
+                    locations: [
+                        loc(1, 1, 1, 100),
+                        loc(2, 1, 2, 50),
+                        loc(2, 51, 2, 100),
+                        loc(2, 101, 3, 100)
+                    ]
+                },
+                1: {
+                    type: 'cond-expr',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 50), loc(2, 51, 2, 100)]
+                }
+            },
+            s: {
+                0: 0,
+                1: 0,
+                2: 0,
+                3: 0
+            },
+            f: {
+                0: 0
+            },
+            b: {
+                0: [0, 0, 0, 0],
+                1: [0, 0]
+            },
+            bT: {
+                0: [0, 0]
+            }
+        });
+        const clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        };
+        const c1 = new FileCoverage(clone(template));
+        const c2 = new FileCoverage(clone(template));
+        let summary;
+
+        c1.s[0] = 1;
+        c1.f[0] = 1;
+        c1.b[0][0] = 1;
+        c1.b[0][2] = 1;
+        c1.b[1][0] = 1;
+        c1.bT[0][0] = 1;
+
+        c2.s[1] = 1;
+        c2.f[0] = 1;
+        c2.b[0][1] = 2;
+        c2.b[0][3] = 2;
+        c2.b[1][1] = 1;
+        c2.bT[0][1] = 2;
+        summary = c1.toSummary();
+        assert.ok(summary instanceof CoverageSummary);
+        assert.deepEqual(summary.statements, {
+            total: 4,
+            covered: 1,
+            skipped: 0,
+            pct: 25
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 1,
+            skipped: 0,
+            pct: 50
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 6,
+            covered: 3,
+            skipped: 0,
+            pct: 50
+        });
+
+        c1.merge(c2);
+        summary = c1.toSummary();
+        assert.deepEqual(summary.statements, {
+            total: 4,
+            covered: 2,
+            skipped: 0,
+            pct: 50
+        });
+        assert.deepEqual(summary.lines, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.branches, {
+            total: 6,
+            covered: 6,
+            skipped: 0,
+            pct: 100
+        });
+
+        assert.equal(c1.s[0], 1);
+        assert.equal(c1.s[1], 1);
+        assert.equal(c1.f[0], 2);
+        assert.equal(c1.b[0][0], 1);
+        assert.equal(c1.b[0][1], 2);
+        assert.equal(c1.b[0][2], 1);
+        assert.equal(c1.b[0][3], 2);
+        assert.equal(c1.b[1][0], 1);
+        assert.equal(c1.b[1][1], 1);
+        assert.equal(c1.bT[0][0], 1);
+        assert.equal(c1.bT[0][1], 2);
+    });
+
     it('resets hits when requested', () => {
         const loc = function(sl, sc, el, ec) {
             return {
