@@ -1123,3 +1123,20 @@ describe('addNearestContainerHits unit coverage', () => {
         );
     });
 });
+
+describe('findNearestContainer missing loc defense', () => {
+    it('does not throw if loc is missing', () => {
+        const loc = (sl, sc, el, ec) => ({
+            start: { line: sl, column: sc },
+            end: { line: el, column: ec }
+        });
+        const map = {
+            0: { loc: loc(1, 1, 100, 100) },
+            1: {},
+            2: loc(10, 10, 50, 50),
+            3: { loc: loc(20, 20, 40, 40) }
+        };
+        assert.equal(findNearestContainer({ no: 'loc' }, map), null);
+        assert.equal(findNearestContainer(loc(30, 30, 35, 35), '3'));
+    });
+});
