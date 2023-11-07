@@ -45,6 +45,12 @@ function assertValidObject(obj) {
 const keyFromLoc = ({ start, end }) =>
     `${start.line}|${start.column}|${end.line}|${end.column}`;
 
+const isObj = o => !!o && typeof o === 'object';
+const isLineCol = o =>
+    isObj(o) && typeof o.line === 'number' && typeof o.column === 'number';
+const isLoc = o => isObj(o) && isLineCol(o.start) && isLineCol(o.end);
+const getLoc = o => (isLoc(o) ? o : isLoc(o.loc) ? o.loc : null);
+
 // When merging, we can have a case where two ranges cover
 // the same block of code with `hits=1`, and each carve out a
 // different range with `hits=0` to indicate it's uncovered.
@@ -52,6 +58,8 @@ const keyFromLoc = ({ start, end }) =>
 // that both sections are hit.
 // Returns null if no containing item is found.
 const findNearestContainer = (item, map) => {
+    const itemLoc = getLoc(item);
+    if (!itemLoc) return null;
     // the B item is not an identified range in the A set, BUT
     // it may be contained by an identified A range. If so, then
     // any hit of that containing A range counts as a hit of this
@@ -62,8 +70,8 @@ const findNearestContainer = (item, map) => {
     let containerDistance = null;
     let containerKey = null;
     for (const [i, mapItem] of Object.entries(map)) {
-        const mapLoc = mapItem.loc;
-        const itemLoc = item.loc;
+        const mapLoc = getLoc(mapItem);
+        if (!mapLoc) continue;
         // contained if all of line distances are > 0
         // or line distance is 0 and col dist is >= 0
         const distance = [
