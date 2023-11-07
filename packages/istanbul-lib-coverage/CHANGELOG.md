@@ -46,6 +46,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.2.1...istanbul-lib-coverage-v3.2.2) (2023-11-07)
+
+
+### Bug Fixes
+
+* [#753](https://github.com/istanbuljs/istanbuljs/issues/753) ([c4895bb](https://github.com/istanbuljs/istanbuljs/commit/c4895bb418c55700182f481b914b74b2865a9bea))
+* Proper data validation in findNearestContainer ([#754](https://github.com/istanbuljs/istanbuljs/issues/754)) ([c4895bb](https://github.com/istanbuljs/istanbuljs/commit/c4895bb418c55700182f481b914b74b2865a9bea)), closes [#753](https://github.com/istanbuljs/istanbuljs/issues/753)
+
 ## [3.2.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.2.0...istanbul-lib-coverage-v3.2.1) (2023-11-04)
 
 
