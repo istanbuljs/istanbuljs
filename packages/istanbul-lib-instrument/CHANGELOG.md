@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v6.0.0...istanbul-lib-instrument-v6.0.1) (2023-10-04)
+
+
+### Bug Fixes
+
+* globalThis with CSP compatibility ([#734](https://github.com/istanbuljs/istanbuljs/issues/734)) ([8b1baa8](https://github.com/istanbuljs/istanbuljs/commit/8b1baa8f45b6457ae2b467ddc5d4b6d9d9ea8690))
+* support ESM when reading coverage ([#692](https://github.com/istanbuljs/istanbuljs/issues/692)) ([fc509cc](https://github.com/istanbuljs/istanbuljs/commit/fc509ccdc8bf5215672aa6f00551dec2e512124f))
+
 ## [6.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.2.1...istanbul-lib-instrument-v6.0.0) (2023-07-25)
 
 
@@ -54,14 +62,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* **build:** verfiy automated publication ([b232690](https://www.github.com/istanbuljs/istanbuljs/commit/b232690193f4b524332046c96dd1cdc6e881c6c7))
+* **build:** verify automated publication ([b232690](https://www.github.com/istanbuljs/istanbuljs/commit/b232690193f4b524332046c96dd1cdc6e881c6c7))
 
 ### [5.0.1](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v5.0.0...istanbul-lib-instrument-v5.0.1) (2021-09-13)
 
 
 ### Bug Fixes
 
-* **build:** verfiy automated publication ([74c96bd](https://www.github.com/istanbuljs/istanbuljs/commit/74c96bdc4224a06e2e1166ebd9adf8faf28438b1))
+* **build:** verify automated publication ([74c96bd](https://www.github.com/istanbuljs/istanbuljs/commit/74c96bdc4224a06e2e1166ebd9adf8faf28438b1))
 
 ## [5.0.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v4.0.3...istanbul-lib-instrument-v5.0.0) (2021-09-13)
 
@@ -357,7 +365,7 @@ plugin.  Add it to get tests working again, commit updated api.md.
 
 ### Bug Fixes
 
-* parenthesize superClass on non-idetifier case ([#158](https://github.com/istanbuljs/istanbuljs/issues/158)) ([6202c88](https://github.com/istanbuljs/istanbuljs/commit/6202c88))
+* parenthesize superClass on non-identifier case ([#158](https://github.com/istanbuljs/istanbuljs/issues/158)) ([6202c88](https://github.com/istanbuljs/istanbuljs/commit/6202c88))
 
 
 ### Chores
@@ -378,7 +386,7 @@ plugin.  Add it to get tests working again, commit updated api.md.
 
 ### Bug Fixes
 
-* default value for ignorelassMethods ([#151](https://github.com/istanbuljs/istanbuljs/issues/151)) ([5dd88e8](https://github.com/istanbuljs/istanbuljs/commit/5dd88e8))
+* default value for ignoreClassMethods ([#151](https://github.com/istanbuljs/istanbuljs/issues/151)) ([5dd88e8](https://github.com/istanbuljs/istanbuljs/commit/5dd88e8))
 
 
 

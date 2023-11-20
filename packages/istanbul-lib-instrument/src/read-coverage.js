@@ -21,7 +21,7 @@ function getAst(code) {
             allowImportExportEverywhere: true,
             allowReturnOutsideFunction: true,
             allowSuperOutsideMethod: true,
-            sourceType: 'script',
+            sourceType: 'unambiguous',
             plugins: defaults.instrumenter.parserPlugins
         }
     });

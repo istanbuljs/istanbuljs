@@ -1,5 +1,5 @@
 ---
-name: simple if statment
+name: simple if statement
 code: |
   output = -1;
   if (args[0] > args [1])
