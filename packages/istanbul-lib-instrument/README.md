@@ -1,6 +1,6 @@
 ## istanbul-lib-instrument
 
-[![Build Status](https://travis-ci.org/istanbuljs/istanbul-lib-instrument.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbul-lib-instrument)
+[![Build Status](https://travis-ci.org/istanbuljs/istanbul-lib-instrument.svg?branch=main)](https://travis-ci.org/istanbuljs/istanbul-lib-instrument)
 
 Istanbul instrumenter library.
 

@@ -1,7 +1,7 @@
 # IstanbulJS
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/istanbuljs/istanbuljs.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/istanbuljs/istanbuljs.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbuljs)
+[![Build Status](https://travis-ci.org/istanbuljs/istanbuljs.svg?branch=main)](https://travis-ci.org/istanbuljs/istanbuljs)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![community slack](http://devtoolscommunity.herokuapp.com/badge.svg)](http://devtoolscommunity.herokuapp.com)
 
@@ -11,7 +11,7 @@ _Having problems? want to contribute? join our [community slack](http://devtools
 
 ## About this Repo
 
-This [monorepo](https://github.com/babel/babel/blob/master/doc/design/monorepo.md) contains the _nuts and bolts_ utility libraries that facilitate IstanbulJS test coverage; Why a monorepo?
+This [monorepo](https://github.com/babel/babel/blob/main/doc/design/monorepo.md) contains the _nuts and bolts_ utility libraries that facilitate IstanbulJS test coverage; Why a monorepo?
 
 -   it allows us to more easily test API changes across coupled modules, e.g., changes to `istanbul-lib-coverage`
     potentially have an effect on `istanbul-lib-instrument`.
