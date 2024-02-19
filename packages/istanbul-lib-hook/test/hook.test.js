@@ -5,10 +5,10 @@ const hook = require('../lib/hook');
 
 let currentHook;
 const matcher = function(file) {
-    return file.indexOf('foo.js') > 0;
+    return file.indexOf('foo.js') > -1;
 };
 const matcher2 = function(file) {
-    return file.indexOf('bar.es6') > 0;
+    return file.indexOf('bar.es6') > -1;
 };
 const transformer = function() {
     return 'module.exports.bar = function () { return "bar"; };';
@@ -42,6 +42,7 @@ describe('hooks', () => {
 
         it('transforms foo', () => {
             const foo = require('./data/foo');
+            console.log('foo', foo);
             assert.ok(foo.bar);
             assert.equal(foo.bar(), 'bar');
         });

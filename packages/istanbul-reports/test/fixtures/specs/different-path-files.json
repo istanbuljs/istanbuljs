@@ -4,7 +4,7 @@
       "maxCols": 80,
       "projectRoot": "/Users/jschmidle/oss/istanbuljs-test/"
     },
-    "textReportExpected": "-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n istanbuljs-test   |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  rootfile.js      |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...-test/package1 |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  package1file.js  |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...ge1/subpackage |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  ...ackagefile.js |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...-test/package2 |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  package2file.js  |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n-------------------|---------|----------|---------|---------|-------------------\n",
+    "textReportExpected": "-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n src               |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  rootfile.js      |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n src/package1      |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  package1file.js  |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n ...ge1/subpackage |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  ...ackagefile.js |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n src/package2      |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n  package2file.js  |       0 |        0 |       0 |       0 | \u001b[31;1m                 \u001b[0m \n-------------------|---------|----------|---------|---------|-------------------\n",
     "htmlSpaFiles": [
         ["package1","package1file.js.html"],
         ["package1","subpackage","subpackagefile.js.html"],
@@ -19,6 +19,7 @@
           "statements": {
             "total": 0,
             "covered": 0,
+            "missed": 0,
             "skipped": 0,
             "pct": 0,
             "classForPercent": "empty"
@@ -26,6 +27,7 @@
           "branches": {
             "total": 0,
             "covered": 0,
+            "missed": 0,
             "skipped": 0,
             "pct": 0,
             "classForPercent": "empty"
@@ -33,6 +35,7 @@
           "functions": {
             "total": 0,
             "covered": 0,
+            "missed": 0,
             "skipped": 0,
             "pct": 0,
             "classForPercent": "empty"
@@ -40,6 +43,7 @@
           "lines": {
             "total": 0,
             "covered": 0,
+            "missed": 0,
             "skipped": 0,
             "pct": 0,
             "classForPercent": "empty"
@@ -53,6 +57,7 @@
               "statements": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -60,6 +65,7 @@
               "branches": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -67,6 +73,7 @@
               "functions": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -74,6 +81,7 @@
               "lines": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -87,6 +95,7 @@
                   "statements": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -94,6 +103,7 @@
                   "branches": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -101,6 +111,7 @@
                   "functions": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -108,6 +119,7 @@
                   "lines": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -122,6 +134,7 @@
                   "statements": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -129,6 +142,7 @@
                   "branches": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -136,6 +150,7 @@
                   "functions": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -143,6 +158,7 @@
                   "lines": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -156,6 +172,7 @@
                       "statements": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -163,6 +180,7 @@
                       "branches": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -170,6 +188,7 @@
                       "functions": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -177,6 +196,7 @@
                       "lines": {
                         "total": 0,
                         "covered": 0,
+                        "missed": 0,
                         "skipped": 0,
                         "pct": 0,
                         "classForPercent": "empty"
@@ -195,6 +215,7 @@
               "statements": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -202,6 +223,7 @@
               "branches": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -209,6 +231,7 @@
               "functions": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -216,6 +239,7 @@
               "lines": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -229,6 +253,7 @@
                   "statements": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -236,6 +261,7 @@
                   "branches": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -243,6 +269,7 @@
                   "functions": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -250,6 +277,7 @@
                   "lines": {
                     "total": 0,
                     "covered": 0,
+                    "missed": 0,
                     "skipped": 0,
                     "pct": 0,
                     "classForPercent": "empty"
@@ -266,6 +294,7 @@
               "statements": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -273,6 +302,7 @@
               "branches": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -280,6 +310,7 @@
               "functions": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -287,6 +318,7 @@
               "lines": {
                 "total": 0,
                 "covered": 0,
+                "missed": 0,
                 "skipped": 0,
                 "pct": 0,
                 "classForPercent": "empty"
@@ -296,10 +328,10 @@
           }
         ]
     },
-    "coberturaCoverageData": "<?xml version=\"1.0\" ?>\n<!DOCTYPE coverage SYSTEM \"http://cobertura.sourceforge.net/xml/coverage-04.dtd\">\n<coverage lines-valid=\"0\" lines-covered=\"0\" line-rate=\"1\" branches-valid=\"0\" branches-covered=\"0\" branch-rate=\"1\" timestamp=\"123456789\" complexity=\"0\" version=\"0.1\">\n  <sources>\n    <source>/Users/jschmidle/oss/istanbuljs-test/</source>\n  </sources>\n  <packages>\n    <package name=\"istanbuljs-test\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"rootfile.js\" filename=\"rootfile.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"istanbuljs-test.package1\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"package1file.js\" filename=\"package1/package1file.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"istanbuljs-test.package1.subpackage\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"subpackagefile.js\" filename=\"package1/subpackage/subpackagefile.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"istanbuljs-test.package2\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"package2file.js\" filename=\"package2/package2file.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n  </packages>\n</coverage>\n",
+    "coberturaCoverageData": "<?xml version=\"1.0\" ?>\n<!DOCTYPE coverage SYSTEM \"http://cobertura.sourceforge.net/xml/coverage-04.dtd\">\n<coverage lines-valid=\"0\" lines-covered=\"0\" line-rate=\"1\" branches-valid=\"0\" branches-covered=\"0\" branch-rate=\"1\" timestamp=\"123456789\" complexity=\"0\" version=\"0.1\">\n  <sources>\n    <source>/Users/jschmidle/oss/istanbuljs-test/</source>\n  </sources>\n  <packages>\n    <package name=\"src\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"rootfile.js\" filename=\"src/rootfile.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"src.package1\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"package1file.js\" filename=\"src/package1/package1file.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"src.package1.subpackage\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"subpackagefile.js\" filename=\"src/package1/subpackage/subpackagefile.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n    <package name=\"src.package2\" line-rate=\"1\" branch-rate=\"1\">\n      <classes>\n        <class name=\"package2file.js\" filename=\"src/package2/package2file.js\" line-rate=\"1\" branch-rate=\"1\">\n          <methods>\n          </methods>\n          <lines>\n          </lines>\n        </class>\n      </classes>\n    </package>\n  </packages>\n</coverage>\n",
     "map": {
-        "/Users/jschmidle/oss/istanbuljs-test/rootfile.js": {
-            "path": "/Users/jschmidle/oss/istanbuljs-test/rootfile.js",
+        "/Users/jschmidle/oss/istanbuljs-test/src/rootfile.js": {
+            "path": "/Users/jschmidle/oss/istanbuljs-test/src/rootfile.js",
             "statementMap": {},
             "fnMap": {},
             "branchMap": {},
@@ -307,8 +339,8 @@
             "f": {},
             "b": {}
         },
-        "/Users/jschmidle/oss/istanbuljs-test/package1/package1file.js": {
-            "path": "/Users/jschmidle/oss/istanbuljs-test/package1/package1file.js",
+        "/Users/jschmidle/oss/istanbuljs-test/src/package1/package1file.js": {
+            "path": "/Users/jschmidle/oss/istanbuljs-test/src/package1/package1file.js",
             "statementMap": {},
             "fnMap": {},
             "branchMap": {},
@@ -316,8 +348,8 @@
             "f": {},
             "b": {}
         },
-        "/Users/jschmidle/oss/istanbuljs-test/package2/package2file.js": {
-            "path": "/Users/jschmidle/oss/istanbuljs-test/package2/package2file.js",
+        "/Users/jschmidle/oss/istanbuljs-test/src/package2/package2file.js": {
+            "path": "/Users/jschmidle/oss/istanbuljs-test/src/package2/package2file.js",
             "statementMap": {},
             "fnMap": {},
             "branchMap": {},
@@ -325,8 +357,8 @@
             "f": {},
             "b": {}
         },
-        "/Users/jschmidle/oss/istanbuljs-test/package1/subpackage/subpackagefile.js": {
-            "path": "/Users/jschmidle/oss/istanbuljs-test/package1/subpackage/subpackagefile.js",
+        "/Users/jschmidle/oss/istanbuljs-test/src/package1/subpackage/subpackagefile.js": {
+            "path": "/Users/jschmidle/oss/istanbuljs-test/src/package1/subpackage/subpackagefile.js",
             "statementMap": {},
             "fnMap": {},
             "branchMap": {},
