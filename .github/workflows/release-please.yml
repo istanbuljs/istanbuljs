@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - main
 name: release-please-submodule
 jobs:
   release:
@@ -14,7 +14,7 @@ jobs:
         with:
           command: manifest
           token: ${{ secrets.GITHUB_TOKEN }}
-          default-branch: master
+          default-branch: main
   publish:
     runs-on: ubuntu-latest
     needs: release

@@ -1,7 +1,7 @@
 # istanbul-reports
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/istanbuljs/istanbul-reports.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/istanbuljs/istanbul-reports.svg?branch=master)](https://travis-ci.org/istanbuljs/istanbul-reports)
+[![Build Status](https://travis-ci.org/istanbuljs/istanbul-reports.svg?branch=main)](https://travis-ci.org/istanbuljs/istanbul-reports)
 
 -   node.getRelativeName
 
