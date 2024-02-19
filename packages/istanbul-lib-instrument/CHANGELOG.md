@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v6.0.1...istanbul-lib-instrument-v6.0.2) (2024-02-19)
+
+
+### Bug Fixes
+
+* **deps:** update deps addressing CVE-2023-45133 ([e67a405](https://github.com/istanbuljs/istanbuljs/commit/e67a4052ef647857fab9a465aaf293ff9d966b44))
+
 ## [6.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v6.0.0...istanbul-lib-instrument-v6.0.1) (2023-10-04)
 
 

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.7](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.6...istanbul-reports-v3.1.7) (2024-02-19)
+
+
+### Bug Fixes
+
+* **ux:** address bug with firefox event handling ([2207a87](https://github.com/istanbuljs/istanbuljs/commit/2207a87ec978b7637d8b55de2ff887e462bd48d3))
+
 ## [3.1.6](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.5...istanbul-reports-v3.1.6) (2023-07-25)
 
 
