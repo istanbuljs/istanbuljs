@@ -46,6 +46,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.2.1...istanbul-lib-coverage-v3.2.2) (2023-11-07)
+
+
+### Bug Fixes
+
+* [#753](https://github.com/istanbuljs/istanbuljs/issues/753) ([c4895bb](https://github.com/istanbuljs/istanbuljs/commit/c4895bb418c55700182f481b914b74b2865a9bea))
+* Proper data validation in findNearestContainer ([#754](https://github.com/istanbuljs/istanbuljs/issues/754)) ([c4895bb](https://github.com/istanbuljs/istanbuljs/commit/c4895bb418c55700182f481b914b74b2865a9bea)), closes [#753](https://github.com/istanbuljs/istanbuljs/issues/753)
+
+## [3.2.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.2.0...istanbul-lib-coverage-v3.2.1) (2023-11-04)
+
+
+### Bug Fixes
+
+* https://github.com/istanbuljs/v8-to-istanbul/issues/233 ([288888f](https://github.com/istanbuljs/istanbuljs/commit/288888fef02ea35baf536bdd4d390ee12233ceb3))
+* merge ranges properly when contained by other ranges in set ([#750](https://github.com/istanbuljs/istanbuljs/issues/750)) ([288888f](https://github.com/istanbuljs/istanbuljs/commit/288888fef02ea35baf536bdd4d390ee12233ceb3))
+
 ## [3.2.0](https://www.github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.1.0...istanbul-lib-coverage-v3.2.0) (2021-10-17)
 
 

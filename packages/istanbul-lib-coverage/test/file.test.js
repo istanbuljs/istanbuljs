@@ -2,7 +2,12 @@
 /* globals describe, it */
 
 const assert = require('chai').assert;
-const { FileCoverage } = require('../lib/file-coverage');
+const {
+    FileCoverage,
+    addHits,
+    findNearestContainer,
+    addNearestContainerHits
+} = require('../lib/file-coverage');
 const { CoverageSummary } = require('../lib/coverage-summary');
 
 describe('coverage summary', () => {
@@ -609,6 +614,285 @@ describe('base coverage', () => {
         assert.equal(c1.bT[0][1], 2);
     });
 
+    it('merges another file with non-overlapping branch misses', () => {
+        const clone = obj => JSON.parse(JSON.stringify(obj));
+
+        const c2data = {
+            path: '/c8-merge-issue/src/index.ts',
+            all: false,
+            statementMap: {
+                '0': {
+                    start: { line: 1, column: 0 },
+                    end: { line: 1, column: 32 }
+                },
+                '1': {
+                    start: { line: 2, column: 0 },
+                    end: { line: 2, column: 46 }
+                },
+                '2': {
+                    start: { line: 3, column: 0 },
+                    end: { line: 3, column: 24 }
+                },
+                '3': {
+                    start: { line: 4, column: 0 },
+                    end: { line: 4, column: 36 }
+                },
+                '4': {
+                    start: { line: 5, column: 0 },
+                    end: { line: 5, column: 19 }
+                },
+                '5': {
+                    start: { line: 6, column: 0 },
+                    end: { line: 6, column: 35 }
+                },
+                '6': {
+                    start: { line: 7, column: 0 },
+                    end: { line: 7, column: 29 }
+                },
+                '7': {
+                    start: { line: 8, column: 0 },
+                    end: { line: 8, column: 28 }
+                },
+                '8': {
+                    start: { line: 9, column: 0 },
+                    end: { line: 9, column: 10 }
+                },
+                '9': {
+                    start: { line: 10, column: 0 },
+                    end: { line: 10, column: 29 }
+                },
+                '10': {
+                    start: { line: 11, column: 0 },
+                    end: { line: 11, column: 3 }
+                },
+                '11': {
+                    start: { line: 12, column: 0 },
+                    end: { line: 12, column: 34 }
+                },
+                '12': {
+                    start: { line: 13, column: 0 },
+                    end: { line: 13, column: 10 }
+                },
+                '13': {
+                    start: { line: 14, column: 0 },
+                    end: { line: 14, column: 1 }
+                },
+                '14': {
+                    start: { line: 15, column: 0 },
+                    end: { line: 15, column: 30 }
+                }
+            },
+            s: {
+                '0': 1,
+                '1': 1,
+                '2': 1,
+                '3': 1,
+                '4': 1,
+                '5': 1,
+                '6': 0,
+                '7': 0,
+                '8': 1,
+                '9': 1,
+                '10': 1,
+                '11': 1,
+                '12': 1,
+                '13': 1,
+                '14': 1
+            },
+            branchMap: {
+                '0': {
+                    type: 'branch',
+                    line: 3,
+                    loc: {
+                        start: { line: 3, column: 17 },
+                        end: { line: 14, column: 1 }
+                    },
+                    locations: [
+                        {
+                            start: { line: 3, column: 17 },
+                            end: { line: 14, column: 1 }
+                        }
+                    ]
+                },
+                '1': {
+                    type: 'branch',
+                    line: 6,
+                    loc: {
+                        start: { line: 6, column: 34 },
+                        end: { line: 9, column: 9 }
+                    },
+                    locations: [
+                        {
+                            start: { line: 6, column: 34 },
+                            end: { line: 9, column: 9 }
+                        }
+                    ]
+                }
+            },
+            b: { '0': [1], '1': [0] },
+            fnMap: {
+                '0': {
+                    name: 'x',
+                    decl: {
+                        start: { line: 3, column: 17 },
+                        end: { line: 14, column: 1 }
+                    },
+                    loc: {
+                        start: { line: 3, column: 17 },
+                        end: { line: 14, column: 1 }
+                    },
+                    line: 3
+                }
+            },
+            f: { '0': 1 }
+        };
+
+        const c1data = {
+            // gathered experimentally, see:
+            // https://github.com/istanbuljs/v8-to-istanbul/issues/233
+            path: '/c8-merge-issue/src/index.ts',
+            all: false,
+            statementMap: {
+                '0': {
+                    start: { line: 1, column: 0 },
+                    end: { line: 1, column: 32 }
+                },
+                '1': {
+                    start: { line: 2, column: 0 },
+                    end: { line: 2, column: 46 }
+                },
+                '2': {
+                    start: { line: 3, column: 0 },
+                    end: { line: 3, column: 24 }
+                },
+                '3': {
+                    start: { line: 4, column: 0 },
+                    end: { line: 4, column: 36 }
+                },
+                '4': {
+                    start: { line: 5, column: 0 },
+                    end: { line: 5, column: 19 }
+                },
+                '5': {
+                    start: { line: 6, column: 0 },
+                    end: { line: 6, column: 35 }
+                },
+                '6': {
+                    start: { line: 7, column: 0 },
+                    end: { line: 7, column: 29 }
+                },
+                '7': {
+                    start: { line: 8, column: 0 },
+                    end: { line: 8, column: 28 }
+                },
+                '8': {
+                    start: { line: 9, column: 0 },
+                    end: { line: 9, column: 10 }
+                },
+                '9': {
+                    start: { line: 10, column: 0 },
+                    end: { line: 10, column: 29 }
+                },
+                '10': {
+                    start: { line: 11, column: 0 },
+                    end: { line: 11, column: 3 }
+                },
+                '11': {
+                    start: { line: 12, column: 0 },
+                    end: { line: 12, column: 34 }
+                },
+                '12': {
+                    start: { line: 13, column: 0 },
+                    end: { line: 13, column: 10 }
+                },
+                '13': {
+                    start: { line: 14, column: 0 },
+                    end: { line: 14, column: 1 }
+                },
+                '14': {
+                    start: { line: 15, column: 0 },
+                    end: { line: 15, column: 30 }
+                }
+            },
+            s: {
+                '0': 1,
+                '1': 1,
+                '2': 1,
+                '3': 1,
+                '4': 1,
+                '5': 1,
+                '6': 1,
+                '7': 1,
+                '8': 1,
+                '9': 0,
+                '10': 0,
+                '11': 1,
+                '12': 1,
+                '13': 1,
+                '14': 1
+            },
+            branchMap: {
+                '0': {
+                    type: 'branch',
+                    line: 3,
+                    loc: {
+                        start: { line: 3, column: 17 },
+                        end: { line: 14, column: 1 }
+                    },
+                    locations: [
+                        {
+                            start: { line: 3, column: 17 },
+                            end: { line: 14, column: 1 }
+                        }
+                    ]
+                },
+                '1': {
+                    type: 'branch',
+                    line: 9,
+                    loc: {
+                        start: { line: 9, column: 3 },
+                        end: { line: 11, column: 3 }
+                    },
+                    locations: [
+                        {
+                            start: { line: 9, column: 3 },
+                            end: { line: 11, column: 3 }
+                        }
+                    ]
+                }
+            },
+            b: { '0': [1], '1': [0] },
+            fnMap: {
+                '0': {
+                    name: 'x',
+                    decl: {
+                        start: { line: 3, column: 17 },
+                        end: { line: 14, column: 1 }
+                    },
+                    loc: {
+                        start: { line: 3, column: 17 },
+                        end: { line: 14, column: 1 }
+                    },
+                    line: 3
+                }
+            },
+            f: { '0': 1 }
+        };
+
+        const c1 = new FileCoverage(clone(c1data));
+        const c2 = new FileCoverage(clone(c2data));
+
+        c1.merge(c2);
+        c1.merge(new FileCoverage(clone(c1data)));
+        c1.merge(new FileCoverage(clone(c2data)));
+        assert.deepEqual(c1.toSummary().data, {
+            lines: { total: 15, covered: 15, skipped: 0, pct: 100 },
+            functions: { total: 1, covered: 1, skipped: 0, pct: 100 },
+            statements: { total: 15, covered: 15, skipped: 0, pct: 100 },
+            branches: { total: 3, covered: 3, skipped: 0, pct: 100 }
+        });
+    });
+
     it('resets hits when requested', () => {
         const loc = function(sl, sc, el, ec) {
             return {
@@ -659,6 +943,10 @@ describe('base coverage', () => {
         assert.deepEqual({ 1: 0 }, fc.f);
         assert.deepEqual({ 1: [0, 0] }, fc.b);
         assert.deepEqual({ 1: [0, 0] }, fc.bT);
+        // does not throw if bT missing
+        fc.data.bT = undefined;
+        fc.resetHits();
+        assert.equal(fc.bT, undefined);
     });
 
     it('returns uncovered lines', () => {
@@ -766,5 +1054,89 @@ describe('base coverage', () => {
         assert.notOk(fcov.data.bT);
         fcov = new FileCoverage('foo.json', true);
         assert.ok(fcov.data.bT);
+        assert.ok(fcov.toSummary().branchesTrue);
+    });
+});
+
+describe('addHits unit coverage', () => {
+    it('adds numbers', () => assert.equal(addHits(1, 2), 3));
+    it('adds arrays', () => assert.deepEqual(addHits([1, 2], [2, 3]), [3, 5]));
+    it('nulls invalid input', () => assert.equal(addHits(1, [2]), null));
+});
+
+describe('findNearestContainer unit coverage', () => {
+    it('finds the nearest containing range', () => {
+        const loc = (sl, sc, el, ec) => ({
+            loc: {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            }
+        });
+        const item1 = loc(5, 5, 10, 10);
+        const item2 = loc(9, 0, 10, 10);
+        const map = {
+            0: loc(1, 1, 100, 100),
+            1: loc(2, 2, 90, 0),
+            3: loc(5, 0, 11, 0),
+            4: loc(5, 1, 10, 99),
+            5: loc(5, 10, 10, 10),
+            6: loc(6, 0, 10, 10),
+            // does not happen in practice, but verify that the code
+            // will behave properly if ranges are out of order.
+            7: loc(2, 3, 90, 0)
+        };
+        assert.equal(findNearestContainer(item1, map), '4');
+        assert.equal(findNearestContainer(item2, map), '6');
+    });
+});
+
+describe('addNearestContainerHits unit coverage', () => {
+    it('adds hits from the nearest container', () => {
+        const loc = (sl, sc, el, ec) => ({
+            loc: {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            }
+        });
+        const item = loc(5, 5, 10, 10);
+        const map = {
+            0: loc(1, 1, 100, 100),
+            1: loc(2, 2, 90, 0),
+            3: loc(5, 0, 11, 0),
+            4: loc(5, 1, 10, 99),
+            5: loc(5, 10, 10, 10),
+            6: loc(6, 0, 10, 10)
+        };
+        const hits = {
+            0: 0,
+            1: 1,
+            2: 2,
+            3: 3,
+            4: 4,
+            5: 5,
+            6: 6
+        };
+        assert.equal(addNearestContainerHits(item, 10, map, hits), 14);
+        assert.equal(
+            addNearestContainerHits(loc(1000, 4, 10010, 1234), 10, map, hits),
+            10
+        );
+    });
+});
+
+describe('findNearestContainer missing loc defense', () => {
+    it('does not throw if loc is missing', () => {
+        const loc = (sl, sc, el, ec) => ({
+            start: { line: sl, column: sc },
+            end: { line: el, column: ec }
+        });
+        const map = {
+            0: { loc: loc(1, 1, 100, 100) },
+            1: {},
+            2: loc(10, 10, 50, 50),
+            3: { loc: loc(20, 20, 40, 40) }
+        };
+        assert.equal(findNearestContainer({ no: 'loc' }, map), null);
+        assert.equal(findNearestContainer(loc(30, 30, 35, 35), '3'));
     });
 });
