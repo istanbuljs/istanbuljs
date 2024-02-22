@@ -90,7 +90,7 @@ describe('map store', () => {
                     },
                     end: {
                         line: 5,
-                        column: Infinity
+                        column: 1
                     }
                 }
             },
