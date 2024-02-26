@@ -6,20 +6,26 @@ name: release-please-submodule
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      paths_released: ${{ steps.manifest_release.outputs.paths_released }}
     steps:
       - uses: google-github-actions/release-please-action@v4
         id: manifest_release
-        with:
-          release-type: node
+  publish:
+    if: ${{ needs.release.outputs.release_created }}
+    runs-on: ubuntu-latest
+    needs: release
+    strategy:
+      fail-fast: false
+      matrix:
+        path: ${{fromJson(needs.release.outputs.paths_released)}}
+    steps:
       - uses: actions/checkout@v4
-        if: ${{ steps.manifest_release.outputs.release_created }}
-      - uses: actions/setup-node@v4
-        if: ${{ steps.manifest_release.outputs.release_created }}
+      - uses: actions/setup-node@v1
         with:
-          node-version: lts/*
+          node-version: 14
           registry-url: 'https://external-dot-oss-automation.appspot.com/'
       - name: publish
-        if: ${{ steps.manifest_release.outputs.release_created }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_MONOREPO_TOKEN}}
         run: |
