@@ -9,7 +9,7 @@ jobs:
     outputs:
       paths_released: ${{ steps.manifest_release.outputs.paths_released }}
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: google-github-actions/release-please-action@v4
         id: manifest_release
         with:
           command: manifest
@@ -23,10 +23,10 @@ jobs:
       matrix:
         path: ${{fromJson(needs.release.outputs.paths_released)}}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: lts/*
           registry-url: 'https://external-dot-oss-automation.appspot.com/'
       - name: publish
         env:
