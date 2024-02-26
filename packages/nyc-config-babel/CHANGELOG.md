@@ -46,6 +46,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.0.1](https://github.com/istanbuljs/istanbuljs/compare/nyc-config-babel-v3.0.0...nyc-config-babel-v3.0.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* trigger publish of 5.0.1 ([#776](https://github.com/istanbuljs/istanbuljs/issues/776)) ([92ece7c](https://github.com/istanbuljs/istanbuljs/commit/92ece7ceccd80085b5fcab68aa2ade4a1e4878e7))
+
 ## [2.1.1](https://github.com/istanbuljs/istanbuljs/compare/@istanbuljs/nyc-config-babel@2.1.0...@istanbuljs/nyc-config-babel@2.1.1) (2019-04-24)
 
 **Note:** Version bump only for package @istanbuljs/nyc-config-babel

@@ -48,6 +48,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [2.0.1](https://github.com/istanbuljs/istanbuljs/compare/nyc-config-hook-run-in-this-context-v2.0.0...nyc-config-hook-run-in-this-context-v2.0.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* trigger publish of 5.0.1 ([#776](https://github.com/istanbuljs/istanbuljs/issues/776)) ([92ece7c](https://github.com/istanbuljs/istanbuljs/commit/92ece7ceccd80085b5fcab68aa2ade4a1e4878e7))
+
 ## [2.0.0](https://github.com/istanbuljs/istanbuljs/compare/nyc-config-hook-run-in-this-context-v1.0.0...nyc-config-hook-run-in-this-context-v2.0.0) (2023-07-25)
 
 

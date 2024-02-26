@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-report",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Base reporting library for istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",

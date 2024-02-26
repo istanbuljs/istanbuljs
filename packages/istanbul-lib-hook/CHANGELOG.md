@@ -46,6 +46,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook-v3.0.0...istanbul-lib-hook-v3.0.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* trigger publish of 5.0.1 ([#776](https://github.com/istanbuljs/istanbuljs/issues/776)) ([92ece7c](https://github.com/istanbuljs/istanbuljs/commit/92ece7ceccd80085b5fcab68aa2ade4a1e4878e7))
+
 ## [2.0.7](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-hook@2.0.6...istanbul-lib-hook@2.0.7) (2019-04-24)
 
 **Note:** Version bump only for package istanbul-lib-hook

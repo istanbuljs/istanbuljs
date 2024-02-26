@@ -1,6 +1,6 @@
 {
   "name": "@istanbuljs/nyc-config-babel",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "nyc configuration that works with babel-plugin-istanbul",
   "main": "index.js",
   "files": [

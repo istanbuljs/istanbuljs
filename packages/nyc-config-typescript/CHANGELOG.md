@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/istanbuljs/istanbuljs/compare/nyc-config-typescript-v1.0.2...nyc-config-typescript-v1.0.3) (2024-02-26)
+
+
+### Bug Fixes
+
+* trigger publish of 5.0.1 ([#776](https://github.com/istanbuljs/istanbuljs/issues/776)) ([92ece7c](https://github.com/istanbuljs/istanbuljs/commit/92ece7ceccd80085b5fcab68aa2ade4a1e4878e7))
+
 ### [1.0.2](https://github.com/istanbuljs/istanbuljs/compare/nyc-config-typescript-v1.0.1...nyc-config-typescript-v1.0.2) (2021-12-01)
 
 

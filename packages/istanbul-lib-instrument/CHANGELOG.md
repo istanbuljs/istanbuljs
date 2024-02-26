@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v6.0.2...istanbul-lib-instrument-v6.0.3) (2024-02-26)
+
+
+### Bug Fixes
+
+* trigger publish of 5.0.1 ([#776](https://github.com/istanbuljs/istanbuljs/issues/776)) ([92ece7c](https://github.com/istanbuljs/istanbuljs/commit/92ece7ceccd80085b5fcab68aa2ade4a1e4878e7))
+
 ## [6.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v6.0.1...istanbul-lib-instrument-v6.0.2) (2024-02-19)
 
 

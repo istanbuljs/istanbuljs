@@ -1,6 +1,6 @@
 {
   "name": "istanbul-lib-hook",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Hooks for require, vm and script used in istanbul",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
   "main": "index.js",

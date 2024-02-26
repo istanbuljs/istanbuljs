@@ -46,6 +46,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [3.2.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.2.2...istanbul-lib-coverage-v3.2.3) (2024-02-26)
+
+
+### Bug Fixes
+
+* trigger publish of 5.0.1 ([#776](https://github.com/istanbuljs/istanbuljs/issues/776)) ([92ece7c](https://github.com/istanbuljs/istanbuljs/commit/92ece7ceccd80085b5fcab68aa2ade4a1e4878e7))
+
 ## [3.2.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-coverage-v3.2.1...istanbul-lib-coverage-v3.2.2) (2023-11-07)
 
 
