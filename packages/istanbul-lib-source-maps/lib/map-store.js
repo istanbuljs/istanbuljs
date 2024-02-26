@@ -192,13 +192,15 @@ class MapStore {
 
                     const smc = new TraceMap(obj);
                     smc.sources.forEach(s => {
-                        const content = sourceContentFor(smc, s);
-                        if (content) {
-                            const sourceFilePath = pathutils.relativeTo(
-                                s,
-                                filePath
-                            );
-                            this.sourceStore.set(sourceFilePath, content);
+                        if (s) {
+                            const content = sourceContentFor(smc, s);
+                            if (content) {
+                                const sourceFilePath = pathutils.relativeTo(
+                                    s,
+                                    filePath
+                                );
+                                this.sourceStore.set(sourceFilePath, content);
+                            }
                         }
                     });
 
