@@ -97,6 +97,13 @@ provided directly on the `MapStore` instance.
 
 
 
+## [5.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.1...istanbul-lib-source-maps-v5.0.2) (2024-02-26)
+
+
+### Bug Fixes
+
+* correct CI badge in source-maps readme ([78aa783](https://github.com/istanbuljs/istanbuljs/commit/78aa783a54760b79d7e6d0f6e0d8c6c481b690d7))
+
 ## [5.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.0...istanbul-lib-source-maps-v5.0.1) (2024-02-26)
 
 
