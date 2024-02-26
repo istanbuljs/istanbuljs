@@ -97,6 +97,13 @@ provided directly on the `MapStore` instance.
 
 
 
+## [5.0.1](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.0...istanbul-lib-source-maps-v5.0.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* use `allGeneratedPositionsFor` for more accurate source map transforms ([#771](https://github.com/istanbuljs/istanbuljs/issues/771)) ([dde947c](https://github.com/istanbuljs/istanbuljs/commit/dde947c6ee808b54ebf1ba4faea1f89c43ef3df6))
+
 ## [5.0.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v4.0.1...istanbul-lib-source-maps-v5.0.0) (2024-02-26)
 
 
