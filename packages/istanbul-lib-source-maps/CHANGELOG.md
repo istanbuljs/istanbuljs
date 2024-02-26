@@ -97,6 +97,13 @@ provided directly on the `MapStore` instance.
 
 
 
+## [5.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.2...istanbul-lib-source-maps-v5.0.3) (2024-02-26)
+
+
+### Bug Fixes
+
+* correct CI check to properly release 5.0.1 ([a39fdfe](https://github.com/istanbuljs/istanbuljs/commit/a39fdfe3a2082ba82ef4243840bcffe10737a40f))
+
 ## [5.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.1...istanbul-lib-source-maps-v5.0.2) (2024-02-26)
 
 
