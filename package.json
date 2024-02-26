@@ -1,6 +1,6 @@
 {
   "name": "istanbuljs",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "private": true,
   "description": "monorepo containing the various nuts and bolts that facilitate istanbul.js test instrumentation",
   "scripts": {
