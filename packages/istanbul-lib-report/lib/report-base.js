@@ -1,6 +1,6 @@
 'use strict';
 
-// TODO: switch to class private field when targetting node.js 12
+// TODO: switch to class private field when targeting node.js 12
 const _summarizer = Symbol('ReportBase.#summarizer');
 
 class ReportBase {

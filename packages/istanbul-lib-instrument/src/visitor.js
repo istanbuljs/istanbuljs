@@ -136,7 +136,7 @@ class VisitState {
     }
 
     // all the generic stuff on exit of a node,
-    // including reseting ignores and custom node attrs
+    // including resetting ignores and custom node attrs
     onExit(path) {
         // restore ignore status, if needed
         if (path.node === this.nextIgnore) {
@@ -785,6 +785,15 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
                 .update(JSON.stringify(coverageData))
                 .digest('hex');
             coverageData.hash = hash;
+            if (
+                coverageData.inputSourceMap &&
+                Object.getPrototypeOf(coverageData.inputSourceMap) !==
+                    Object.prototype
+            ) {
+                coverageData.inputSourceMap = {
+                    ...coverageData.inputSourceMap
+                };
+            }
             const coverageNode = T.valueToNode(coverageData);
             delete coverageData[MAGIC_KEY];
             delete coverageData.hash;

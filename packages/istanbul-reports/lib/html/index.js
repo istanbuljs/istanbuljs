@@ -86,7 +86,7 @@ ${htmlHead(details)}
         <template id="filterTemplate">
             <div class="quiet">
                 Filter:
-                <input oninput="onInput()" type="search" id="fileSearch">
+                <input type="search" id="fileSearch">
             </div>
         </template>
     </div>
@@ -262,7 +262,7 @@ class HtmlReport extends ReportBase {
         this.verbose = opts.verbose;
         this.linkMapper = opts.linkMapper || standardLinkMapper;
         this.subdir = opts.subdir || '';
-        this.date = Date();
+        this.date = new Date().toISOString();
         this.skipEmpty = opts.skipEmpty;
     }
 

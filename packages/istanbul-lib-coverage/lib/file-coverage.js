@@ -45,35 +45,130 @@ function assertValidObject(obj) {
 const keyFromLoc = ({ start, end }) =>
     `${start.line}|${start.column}|${end.line}|${end.column}`;
 
+const isObj = o => !!o && typeof o === 'object';
+const isLineCol = o =>
+    isObj(o) && typeof o.line === 'number' && typeof o.column === 'number';
+const isLoc = o => isObj(o) && isLineCol(o.start) && isLineCol(o.end);
+const getLoc = o => (isLoc(o) ? o : isLoc(o.loc) ? o.loc : null);
+
+// When merging, we can have a case where two ranges cover
+// the same block of code with `hits=1`, and each carve out a
+// different range with `hits=0` to indicate it's uncovered.
+// Find the nearest container so that we can properly indicate
+// that both sections are hit.
+// Returns null if no containing item is found.
+const findNearestContainer = (item, map) => {
+    const itemLoc = getLoc(item);
+    if (!itemLoc) return null;
+    // the B item is not an identified range in the A set, BUT
+    // it may be contained by an identified A range. If so, then
+    // any hit of that containing A range counts as a hit of this
+    // B range as well. We have to find the *narrowest* containing
+    // range to be accurate, since ranges can be hit and un-hit
+    // in a nested fashion.
+    let nearestContainingItem = null;
+    let containerDistance = null;
+    let containerKey = null;
+    for (const [i, mapItem] of Object.entries(map)) {
+        const mapLoc = getLoc(mapItem);
+        if (!mapLoc) continue;
+        // contained if all of line distances are > 0
+        // or line distance is 0 and col dist is >= 0
+        const distance = [
+            itemLoc.start.line - mapLoc.start.line,
+            itemLoc.start.column - mapLoc.start.column,
+            mapLoc.end.line - itemLoc.end.line,
+            mapLoc.end.column - itemLoc.end.column
+        ];
+        if (
+            distance[0] < 0 ||
+            distance[2] < 0 ||
+            (distance[0] === 0 && distance[1] < 0) ||
+            (distance[2] === 0 && distance[3] < 0)
+        ) {
+            continue;
+        }
+        if (nearestContainingItem === null) {
+            containerDistance = distance;
+            nearestContainingItem = mapItem;
+            containerKey = i;
+            continue;
+        }
+        // closer line more relevant than closer column
+        const closerBefore =
+            distance[0] < containerDistance[0] ||
+            (distance[0] === 0 && distance[1] < containerDistance[1]);
+        const closerAfter =
+            distance[2] < containerDistance[2] ||
+            (distance[2] === 0 && distance[3] < containerDistance[3]);
+        if (closerBefore || closerAfter) {
+            // closer
+            containerDistance = distance;
+            nearestContainingItem = mapItem;
+            containerKey = i;
+        }
+    }
+    return containerKey;
+};
+
+// either add two numbers, or all matching entries in a number[]
+const addHits = (aHits, bHits) => {
+    if (typeof aHits === 'number' && typeof bHits === 'number') {
+        return aHits + bHits;
+    } else if (Array.isArray(aHits) && Array.isArray(bHits)) {
+        return aHits.map((a, i) => (a || 0) + (bHits[i] || 0));
+    }
+    return null;
+};
+
+const addNearestContainerHits = (item, itemHits, map, mapHits) => {
+    const container = findNearestContainer(item, map);
+    if (container) {
+        return addHits(itemHits, mapHits[container]);
+    } else {
+        return itemHits;
+    }
+};
+
 const mergeProp = (aHits, aMap, bHits, bMap, itemKey = keyFromLoc) => {
     const aItems = {};
     for (const [key, itemHits] of Object.entries(aHits)) {
         const item = aMap[key];
         aItems[itemKey(item)] = [itemHits, item];
     }
-    for (const [key, bItemHits] of Object.entries(bHits)) {
-        const bItem = bMap[key];
-        const k = itemKey(bItem);
-
-        if (aItems[k]) {
-            const aPair = aItems[k];
-            if (bItemHits.forEach) {
-                // should this throw an exception if aPair[0] is not an array?
-                bItemHits.forEach((hits, h) => {
-                    if (aPair[0][h] !== undefined) aPair[0][h] += hits;
-                    else aPair[0][h] = hits;
-                });
-            } else {
-                aPair[0] += bItemHits;
-            }
-        } else {
-            aItems[k] = [bItemHits, bItem];
-        }
+    const bItems = {};
+    for (const [key, itemHits] of Object.entries(bHits)) {
+        const item = bMap[key];
+        bItems[itemKey(item)] = [itemHits, item];
     }
+    const mergedItems = {};
+    for (const [key, aValue] of Object.entries(aItems)) {
+        let aItemHits = aValue[0];
+        const aItem = aValue[1];
+        const bValue = bItems[key];
+        if (!bValue) {
+            // not an identified range in b, but might be contained by one
+            aItemHits = addNearestContainerHits(aItem, aItemHits, bMap, bHits);
+        } else {
+            // is an identified range in b, so add the hits together
+            aItemHits = addHits(aItemHits, bValue[0]);
+        }
+        mergedItems[key] = [aItemHits, aItem];
+    }
+    // now find the items in b that are not in a. already added matches.
+    for (const [key, bValue] of Object.entries(bItems)) {
+        let bItemHits = bValue[0];
+        const bItem = bValue[1];
+        if (mergedItems[key]) continue;
+        // not an identified range in b, but might be contained by one
+        bItemHits = addNearestContainerHits(bItem, bItemHits, aMap, aHits);
+        mergedItems[key] = [bItemHits, bItem];
+    }
+
     const hits = {};
     const map = {};
 
-    Object.values(aItems).forEach(([itemHits, item], i) => {
+    Object.values(mergedItems).forEach(([itemHits, item], i) => {
         hits[i] = itemHits;
         map[i] = item;
     });
@@ -320,7 +415,7 @@ class FileCoverage {
         ret.branches = this.computeBranchTotals('b');
         // Tracking additional information about branch truthiness
         // can be optionally enabled:
-        if (this['bt']) {
+        if (this.bT) {
             ret.branchesTrue = this.computeBranchTotals('bT');
         }
         return new CoverageSummary(ret);
@@ -341,5 +436,9 @@ dataProperties(FileCoverage, [
 ]);
 
 module.exports = {
-    FileCoverage
+    FileCoverage,
+    // exported for testing
+    findNearestContainer,
+    addHits,
+    addNearestContainerHits
 };

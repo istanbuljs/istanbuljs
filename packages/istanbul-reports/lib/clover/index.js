@@ -11,7 +11,6 @@ class CloverReport extends ReportBase {
 
         this.cw = null;
         this.xml = null;
-        this.projectRoot = opts.projectRoot || process.cwd();
         this.file = opts.file || 'clover.xml';
     }
 
@@ -113,7 +112,7 @@ class CloverReport extends ReportBase {
         if (node.isRoot()) {
             return;
         }
-        this.xml.closeTag('package');
+        this.xml.closeTag(this.xml.stack[this.xml.stack.length - 1]);
     }
 
     onDetail(node) {

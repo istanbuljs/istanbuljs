@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [ assigned, opened, synchronize, reopened, labeled ]
 name: ci
@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [8, 12, 14, 16]
+        node: [10, 12, 14, 16, 18, 20]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
       - run: node --version
@@ -30,8 +30,8 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 12
       - run: npm install
