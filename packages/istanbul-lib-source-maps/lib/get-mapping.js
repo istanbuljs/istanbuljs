@@ -48,31 +48,31 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
     // for mappings in the original-order sorted list, this will find the
     // mapping that corresponds to the one immediately after the
     // beforeEndMapping mapping.
-    const afterEndMapping = sourceMap.generatedPositionFor({
+    const afterEndMappings = sourceMap.allGeneratedPositionsFor({
         source: beforeEndMapping.source,
         line: beforeEndMapping.line,
         column: beforeEndMapping.column + 1,
         bias: LEAST_UPPER_BOUND
     });
-    if (
-        // If this is null, it means that we've hit the end of the file,
-        // so we can use Infinity as the end column.
-        afterEndMapping.line === null ||
-        // If these don't match, it means that the call to
-        // 'generatedPositionFor' didn't find any other original mappings on
-        // the line we gave, so consider the binding to extend to infinity.
-        sourceMap.originalPositionFor(afterEndMapping).line !==
-            beforeEndMapping.line
-    ) {
-        return {
-            source: beforeEndMapping.source,
-            line: beforeEndMapping.line,
-            column: Infinity
-        };
+
+    for (let i = 0; i < afterEndMappings.length; i++) {
+        const afterEndMapping = afterEndMappings[i];
+        if (afterEndMapping.line === null) continue;
+
+        const original = sourceMap.originalPositionFor(afterEndMapping);
+        // If the lines match, it means that something comes after our mapping,
+        // so it must end where this one begins.
+        if (original.line === beforeEndMapping.line) return original;
     }
 
-    // Convert the end mapping into the real original position.
-    return sourceMap.originalPositionFor(afterEndMapping);
+    // If a generated mapping wasn't found (or all that were found were not on
+    // the same line), then there's nothing after this range and we can
+    // consider it to extend to infinity.
+    return {
+        source: beforeEndMapping.source,
+        line: beforeEndMapping.line,
+        column: Infinity
+    };
 }
 
 /**
