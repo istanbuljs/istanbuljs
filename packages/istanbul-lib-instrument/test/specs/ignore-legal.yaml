@@ -1,0 +1,9 @@
+---
+name: ignore file legal comment
+code: |
+  /*! istanbul ignore file */
+  output = true === true ? "works" : "doesn't work"
+opts:
+  noCoverage: true
+tests:
+  - name: file is ignored
