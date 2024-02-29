@@ -118,7 +118,7 @@ class CloverReport extends ReportBase {
     onDetail(node) {
         const fileCoverage = node.getFileCoverage();
         const metrics = node.getCoverageSummary();
-        const branchByLine = fileCoverage.getBranchCoverageByLine();
+        const branchDetails = getBranchDetails(fileCoverage);
 
         this.xml.openTag('file', {
             name: asClassName(node),
@@ -134,13 +134,41 @@ class CloverReport extends ReportBase {
                 count,
                 type: 'stmt'
             };
-            const branchDetail = branchByLine[k];
+            const branchDetail = branchDetails[k];
 
-            if (branchDetail) {
-                attrs.type = 'cond';
-                attrs.truecount = branchDetail.covered;
-                attrs.falsecount = branchDetail.total - branchDetail.covered;
+            if (!branchDetail) {
+                return this.xml.inlineTag('line', attrs);
             }
+
+            attrs.type = 'cond';
+            attrs.truecount = 0;
+            attrs.falsecount = 0;
+
+            if (count === 0) {
+                return this.xml.inlineTag('line', attrs);
+            }
+
+            // `if` and `cond-expr` has binary result, just apply it
+            if (['if', 'cond-expr'].includes(branchDetail.type)) {
+                attrs.truecount = branchDetail.states[0];
+                attrs.falsecount = branchDetail.states[1];
+            } else if (
+                // statements of these types has no binary result
+                ['switch', 'binary-expr', 'default-arg'].includes(
+                    branchDetail.type
+                )
+            ) {
+                // assigning hardcode values to make 3rd-party parsers
+                // understand if condition was covered or not
+                if (branchDetail.states.every(state => state > 0)) {
+                    attrs.truecount = 1;
+                    attrs.falsecount = 1;
+                } else {
+                    attrs.truecount = 1;
+                    attrs.falsecount = 0;
+                }
+            }
+
             this.xml.inlineTag('line', attrs);
         });
 
@@ -158,6 +186,22 @@ function asJavaPackage(node) {
 
 function asClassName(node) {
     return node.getRelativeName().replace(/.*[\\/]/, '');
+}
+
+function getBranchDetails(fileCoverage) {
+    const branchMeta = fileCoverage.branchMap;
+    const branchStats = fileCoverage.b;
+
+    const branchDetails = {};
+
+    Object.entries(branchMeta).forEach(([index, branch]) => {
+        branchDetails[branch.loc.start.line] = {
+            type: branch.type,
+            states: branchStats[index]
+        };
+    });
+
+    return branchDetails;
 }
 
 module.exports = CloverReport;
