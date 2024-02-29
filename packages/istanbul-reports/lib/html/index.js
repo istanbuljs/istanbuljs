@@ -159,7 +159,7 @@ const summaryTableHeader = [
 ].join('\n');
 
 function summaryLineTemplate(details) {
-    const { reportClasses, metrics, file, output } = details;
+    const { reportClasses, metrics, colorMetric, file, output } = details;
     const percentGraph = pct => {
         if (!isFinite(pct)) {
             return '';
@@ -198,7 +198,7 @@ function summaryLineTemplate(details) {
         .concat(
             '<tr>',
             `<td class="file ${
-                reportClasses.statements
+                reportClasses[colorMetric ? colorMetric : 'statements']
             }" data-value="${html.escape(file)}"><a href="${html.escape(
                 output
             )}">${html.escape(file)}</a></td>`,
@@ -264,6 +264,7 @@ class HtmlReport extends ReportBase {
         this.subdir = opts.subdir || '';
         this.date = new Date().toISOString();
         this.skipEmpty = opts.skipEmpty;
+        this.colorMetric = opts.colorMetric;
     }
 
     getBreadcrumbHtml(node) {
@@ -359,6 +360,7 @@ class HtmlReport extends ReportBase {
         const templateData = this.getTemplateData();
         const children = node.getChildren();
         const skipEmpty = this.skipEmpty;
+        const colorMetric = this.colorMetric;
 
         this.fillTemplate(node, templateData, context);
         const cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
@@ -393,6 +395,7 @@ class HtmlReport extends ReportBase {
             const data = {
                 metrics: isEmpty ? fixPct(metrics) : metrics,
                 reportClasses,
+                colorMetric,
                 file: child.getRelativeName(),
                 output: linkMapper.relativePath(node, child)
             };
