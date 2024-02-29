@@ -82,6 +82,18 @@ class SourceMapTransformer {
                     locs.push(mapping.loc);
                     mappedHits.push(hits[i]);
                 }
+                // Check if this is an implicit else
+                else if (
+                    branchMeta.type === 'if' &&
+                    i > 0 &&
+                    loc.start.line === undefined &&
+                    loc.start.end === undefined &&
+                    loc.end.line === undefined &&
+                    loc.end.end === undefined
+                ) {
+                    locs.push(loc);
+                    mappedHits.push(hits[i]);
+                }
             });
 
             const locMapping = branchMeta.loc
