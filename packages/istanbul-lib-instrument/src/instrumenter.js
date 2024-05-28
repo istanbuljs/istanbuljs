@@ -81,6 +81,7 @@ class Instrumenter {
                             coverageGlobalScopeFunc:
                                 opts.coverageGlobalScopeFunc,
                             ignoreClassMethods: opts.ignoreClassMethods,
+                          instrumentLineLevel: opts.instrumentLineLevel,
                             inputSourceMap
                         });
 

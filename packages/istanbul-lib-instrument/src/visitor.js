@@ -629,6 +629,9 @@ function coverLogicalExpression(path) {
     }
 }
 
+const methodLevelVisitors = ['ArrowFunctionExpression', 'ClassMethod', 'ObjectMethod', 'FunctionDeclaration',
+  'FunctionExpression'];
+
 const codeVisitor = {
     ArrowFunctionExpression: entries(convertArrowExpression, coverFunction),
     AssignmentPattern: entries(coverAssignmentPattern),
@@ -669,6 +672,16 @@ const codeVisitor = {
     ConditionalExpression: entries(coverTernary),
     LogicalExpression: entries(coverLogicalExpression)
 };
+const methodVisitor = {};
+
+Object.keys(codeVisitor).forEach(key => {
+  if (methodLevelVisitors.includes(key)) {
+    methodVisitor[key] = codeVisitor[key];
+  } else {
+    methodVisitor[key] = entries();
+  }
+});
+
 const globalTemplateAlteredFunction = template(`
         var Function = (function(){}).constructor;
         var global = (new Function(GLOBAL_COVERAGE_SCOPE))();
@@ -743,6 +756,7 @@ function shouldIgnoreFile(programNode) {
  * @param {boolean} [opts.coverageGlobalScopeFunc=true] use an evaluated function to find coverageGlobalScope.
  * @param {Array} [opts.ignoreClassMethods=[]] names of methods to ignore by default on classes.
  * @param {object} [opts.inputSourceMap=undefined] the input source map, that maps the uninstrumented code back to the
+ * @param {boolean} [opts.instrumentLineLevel] when true instrumentation should be done on line/branch level. otherwise only on method level.
  * original code.
  */
 function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
@@ -766,7 +780,7 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
             if (alreadyInstrumented(path, visitState)) {
                 return;
             }
-            path.traverse(codeVisitor, visitState);
+            path.traverse(opts.instrumentLineLevel === false ? methodVisitor : codeVisitor, visitState);
         },
         exit(path) {
             if (alreadyInstrumented(path, visitState)) {
