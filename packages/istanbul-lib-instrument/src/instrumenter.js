@@ -71,6 +71,7 @@ class Instrumenter {
                 sourceType: opts.esModules ? 'module' : 'script',
                 plugins: opts.parserPlugins
             },
+            generatorOpts: { importAttributesKeyword: 'with' },
             plugins: [
                 [
                     ({ types }) => {
