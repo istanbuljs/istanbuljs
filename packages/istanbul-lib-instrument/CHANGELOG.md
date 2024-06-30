@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.3](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v6.0.2...istanbul-lib-instrument-v6.0.3) (2024-06-30)
+
+
+### Bug Fixes
+
+* allow use of importAttributes Babel parser plugin ([#786](https://github.com/istanbuljs/istanbuljs/issues/786)) ([a44a124](https://github.com/istanbuljs/istanbuljs/commit/a44a124a600a798165f157d643f1fdb095c74f95))
+
 ## [6.0.2](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-instrument-v6.0.1...istanbul-lib-instrument-v6.0.2) (2024-02-19)
 
 
