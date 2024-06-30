@@ -43,12 +43,13 @@ instead.
     -   `opts.autoWrap` **[boolean][15]** set to true to allow `return` statements outside of functions. (optional, default `false`)
     -   `opts.produceSourceMap` **[boolean][15]** set to true to produce a source map for the instrumented code. (optional, default `false`)
     -   `opts.ignoreClassMethods` **[Array][16]** set to array of class method names to ignore for coverage. (optional, default `[]`)
-    -   `opts.sourceMapUrlCallback` **[Function][17]** a callback function that is called when a source map URL.
+    -   `opts.sourceMapUrlCallback` **[Function][17]** a callback function that is called when a source map URL
             is found in the original code. This function is called with the source file name and the source map URL. (optional, default `null`)
     -   `opts.debug` **[boolean][15]** turn debugging on. (optional, default `false`)
     -   `opts.parserPlugins` **[array][16]?** set babel parser plugins, see @istanbuljs/schema for defaults.
     -   `opts.coverageGlobalScope` **[string][14]** the global coverage variable scope. (optional, default `this`)
     -   `opts.coverageGlobalScopeFunc` **[boolean][15]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)
+    -   `opts.generatorOpts` **[Object][13]?** set babel generator options
 
 ### instrumentSync
 
@@ -61,9 +62,9 @@ is supported. To instrument ES6 modules, make sure that you set the
 
 -   `code` **[string][14]** the code to instrument
 -   `filename` **[string][14]** the filename against which to track coverage.
--   `inputSourceMap` **[Object][13]?** the source map that maps the not instrumented code back to it's original form.
+-   `inputSourceMap` **[object][13]?** the source map that maps the not instrumented code back to it's original form.
     Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
-    coverage to the untranspiled source. Must be a plain object.
+    coverage to the untranspiled source.
 
 Returns **[string][14]** the instrumented code.
 
@@ -80,7 +81,7 @@ the callback will be called in the same process tick and is not asynchronous.
 -   `callback` **[Function][17]** the callback
 -   `inputSourceMap` **[Object][13]** the source map that maps the not instrumented code back to it's original form.
     Is assigned to the coverage object and therefore, is available in the json output and can be used to remap the
-    coverage to the untranspiled source. Must be a plain object.
+    coverage to the untranspiled source.
 
 ### lastFileCoverage
 
