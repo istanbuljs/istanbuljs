@@ -49,7 +49,7 @@ instead.
     -   `opts.parserPlugins` **[array][16]?** set babel parser plugins, see @istanbuljs/schema for defaults.
     -   `opts.coverageGlobalScope` **[string][14]** the global coverage variable scope. (optional, default `this`)
     -   `opts.coverageGlobalScopeFunc` **[boolean][15]** use an evaluated function to find coverageGlobalScope. (optional, default `true`)
-    -   `opts.generatorOpts` **[array][16]?** set babel generator options
+    -   `opts.generatorOpts` **[Object][13]?** set babel generator options
 
 ### instrumentSync
 

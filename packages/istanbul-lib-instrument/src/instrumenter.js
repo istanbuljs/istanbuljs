@@ -27,7 +27,7 @@ const readInitialCoverage = require('./read-coverage');
  * @param {array} [opts.parserPlugins] - set babel parser plugins, see @istanbuljs/schema for defaults.
  * @param {string} [opts.coverageGlobalScope=this] the global coverage variable scope.
  * @param {boolean} [opts.coverageGlobalScopeFunc=true] use an evaluated function to find coverageGlobalScope.
- * @param {array} [opts.generatorOpts] - set babel generator options
+ * @param {Object} [opts.generatorOpts] - set babel generator options
  */
 class Instrumenter {
     constructor(opts = {}) {
