@@ -97,6 +97,13 @@ provided directly on the `MapStore` instance.
 
 
 
+## [5.0.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.4...istanbul-lib-source-maps-v5.0.5) (2024-07-01)
+
+
+### Bug Fixes
+
+* `istanbul-lib-source-maps` to preserve implicit `else` when sourcemaps are used ([#706](https://github.com/istanbuljs/istanbuljs/issues/706)) ([d16a155](https://github.com/istanbuljs/istanbuljs/commit/d16a155b24bd137803779ad3772b4ea3f265a96f))
+
 ## [5.0.4](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.3...istanbul-lib-source-maps-v5.0.4) (2024-02-26)
 
 
