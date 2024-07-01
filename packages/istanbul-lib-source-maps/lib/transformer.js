@@ -84,6 +84,7 @@ class SourceMapTransformer {
                 }
                 // Check if this is an implicit else
                 else if (
+                    source &&
                     branchMeta.type === 'if' &&
                     i > 0 &&
                     loc.start.line === undefined &&
