@@ -140,4 +140,51 @@ describe('transformer', () => {
             switchBranchCoverageDataExpectedResult
         );
     });
+
+    it('correctly maps branch count of implicit else', async () => {
+        const implicitElseCoverageData = require('./testdata/ifWithImplicitElseCoverageData.json');
+        const sourceMap = {
+            version: 3,
+            sources: [sourceFileSlash],
+            mappings:
+                'AACA,SAAS,IAAI,GAAW,GAAmB;AAGvC,UAAQ,IAAI,aAAa;AAEzB,MAAG,MAAM,IAAI;AACT,WAAO;AAAA,EACX;AACJ;AAEA,IAAI,GAAG,CAAC;'
+        };
+
+        const coverageMap = createMap({});
+        coverageMap.addFileCoverage(implicitElseCoverageData);
+
+        const transformer = new SourceMapTransformer(
+            () => new TraceMap(sourceMap)
+        );
+
+        const mapped = await transformer.transform(coverageMap);
+        const fileCoverage = mapped.fileCoverageFor(sourceFileSlash);
+
+        assert.deepEqual(fileCoverage.data.b, {
+            '0': [0, 1]
+        });
+
+        assert.deepEqual(fileCoverage.data.branchMap['0'].locations, [
+            {
+                start: {
+                    line: 5,
+                    column: 4
+                },
+                end: {
+                    line: 8,
+                    column: 15
+                }
+            },
+            {
+                start: {
+                    line: undefined,
+                    column: undefined
+                },
+                end: {
+                    line: undefined,
+                    column: undefined
+                }
+            }
+        ]);
+    });
 });
