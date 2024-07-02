@@ -97,6 +97,13 @@ provided directly on the `MapStore` instance.
 
 
 
+## [5.0.6](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.5...istanbul-lib-source-maps-v5.0.6) (2024-07-02)
+
+
+### Bug Fixes
+
+* `istanbul-lib-source-maps` implicit `else` crash edge case ([#789](https://github.com/istanbuljs/istanbuljs/issues/789)) ([bbb5815](https://github.com/istanbuljs/istanbuljs/commit/bbb5815a62f293151447a9e1b4363382a8bf3a2f))
+
 ## [5.0.5](https://github.com/istanbuljs/istanbuljs/compare/istanbul-lib-source-maps-v5.0.4...istanbul-lib-source-maps-v5.0.5) (2024-07-01)
 
 
