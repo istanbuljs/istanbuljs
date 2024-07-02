@@ -187,4 +187,24 @@ describe('transformer', () => {
             }
         ]);
     });
+
+    it('implicit else does not crash on edge case (#706)', async () => {
+        const implicitElseCoverageData = require('./testdata/implicitElseEdgeCase.json');
+
+        const sourceMap = {
+            version: 3,
+            sources: [sourceFileSlash],
+            mappings:
+                ';;;;;;;;;;;;AAEO,aAAM,iBAAiB;AAAA,EAC5B,OAAsB,WAAsB;AAC1C,QAAI,WAAW;AAEb,WAAK,SAAS;AAAA,IAChB;AAEA,QAAI,cAAc,aAAa;AAE7B,WAAK,SAAS;AAAA,IAChB;AAAA,EACF;AACF;AAXE;AAAA,EAAQ;AAAA,GADG,iBACX;AAaF,SAAS,cACP,SACA,cACA,iBACA;AAAC;AAIH,SAAS,QAAQ,OAAkB;AAEnC;'
+        };
+
+        const coverageMap = createMap({});
+        coverageMap.addFileCoverage(implicitElseCoverageData);
+
+        const transformer = new SourceMapTransformer(
+            () => new TraceMap(sourceMap)
+        );
+
+        await transformer.transform(coverageMap);
+    });
 });
