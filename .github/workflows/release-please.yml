@@ -10,7 +10,7 @@ jobs:
       paths_released: ${{ steps.manifest_release.outputs.paths_released }}
       releases_created: ${{ steps.manifest_release.outputs.releases_created }}
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         id: manifest_release
   publish:
     if: ${{ needs.release.outputs.releases_created }}
