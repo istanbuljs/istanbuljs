@@ -787,6 +787,7 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
             coverageData.hash = hash;
             if (
                 coverageData.inputSourceMap &&
+                typeof coverageData.inputSourceMap !== 'string' &&
                 Object.getPrototypeOf(coverageData.inputSourceMap) !==
                     Object.prototype
             ) {
