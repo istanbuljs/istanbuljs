@@ -5,9 +5,9 @@ const { SourceCoverage } = require('./source-coverage');
 const { SHA, MAGIC_KEY, MAGIC_VALUE } = require('./constants');
 
 // pattern for istanbul to ignore a section
-const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
+const COMMENT_RE = /^!?\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
 // pattern for istanbul to ignore the whole file
-const COMMENT_FILE_RE = /^\s*istanbul\s+ignore\s+(file)(?=\W|$)/;
+const COMMENT_FILE_RE = /^!?\s*istanbul\s+ignore\s+(file)(?=\W|$)/;
 // source map URL pattern
 const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
 
