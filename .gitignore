@@ -9,3 +9,4 @@ dist
 lerna-debug.log
 packages/*/yarn.lock
 packages/nyc/
+.vscode/*
