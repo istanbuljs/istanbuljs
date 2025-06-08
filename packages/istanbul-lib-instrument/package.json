@@ -1,6 +1,6 @@
 {
   "name": "sl-istanbul-lib-instrument",
-  "version": "6.0.6",
+  "version": "6.0.7",
   "original-version": "6.0.2",
   "description": "SL update to the core istanbul API for JS code coverage",
   "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",

@@ -16,9 +16,9 @@ const SOURCE_MAP_RE = /[#@]\s*sourceMappingURL=(.*)\s*$/m;
 const SOURCE_MAP_RE_WITH_IGNORE_PATTERNS = /[#@]\s*sourceMappingURL=(.*)\s*$/gm;
 
 // generate a variable name from hashing the supplied file path
-function genVar(filename) {
+function genVar(filename, appName) {
     const hash = createHash(SHA);
-    hash.update(filename);
+    hash.update(`${filename}_${appName}`);
     return 'cov_' + parseInt(hash.digest('hex').substr(0, 12), 16).toString(36);
 }
 
@@ -97,9 +97,10 @@ class VisitState {
         skipFilesAndPackagePaths = [],
         skipInstrumentationIfNoSourceMap = false,
         customLogger = null,
-        workspacePath = ''
+        workspacePath = '',
+        appName = ''
     ) {
-        this.varName = genVar(sourceFilePath);
+        this.varName = genVar(sourceFilePath, appName);
         this.attrs = {};
         this.nextIgnore = null;
         this.cov = new SourceCoverage(sourceFilePath);
@@ -887,7 +888,8 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
         opts.skipFilesAndPackagePaths,
         opts.skipInstrumentationIfNoSourceMap,
         opts.customLogger,
-        opts.workspacePath
+        opts.workspacePath,
+        opts.appName,
     );
     return {
         enter(path) {

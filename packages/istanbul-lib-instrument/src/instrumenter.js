@@ -31,6 +31,7 @@ const readInitialCoverage = require('./read-coverage');
  * @param {boolean} [opts.skipInstrumentationIfNoSourceMap=false] set to true to skip instrumentation if no source map is provided.
  * @param {boolean} [opts.customLogger=console] provide a custom logger to log errors and warnings.
  * @param {string} [opts.workspacePath] the workspace path, when using relative sl-mapping this is required parameter
+ * @param {string} [opts.appName] the application name from Sealights
  */
 class Instrumenter {
     constructor(opts = {}) {
@@ -92,7 +93,8 @@ class Instrumenter {
                             skipInstrumentationIfNoSourceMap:
                                 opts.skipInstrumentationIfNoSourceMap,
                             customLogger: opts.customLogger,
-                            workspacePath: opts.workspacePath
+                            workspacePath: opts.workspacePath,
+                          appName: opts.appName
                         });
 
                         return {
