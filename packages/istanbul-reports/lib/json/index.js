@@ -4,12 +4,13 @@
  */
 'use strict';
 const { ReportBase } = require('istanbul-lib-report');
-
+const path = require('path');
 class JsonReport extends ReportBase {
     constructor(opts) {
         super();
 
         this.file = opts.file || 'coverage-final.json';
+        this.projectRoot = opts.projectRoot || process.cwd();
         this.first = true;
     }
 
@@ -20,7 +21,10 @@ class JsonReport extends ReportBase {
 
     onDetail(node) {
         const fc = node.getFileCoverage();
-        const key = fc.path;
+
+        const key = path.relative(this.projectRoot, fc.path);
+        fc.data.path = path.relative(this.projectRoot, fc.data.path);
+
         const cw = this.contentWriter;
 
         if (this.first) {
