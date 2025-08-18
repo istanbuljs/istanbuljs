@@ -110,7 +110,7 @@ table.coverage td span.cline-any {
     background: #ccc;
     color: white;
 }
-.missing-if-branch .typ, .skip-if-branch .typ {
+.missing-if-branch > span, .skip-if-branch > span {
     color: inherit !important;
 }
 .coverage-summary {
