@@ -89,10 +89,10 @@ module.exports = function SummaryTableHeader({
         <thead>
             <tr className="topheading">
                 <th></th>
-                {metricsToShow.statements && <th colSpan={4}>Statements</th>}
-                {metricsToShow.branches && <th colSpan={4}>Branches</th>}
-                {metricsToShow.functions && <th colSpan={4}>Functions</th>}
-                {metricsToShow.lines && <th colSpan={4}>Lines</th>}
+                {metricsToShow.statements && <th colSpan={5}>Statements</th>}
+                {metricsToShow.branches && <th colSpan={5}>Branches</th>}
+                {metricsToShow.functions && <th colSpan={5}>Functions</th>}
+                {metricsToShow.lines && <th colSpan={5}>Lines</th>}
             </tr>
             <tr className="subheading">
                 <FileHeaderCell onSort={onSort} activeSort={activeSort} />

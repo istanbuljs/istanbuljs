@@ -212,7 +212,7 @@ a:hover {
 }
 
 .coverage-summary th {
-    text-align: center;
+    text-align: left;
     font-weight: normal;
     white-space: nowrap;
 }
@@ -252,8 +252,8 @@ a:hover {
     color: #666;
 }
 
-.coverage-summary .headercell:nth-child(5n - 2),
-.coverage-summary td:nth-child(5n - 2) {
+.coverage-summary .headercell:nth-child(5n - 3),
+.coverage-summary td:nth-child(5n - 3) {
     border-left: 2px solid #fcfcfc;
     padding-left: 2em;
 }
