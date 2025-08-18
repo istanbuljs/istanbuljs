@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.7...istanbul-reports-v3.2.0) (2025-08-18)
+
+
+### Features
+
+* update HTML report filter to take a RegEx ([#796](https://github.com/istanbuljs/istanbuljs/issues/796)) ([a739999](https://github.com/istanbuljs/istanbuljs/commit/a7399991f4f5a086a75e8ac13131b79f5e4a6377))
+
+
+### Bug Fixes
+
+* html-spa table formatting ([#814](https://github.com/istanbuljs/istanbuljs/issues/814)) ([39c0fd1](https://github.com/istanbuljs/istanbuljs/commit/39c0fd1c45c8e2300bd724f91989bbffe60422a6))
+
 ## [3.1.7](https://github.com/istanbuljs/istanbuljs/compare/istanbul-reports-v3.1.6...istanbul-reports-v3.1.7) (2024-02-19)
 
 
