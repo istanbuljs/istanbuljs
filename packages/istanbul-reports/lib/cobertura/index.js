@@ -79,7 +79,42 @@ class CoberturaReport extends ReportBase {
     onDetail(node) {
         const fileCoverage = node.getFileCoverage();
         const metrics = node.getCoverageSummary();
+        const lines = fileCoverage.getLineCoverage();
         const branchByLine = fileCoverage.getBranchCoverageByLine();
+
+        const emitLines = (startLine, endLine) => {
+            this.xml.openTag('lines');
+
+            Object.entries(lines).forEach(([k, hits]) => {
+                if (
+                    (startLine !== undefined && k < startLine) ||
+                    (endLine !== undefined && k > endLine)
+                ) {
+                    return;
+                }
+
+                const attrs = {
+                    number: k,
+                    hits,
+                    branch: 'false'
+                };
+                const branchDetail = branchByLine[k];
+
+                if (branchDetail) {
+                    attrs.branch = true;
+                    attrs['condition-coverage'] =
+                        branchDetail.coverage +
+                        '% (' +
+                        branchDetail.covered +
+                        '/' +
+                        branchDetail.total +
+                        ')';
+                }
+                this.xml.inlineTag('line', attrs);
+            });
+
+            this.xml.closeTag('lines');
+        };
 
         this.xml.openTag('class', {
             name: escape(asClassName(node)),
@@ -90,48 +125,19 @@ class CoberturaReport extends ReportBase {
 
         this.xml.openTag('methods');
         const fnMap = fileCoverage.fnMap;
-        Object.entries(fnMap).forEach(([k, { name, decl }]) => {
+        Object.entries(fnMap).forEach(([k, { name, loc }]) => {
             const hits = fileCoverage.f[k];
             this.xml.openTag('method', {
                 name: escape(name),
                 hits,
                 signature: '()V' //fake out a no-args void return
             });
-            this.xml.openTag('lines');
-            //Add the function definition line and hits so that jenkins cobertura plugin records method hits
-            this.xml.inlineTag('line', {
-                number: decl.start.line,
-                hits
-            });
-            this.xml.closeTag('lines');
+            emitLines(loc.start.line, loc.end.line);
             this.xml.closeTag('method');
         });
         this.xml.closeTag('methods');
 
-        this.xml.openTag('lines');
-        const lines = fileCoverage.getLineCoverage();
-        Object.entries(lines).forEach(([k, hits]) => {
-            const attrs = {
-                number: k,
-                hits,
-                branch: 'false'
-            };
-            const branchDetail = branchByLine[k];
-
-            if (branchDetail) {
-                attrs.branch = true;
-                attrs['condition-coverage'] =
-                    branchDetail.coverage +
-                    '% (' +
-                    branchDetail.covered +
-                    '/' +
-                    branchDetail.total +
-                    ')';
-            }
-            this.xml.inlineTag('line', attrs);
-        });
-
-        this.xml.closeTag('lines');
+        emitLines();
         this.xml.closeTag('class');
     }
 }
