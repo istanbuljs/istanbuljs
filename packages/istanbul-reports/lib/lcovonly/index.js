@@ -30,7 +30,9 @@ class LcovOnlyReport extends ReportBase {
         const path = require('path');
 
         writer.println('TN:');
-        const fileName = path.relative(this.projectRoot, fc.path);
+        const fileName =
+            (this.projectRoot === '/' ? '/' : '') +
+            path.relative(this.projectRoot, fc.path);
         writer.println('SF:' + fileName);
 
         Object.values(functionMap).forEach(meta => {
