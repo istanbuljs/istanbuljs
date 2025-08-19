@@ -6,9 +6,9 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test nyc mocha --timeout 30000 packages/*/test{,/*}.js",
     "posttest": "eslint .",
-    "fix": "eslint . --fix",
-    "postinstall": "bash scripts/install.sh"
+    "fix": "eslint . --fix"
   },
+  "workspaces": ["packages/*"],
   "repository": {
     "type": "git",
     "url": "git@github.com:istanbuljs/istanbuljs.git"
@@ -45,8 +45,10 @@
     ]
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=8",
+    "npm": ">=7"
   },
+  "engineStrict": true,
   "prettier": {
     "singleQuote": true,
     "tabWidth": 4
