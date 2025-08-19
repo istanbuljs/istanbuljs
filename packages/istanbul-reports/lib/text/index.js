@@ -23,10 +23,9 @@ function padding(num, ch) {
 }
 
 function fill(str, width, right, tabs) {
-    tabs = tabs || 0;
     str = String(str);
 
-    const leadingSpaces = tabs * TAB_SIZE;
+    const leadingSpaces = (tabs || 0) * TAB_SIZE;
     const remaining = width - leadingSpaces;
     const leader = padding(leadingSpaces);
     let fmtStr = '';
@@ -36,12 +35,30 @@ function fill(str, width, right, tabs) {
         let fillStr;
 
         if (remaining >= strlen) {
-            fillStr = padding(remaining - strlen);
+            fillStr = (right || tabs !== undefined)
+                ? padding(remaining - strlen)
+                : '';
         } else {
             fillStr = '...';
             const length = remaining - fillStr.length;
 
-            str = str.substring(strlen - length);
+            if (tabs !== undefined) {
+                str = str.substring(strlen - length);
+            } else {
+                const ranges = str.split(' ')
+                while(ranges.shift()) {
+                  str = ranges.join(' ');
+
+                  if (str.length < length) {
+                      break;
+                  }
+                }
+
+                if (str.length) {
+                    fillStr = fillStr + ' ';
+                }
+            }
+
             right = true;
         }
         fmtStr = right ? fillStr + str : str + fillStr;
@@ -56,6 +73,19 @@ function formatName(name, maxCols, level) {
 
 function formatPct(pct, width) {
     return fill(pct, width || PCT_COLS, true, 0);
+}
+
+function splitlastRange(ranges) {
+    const {length} = ranges;
+    if (!length) return
+
+    const lastRange = ranges[length - 1];
+    if(lastRange.length !== 2) return
+
+    const [start, end] = lastRange;
+
+    ranges.pop();
+    ranges.push([start], [end]);
 }
 
 function nodeMissing(node) {
@@ -81,28 +111,34 @@ function nodeMissing(node) {
     }
 
     let newRange = true;
-    const ranges = coveredLines
+    let ranges = coveredLines
         .reduce((acum, [line, hit]) => {
-            if (hit) newRange = true;
-            else {
+            if (hit) {
+                splitlastRange(acum);
+                newRange = true;
+            } else {
                 line = parseInt(line);
                 if (newRange) {
                     acum.push([line]);
                     newRange = false;
-                } else acum[acum.length - 1][1] = line;
+                } else acum[acum.length - 1].push(line);
             }
 
             return acum;
         }, [])
+
+    splitlastRange(ranges);
+
+    ranges = ranges
         .map(range => {
             const { length } = range;
 
             if (length === 1) return range[0];
 
-            return `${range[0]}-${range[1]}`;
+            return `${range[0]}-${range[range.length - 1]}`;
         });
 
-    return [].concat(...ranges).join(',');
+    return [].concat(...ranges).join(' ');
 }
 
 function nodeName(node) {
