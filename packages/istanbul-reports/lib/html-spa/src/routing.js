@@ -26,7 +26,7 @@ exports.setLocation = function setLocation(
 };
 
 exports.decodeLocation = function decodeLocation() {
-    const items = location.hash.substr(1).split('/');
+    const items = location.hash.slice(1).split('/');
     if (items.length !== 8) {
         return null;
     }
