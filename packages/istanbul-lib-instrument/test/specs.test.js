@@ -30,7 +30,7 @@ function loadDocs() {
         const filePath = path.resolve(dir, f);
         const contents = fs.readFileSync(filePath, 'utf8');
         try {
-            yaml.safeLoadAll(contents, obj => {
+            yaml.loadAll(contents, obj => {
                 obj.file = f;
                 docs.push(obj);
             });
