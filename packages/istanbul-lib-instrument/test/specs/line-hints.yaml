@@ -1,0 +1,76 @@
+---
+name: ignore start stop
+code: |
+    var x = args[0];
+    /* istanbul ignore start */
+    function foo() {
+       return "executed";
+    }
+    /* istanbul ignore stop */
+    output = x === true ? foo() : "not executed";
+inputSourceMap:
+    version: 3
+    file: 'test.js'
+    mappings: 'AAAA,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,CAAC;AACf,CAAC,CAAC,CAAC,QAAQ,CAAC,MAAM,CAAC,KAAK,CAAC,CAAC;AAC1B,QAAQ,CAAC,GAAG,CAAC,CAAC,CAAC;AACf,CAAC,CAAC,CAAC,MAAM,CAAC,CAAC,QAAQ,CAAC;AACpB;AACA,CAAC,CAAC,CAAC,QAAQ,CAAC,MAAM,CAAC,IAAI,CAAC,CAAC;AACzB,MAAM,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,QAAQ,CAAC;'
+    names: []
+    sourceRoot: undefined
+    sources: ['test.js']
+    sourcesContent:
+        - |
+            var x = args[0];
+            /* istanbul ignore start */
+            function foo() {
+              return "executed";
+            }
+            /* istanbul ignore stop */
+            output = x === true ? foo() : "not executed";
+instrumentOpts:
+    ignoreLines: true
+tests:
+    - name: covers ignored function
+      args: [true]
+      out: 'executed'
+      lines: { '1': 1, '7': 1 }
+      branches: { '0': [1, 0] }
+      functions: {}
+      statements: { '0': 1, '1': 1 }
+      inputSourceMap:
+          version: 3
+          file: 'test.js'
+          mappings: 'AAAA,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,CAAC;AACf,CAAC,CAAC,CAAC,QAAQ,CAAC,MAAM,CAAC,KAAK,CAAC,CAAC;AAC1B,QAAQ,CAAC,GAAG,CAAC,CAAC,CAAC;AACf,CAAC,CAAC,CAAC,MAAM,CAAC,CAAC,QAAQ,CAAC;AACpB;AACA,CAAC,CAAC,CAAC,QAAQ,CAAC,MAAM,CAAC,IAAI,CAAC,CAAC;AACzB,MAAM,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,QAAQ,CAAC;'
+          names: []
+          sourceRoot: undefined
+          sources: ['test.js']
+          sourcesContent:
+              - |
+                  var x = args[0];
+                  /* istanbul ignore start */
+                  function foo() {
+                    return "executed";
+                  }
+                  /* istanbul ignore stop */
+                  output = x === true ? foo() : "not executed";
+
+    - name: does not cover ignored function
+      args: [false]
+      out: 'not executed'
+      lines: { '1': 1, '7': 1 }
+      branches: { '0': [0, 1] }
+      functions: {}
+      statements: { '0': 1, '1': 1 }
+      inputSourceMap:
+          version: 3
+          file: 'test.js'
+          mappings: 'AAAA,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,CAAC;AACf,CAAC,CAAC,CAAC,QAAQ,CAAC,MAAM,CAAC,KAAK,CAAC,CAAC;AAC1B,QAAQ,CAAC,GAAG,CAAC,CAAC,CAAC;AACf,CAAC,CAAC,CAAC,MAAM,CAAC,CAAC,QAAQ,CAAC;AACpB;AACA,CAAC,CAAC,CAAC,QAAQ,CAAC,MAAM,CAAC,IAAI,CAAC,CAAC;AACzB,MAAM,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,QAAQ,CAAC;'
+          names: []
+          sourceRoot: undefined
+          sources: ['test.js']
+          sourcesContent:
+              - |
+                  var x = args[0];
+                  /* istanbul ignore start */
+                  function foo() {
+                    return "executed";
+                  }
+                  /* istanbul ignore stop */
+                  output = x === true ? foo() : "not executed";

@@ -21,6 +21,7 @@ const readInitialCoverage = require('./read-coverage');
  * @param {boolean} [opts.autoWrap=false] set to true to allow `return` statements outside of functions.
  * @param {boolean} [opts.produceSourceMap=false] set to true to produce a source map for the instrumented code.
  * @param {Array} [opts.ignoreClassMethods=[]] set to array of class method names to ignore for coverage.
+ * @param {Array} [opts.ignoreLines=false] enable ignore hints for lines (start, end).
  * @param {Function} [opts.sourceMapUrlCallback=null] a callback function that is called when a source map URL
  *     is found in the original code. This function is called with the source file name and the source map URL.
  * @param {boolean} [opts.debug=false] - turn debugging on.
@@ -83,6 +84,7 @@ class Instrumenter {
                             coverageGlobalScopeFunc:
                                 opts.coverageGlobalScopeFunc,
                             ignoreClassMethods: opts.ignoreClassMethods,
+                            ignoreLines: opts.ignoreLines,
                             inputSourceMap
                         });
 

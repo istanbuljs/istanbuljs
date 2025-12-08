@@ -1,8 +1,17 @@
+const { readFileSync } = require('fs');
 const { createHash } = require('crypto');
 const { template } = require('@babel/core');
+const {
+    originalPositionFor,
+    TraceMap,
+    GREATEST_LOWER_BOUND,
+    LEAST_UPPER_BOUND,
+    sourceContentFor
+} = require('@jridgewell/trace-mapping');
 const { defaults } = require('@istanbuljs/schema');
 const { SourceCoverage } = require('./source-coverage');
 const { SHA, MAGIC_KEY, MAGIC_VALUE } = require('./constants');
+const { getIgnoredLines } = require('./ignored-lines');
 
 // pattern for istanbul to ignore a section
 const COMMENT_RE = /^\s*istanbul\s+ignore\s+(if|else|next)(?=\W|$)/;
@@ -26,7 +35,8 @@ class VisitState {
         sourceFilePath,
         inputSourceMap,
         ignoreClassMethods = [],
-        reportLogic = false
+        reportLogic = false,
+        ignoreLines = false
     ) {
         this.varName = genVar(sourceFilePath);
         this.attrs = {};
@@ -35,8 +45,13 @@ class VisitState {
 
         if (typeof inputSourceMap !== 'undefined') {
             this.cov.inputSourceMap(inputSourceMap);
+
+            if (ignoreLines) {
+                this.traceMap = new TraceMap(inputSourceMap);
+            }
         }
         this.ignoreClassMethods = ignoreClassMethods;
+        this.ignoredLines = new Map();
         this.types = types;
         this.sourceMappingURL = null;
         this.reportLogic = reportLogic;
@@ -45,7 +60,42 @@ class VisitState {
     // should we ignore the node? Yes, if specifically ignoring
     // or if the node is generated.
     shouldIgnore(path) {
-        return this.nextIgnore || !path.node.loc;
+        if (this.nextIgnore || !path.node.loc) {
+            return true;
+        }
+
+        if (!this.traceMap) {
+            return false;
+        }
+
+        // Anything that starts between the line ignore hints is ignored
+        const start = originalPositionTryBoth(
+            this.traceMap,
+            path.node.loc.start
+        );
+
+        // Generated code
+        if (start.line == null) {
+            return false;
+        }
+
+        const filename = start.source;
+        let ignoredLines = this.ignoredLines.get(filename);
+
+        if (!ignoredLines) {
+            const sources = sourceContentFor(this.traceMap, filename);
+            ignoredLines = getIgnoredLines(
+                sources || tryReadFileSync(filename)
+            );
+
+            this.ignoredLines.set(filename, ignoredLines);
+        }
+
+        if (ignoredLines.has(start.line)) {
+            return true;
+        }
+
+        return false;
     }
 
     // extract the ignore comment hint (next|if|else) or null
@@ -742,6 +792,7 @@ function shouldIgnoreFile(programNode) {
  * @param {string} [opts.coverageGlobalScope=this] the global coverage variable scope.
  * @param {boolean} [opts.coverageGlobalScopeFunc=true] use an evaluated function to find coverageGlobalScope.
  * @param {Array} [opts.ignoreClassMethods=[]] names of methods to ignore by default on classes.
+ * @param {Array} [opts.ignoreLines=false] enable ignore hints for lines (start, end).
  * @param {object} [opts.inputSourceMap=undefined] the input source map, that maps the uninstrumented code back to the
  * original code.
  */
@@ -756,7 +807,8 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
         sourceFilePath,
         opts.inputSourceMap,
         opts.ignoreClassMethods,
-        opts.reportLogic
+        opts.reportLogic,
+        opts.ignoreLines
     );
     return {
         enter(path) {
@@ -838,6 +890,31 @@ function programVisitor(types, sourceFilePath = 'unknown.js', opts = {}) {
             };
         }
     };
+}
+
+function originalPositionTryBoth(sourceMap, { line, column }) {
+    const mapping = originalPositionFor(sourceMap, {
+        line,
+        column,
+        bias: GREATEST_LOWER_BOUND
+    });
+    if (mapping.source === null) {
+        return originalPositionFor(sourceMap, {
+            line,
+            column,
+            bias: LEAST_UPPER_BOUND
+        });
+    } else {
+        return mapping;
+    }
+}
+
+function tryReadFileSync(filename) {
+    try {
+        return readFileSync(filename, 'utf8');
+    } catch (_) {
+        return undefined;
+    }
 }
 
 module.exports = programVisitor;
