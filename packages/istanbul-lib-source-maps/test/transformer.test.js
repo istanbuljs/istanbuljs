@@ -207,4 +207,53 @@ describe('transformer', () => {
 
         await transformer.transform(coverageMap);
     });
+
+    it('correctly maps function without `}` mapping', async () => {
+        const functionWithoutClosingBraceCoverageData = require('./testdata/functionWithoutClosingBraceCoverageData.json');
+        const sourceMap = {
+            version: 3,
+            sources: [sourceFileSlash],
+            mappings:
+                'AAAA,OAAO,SAAS,OAAO,GAAW;AAChC,QAAO,IAAI,MAAM;;AAGnB,OAAO,SAAS,MAAM,GAAW;AAC/B,QAAO,CAAC,OAAO,EAAE'
+        };
+
+        const coverageMap = createMap({});
+        coverageMap.addFileCoverage(functionWithoutClosingBraceCoverageData);
+
+        const transformer = new SourceMapTransformer(
+            () => new TraceMap(sourceMap)
+        );
+
+        const mapped = await transformer.transform(coverageMap);
+        const fileCoverage = mapped.fileCoverageFor(sourceFileSlash);
+
+        assert.deepEqual(fileCoverage.data.f, {
+            '0': 1,
+            '1': 0
+        });
+
+        assert.deepEqual(fileCoverage.data.fnMap['0'], {
+            name: 'isEven',
+            decl: {
+                start: {
+                    line: 1,
+                    column: 16
+                },
+                end: {
+                    line: 1,
+                    column: 23
+                }
+            },
+            loc: {
+                start: {
+                    line: 1,
+                    column: 34
+                },
+                end: {
+                    line: 2,
+                    column: Infinity
+                }
+            }
+        });
+    });
 });

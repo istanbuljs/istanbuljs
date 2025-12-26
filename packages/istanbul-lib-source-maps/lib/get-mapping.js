@@ -36,13 +36,27 @@ function originalEndPositionFor(sourceMap, generatedEnd) {
     // generated file end location. Note however that this position on its
     // own is not useful because it is the position of the _start_ of the range
     // on the original file, and we want the _end_ of the range.
-    const beforeEndMapping = originalPositionTryBoth(
+    let beforeEndMapping = originalPositionTryBoth(
         sourceMap,
         generatedEnd.line,
         generatedEnd.column - 1
     );
     if (beforeEndMapping.source === null) {
-        return null;
+        // search the previous lines as the mapping was not found on the same line
+        for (
+            let line = generatedEnd.line;
+            line > 0 && beforeEndMapping.source === null;
+            line--
+        ) {
+            beforeEndMapping = originalPositionTryBoth(
+                sourceMap,
+                line,
+                Infinity
+            );
+        }
+        if (beforeEndMapping.source === null) {
+            return null;
+        }
     }
 
     // Convert that original position back to a generated one, with a bump
