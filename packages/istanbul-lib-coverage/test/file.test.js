@@ -1124,6 +1124,218 @@ describe('addNearestContainerHits unit coverage', () => {
     });
 });
 
+describe('lenient merge with different end.column values', () => {
+    it('merges coverage when end.column differs between sources', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        const c1 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 0, 1, 50),
+                1: loc(2, 0, 2, 30)
+            },
+            fnMap: {
+                0: {
+                    name: 'foo',
+                    line: 1,
+                    loc: loc(1, 0, 1, 50)
+                }
+            },
+            branchMap: {
+                0: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 0, 2, 30), loc(2, 35, 2, 60)]
+                }
+            },
+            s: { 0: 1, 1: 0 },
+            f: { 0: 1 },
+            b: { 0: [1, 0] }
+        });
+
+        const c2 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 0, 1, 55),
+                1: loc(2, 0, 2, 35)
+            },
+            fnMap: {
+                0: {
+                    name: 'foo',
+                    line: 1,
+                    loc: loc(1, 0, 1, 55)
+                }
+            },
+            branchMap: {
+                0: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 0, 2, 35), loc(2, 35, 2, 65)]
+                }
+            },
+            s: { 0: 0, 1: 1 },
+            f: { 0: 1 },
+            b: { 0: [0, 1] }
+        });
+
+        c1.merge(c2);
+        const summary = c1.toSummary();
+
+        assert.deepEqual(summary.statements, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+        assert.deepEqual(summary.functions, {
+            total: 1,
+            covered: 1,
+            skipped: 0,
+            pct: 100
+        });
+        assert.equal(c1.f[0], 2);
+        assert.deepEqual(summary.branches, {
+            total: 2,
+            covered: 2,
+            skipped: 0,
+            pct: 100
+        });
+    });
+
+    it('only stores first A item when multiple A items share same lenient key', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+
+        const c1 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 0, 1, 50),
+                1: loc(1, 0, 1, 60)
+            },
+            fnMap: {},
+            branchMap: {},
+            s: { 0: 2, 1: 3 },
+            f: {},
+            b: {}
+        });
+
+        const c2 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 0, 1, 55)
+            },
+            fnMap: {},
+            branchMap: {},
+            s: { 0: 4 },
+            f: {},
+            b: {}
+        });
+
+        c1.merge(c2);
+
+        assert.equal(c1.s[0], 6);
+        assert.equal(c1.s[1], 3);
+        const summary = c1.toSummary();
+        assert.equal(summary.statements.total, 2);
+    });
+
+    it('skips extra B items that share lenient key with A items', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+
+        const c1 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 0, 1, 50)
+            },
+            fnMap: {},
+            branchMap: {},
+            s: { 0: 5 },
+            f: {},
+            b: {}
+        });
+
+        const c2 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 0, 1, 99),
+                1: loc(1, 0, 1, 88)
+            },
+            fnMap: {},
+            branchMap: {},
+            s: { 0: 3, 1: 7 },
+            f: {},
+            b: {}
+        });
+
+        c1.merge(c2);
+
+        const summary = c1.toSummary();
+        assert.equal(summary.statements.total, 1);
+        assert.equal(c1.s[0], 8);
+    });
+
+    it('handles null end.column gracefully without crashing', () => {
+        const c1 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: {
+                    start: { line: 2, column: 2 },
+                    end: { line: 2, column: null }
+                },
+                1: {
+                    start: { line: 6, column: 2 },
+                    end: { line: 6, column: null }
+                }
+            },
+            fnMap: {},
+            branchMap: {},
+            s: { 0: 1, 1: 0 },
+            f: {},
+            b: {}
+        });
+
+        const c2 = new FileCoverage({
+            path: '/path/to/file',
+            statementMap: {
+                0: {
+                    start: { line: 2, column: 2 },
+                    end: { line: 2, column: null }
+                },
+                1: {
+                    start: { line: 6, column: 2 },
+                    end: { line: 6, column: null }
+                }
+            },
+            fnMap: {},
+            branchMap: {},
+            s: { 0: 0, 1: 1 },
+            f: {},
+            b: {}
+        });
+
+        c1.merge(c2);
+
+        const summary = c1.toSummary();
+        assert.equal(summary.statements.total, 2);
+        assert.equal(summary.statements.covered, 2);
+        assert.equal(c1.s[0], 1);
+        assert.equal(c1.s[1], 1);
+    });
+});
+
 describe('findNearestContainer missing loc defense', () => {
     it('does not throw if loc is missing', () => {
         const loc = (sl, sc, el, ec) => ({
