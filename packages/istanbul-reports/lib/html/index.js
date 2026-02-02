@@ -86,7 +86,7 @@ ${htmlHead(details)}
         <template id="filterTemplate">
             <div class="quiet">
                 Filter:
-                <input type="search" id="fileSearch">
+                <input type="search" id="fileSearch" placeholder="regex (e.g., .*\.js$)" title="Filter files using JavaScript regular expressions">
             </div>
         </template>
     </div>
