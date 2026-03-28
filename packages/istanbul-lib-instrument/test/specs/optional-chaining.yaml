@@ -1,0 +1,169 @@
+---
+name: basic optional member access - non-null object
+code: |
+  var obj = args[0];
+  var x = obj?.foo;
+  output = x;
+tests:
+  - name: non-null object hits non-nullish branch
+    args: [{foo: 'bar'}]
+    out: bar
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+  - name: null hits nullish branch
+    args: [null]
+    out: ~
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: basic optional member access - undefined hits nullish branch
+code: |
+  var obj = args[0];
+  var x = obj?.foo;
+  output = x;
+tests:
+  - name: undefined hits nullish branch
+    args: [~]
+    out: ~
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: chained optional access - first short-circuits
+code: |
+  var obj = args[0];
+  var x = obj?.a?.b;
+  output = x;
+tests:
+  - name: first opt-chain short-circuits (obj is null)
+    args: [null]
+    out: ~
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0], '1': [0, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: chained optional access - second short-circuits
+code: |
+  var obj = args[0];
+  var x = obj?.a?.b;
+  output = x;
+tests:
+  - name: first passes, second short-circuits (obj.a is null)
+    args: [{a: null}]
+    out: ~
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [0, 1], '1': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: chained optional access - both pass
+code: |
+  var obj = args[0];
+  var x = obj?.a?.b;
+  output = x;
+tests:
+  - name: both optional chains pass
+    args: [{a: {b: 42}}]
+    out: 42
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [0, 1], '1': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: optional call expression - null function
+code: |
+  var fn = null;
+  var x = fn?.();
+  output = x;
+tests:
+  - name: null fn hits nullish branch
+    args: []
+    out: ~
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: optional call expression - defined function
+code: |
+  var fn = function() { return 'called'; };
+  var x = fn?.();
+  output = x;
+tests:
+  - name: defined fn hits non-nullish branch
+    args: []
+    out: called
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [0, 1]}
+    functions: {'0': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1}
+
+---
+name: optional method call - null object
+code: |
+  var obj = null;
+  var x = obj?.greet();
+  output = x;
+tests:
+  - name: null obj hits nullish branch
+    args: []
+    out: ~
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: optional method call - object with method
+code: |
+  var obj = { greet: function() { return 'hello'; } };
+  var x = obj?.greet();
+  output = x;
+tests:
+  - name: obj with method hits non-nullish branch
+    args: []
+    out: hello
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [0, 1]}
+    functions: {'0': 1}
+    statements: {'0': 1, '1': 1, '2': 1, '3': 1}
+
+---
+name: mixed optional and regular member access
+code: |
+  var obj = args[0];
+  var x = obj?.a.b;
+  output = x;
+tests:
+  - name: obj is null short-circuits at opt-chain (only 1 opt-chain branch)
+    args: [null]
+    out: ~
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+  - name: obj exists and a.b is accessed normally
+    args: [{a: {b: 99}}]
+    out: 99
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [0, 1]}
+    statements: {'0': 1, '1': 1, '2': 1}
+
+---
+name: optional call with multiple arguments
+code: |
+  var fn = args[0];
+  var x = fn?.(args[1], args[2]);
+  output = x;
+tests:
+  - name: fn is null hits nullish branch
+    args: [null, 3, 4]
+    out: ~
+    lines: {'1': 1, '2': 1, '3': 1}
+    branches: {'0': [1, 0]}
+    statements: {'0': 1, '1': 1, '2': 1}
