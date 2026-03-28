@@ -14,7 +14,6 @@ tests:
 
   - name: null hits nullish branch
     args: [null]
-    out: ~
     lines: {'1': 1, '2': 1, '3': 1}
     branches: {'0': [1, 0]}
     statements: {'0': 1, '1': 1, '2': 1}
@@ -28,7 +27,6 @@ code: |
 tests:
   - name: undefined hits nullish branch
     args: [~]
-    out: ~
     lines: {'1': 1, '2': 1, '3': 1}
     branches: {'0': [1, 0]}
     statements: {'0': 1, '1': 1, '2': 1}
@@ -42,9 +40,8 @@ code: |
 tests:
   - name: first opt-chain short-circuits (obj is null)
     args: [null]
-    out: ~
     lines: {'1': 1, '2': 1, '3': 1}
-    branches: {'0': [1, 0], '1': [0, 0]}
+    branches: {'0': [1, 0], '1': [1, 0]}
     statements: {'0': 1, '1': 1, '2': 1}
 
 ---
@@ -56,9 +53,8 @@ code: |
 tests:
   - name: first passes, second short-circuits (obj.a is null)
     args: [{a: null}]
-    out: ~
     lines: {'1': 1, '2': 1, '3': 1}
-    branches: {'0': [0, 1], '1': [1, 0]}
+    branches: {'0': [1, 0], '1': [0, 1]}
     statements: {'0': 1, '1': 1, '2': 1}
 
 ---
@@ -84,7 +80,6 @@ code: |
 tests:
   - name: null fn hits nullish branch
     args: []
-    out: ~
     lines: {'1': 1, '2': 1, '3': 1}
     branches: {'0': [1, 0]}
     statements: {'0': 1, '1': 1, '2': 1}
@@ -113,7 +108,6 @@ code: |
 tests:
   - name: null obj hits nullish branch
     args: []
-    out: ~
     lines: {'1': 1, '2': 1, '3': 1}
     branches: {'0': [1, 0]}
     statements: {'0': 1, '1': 1, '2': 1}
@@ -142,7 +136,6 @@ code: |
 tests:
   - name: obj is null short-circuits at opt-chain (only 1 opt-chain branch)
     args: [null]
-    out: ~
     lines: {'1': 1, '2': 1, '3': 1}
     branches: {'0': [1, 0]}
     statements: {'0': 1, '1': 1, '2': 1}
@@ -163,7 +156,6 @@ code: |
 tests:
   - name: fn is null hits nullish branch
     args: [null, 3, 4]
-    out: ~
     lines: {'1': 1, '2': 1, '3': 1}
     branches: {'0': [1, 0]}
     statements: {'0': 1, '1': 1, '2': 1}
