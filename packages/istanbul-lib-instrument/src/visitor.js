@@ -583,6 +583,137 @@ function coverTernary(path) {
     }
 }
 
+function isOptionalChainNode(node) {
+    return (
+        node.type === 'OptionalMemberExpression' ||
+        node.type === 'OptionalCallExpression'
+    );
+}
+
+// Walk up from path to find the topmost chain node that is still part of
+// the same optional chain segment. For example, in `obj?.a.b`, when we
+// visit `obj?.a` (optional=true), the parent `.b` (optional=false) is
+// still part of the same chain and must be included in the replacement so
+// that when obj is null the entire `obj?.a.b` short-circuits to undefined
+// rather than evaluating `.b` on undefined.
+function findChainTop(path) {
+    let current = path;
+    let parent = current.parentPath;
+    while (
+        parent &&
+        isOptionalChainNode(parent.node) &&
+        !parent.node.optional
+    ) {
+        // Parent is optional=false — still part of this chain segment.
+        // Keep walking up.
+        current = parent;
+        parent = current.parentPath;
+    }
+    return current;
+}
+
+// Build the non-null result for a chain node, substituting `tempId` as the
+// base (object/callee) instead of the original object/callee.
+function buildNonNullResult(T, n, tempId) {
+    if (n.type === 'OptionalCallExpression') {
+        return T.callExpression(T.cloneNode(tempId), n.arguments);
+    }
+    // OptionalMemberExpression
+    return T.memberExpression(T.cloneNode(tempId), n.property, n.computed);
+}
+
+// Given the chain top path (which may be deeper than the original optional=true
+// node), rebuild the chain top node using `innerResult` as the new base for the
+// object/callee, replacing everything below (already handled by the branch).
+function rebuildChainAbove(T, chainTopNode, originalNode, innerResult) {
+    if (chainTopNode === originalNode) {
+        return innerResult;
+    }
+    // The chain top is a wrapper around the original optional=true node.
+    // We need to rebuild it substituting innerResult for the originalNode.
+    // Since the chain between originalNode and chainTopNode consists only of
+    // optional=false chain nodes, we recursively rebuild from bottom up.
+    function rebuild(n) {
+        if (n === chainTopNode) {
+            if (n.type === 'OptionalCallExpression') {
+                return T.callExpression(innerResult, n.arguments);
+            }
+            // OptionalMemberExpression with optional=false
+            return T.memberExpression(innerResult, n.property, n.computed);
+        }
+        // n is between originalNode and chainTopNode
+        const base = rebuild(
+            n.type === 'OptionalCallExpression' ? n.callee : n.object
+        );
+        if (n.type === 'OptionalCallExpression') {
+            return T.callExpression(base, n.arguments);
+        }
+        return T.memberExpression(base, n.property, n.computed);
+    }
+    return rebuild(chainTopNode);
+}
+
+function coverOptionalExpression(path) {
+    const T = this.types;
+    const n = path.node;
+    if (!n.optional) {
+        return; // skip non-optional parts of a chain (e.g., the inner node of a?.b.c)
+    }
+
+    // Find the topmost node that is still part of this chain segment.
+    // For `obj?.a.b`, when visiting `obj?.a` we need to include `.b` in
+    // the replacement so the whole expression short-circuits when obj is null.
+    const chainTopPath = findChainTop(path);
+    const chainTopNode = chainTopPath.node;
+
+    const branch = this.cov.newBranch('opt-chain', n.loc);
+    const nullishIncrement = this.getBranchIncrement(branch, n.loc);
+    const nonNullishIncrement = this.getBranchIncrement(branch, n.loc);
+
+    // The object/callee of the optional=true node is what we null-check
+    const isCall = n.type === 'OptionalCallExpression';
+    const objectNode = isCall ? n.callee : n.object;
+
+    // Generate a unique temp variable and declare it in the enclosing scope
+    const tempVar = path.scope.generateUidIdentifier('optChain');
+    path.scope.push({ id: tempVar });
+
+    const tempId = T.identifier(tempVar.name);
+    const assignment = T.assignmentExpression(
+        '=',
+        T.cloneNode(tempId),
+        objectNode
+    );
+    const nullCheck = T.binaryExpression(
+        '==',
+        T.cloneNode(tempId),
+        T.nullLiteral()
+    );
+
+    // The non-null result: rebuild from the optional=true node upward to
+    // chain top, using tempId as the new base.
+    const immediateResult = buildNonNullResult(T, n, tempId);
+    const nonNullResult =
+        chainTopNode === n
+            ? immediateResult
+            : rebuildChainAbove(T, chainTopNode, n, immediateResult);
+
+    const conditional = T.conditionalExpression(
+        nullCheck,
+        T.sequenceExpression([
+            nullishIncrement,
+            T.unaryExpression('void', T.numericLiteral(0))
+        ]),
+        T.sequenceExpression([nonNullishIncrement, nonNullResult])
+    );
+
+    // Replace the chain top (not just the current optional=true node) so that
+    // the optional=false tail nodes are included inside the non-null branch.
+    chainTopPath.replaceWith(T.sequenceExpression([assignment, conditional]));
+    // Do NOT skip — allow traversal into the replacement so that nested
+    // optional chain nodes (e.g., in a?.b?.c) are also instrumented.
+}
+
 function coverLogicalExpression(path) {
     const T = this.types;
     if (path.parentPath.node.type === 'LogicalExpression') {
@@ -667,7 +798,9 @@ const codeVisitor = {
     FunctionExpression: entries(coverFunction),
     LabeledStatement: entries(coverStatement),
     ConditionalExpression: entries(coverTernary),
-    LogicalExpression: entries(coverLogicalExpression)
+    LogicalExpression: entries(coverLogicalExpression),
+    OptionalMemberExpression: entries(coverOptionalExpression),
+    OptionalCallExpression: entries(coverOptionalExpression)
 };
 const globalTemplateAlteredFunction = template(`
         var Function = (function(){}).constructor;
