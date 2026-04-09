@@ -5,6 +5,8 @@
  */
 const path = require('path');
 const vm = require('vm');
+const { registerHooks } = require('node:module');
+const { fileURLToPath } = require('node:url');
 const appendTransform = require('append-transform');
 const originalCreateScript = vm.createScript;
 const originalRunInThisContext = vm.runInThisContext;
@@ -106,6 +108,74 @@ function hookRequire(matcher, transformer, options) {
             }
             return ret.code;
         }, ext);
+    });
+
+    return function() {
+        disable = true;
+    };
+}
+
+/**
+ * hooks Node.js ESM module loading via `node:module` `registerHooks`.
+ *
+ * Note: CommonJS (CJS) is intentionally not hooked here, so we can continue using the
+ * existing CommonJS transform order.
+ * Exceptions in the transform result in the original code being used instead.
+ * @method hookESM
+ * @static
+ * @param matcher {Function(filePath)} a function that is called with the absolute path to the file being loaded.
+ *  Should return a truthy value when transformations need to be applied to the code, a falsy value otherwise.
+ * @param transformer {Function(code, options)} a function called with the original code and an options object
+ *  containing the filename (e.g. `{ filename }`). Should return the transformed code.
+ * @param opts {Object} [opts={}] options
+ * @param {Boolean} [opts.verbose] write a line to standard error every time the transformer is called
+ * @returns {Function} a reset function that can be called to disable the hook
+ */
+function hookESM(matcher, transformer, opts) {
+    opts = opts || {};
+    let disable = false;
+    const fn = transformFn(matcher, transformer, opts.verbose);
+
+    registerHooks({
+        load(url, context, nextLoad) {
+            if (disable) {
+                return nextLoad(url, context);
+            }
+
+            const result = nextLoad(url, context);
+            const format =
+                result && typeof result.format === 'string'
+                    ? result.format
+                    : context && typeof context.format === 'string'
+                      ? context.format
+                      : null;
+
+            if (format !== 'module' && format !== 'module-typescript') {
+                return result;
+            }
+
+            if (typeof url !== 'string' || !url.startsWith('file:')) {
+                return result;
+            }
+
+            let filename;
+            try {
+                filename = fileURLToPath(url);
+            } catch (e) {
+                return result;
+            }
+
+            if (!result || result.source == null) {
+                return result;
+            }
+
+            const ret = fn(result.source.toString(), { filename });
+            if (!ret.changed) {
+                return result;
+            }
+
+            return { ...result, source: ret.code };
+        }
     });
 
     return function() {
@@ -227,6 +297,7 @@ function unhookRunInContext() {
  */
 module.exports = {
     hookRequire,
+    hookESM,
     hookCreateScript,
     unhookCreateScript,
     hookRunInThisContext,

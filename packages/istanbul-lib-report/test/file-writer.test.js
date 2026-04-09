@@ -4,7 +4,6 @@
 const fs = require('fs');
 const path = require('path');
 const assert = require('chai').assert;
-const mkdirp = require('make-dir');
 const rimraf = require('rimraf');
 const FileWriter = require('../lib/file-writer');
 
@@ -14,7 +13,7 @@ describe('file-writer', () => {
     let writer;
 
     beforeEach(() => {
-        mkdirp.sync(dataDir);
+        fs.mkdirSync(path.dirname(dataDir), {recursive: true});
         writer = new FileWriter(dataDir);
     });
 

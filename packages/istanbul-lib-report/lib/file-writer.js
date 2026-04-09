@@ -5,7 +5,6 @@
  */
 const path = require('path');
 const fs = require('fs');
-const mkdirp = require('make-dir');
 const supportsColor = require('supports-color');
 
 /**
@@ -157,7 +156,7 @@ class FileWriter {
             throw new Error(`Cannot write to absolute path: ${dest}`);
         }
         dest = path.resolve(this.baseDir, dest);
-        mkdirp.sync(path.dirname(dest));
+        fs.mkdirSync(path.dirname(dest), {recursive: true});
         let contents;
         if (header) {
             contents = header + fs.readFileSync(source, 'utf8');
@@ -181,7 +180,7 @@ class FileWriter {
             throw new Error(`Cannot write to absolute path: ${file}`);
         }
         file = path.resolve(this.baseDir, file);
-        mkdirp.sync(path.dirname(file));
+        fs.mkdirSync(path.dirname(file), {recursive: true});
         return new FileContentWriter(fs.openSync(file, 'w'));
     }
 }

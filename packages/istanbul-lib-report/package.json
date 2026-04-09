@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "istanbul-lib-coverage": "^3.0.0",
-    "make-dir": "^4.0.0",
-    "supports-color": "^7.1.0"
+    "supports-color": "^10.2.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -39,6 +38,6 @@
     "lib"
   ],
   "engines": {
-    "node": ">=10"
+    "node": "20 || >=22"
   }
 }

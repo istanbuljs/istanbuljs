@@ -2,6 +2,8 @@
 /* globals describe, it, beforeEach, afterEach */
 const assert = require('chai').assert;
 const hook = require('../lib/hook');
+const path = require('path');
+const { pathToFileURL } = require('url');
 
 let currentHook;
 const matcher = function(file) {
@@ -31,6 +33,58 @@ const hookIt = function(m, t, o) {
 };
 
 describe('hooks', () => {
+    describe('esm (registerHooks)', () => {
+        const esmMatcher = function(file) {
+            return file.indexOf('esm-foo.mjs') > 0;
+        };
+        const esmTransformer = function() {
+            return 'export function foo() { return "bar-esm"; }';
+        };
+
+        it('transforms ESM import', async () => {
+            const disable = hook.hookESM(esmMatcher, esmTransformer, {
+                verbose: true
+            });
+            const url = pathToFileURL(
+                path.join(__dirname, 'data', 'esm-foo.mjs')
+            ).href;
+            const mod = await import(url);
+            assert.equal(mod.foo(), 'bar-esm');
+            disable();
+        });
+
+        it('does not transform ESM import when disabled', async () => {
+            const disable = hook.hookESM(esmMatcher, esmTransformer, {
+                verbose: true
+            });
+            disable();
+            const url = pathToFileURL(
+                path.join(__dirname, 'data', 'esm-foo.mjs')
+            ).href;
+            const mod = await import(url + '?disabled=1');
+            assert.equal(mod.foo(), 'foo-esm');
+        });
+
+        it('does not transform CJS require', () => {
+            const cjsMatcher = function(file) {
+                return file.indexOf('foo.js') > 0;
+            };
+            const cjsTransformer = function() {
+                return 'module.exports.bar = function () { return "bar-from-esm-hook"; };';
+            };
+            const disable = hook.hookESM(cjsMatcher, cjsTransformer, {
+                verbose: true
+            });
+            hook.unloadRequireCache(cjsMatcher);
+            const foo = require('./data/foo');
+            assert.ok(foo.foo);
+            assert.equal(foo.foo(), 'foo');
+            assert.notOk(foo.bar);
+            disable();
+            hook.unloadRequireCache(cjsMatcher);
+        });
+    });
+
     describe('require', () => {
         beforeEach(() => {
             hookIt(matcher, transformer, { verbose: true });
