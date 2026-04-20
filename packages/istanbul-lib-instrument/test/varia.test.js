@@ -270,4 +270,37 @@ describe('varia', () => {
         const code = v.getGeneratedCode();
         assert.ok(code.match(/global\s*=\s*window.top;/));
     });
+
+    it('infers names for class methods, object methods, and assigned functions', () => {
+        /* https://github.com/istanbuljs/istanbuljs/issues/843 */
+        const instrumenter = new Instrumenter({
+            coverageVariable: '__testing_coverage__'
+        });
+        instrumenter.instrumentSync(
+            `class MyClass {
+                regularMethod() {}
+                static staticMethod() {}
+                get accessor() { return 1; }
+            }
+            const obj = {
+                objectMethod() {},
+                funcExpression: function() {},
+                arrowMethod: () => {},
+            };
+            const o = {};
+            o.assignedMethod = function() {};
+            function topLevelFunction() {}`,
+            __filename
+        );
+        const fnMap = instrumenter.lastFileCoverage().fnMap;
+        const names = Object.values(fnMap).map(f => f.name);
+        assert.include(names, 'regularMethod');
+        assert.include(names, 'staticMethod');
+        assert.include(names, 'accessor');
+        assert.include(names, 'objectMethod');
+        assert.include(names, 'funcExpression');
+        assert.include(names, 'arrowMethod');
+        assert.include(names, 'assignedMethod');
+        assert.include(names, 'topLevelFunction');
+    });
 });

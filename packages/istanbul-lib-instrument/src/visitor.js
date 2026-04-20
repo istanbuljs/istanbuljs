@@ -18,6 +18,36 @@ function genVar(filename) {
     return 'cov_' + parseInt(hash.digest('hex').substr(0, 12), 16).toString(36);
 }
 
+function getFunctionName(path) {
+    const node = path.node;
+    // Named function declaration or expression: function foo() {}
+    if (node.id) return node.id.name;
+    // Class method or object shorthand method: class { foo() {} }, { foo() {} }
+    if (node.key && node.key.type === 'Identifier') return node.key.name;
+    // Function/arrow as object property value: { foo: function() {} }
+    const parent = path.parent;
+    if (
+        parent &&
+        parent.type === 'ObjectProperty' &&
+        parent.key &&
+        parent.key.type === 'Identifier' &&
+        parent.value === node
+    ) {
+        return parent.key.name;
+    }
+    // Function assigned to member expression: obj.foo = function() {}
+    if (
+        parent &&
+        parent.type === 'AssignmentExpression' &&
+        parent.right === node &&
+        parent.left.type === 'MemberExpression' &&
+        parent.left.property.type === 'Identifier'
+    ) {
+        return parent.left.property.name;
+    }
+    return node.name;
+}
+
 // VisitState holds the state of the visitor, provides helper functions
 // and is the `this` for the individual coverage visitors.
 class VisitState {
@@ -377,7 +407,7 @@ class VisitState {
             };
         }
 
-        const name = path.node.id ? path.node.id.name : path.node.name;
+        const name = getFunctionName(path);
         const index = this.cov.newFunction(name, dloc, path.node.body.loc);
         const increment = this.increase('f', index, null);
         const body = path.get('body');
