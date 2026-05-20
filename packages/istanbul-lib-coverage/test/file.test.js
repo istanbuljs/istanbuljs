@@ -219,9 +219,9 @@ describe('base coverage', () => {
         });
         assert.deepEqual(summary.lines, {
             total: 2,
-            covered: 1,
+            covered: 2,
             skipped: 0,
-            pct: 50
+            pct: 100
         });
         assert.deepEqual(summary.functions, {
             total: 1,
@@ -371,9 +371,9 @@ describe('base coverage', () => {
         });
         assert.deepEqual(summary.lines, {
             total: 2,
-            covered: 1,
+            covered: 2,
             skipped: 0,
-            pct: 50
+            pct: 100
         });
         assert.deepEqual(summary.functions, {
             total: 1,
@@ -561,9 +561,9 @@ describe('base coverage', () => {
         });
         assert.deepEqual(summary.lines, {
             total: 2,
-            covered: 1,
+            covered: 2,
             skipped: 0,
-            pct: 50
+            pct: 100
         });
         assert.deepEqual(summary.functions, {
             total: 1,
@@ -1055,6 +1055,105 @@ describe('base coverage', () => {
         fcov = new FileCoverage('foo.json', true);
         assert.ok(fcov.data.bT);
         assert.ok(fcov.toSummary().branchesTrue);
+    });
+
+    describe('getLineCoverage folds fnMap and branchMap', () => {
+        const loc = (sl, sc, el, ec) => ({
+            start: { line: sl, column: sc },
+            end: { line: el, column: ec }
+        });
+
+        it('reports a function-declaration line that no statement covers', () => {
+            const c = new FileCoverage({
+                path: '/file',
+                statementMap: { 0: loc(20, 0, 20, 10) },
+                fnMap: {
+                    0: {
+                        name: 'unused',
+                        decl: loc(5, 9, 5, 15),
+                        loc: loc(5, 9, 7, 1)
+                    }
+                },
+                branchMap: {},
+                s: { 0: 1 },
+                f: { 0: 0 },
+                b: {}
+            });
+            assert.deepEqual(c.getLineCoverage(), { 5: 0, 20: 1 });
+        });
+
+        it('reports a branch-arm line that no statement covers', () => {
+            // if/else where each arm body sits on its own line.
+            const c = new FileCoverage({
+                path: '/file',
+                statementMap: {
+                    0: loc(7, 4, 7, 30),
+                    1: loc(9, 4, 9, 30)
+                },
+                fnMap: {},
+                branchMap: {
+                    0: {
+                        type: 'if',
+                        loc: loc(6, 0, 10, 1),
+                        locations: [loc(6, 0, 8, 1), loc(8, 7, 10, 1)]
+                    }
+                },
+                s: { 0: 5, 1: 0 },
+                f: {},
+                b: { 0: [5, 0] }
+            });
+            assert.deepEqual(c.getLineCoverage(), { 6: 5, 7: 5, 8: 0, 9: 0 });
+        });
+
+        it('keeps the largest hit count when a line appears in multiple maps', () => {
+            // statement says 0, function decl says 100 on the same line.
+            const c = new FileCoverage({
+                path: '/file',
+                statementMap: { 0: loc(10, 0, 10, 40) },
+                fnMap: {
+                    0: {
+                        name: 'cb',
+                        decl: loc(10, 14, 10, 20),
+                        loc: loc(10, 14, 10, 39)
+                    }
+                },
+                branchMap: {},
+                s: { 0: 0 },
+                f: { 0: 100 },
+                b: {}
+            });
+            assert.deepEqual(c.getLineCoverage(), { 10: 100 });
+        });
+
+        it('falls back to fnMap[*].loc when decl is absent (older instrumenters)', () => {
+            const c = new FileCoverage({
+                path: '/file',
+                statementMap: {},
+                fnMap: {
+                    0: { name: 'legacy', loc: loc(70, 0, 72, 1) }
+                },
+                branchMap: {},
+                s: {},
+                f: { 0: 5 },
+                b: {}
+            });
+            assert.deepEqual(c.getLineCoverage(), { 70: 5 });
+        });
+
+        it('ignores a branchMap entry that has no locations array', () => {
+            const c = new FileCoverage({
+                path: '/file',
+                statementMap: { 0: loc(80, 0, 80, 5) },
+                fnMap: {},
+                branchMap: {
+                    0: { type: 'default-arg', loc: loc(80, 0, 80, 5) }
+                },
+                s: { 0: 2 },
+                f: {},
+                b: { 0: [2] }
+            });
+            assert.deepEqual(c.getLineCoverage(), { 80: 2 });
+        });
     });
 });
 
