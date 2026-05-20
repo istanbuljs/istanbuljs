@@ -215,25 +215,57 @@ class FileCoverage {
     }
 
     /**
-     * returns computed line coverage from statement coverage.
-     * This is a map of hits keyed by line number in the source.
+     * returns computed line coverage from statement, function and branch
+     * coverage. This is a map of hits keyed by line number in the source.
+     *
+     * Function-declaration starting lines and branch-arm starting lines are
+     * folded in alongside statement lines so that reporters such as
+     * `lcovonly` emit a `DA:` record for every line carrying an executable
+     * token (`function foo () {`, the `} else {` continuation of an
+     * `if`/`else`, inline ternary arms). When a line appears in more than
+     * one map, the maximum hit count wins; untaken branch arms still
+     * surface as `0` so the `LF` total stays honest.
      */
     getLineCoverage() {
-        const statementMap = this.data.statementMap;
-        const statements = this.data.s;
         const lineMap = Object.create(null);
 
-        Object.entries(statements).forEach(([st, count]) => {
-            /* istanbul ignore if: is this even possible? */
-            if (!statementMap[st]) {
-                return;
-            }
-            const { line } = statementMap[st].start;
-            const prevVal = lineMap[line];
-            if (prevVal === undefined || prevVal < count) {
+        const record = (line, count) => {
+            const prev = lineMap[line];
+            if (prev === undefined || prev < count) {
                 lineMap[line] = count;
             }
+        };
+
+        const statementMap = this.data.statementMap;
+        Object.entries(this.data.s).forEach(([st, count]) => {
+            /* istanbul ignore if: is this even possible? */
+            if (!statementMap[st]) return;
+            record(statementMap[st].start.line, count);
         });
+
+        const fnMap = this.data.fnMap;
+        Object.entries(this.data.f).forEach(([fn, count]) => {
+            const entry = fnMap[fn];
+            /* istanbul ignore if: is this even possible? */
+            if (!entry) return;
+            const decl = entry.decl || entry.loc;
+            /* istanbul ignore else: is this even possible? */
+            if (decl && decl.start) record(decl.start.line, count);
+        });
+
+        const branchMap = this.data.branchMap;
+        Object.entries(this.data.b).forEach(([br, counts]) => {
+            const entry = branchMap[br];
+            /* istanbul ignore if: is this even possible? */
+            if (!entry || !Array.isArray(entry.locations)) return;
+            entry.locations.forEach((branchLoc, i) => {
+                /* istanbul ignore else: is this even possible? */
+                if (branchLoc && branchLoc.start) {
+                    record(branchLoc.start.line, counts[i] | 0);
+                }
+            });
+        });
+
         return lineMap;
     }
 
