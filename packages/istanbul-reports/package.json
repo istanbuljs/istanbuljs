@@ -35,7 +35,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+    "url": "git+https://github.com/istanbuljs/istanbuljs.git",
     "directory": "packages/istanbul-reports"
   },
   "keywords": [
