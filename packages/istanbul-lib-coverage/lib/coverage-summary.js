@@ -97,6 +97,18 @@ class CoverageSummary {
     isEmpty() {
         return this.lines.total === 0;
     }
+
+    /**
+     * return true if summary has 100% coverage of all types
+     */
+    isFull() {
+        return (
+            this.statements.pct === 100 &&
+            this.branches.pct === 100 &&
+            this.functions.pct === 100 &&
+            this.lines.pct === 100
+        );
+    }
 }
 
 dataProperties(CoverageSummary, [

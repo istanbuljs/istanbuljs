@@ -111,6 +111,49 @@ describe('coverage summary', () => {
         const cs = new CoverageSummary();
         assert.equal(cs.isEmpty(), true);
     });
+
+    it('isFull() by default', () => {
+        const cs = new CoverageSummary();
+        assert.equal(cs.isFull(), false);
+    });
+
+    it('isFull() when all metrics are 100%', () => {
+        const full = function() {
+            return {
+                total: 5,
+                covered: 5,
+                skipped: 0,
+                pct: 100
+            };
+        };
+        const cs = new CoverageSummary({
+            statements: full(),
+            functions: full(),
+            lines: full(),
+            branches: full(),
+            branchesTrue: full()
+        });
+        assert.equal(cs.isFull(), true);
+    });
+
+    it('isFull() when some metrics are below 100%', () => {
+        const full = function() {
+            return {
+                total: 5,
+                covered: 5,
+                skipped: 0,
+                pct: 100
+            };
+        };
+        const cs = new CoverageSummary({
+            statements: full(),
+            functions: full(),
+            lines: { total: 5, covered: 4, skipped: 0, pct: 80 },
+            branches: full(),
+            branchesTrue: full()
+        });
+        assert.equal(cs.isFull(), false);
+    });
 });
 
 describe('base coverage', () => {
