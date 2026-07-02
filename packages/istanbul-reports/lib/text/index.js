@@ -164,15 +164,6 @@ function tableHeader(maxNameCols, missingWidth) {
     return elements.join(DELIM) + ' ';
 }
 
-function isFull(metrics) {
-    return (
-        metrics.statements.pct === 100 &&
-        metrics.branches.pct === 100 &&
-        metrics.functions.pct === 100 &&
-        metrics.lines.pct === 100
-    );
-}
-
 function tableRow(
     node,
     context,
@@ -189,7 +180,7 @@ function tableRow(
     if (skipEmpty && isEmpty) {
         return '';
     }
-    if (skipFull && isFull(metrics)) {
+    if (skipFull && metrics.isFull()) {
         return '';
     }
 
