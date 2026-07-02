@@ -255,6 +255,15 @@ function fixPct(metrics) {
     return metrics;
 }
 
+function isFull(metrics) {
+    return (
+        metrics.statements.pct === 100 &&
+        metrics.branches.pct === 100 &&
+        metrics.functions.pct === 100 &&
+        metrics.lines.pct === 100
+    );
+}
+
 class HtmlReport extends ReportBase {
     constructor(opts) {
         super();
@@ -264,6 +273,7 @@ class HtmlReport extends ReportBase {
         this.subdir = opts.subdir || '';
         this.date = new Date().toISOString();
         this.skipEmpty = opts.skipEmpty;
+        this.skipFull = opts.skipFull;
     }
 
     getBreadcrumbHtml(node) {
@@ -359,6 +369,7 @@ class HtmlReport extends ReportBase {
         const templateData = this.getTemplateData();
         const children = node.getChildren();
         const skipEmpty = this.skipEmpty;
+        const skipFull = this.skipFull;
 
         this.fillTemplate(node, templateData, context);
         const cw = this.getWriter(context).writeFile(linkMapper.getPath(node));
@@ -368,6 +379,9 @@ class HtmlReport extends ReportBase {
             const metrics = child.getCoverageSummary();
             const isEmpty = metrics.isEmpty();
             if (skipEmpty && isEmpty) {
+                return;
+            }
+            if (skipFull && isFull(metrics)) {
                 return;
             }
             const reportClasses = isEmpty
