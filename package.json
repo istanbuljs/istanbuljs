@@ -47,6 +47,9 @@
   "engines": {
     "node": ">=8"
   },
+  "overrides": {
+    "node-releases": "2.0.19"
+  },
   "prettier": {
     "singleQuote": true,
     "tabWidth": 4
