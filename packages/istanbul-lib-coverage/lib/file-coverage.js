@@ -324,9 +324,14 @@ class FileCoverage {
         this.data.f = hits;
         this.data.fnMap = map;
 
+        // Keep a reference to the pre-merge branch map. Merging renumbers the
+        // branch keys, so anything else keyed by the old numbering (bT below)
+        // has to be resolved against the map it was actually keyed against.
+        const thisBranchMap = this.branchMap;
+
         [hits, map] = mergeProp(
             this.b,
-            this.branchMap,
+            thisBranchMap,
             other.b,
             other.branchMap,
             keyFromLocationsProp
@@ -339,7 +344,7 @@ class FileCoverage {
         if (this.bT && other.bT) {
             [hits, map] = mergeProp(
                 this.bT,
-                this.branchMap,
+                thisBranchMap,
                 other.bT,
                 other.branchMap,
                 keyFromLocationsProp
