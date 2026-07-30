@@ -614,6 +614,53 @@ describe('base coverage', () => {
         assert.equal(c1.bT[0][1], 2);
     });
 
+    it('merges bT when merging renumbers the branch map', () => {
+        // Two branch entries that share locations[0] collapse into one during
+        // the merge, so the merged branch map is shorter than the original and
+        // the branch keys are renumbered. bT is keyed against the *original*
+        // numbering, so it has to be resolved against the pre-merge map.
+        const loc = (sl, sc, el, ec) => ({
+            start: { line: sl, column: sc },
+            end: { line: el, column: ec }
+        });
+        const shared = loc(5, 0, 5, 20);
+        const template = {
+            path: '/bt-renumber.js',
+            statementMap: {},
+            fnMap: {},
+            branchMap: {
+                0: {
+                    type: 'if',
+                    loc: shared,
+                    locations: [shared, loc(6, 0, 6, 10)]
+                },
+                1: {
+                    type: 'if',
+                    loc: shared,
+                    locations: [shared, loc(7, 0, 7, 10)]
+                }
+            },
+            s: {},
+            f: {},
+            b: { 0: [1, 0], 1: [0, 1] },
+            bT: { 0: [1, 0], 1: [0, 1] }
+        };
+        const clone = obj => JSON.parse(JSON.stringify(obj));
+        const c1 = new FileCoverage(clone(template));
+        const c2 = new FileCoverage(clone(template));
+
+        c1.merge(c2);
+
+        // every bT key must still name an existing branch
+        Object.keys(c1.bT).forEach(k => {
+            assert.ok(
+                k in c1.branchMap,
+                `bT key ${k} has no matching branchMap entry`
+            );
+        });
+        assert.deepEqual(Object.keys(c1.bT), Object.keys(c1.b));
+    });
+
     it('merges another file with non-overlapping branch misses', () => {
         const clone = obj => JSON.parse(JSON.stringify(obj));
 
