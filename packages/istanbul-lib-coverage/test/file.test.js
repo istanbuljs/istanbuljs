@@ -629,8 +629,16 @@ describe('base coverage', () => {
             statementMap: {},
             fnMap: {},
             branchMap: {
-                0: { type: 'if', loc: shared, locations: [shared, loc(6, 0, 6, 10)] },
-                1: { type: 'if', loc: shared, locations: [shared, loc(7, 0, 7, 10)] }
+                0: {
+                    type: 'if',
+                    loc: shared,
+                    locations: [shared, loc(6, 0, 6, 10)]
+                },
+                1: {
+                    type: 'if',
+                    loc: shared,
+                    locations: [shared, loc(7, 0, 7, 10)]
+                }
             },
             s: {},
             f: {},
