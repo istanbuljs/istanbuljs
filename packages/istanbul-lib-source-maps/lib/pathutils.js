@@ -14,8 +14,29 @@ module.exports = {
             : path.resolve(baseDir || process.cwd(), file);
     },
     relativeTo(file, origFile) {
-        return path.isAbsolute(file)
-            ? file
-            : path.resolve(path.dirname(origFile), file);
+        if (path.isAbsolute(file)) {
+            return file;
+        }
+
+        // Tools like webpack / vue-loader emit inline maps whose "sources"
+        // are relative to the project root, while the coverage object is
+        // keyed by the absolute path of the very same file. Resolving that
+        // source against the directory of origFile would duplicate the
+        // directory segments (src/components/src/components/file.vue, see
+        // istanbuljs/nyc#718). When the relative source matches the
+        // trailing path segments of origFile, it refers to origFile itself.
+        const fileSegs = file.split(/[/\\]/).filter(seg => seg && seg !== '.');
+        if (fileSegs.length > 0 && !fileSegs.includes('..')) {
+            const origSegs = origFile.split(/[/\\]/).filter(Boolean);
+            const tail = origSegs.slice(-fileSegs.length);
+            if (
+                tail.length === fileSegs.length &&
+                tail.every((seg, i) => seg === fileSegs[i])
+            ) {
+                return origFile;
+            }
+        }
+
+        return path.resolve(path.dirname(origFile), file);
     }
 };
