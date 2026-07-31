@@ -207,4 +207,67 @@ describe('transformer', () => {
 
         await transformer.transform(coverageMap);
     });
+
+    it('does not duplicate path segments when a relative source matches the trailing segments of the covered file path (nyc#718)', async () => {
+        // Tools like webpack / vue-loader emit inline maps whose "sources"
+        // are relative to the project root, while the coverage object is
+        // keyed by the absolute path of the very same file. Resolving that
+        // source against the directory of the covered file used to produce
+        // /project/src/components/src/components/file.js.
+        const coveredFile = path.posix.normalize(
+            '/project/src/components/file.js'
+        );
+        const coverageMap = createMap({});
+        coverageMap.addFileCoverage({
+            ...coverageData,
+            path: coveredFile
+        });
+
+        const transformer = new SourceMapTransformer(
+            () =>
+                new TraceMap({
+                    version: 3,
+                    sources: ['src/components/file.js'],
+                    mappings: testDataSlash.sourceMap.mappings
+                })
+        );
+        const mapped = await transformer.transform(coverageMap);
+
+        assert.deepEqual(Object.keys(mapped.data), [coveredFile]);
+        assert.deepEqual(mapped.data[coveredFile].statementMap, {
+            '0': {
+                start: { line: 1, column: 13 },
+                end: { line: 1, column: 34 }
+            },
+            '1': {
+                start: { line: 2, column: 13 },
+                end: { line: 2, column: 52 }
+            }
+        });
+    });
+
+    it('still resolves a relative source that names a different file against the covered file directory', async () => {
+        const coveredFile = path.posix.normalize('/project/src/file.min.js');
+        const expectedSource = path.resolve(
+            path.dirname(coveredFile),
+            'file.js'
+        );
+        const coverageMap = createMap({});
+        coverageMap.addFileCoverage({
+            ...coverageData,
+            path: coveredFile
+        });
+
+        const transformer = new SourceMapTransformer(
+            () =>
+                new TraceMap({
+                    version: 3,
+                    sources: ['file.js'],
+                    mappings: testDataSlash.sourceMap.mappings
+                })
+        );
+        const mapped = await transformer.transform(coverageMap);
+
+        assert.deepEqual(Object.keys(mapped.data), [expectedSource]);
+    });
 });
