@@ -47,7 +47,7 @@ const keyFromLoc = ({ start, end }) =>
 
 const isObj = o => !!o && typeof o === 'object';
 const isLineCol = o =>
-    isObj(o) && typeof o.line === 'number' && typeof o.column === 'number';
+    isObj(o) && Number.isFinite(o.line) && Number.isFinite(o.column);
 const isLoc = o => isObj(o) && isLineCol(o.start) && isLineCol(o.end);
 const getLoc = o => (isLoc(o) ? o : isLoc(o.loc) ? o.loc : null);
 
@@ -312,7 +312,8 @@ class FileCoverage {
         this.data.statementMap = map;
 
         const keyFromLocProp = x => keyFromLoc(x.loc);
-        const keyFromLocationsProp = x => keyFromLoc(x.locations[0]);
+        const keyFromLocationsProp = x =>
+            keyFromLoc(isLoc(x.locations[0]) ? x.locations[0] : x.loc);
 
         [hits, map] = mergeProp(
             this.f,

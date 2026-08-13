@@ -422,6 +422,56 @@ describe('base coverage', () => {
         assert.equal(c1.b[0][1], 2);
     });
 
+    it('uses parent branch locations when child locations are invalid', () => {
+        const loc = (sl, sc, el, ec) => ({
+            start: { line: sl, column: sc },
+            end: { line: el, column: ec }
+        });
+        const createCoverage = (invalidLoc, hits) =>
+            new FileCoverage({
+                path: '/path/to/file',
+                statementMap: {},
+                fnMap: {},
+                branchMap: {
+                    0: {
+                        type: 'if',
+                        loc: loc(1, 0, 1, 10),
+                        locations: [invalidLoc(), loc(1, 0, 1, 10)]
+                    },
+                    1: {
+                        type: 'if',
+                        loc: loc(2, 0, 2, 10),
+                        locations: [invalidLoc(), loc(2, 0, 2, 10)]
+                    }
+                },
+                s: {},
+                f: {},
+                b: hits
+            });
+
+        [
+            () => ({ start: {}, end: {} }),
+            () => loc(Infinity, 0, Infinity, 10)
+        ].forEach(invalidLoc => {
+            const c1 = createCoverage(invalidLoc, {
+                0: [1, 2],
+                1: [3, 4]
+            });
+            const c2 = createCoverage(invalidLoc, {
+                0: [5, 6],
+                1: [7, 8]
+            });
+
+            c1.merge(c2);
+
+            assert.lengthOf(Object.keys(c1.branchMap), 2);
+            assert.deepEqual(c1.b, {
+                0: [6, 8],
+                1: [10, 12]
+            });
+        });
+    });
+
     it('drops all data during merges', () => {
         const loc = function(sl, sc, el, ec) {
             return {
