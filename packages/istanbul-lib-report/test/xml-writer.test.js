@@ -59,4 +59,19 @@ describe('xml writer', () => {
             xw.closeTag('foo');
         });
     });
+
+    it('escapes XML-significant characters in attributes and content', () => {
+        const cw = new MockContentWriter();
+        const xw = new XMLWriter(cw);
+        xw.openTag('file', {
+            name: 'Barnes&Noble.js',
+            path: 'src/<foo>"bar"'
+        });
+        xw.inlineTag('source', null, '/tmp/a&b');
+        xw.closeTag('file');
+        assert.equal(
+            cw.str,
+            '<file name="Barnes&amp;Noble.js" path="src/&lt;foo&gt;&quot;bar&quot;">\n  <source>/tmp/a&amp;b</source>\n</file>\n'
+        );
+    });
 });
