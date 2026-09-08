@@ -5,9 +5,17 @@
  */
 const INDENT = '  ';
 
+function escapeXml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
 function attrString(attrs) {
     return Object.entries(attrs || {})
-        .map(([k, v]) => ` ${k}="${v}"`)
+        .map(([k, v]) => ` ${k}="${escapeXml(v)}"`)
         .join('');
 }
 
@@ -66,7 +74,7 @@ class XMLWriter {
     inlineTag(name, attrs, content) {
         let str = '<' + name + attrString(attrs);
         if (content) {
-            str += `>${content}</${name}>`;
+            str += `>${escapeXml(content)}</${name}>`;
         } else {
             str += '/>';
         }

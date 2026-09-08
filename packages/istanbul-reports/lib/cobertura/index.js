@@ -4,7 +4,6 @@
  Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 const path = require('path');
-const { escape } = require('html-escaper');
 const { ReportBase } = require('istanbul-lib-report');
 
 class CoberturaReport extends ReportBase {
@@ -60,7 +59,7 @@ class CoberturaReport extends ReportBase {
             return;
         }
         this.xml.openTag('package', {
-            name: node.isRoot() ? 'main' : escape(asJavaPackage(node)),
+            name: node.isRoot() ? 'main' : asJavaPackage(node),
             'line-rate': metrics.lines.pct / 100.0,
             'branch-rate': metrics.branches.pct / 100.0
         });
@@ -82,7 +81,7 @@ class CoberturaReport extends ReportBase {
         const branchByLine = fileCoverage.getBranchCoverageByLine();
 
         this.xml.openTag('class', {
-            name: escape(asClassName(node)),
+            name: asClassName(node),
             filename: path.relative(this.projectRoot, fileCoverage.path),
             'line-rate': metrics.lines.pct / 100.0,
             'branch-rate': metrics.branches.pct / 100.0
@@ -93,7 +92,7 @@ class CoberturaReport extends ReportBase {
         Object.entries(fnMap).forEach(([k, { name, decl }]) => {
             const hits = fileCoverage.f[k];
             this.xml.openTag('method', {
-                name: escape(name),
+                name,
                 hits,
                 signature: '()V' //fake out a no-args void return
             });
