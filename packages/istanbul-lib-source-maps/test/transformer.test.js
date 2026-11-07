@@ -207,4 +207,45 @@ describe('transformer', () => {
 
         await transformer.transform(coverageMap);
     });
+
+    it('discards line-zero statement locations instead of throwing (#860)', async () => {
+        const coverageMap = createMap({});
+        coverageMap.addFileCoverage({
+            ...coverageData,
+            path: sourceFileSlash,
+            statementMap: {
+                ...coverageData.statementMap,
+                '2': {
+                    start: { line: 0, column: 0 },
+                    end: { line: 0, column: 10 }
+                }
+            },
+            s: {
+                '0': 3,
+                '1': 2,
+                '2': 1
+            }
+        });
+
+        const transformer = new SourceMapTransformer(
+            () => new TraceMap(testDataSlash.sourceMap)
+        );
+        const mapped = await transformer.transform(coverageMap);
+        const fileCoverage = mapped.fileCoverageFor(sourceFileSlash);
+
+        assert.deepEqual(fileCoverage.data.statementMap, {
+            '0': {
+                start: { line: 1, column: 13 },
+                end: { line: 1, column: 34 }
+            },
+            '1': {
+                start: { line: 2, column: 13 },
+                end: { line: 2, column: 52 }
+            }
+        });
+        assert.deepEqual(fileCoverage.data.s, {
+            '0': 3,
+            '1': 2
+        });
+    });
 });
