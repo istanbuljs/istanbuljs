@@ -614,6 +614,84 @@ describe('base coverage', () => {
         assert.equal(c1.bT[0][1], 2);
     });
 
+    it('preserves branch truthiness when merging coverage where only one side tracks bT', () => {
+        const loc = function(sl, sc, el, ec) {
+            return {
+                start: { line: sl, column: sc },
+                end: { line: el, column: ec }
+            };
+        };
+        const template = {
+            path: '/path/to/file',
+            statementMap: {
+                0: loc(1, 1, 1, 100)
+            },
+            fnMap: {},
+            branchMap: {
+                0: {
+                    type: 'if',
+                    line: 2,
+                    locations: [loc(2, 1, 2, 20), loc(2, 50, 2, 100)]
+                }
+            },
+            s: {
+                0: 0
+            },
+            f: {},
+            b: {
+                0: [0, 0]
+            },
+            bT: {
+                0: [0, 0]
+            }
+        };
+        const clone = function(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        };
+
+        // Case 1: c1 has bT, c2 does not
+        const c1 = new FileCoverage(clone(template));
+        const c2 = new FileCoverage(clone(template));
+        delete c2.data.bT;
+
+        c1.b[0][0] = 1;
+        c1.bT[0][0] = 1;
+        c2.b[0][1] = 2;
+
+        c1.merge(c2);
+        assert.ok(c1.bT, 'c1.bT should be preserved');
+        assert.equal(c1.b[0][0], 1);
+        assert.equal(c1.b[0][1], 2);
+        assert.equal(c1.bT[0][0], 1);
+        assert.equal(c1.bT[0][1], 0);
+
+        const summary1 = c1.toSummary();
+        assert.ok(summary1.branchesTrue, 'summary should include branchesTrue');
+        assert.equal(summary1.branchesTrue.covered, 1);
+        assert.equal(summary1.branchesTrue.total, 2);
+
+        // Case 2: c3 does not have bT, c4 has bT
+        const c3 = new FileCoverage(clone(template));
+        const c4 = new FileCoverage(clone(template));
+        delete c3.data.bT;
+
+        c3.b[0][0] = 1;
+        c4.b[0][1] = 2;
+        c4.bT[0][1] = 2;
+
+        c3.merge(c4);
+        assert.ok(c3.bT, 'c3.bT should be populated from c4');
+        assert.equal(c3.b[0][0], 1);
+        assert.equal(c3.b[0][1], 2);
+        assert.equal(c3.bT[0][0], 0);
+        assert.equal(c3.bT[0][1], 2);
+
+        const summary2 = c3.toSummary();
+        assert.ok(summary2.branchesTrue, 'summary should include branchesTrue');
+        assert.equal(summary2.branchesTrue.covered, 1);
+        assert.equal(summary2.branchesTrue.total, 2);
+    });
+
     it('merges another file with non-overlapping branch misses', () => {
         const clone = obj => JSON.parse(JSON.stringify(obj));
 
