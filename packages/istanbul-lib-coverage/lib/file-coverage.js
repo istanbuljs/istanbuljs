@@ -112,6 +112,14 @@ const findNearestContainer = (item, map) => {
 };
 
 // either add two numbers, or all matching entries in a number[]
+const emptyBranchTruthiness = b => {
+    const ret = {};
+    for (const [k, v] of Object.entries(b || {})) {
+        ret[k] = Array.isArray(v) ? v.map(() => 0) : [];
+    }
+    return ret;
+};
+
 const addHits = (aHits, bHits) => {
     if (typeof aHits === 'number' && typeof bHits === 'number') {
         return aHits + bHits;
@@ -324,9 +332,12 @@ class FileCoverage {
         this.data.f = hits;
         this.data.fnMap = map;
 
+        const initialBranchHits = this.b;
+        const initialBranchMap = this.branchMap;
+
         [hits, map] = mergeProp(
-            this.b,
-            this.branchMap,
+            initialBranchHits,
+            initialBranchMap,
             other.b,
             other.branchMap,
             keyFromLocationsProp
@@ -336,11 +347,14 @@ class FileCoverage {
 
         // Tracking additional information about branch truthiness
         // can be optionally enabled:
-        if (this.bT && other.bT) {
-            [hits, map] = mergeProp(
-                this.bT,
-                this.branchMap,
-                other.bT,
+        if (this.bT || other.bT) {
+            const thisBT = this.bT || emptyBranchTruthiness(initialBranchHits);
+            const otherBT = other.bT || emptyBranchTruthiness(other.b);
+
+            [hits] = mergeProp(
+                thisBT,
+                initialBranchMap,
+                otherBT,
                 other.branchMap,
                 keyFromLocationsProp
             );
